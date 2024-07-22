@@ -1,0 +1,23 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=00d18696_002Dbfde_002D4c8d_002D9a8d_002D33baf1c72e49/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="UnitUnderTestParserTests #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::31B57559-0391-445A-8BCF-8ECC4E617EE6::net8.0::HermesTests.Models.Parsers.UnitUnderTestParserTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::31B57559-0391-445A-8BCF-8ECC4E617EE6::net8.0::HermesTests.Models.SfcResponseTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::31B57559-0391-445A-8BCF-8ECC4E617EE6::net8.0::HermesTests.Models.SfcRequestTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::31B57559-0391-445A-8BCF-8ECC4E617EE6::net8.0::HermesTests.Services.SfcServiceTests.Send_Ok&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::31B57559-0391-445A-8BCF-8ECC4E617EE6::net8.0::HermesTests.Services.SfcServiceTests.Send_PassContent_ReturnsSfcResponsePass&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::31B57559-0391-445A-8BCF-8ECC4E617EE6::net8.0::HermesTests.Services.SfcServiceTests.Timeout_ValidContent_ReturnsSfcResponseTimeout&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::31B57559-0391-445A-8BCF-8ECC4E617EE6::net8.0::HermesTests.Services.SfcServiceTests.Send_Timeout_ReturnsSfcResponseTimeout&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::31B57559-0391-445A-8BCF-8ECC4E617EE6::net8.0::HermesTests.Services.SfcServiceTests&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=86dbbe2c_002D1dad_002D40ca_002Dbc5d_002Dc575d86edeff/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="UnitUnderTestParserTests #3" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::31B57559-0391-445A-8BCF-8ECC4E617EE6::net8.0::HermesTests.Models.Parsers.UnitUnderTestParserTests&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b3fc386d_002Dc11e_002D4334_002D8d1f_002D039d30b28ffb/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="UnitUnderTestParserTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::31B57559-0391-445A-8BCF-8ECC4E617EE6::net8.0::HermesTests.Models.Parsers.UnitUnderTestParserTests&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

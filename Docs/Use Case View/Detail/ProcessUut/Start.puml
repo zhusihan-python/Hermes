@@ -1,0 +1,22 @@
+@startuml Start Use Case Detail
+hide empty description
+
+state STARTED
+
+[*] --> Start
+    note on link #LightBlue;line:blue;
+        **User requests:**
+        * Start
+    end note
+    
+state Start {
+    [*] --> [*]
+    note on link
+        **System shows:**
+        * Start message
+    end note                    
+}
+Start --> STARTED
+
+STARTED --> [*]
+@enduml

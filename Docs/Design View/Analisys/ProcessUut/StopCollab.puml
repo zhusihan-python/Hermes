@@ -1,0 +1,54 @@
+@startuml Stop Collab
+
+package Models{
+    card Session
+    card State
+    
+    Session --> State
+        note on link
+            * SetStopState()
+        end note
+}
+
+package Services{
+    card WindowService
+    card ProcessLogfileTimeService
+    card StopLineService
+    card WatchFolderService
+    
+    ProcessLogfileTimeService --> StopLineService
+        note on link
+            * Stop()
+        end note
+    ProcessLogfileTimeService --> WatchFolderService
+        note on link
+            * Stop()
+        end note
+}
+
+package ViewModels{
+    card StopViewModel
+    
+    StopViewModel --> ProcessLogfileTimeService
+        note on link
+           * Stop()
+        end note        
+    StopViewModel --> Session
+        note on link
+            * SetStopState()
+        end note
+    StopViewModel --> WindowService
+        note on link
+            * ShowAndClose(StopFloatMessage, delay)
+        end note
+}
+
+package Views {
+    card StopView
+    
+    StopView --> StopViewModel
+        note on link
+            * Stop() 
+        end note
+}
+@enduml

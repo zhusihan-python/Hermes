@@ -1,0 +1,106 @@
+@startuml architectureAnalisys
+
+package ModelClasses{
+    entity Session
+    entity Coordinator
+    entity Machine
+    entity Conveyor
+    entity Logfile
+    entity Response
+    entity ShopFloorControl
+    entity Stopper
+    entity LineStopper
+    entity MachineStopper
+    entity State
+    entity Validator
+
+    Session *--> Coordinator
+    Session *--> State
+
+    Coordinator --> ShopFloorControl
+    Coordinator --> Conveyor
+    Coordinator --> Stopper
+
+    Machine ..> Logfile
+
+    ShopFloorControl --> Machine
+    ShopFloorControl ..> Logfile
+    ShopFloorControl ..> Response
+
+    Stopper <|-- MachineStopper
+    Stopper <|-- LineStopper
+    Stopper ..> Response
+    Stopper *--> Validator : *
+}
+
+package ViewModelClasses {
+    control ConfigureSettingsViewModel
+    control ExitViewModel
+    control ExportLogfilesViewModel
+    control LoginViewModel
+    control LogoutViewModel
+    control OpenDashboardViewModel
+    control OpenLineStatusViewModel
+    control OpenLogfilesViewModel
+    control OpenMachineStatusViewModel
+    control OpenSettingsViewModel
+    control ProcessLogfileViewModel
+    control ReProcessLogfileViewModel
+    control RestoreStopLineViewModel
+    control RestoreStopMachineViewModel
+    control StopLineViewModel
+}
+
+package ViewClasses {
+    boundary MainView
+    boundary LoginView
+    boundary DashboardView
+    boundary LineStatusView
+    boundary MachineStatusView
+    boundary LogfilesView
+    boundary SettingsView
+    boundary ProcessLogfileView
+    boundary StopView
+    boundary StopLineView
+    boundary StopMachineView
+    boundary StopMachineView
+    boundary SuccessView
+    boundary UutPassSuccessView
+    boundary RepairSuccessView
+
+    MainView *--> DashboardView
+    MainView *--> LoginView
+    MainView *--> ProcessLogfileView
+
+    ProcessLogfileView ..> StopView
+    ProcessLogfileView ..> SuccessView
+
+    StopView <|-- StopLineView
+    StopView <|-- StopMachineView
+
+    SuccessView <|-- UutPassSuccessView
+    SuccessView <|-- RepairSuccessView
+
+    DashboardView *--> LineStatusView
+    DashboardView *--> LogfilesView
+    DashboardView *--> SettingsView
+
+    LineStatusView *--> MachineStatusView
+}
+
+package MVVM {
+    package Views
+    package ViewModels
+    package Models
+
+    :User: --> Views
+    Views --> ViewModels : Data Binding and Commands
+    Views --> Models
+
+    ViewModels ..> Views : Notifications
+    ViewModels --> Models
+
+    Models ..> ViewModels : Notifications
+}
+
+@enduml

@@ -1,0 +1,50 @@
+@startuml RestoreStopMachine Collab
+
+package Models {
+    card Session
+    card Token
+}
+
+package Daos {
+    card StopDao
+}
+
+package Services {
+    card WindowManager
+}
+
+package ViewModels {
+    card RestoreStopMachineViewModel
+    
+    RestoreStopMachineViewModel --> Session
+        note on link
+            * Set(stop)
+        end note
+    RestoreStopMachineViewModel --> StopDao
+        note on link
+            * Update(stop)
+        end note
+    RestoreStopMachineViewModel --> WindowManager
+        note on link
+            * Hide(StopMachineView)
+        end note
+    RestoreStopMachineViewModel --> Token
+        note on link
+            * Validate(text, List<departmentType>)
+        end note
+}
+
+package Views {
+    card RestoreStopMachineView
+    
+    RestoreStopMachineView --> RestoreStopMachineViewModel
+        note on link
+            * Restore(token)
+        end note
+}
+
+:User: --> RestoreStopMachineView
+    note on link
+        * Restore(token)
+    end note
+@enduml

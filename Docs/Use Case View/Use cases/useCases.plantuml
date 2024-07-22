@@ -1,0 +1,30 @@
+@startuml useCases
+left to right direction
+
+:Server:
+:Engineer:
+:Technician:
+
+:Server: --> (SetStopLine)
+:Server: --> (RestoreStopLine)
+
+:Engineer: --> (OpenLineStatus)
+:Engineer: --> (OpenMachineStatus)
+:Engineer: --> (SetStopLine)
+
+:Engineer: --> (OpenSettings)
+:Engineer: --> (ConfigureSettings)
+:Engineer: --> (SendFileToSfc)
+:Engineer: --> (Exit)
+
+:Technician: --> (Login)
+:Technician: --> (Logout)
+:Technician: --> (OpenLogfiles)
+:Technician: --> (ExportLogfiles)
+:Technician: --> (RestoreStopLine)
+:Technician: --> (RestoreStopMachine)
+:Technician: --> (OpenDashboard)
+:Technician: --> (StartWatchLogfile)
+:Technician: --> (StopWatchLogfile)
+:Engineer: --|> :Technician:
+@enduml

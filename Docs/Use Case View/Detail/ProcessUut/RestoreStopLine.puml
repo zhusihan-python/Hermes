@@ -1,0 +1,87 @@
+﻿@startuml RestoreStopLine Use Case Detail
+hide empty description
+
+LINE_STOPPED --> RestoreStopLine
+    note on link #LightBlue;line:blue;
+        **User requests:**
+        * RestoreStopLine
+    end note
+    
+state RestoreStopLine {
+    state S1 as " "
+    state S2 as " "
+    state S3 as " "
+    state S4 as " "
+    state S5 as " "
+    state IF2 <<choice>>
+    state IF1 <<choice>>
+    state IF3 <<choice>>
+    
+    [*] --> S1
+        note on link
+            **System requires:**
+            * Actions
+        end note    
+        
+    S1 --> IF1
+        note on link #LightBlue;line:blue;
+            **User provides:**
+            * Actions
+        end note
+    
+    IF1 --> S2
+    IF1 --> S1 : [Actions length < 10]
+        note on link
+            **System shows:**
+            * Invalid actions message
+        end note
+        
+    S2 --> S3
+        note on link
+            **System requires:**
+            * MFG token
+            * PROCESS token
+            * AOI token
+        end note
+        
+    S3 --> IF2
+        note on link #LightBlue;line:blue;
+            **User provides:**
+            * MFG token
+            * PROCESS token
+            * AOI token
+        end note
+        
+    IF2 --> S2 : [NotAllTokensAreValid]
+        note on link
+            **System shows:**
+            * Invalid token message
+        end note
+    IF2 --> S4        
+        
+    S4 --> S5
+        note on link
+            **System requires:**
+            * QA token
+        end note    
+        
+    S5 --> IF3
+        note on link #LightBlue;line:blue;
+            **User provides:**
+            * QA token
+        end note
+        
+    IF3 --> S4 : [NotQaTokenValid]
+        note on link
+            **System shows:**
+            * Invalid token message
+        end note
+    
+    IF3 --> [*]
+    note on link
+        **System shows:**
+        * Stop line closed
+    end note
+}
+RestoreStopLine  --> STARTED
+@enduml

@@ -1,0 +1,25 @@
+@startuml ProcessUut Use Cases
+left to right direction
+
+:Time:
+:Engineer:
+:Technician:
+
+package ProcessUut { 
+    :Engineer: --> (StopLine)    
+    :Engineer: --> (SendUutToSfc)
+    :Engineer: --> (StopMachine)    
+        
+    :Technician: --> (RestoreStopMachine)
+    :Technician: --> (Stop)
+    :Technician: --> (Start)
+    :Technician: --> (RestoreStopLine)
+    :Engineer: --|> :Technician:
+    
+    :Time: --> (SendUutToSfc)
+    :Time: --> (StopLine)
+    
+    StopMachine ..> (SendUutToSfc) : <<extend>>
+    StopLine ..> (SendUutToSfc) : <<extend>>
+}
+@enduml

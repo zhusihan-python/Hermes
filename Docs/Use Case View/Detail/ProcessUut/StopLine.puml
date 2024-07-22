@@ -1,0 +1,21 @@
+@startuml StopLine Use Case Detail
+hide empty description
+
+STARTED --> StopLine
+    note on link #LightBlue;line:blue;
+        **User/Time requests:**
+        * StopLine
+    end note
+    
+state StopLine {
+    [*] --> [*]
+        note on link
+            **System shows:**
+            * Stop message
+            * Stop details
+            * Serial number
+            * Elapsed time
+        end note            
+}
+StopLine  --> LINE_STOPPED
+@enduml

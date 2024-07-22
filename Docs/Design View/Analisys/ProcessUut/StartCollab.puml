@@ -1,0 +1,55 @@
+@startuml Start Collab
+
+package Models{
+    card Session
+    card State
+    
+    Session --> State
+        note on link
+            * Next()
+        end note
+}
+
+package Services{
+    card WindowService
+    card ProcessLogfileTimeService
+    card StopLineService
+    card WatchFolderService
+    
+    ProcessLogfileTimeService --> StopLineService
+        note on link
+            * Start()
+        end note
+    ProcessLogfileTimeService --> WatchFolderService
+        note on link
+            * Start()
+        end note
+}
+
+package ViewModels{
+    card StartViewModel
+    
+    StartViewModel --> ProcessLogfileTimeService
+        note on link
+           * Start()
+        end note
+        
+    StartViewModel --> Session
+        note on link
+            * Next()
+        end note
+    StartViewModel --> WindowService
+        note on link
+            * ShowAndClose(StartFloatMessage, delay)
+        end note
+}
+
+package Views {
+    card StartView
+    
+    StartView --> StartViewModel
+        note on link
+            * Start() 
+        end note
+}
+@enduml

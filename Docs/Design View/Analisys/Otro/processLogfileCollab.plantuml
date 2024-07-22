@@ -1,0 +1,149 @@
+@startuml processLogfileCollab
+
+package Types {
+    card SFCResponseType
+    card SFCState
+}
+
+package Models {
+    card Session
+    card SFC
+    card Logfile
+    card SFCResponse
+    card Stopper
+    card Stop
+    card TokenValidator
+
+    Session --> SFC
+        note on link
+            Process(logfile)
+        end note
+    Session --> Stopper
+        note on link
+            CalculateStop(sfcResponse)
+        end note
+
+
+    SFC ..> Session
+        note on link
+            Event(SFCState)
+        end note
+    SFC ..> Logfile
+    SFC ..> SFCResponse
+    SFC ..> SFCState
+
+    SFCResponse *--> SFCResponseType
+
+    Stopper ..> Stop
+}
+
+package DAOs {
+    card LogfileDAO
+    card SFCResponseDAO
+
+    LogfileDAO ..> Logfile
+    SFCResponseDAO ..> SFCResponse
+}
+
+package ViewModels {
+    card StopViewModel
+    card SuccessViewModel
+    card ProcessLogfileViewModel
+    card TokenViewModel
+
+    ProcessLogfileViewModel --> Session
+        note on link
+            Process(logfile)
+        end note
+    ProcessLogfileViewModel --> LogfileDAO
+        note on link
+            Create(logfile)
+        end note 
+    ProcessLogfileViewModel --> SFCResponseDAO
+        note on link
+            Create(sfcResponse)
+        end note 
+
+    StopViewModel --> Session
+        note on link
+            RestoreStop()
+        end note
+
+    SuccessViewModel --> Session
+        note on link
+            RestoreResponse()
+        end note
+
+    TokenViewModel --> TokenValidator
+        note on link
+            CanRestoreStopMachine(string)
+            CanRestoreStopLine(string)
+        end note
+
+    Session ..> ProcessLogfileViewModel
+    note on link
+        Event(stop)
+        Event(sfcResponse)
+        Event(sfcState)
+    end note
+}
+
+package Views {
+    card ProcessLogfileView
+    card StopViewBuilder
+    card StopLineView
+    card StopMachineView
+    card TokenView
+    card SuccessViewBuilder
+    card SuccessView
+    card UutPassSuccessView
+    card RepairSuccessView
+
+    ProcessLogfileView --> ProcessLogfileViewModel
+        note on link
+            Process(logfile)
+        end note
+    ProcessLogfileView ..> StopViewBuilder
+        note on link
+            new Build(stop)
+        end note
+    ProcessLogfileView ..> SuccessViewBuilder
+        note on link
+            new Build(sfcResponse)
+        end note
+
+    StopLineView *--> TokenView : * 
+    StopMachineView *--> TokenView
+
+    StopViewBuilder ..> StopLineView
+    StopViewBuilder ..> StopMachineView
+
+
+    SuccessView --> SuccessViewModel
+        note on link
+            Restore()
+        end note
+
+    SuccessViewBuilder ..> UutPassSuccessView
+    SuccessViewBuilder ..> RepairSuccessView
+
+    TokenView --> TokenViewModel
+        note on link
+            CanRestoreStopLine(string)
+            CanRestoreStopMachine(string)
+        end note
+
+    ProcessLogfileViewModel ..> ProcessLogfileView
+    note on link
+        Event(stop)
+        Event(sfcResponse)
+        Event(sfcState)
+    end note
+}
+
+:Machine: --> ProcessLogfileView
+    note on link
+        Process(logfile)
+    end note
+
+@enduml

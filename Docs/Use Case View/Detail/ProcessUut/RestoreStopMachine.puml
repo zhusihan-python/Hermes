@@ -1,0 +1,41 @@
+﻿@startuml RestoreStopMachine Use Case Detail
+hide empty description
+
+MACHINE_STOPPED --> RestoreStopMachine
+    note on link #LightBlue;line:blue;
+        **User requests:**
+        * RestoreStopMachine
+    end note
+    
+state RestoreStopMachine {
+    state S1 as " "
+    state S2 as " "
+    state IF1 <<choice>>
+    
+    [*] --> S1
+        
+    S1 --> S2
+        note on link
+            **System requires:**
+            * Token
+        end note
+        
+    S2 --> IF1
+        note on link #LightBlue;line:blue;
+            **User provides:**
+            * Token
+        end note
+        
+    IF1 --> [*]
+        note on link
+            **System shows:**
+            * Stop machine closed
+        end note
+    IF1 --> S1 : [IsTokenInvalid]
+        note on link
+            **System shows:**
+            * Invalid token message
+        end note
+}
+RestoreStopMachine  --> STARTED
+@enduml

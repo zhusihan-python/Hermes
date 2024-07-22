@@ -1,0 +1,144 @@
+@startuml
+
+package Types {
+  card StateType
+}
+
+package Models {
+  card Machine
+  card Session
+  card State
+  card SfcRequest
+  card Logfile
+  card SfcResponse
+
+  Session *--> State
+    note on link
+        Reset()
+        Set(stateType)
+    end note
+
+  State --> StateType
+
+  SfcRequest *--> Logfile
+  SfcResponse *--> Logfile
+}
+
+package Builders{
+    card LogfilePrototype
+
+    LogfilePrototype --> Logfile
+        note on link
+        new Logfile(content)
+        end note
+}
+
+package Services {
+  card SfcService
+  card FileService
+  card LogfileService
+  card SfcResponseService
+  card HermesContext
+
+  SfcService --> SfcRequest
+    note on link
+      new SfcRequest(logfile)
+    end note
+
+  SfcService --> SfcResponse
+    note on link
+      new SfcResponse(logfile)
+    end note
+
+  LogfileService --> HermesContext
+    note on link
+        new HermesContext()
+    end note
+    
+  SfcResponseService --> HermesContext
+    note on link
+        new HermesContext()
+    end note
+}
+
+package ViewModels {
+  card ProcessLogFileViewModel
+  card WatchLogfilesViewModel
+  
+  WatchLogfilesViewModel --> Machine
+    note on link
+      watch(inputPath)
+      Dispose()
+    end note
+    
+  WatchLogfilesViewModel --> FileService
+    note on link
+      Backup(fileFullPath)
+    end note
+
+  WatchLogfilesViewModel *--> ProcessLogFileViewModel
+    note on link
+      Process(logfile)
+    end note
+    
+  WatchLogfilesViewModel --> LogfilePrototype
+    note on link
+      Build(fileFullPath)
+    end note
+
+  WatchLogfilesViewModel --> Session
+    note on link
+      SetIdleState()
+      SetProcessingState()
+      ResetState()
+    end note
+
+  ProcessLogFileViewModel --> LogfileService
+    note on link
+      Add(logfile)
+    end note
+    
+  ProcessLogFileViewModel --> SfcService
+    note on link
+      Process(logfile)
+    end note
+    
+  ProcessLogFileViewModel --> SfcResponseService
+    note on link
+      Add(sfcResponse)
+    end note
+    
+  'Bindings'
+    
+  Machine ..> WatchLogfilesViewModel
+    note on link
+      Created(fileFullPath)
+    end note
+}
+
+
+package Views {
+  card WatchLogfilesView
+  card ProcessLogFileView
+
+  WatchLogfilesView *--> ProcessLogFileView
+  WatchLogfilesView --> WatchLogfilesViewModel
+    note on link
+      WatchLogfiles()
+      StopWatchLogfiles()
+    end note
+  
+  'Bindings'
+    
+  ProcessLogFileViewModel ..> ProcessLogFileView
+    note on link
+      Update(SerialNumber)
+    end note
+}
+
+:User: --> WatchLogfilesView
+  note on link
+    WatchLogfiles()
+    StopWatchLogfiles()
+  end note
+@enduml

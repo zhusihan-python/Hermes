@@ -1,0 +1,95 @@
+@startuml SendUutToSfc Collab
+
+package Models{
+    card Session
+    card UnitUnderTest
+    card UnitUnderTestParser
+    card SfcRequest
+    card SfcResponse 
+    
+    UnitUnderTestParser --> UnitUnderTest
+        note on link
+            * new()
+        end note   
+}
+
+package Daos{
+    card UnitUnderTestDao
+    card SfcResponseDao
+}
+
+package Services{
+    card FileService
+    card SfcService
+
+    SfcService --> SfcRequest
+        note on link
+            * new(unitUnderTest)
+        end note
+    SfcService --> SfcResponse
+        note on link
+            * new(unitUnderTest)
+        end note
+    SfcService --> UnitUnderTestDao
+        note on link
+            * Add(unitUnderTest)
+        end note
+    SfcService --> SfcResponseDao
+            note on link
+                * Add(sfcResponse)
+            end note
+}
+
+package Builders{
+    card UnitUnderTestBuilder
+    
+    UnitUnderTestBuilder --> FileService
+        note on link
+            * ReadAll(fullPath)
+        end note  
+    UnitUnderTestBuilder --> UnitUnderTestParser
+        note on link
+            * Parse(content)
+        end note    
+}
+
+package ViewModels{
+    card SendUutToSfcViewModel
+    
+    SendUutToSfcViewModel --> Session
+        note on link
+            * Set(unitUnderTest)
+            * Set(sfcResponse)
+        end note
+    SendUutToSfcViewModel --> UnitUnderTestBuilder
+        note on link
+            * Build(fullPath)
+        end note     
+    SendUutToSfcViewModel --> SfcService
+        note on link
+            * Send(unitUnderTest)
+        end note    
+    SendUutToSfcViewModel --> FileService
+        note on link
+            * MoveToBackup(fullPath)
+        end note
+}
+
+package Views {
+    card SendUutToSfcView
+    
+    SendUutToSfcView --> SendUutToSfcViewModel
+        note on link
+            * Send(fullPath) 
+        end note
+}
+
+:Technician: --> SendUutToSfcView 
+    note on link
+        * Send(fullPath)
+    end note
+:Time: --> SendUutToSfcView 
+    note on link
+        * Send(fullPath)
+    end note
+@enduml

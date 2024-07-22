@@ -1,0 +1,37 @@
+@startuml StopLineCollab Collab
+
+package Models {
+    card Session
+}
+
+package Daos {
+    card StopDao
+}
+
+package ViewModels {
+    card StopLineViewModel
+    
+    StopLineViewModel --> Session
+        note on link
+            * Set(stop)
+        end note
+    StopLineViewModel --> StopDao
+        note on link
+            * Add(stop)
+        end note
+}
+
+package Views {
+    card StopLineView
+    
+    StopLineView --> StopLineViewModel
+        note on link
+            * Stop()
+        end note
+}
+
+:User: --> StopLineView
+    note on link
+        * Stop()
+    end note
+@enduml

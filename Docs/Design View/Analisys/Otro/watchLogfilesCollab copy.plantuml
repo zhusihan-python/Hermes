@@ -1,0 +1,193 @@
+@startuml
+
+package Models {
+  card Machine
+  card Session
+  card State
+  card SfcRequest
+  card Logfile
+  card ProcessLogfileResult
+  card SfcResponse
+  card Stop
+
+  Session *--> State
+    note on link
+        Next()
+        Prev()
+        Reset()
+        Set(stateType)
+    end note
+
+  SfcRequest *--> Logfile
+
+  ProcessLogfileResult *--> Stop
+  ProcessLogfileResult *--> SfcResponse
+
+}
+
+package Builders{
+    card LogfilePrototype
+
+    LogfilePrototype --> Logfile
+        note on link
+        new Logfile(content)
+        end note
+}
+
+package Services {
+  card SfcService
+  card LogfileService
+  card SfcResultService
+  card StopperService
+  card IStopValidator
+  card CompoundStopValidator
+  card MachineStopValidator
+
+  SfcService --> SfcRequest
+    note on link
+      new SfcRequest(logfile)
+    end note
+
+  SfcService --> SfcResponse
+    note on link
+      new SfcResponse(logfile)
+    end note
+
+  StopperService --> LogfileService
+    note on link
+      Create(logfile)
+    end note
+
+  StopperService --> IStopValidator
+    note on link
+      Validate(sfcResponse)
+    end note
+
+  StopperService --> CompoundStopValidator
+    note on link
+      Add(IStopValidator)
+    end note
+
+  IStopValidator ..> Stop
+  IStopValidator <|-- CompoundStopValidator
+  IStopValidator <|-- MachineStopValidator
+
+  CompoundStopValidator *--> IStopValidator
+}
+
+package ViewModels {
+  card IRestorableViewModel
+  card ProcessLogFileViewModel
+  card WatchLogfilesViewModel
+  
+  IRestorableViewModel <|-- ProcessLogFileViewModel
+  
+  WatchLogfilesViewModel --> Machine
+    note on link
+      watch(inputPath)
+      Dispose()
+    end note
+    
+  WatchLogfilesViewModel *--> ProcessLogFileViewModel
+    note on link
+      Process(logfile)
+    end note
+    
+  WatchLogfilesViewModel --> LogfilePrototype
+    note on link
+      Build(backupFullPath)
+    end note
+
+  WatchLogfilesViewModel --> Session
+    note on link
+      Set(stateType)
+    end note
+    
+  ProcessLogFileViewModel --> SfcService
+    note on link
+      Process(logfile)
+    end note
+    
+  ProcessLogFileViewModel --> SfcResultService
+    note on link
+      Create(processLogfileResult)
+    end note
+    
+  ProcessLogFileViewModel --> StopperService
+    note on link
+      CalculateStop(sfcResponse)
+      Restore(stop)
+    end note
+    
+  ProcessLogFileViewModel --> ProcessLogfileResult
+    note on link
+      new ProcessLogfileResult(sfcResponse, stop)
+    end note
+    
+  'Bindings'
+    
+  Machine ..> WatchLogfilesViewModel
+    note on link
+      Created(fileFullPath)
+    end note
+}
+
+
+package Views {
+  card ProcessLogFileView
+  card WatchLogfilesView
+  card SfcResultViewPrototype
+  card RestorableView
+  card MachineStopView
+  card LineStopView
+  card RepairSuccessView
+  card UutPassSuccessView
+  card TokenView
+  
+  WatchLogfilesView *--> ProcessLogFileView
+  WatchLogfilesView --> WatchLogfilesViewModel
+    note on link
+      WatchLogfiles()
+    end note
+    
+  ProcessLogFileView --> SfcResultViewPrototype
+    note on link
+      Build(processLogfileResult)
+    end note 
+      
+      
+  SfcResultViewPrototype --> RestorableView
+    note on link
+      new RestorableView()
+    end note
+      
+  RestorableView <|-- MachineStopView
+  RestorableView <|-- LineStopView
+  RestorableView <|-- RepairSuccessView
+  RestorableView <|-- UutPassSuccessView
+  
+  MachineStopView *--> TokenView
+  LineStopView *--> TokenView : *
+    note on link
+        HideButton(true)
+    end note
+  
+  RestorableView --> IRestorableViewModel
+    note on link
+      Restore()
+    end note
+  
+  'Bindings'
+    
+  ProcessLogFileViewModel ..> ProcessLogFileView
+    note on link
+      Update(stateType)
+      Update(processLogfileResult)
+    end note
+}
+
+:User: --> WatchLogfilesView
+  note on link
+    WatchLogfiles()
+  end note
+@enduml

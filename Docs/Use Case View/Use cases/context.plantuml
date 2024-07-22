@@ -1,0 +1,115 @@
+@startuml context
+state INITIAL
+state STARTED
+state LOGFILE_PROCESSED
+
+state IF1 <<choice>>
+state IF2 <<choice>>
+
+state FORK1 <<fork>>
+state FORK2 <<fork>>
+
+[*] --> FORK1
+
+FORK1 --> INITIAL
+FORK1 --> STARTED
+
+INITIAL --> DASHBOARD_OPENED
+    note on link
+        Login
+    end note
+
+DASHBOARD_OPENED --> SETTINGS_OPPENED
+    note on link
+        OpenSettings
+    end note
+
+SETTINGS_OPPENED --> SETTINGS_OPPENED
+    note on link
+        ConfigureSettings
+    end note
+
+SETTINGS_OPPENED --> DASHBOARD_OPENED
+    note on link
+        OpenDashboard
+    end note
+
+DASHBOARD_OPENED --> LINE_STATUS_OPPENED
+    note on link
+        OpenLineStatus
+    end note
+DASHBOARD_OPENED --> FORK2
+    note on link
+        Exit
+    end note
+
+DASHBOARD_OPENED --> LOGFILES_OPPENED
+    note on link
+        OpenLogfiles
+    end note
+LOGFILES_OPPENED --> DASHBOARD_OPENED
+    note on link
+        OpenDashboard
+    end note
+LOGFILES_OPPENED --> LOGFILES_OPPENED
+    note on link
+        ExportLogfiles
+    end note
+
+DASHBOARD_OPENED --> INITIAL
+    note on link
+        Logout
+    end note
+
+LINE_STATUS_OPPENED --> MACHINE_STATUS_OPPENED
+    note on link
+        OpenMachineStatus
+    end note
+LINE_STATUS_OPPENED --> DASHBOARD_OPENED
+    note on link
+        OpenDashboard
+    end note
+
+MACHINE_STATUS_OPPENED --> DASHBOARD_OPENED
+    note on link
+        OpenDashboard
+    end note
+MACHINE_STATUS_OPPENED --> LINE_STATUS_OPPENED
+    note on link
+        OpenLineStatus
+    end note
+
+STARTED --> LOGFILE_PROCESSED
+    note on link
+        ProcessLogfile
+    end note
+STARTED --> LINE_STOPPED
+    note on link
+        StopLine
+    end note
+STARTED --> FORK2
+    note on link
+        Exit
+    end note
+
+LOGFILE_PROCESSED --> IF1 
+
+IF1 --> STARTED
+IF1 --> IF2: [IsErrorResponse]
+
+IF2 --> LINE_STOPPED: [IsStopLine]
+IF2 --> MACHINE_STOPPED
+
+LINE_STOPPED --> STARTED
+    note on link
+        RestoreStopLine
+    end note
+
+MACHINE_STOPPED --> STARTED
+    note on link
+        RestoreStopMachine
+    end note
+
+FORK2 --> FINAL
+FINAL --> [*]
+@enduml

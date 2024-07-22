@@ -1,0 +1,21 @@
+@startuml StopMachine Use Case Detail
+hide empty description
+
+STARTED --> StopMachine
+    note on link #LightBlue;line:blue;
+        **User requests:**
+        * StopMachine
+    end note
+    
+state StopMachine {
+    [*] --> [*]
+        note on link
+            **System shows:**
+            * Stop message
+            * Stop details
+            * Serial number
+            * Elapsed time
+        end note            
+}
+StopMachine  --> MACHINE_STOPPED
+@enduml

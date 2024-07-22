@@ -1,0 +1,38 @@
+@startuml SendFileToSfc Use Case Detail
+hide empty description
+
+state STARTED1 as "STARTED"
+state StopMachine
+state StopLine
+state IF2 <<choice>>
+
+STARTED --> SendFileToSfc
+    note on link #LightBlue;line:blue;
+        **User/Time requests:**
+        * SendUutToSfc
+    end note 
+
+state SendFileToSfc {  
+    state IF1 <<choice>>
+    
+    [*] --> IF1              
+     
+    IF1 --> [*] 
+    IF1 --> [*] : [IsRepair]    
+        note on link
+          **System shows:**
+          * Repair message
+        end note         
+    IF1 --> [*] : [IsUutPass]  
+        note on link
+          **System shows:**
+          * Uut pass message
+        end note     
+        
+}
+SendFileToSfc --> IF2
+
+IF2 --> StopMachine : [IsStopMachine]        
+IF2 --> StopLine : [IsStopLine]
+IF2 --> STARTED1
+@enduml

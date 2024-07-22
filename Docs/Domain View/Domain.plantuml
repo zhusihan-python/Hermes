@@ -1,0 +1,68 @@
+@startuml domain
+class Machine{}
+Machine --> Server
+Machine ..> LogFile
+Machine ..> Response
+Machine --> Conveyor
+
+class Conveyor{}
+Conveyor ..> Uut
+
+class Server{
+    + Proccess(Logfile) : Response
+}
+Server --> SFC
+Server --> LineStopper
+Server ..> LogFile
+Server ..> Response
+
+class Response{}
+Response <|-- FailResponse
+Response <|-- OkResponse
+
+OkResponse <|-- UutPassResponse
+OkResponse <|-- RepairResponse
+
+
+class FailResponse {}
+FailResponse <|-- UutFailResponse
+FailResponse <|-- SfcErrorResponse
+FailResponse <|-- TimeOutResponse
+FailResponse --> FailResponseCloser
+
+class FailResponseCloser{}
+FailResponseCloser <|-- FailResponseCloserLabel
+FailResponseCloser <|-- FailResponseCloserVisualInspection
+
+FailResponseCloserLabel --> SmtUser
+
+FailResponseCloserVisualInspection --> QaUser
+FailResponseCloserVisualInspection --> AoiUser
+
+SfcErrorResponse --> SfcErrorType
+
+enum SfcErrorType{
+    WrongStation
+    InnerError
+    WrongUser
+}
+
+class LineStopper{}
+LineStopper -->  ConsecutiveSameFailures
+LineStopper -->  SameFailuresWithin1Hour
+LineStopper -->  FailuresWithin1Hour
+LineStopper -->  FailResponse
+LineStopper -->  User: closes
+
+ConsecutiveSameFailures *--> UutFailResponse : 3
+SameFailuresWithin1Hour *--> UutFailResponse : 5
+FailuresWithin1Hour *--> UutFailResponse : 10
+
+class User{}
+User <|-- AoiUser
+User <|-- SmtUser
+User <|-- QaUser
+User <|-- ProcUser
+User <|-- MfgUser
+
+@enduml

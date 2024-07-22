@@ -1,0 +1,30 @@
+@startuml ProcessLogfile Context
+
+state INITIAL
+state STARTED
+state LINE_STOPPED
+state MACHINE_STOPPED
+state STOPPED
+
+state IF1 <<choice>>
+
+[*] --> INITIAL
+
+INITIAL --> STARTED : Start
+
+STARTED --> STOPPED : Stop
+STARTED --> MACHINE_STOPPED : StopMachine
+STARTED --> LINE_STOPPED : StopLine
+STARTED --> IF1 : SendUutToSfc
+
+IF1 --> STARTED
+
+IF1 --> MACHINE_STOPPED : [StopMachine]
+IF1 --> LINE_STOPPED : [StopLine]
+
+LINE_STOPPED --> STARTED : RestoreStopLine
+
+MACHINE_STOPPED --> STARTED : RestoreStopMachine
+
+STOPPED --> [*]
+@enduml

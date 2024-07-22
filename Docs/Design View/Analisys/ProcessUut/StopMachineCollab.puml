@@ -1,0 +1,45 @@
+@startuml StopMachine Collab
+
+package Models {
+    card Session
+}
+
+package Daos {
+    card StopDao
+}
+
+package Services {
+    card WindowManager
+}
+
+package ViewModels {
+    card StopMachineViewModel
+    
+    StopMachineViewModel --> Session
+        note on link
+            * Set(stop)
+        end note
+    StopMachineViewModel --> StopDao
+        note on link
+            * Add(stop)
+        end note
+    StopMachineViewModel --> WindowManager
+        note on link
+            * Show(StopMachineView)
+        end note
+}
+
+package Views {
+    card StopMachineView
+    
+    StopMachineView --> StopMachineViewModel
+        note on link
+            * Stop()
+        end note
+}
+
+:User: --> StopMachineView
+    note on link
+        * Stop()
+    end note
+@enduml

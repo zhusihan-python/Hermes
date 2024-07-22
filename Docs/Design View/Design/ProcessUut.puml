@@ -1,0 +1,117 @@
+@startuml ProcessUut Design
+'VIEW MODELS'
+class UutProcessorViewModel{
+    + Start()
+    + Stop()
+    + SendToSfc(fullPath)
+}
+UutProcessorViewModel *--> Session
+UutProcessorViewModel *--> WindowService
+UutProcessorViewModel *--> SfcSenderService
+UutProcessorViewModel *--> StopService
+
+
+'SERVICES'
+class SfcSenderService{
+    + UnitUnderTestCreated
+    + SfcResponseCreated
+    
+    + Start()
+    + Stop()
+    + SendToSfc(fullPath)
+}
+SfcSenderService *--> WatchFolderService
+SfcSenderService *--> SfcService
+SfcSenderService *--> UnitUnderTestBuilder
+SfcSenderService --> FileService
+
+
+class StopService{
+    + StopCreated
+    
+    + Start()
+    + Stop()
+    + Calculate(sfcResponse)
+}
+StopService --> StopValidator
+
+class StopValidator {
+    + Validate(sfcResponse)
+}
+
+class WatchFolderService{
+    + FileCreated
+        
+    + Start()
+    + Stop()
+}
+
+class WindowService {
+    + ShowPopup(message, delay)
+    + ShowStop(stop)
+    + ShowUutSuccess(unitUnderTest)
+}
+
+class SfcService {
+    + Send(unitUnderTest)
+}
+SfcService *--> SfcResponseRepository 
+SfcService *--> UnitUnderTestRepository
+SfcService ..> SfcResponse
+SfcService ..> SfcRequest
+SfcService ..> UnitUnderTest
+
+class FileService {
+    + MoveToBackup(fullPath)
+    + ReadAll(fullPath)
+}
+
+'DAOS'
+class UnitUnderTestRepository {
+    + Add(unitUnderTest)
+}
+UnitUnderTestRepository ..> UnitUnderTest
+
+class SfcResponseRepository {
+    + Add(sfcResponse)
+}
+SfcResponseRepository ..> SfcResponse
+
+'BUILDERS'
+class UnitUnderTestBuilder {
+    + Build(fullPath)
+}
+UnitUnderTestBuilder --> FileService
+UnitUnderTestBuilder ..> UnitUnderTestParser
+
+'MODELS'
+class Session{
+    + SetStartState()
+    + SetStopState()
+    + Set(unitUnderTest)
+    + Set(sfcResponse)
+    + Set(stop)
+}
+Session --> State
+
+class UnitUnderTestParser {
+    + Parse()
+}
+
+
+class UnitUnderTest {}
+UnitUnderTest *--> UnitUnderTestParser
+UnitUnderTest *--> "*" Defect
+
+class Defect {}
+
+class SfcResponse {}
+class SfcRequest {}
+
+'TYPES'
+enum State {
+    Idle
+    Stopped
+    Started
+}
+@enduml

@@ -1,0 +1,22 @@
+@startuml Stop Use Case Detail
+hide empty description
+
+state STOPPED
+
+[*] --> Stop
+    note on link #LightBlue;line:blue;
+        **User requests:**
+        * Stop
+    end note
+    
+state Stop {
+    [*] --> [*]
+    note on link
+        **System shows:**
+        * Stop message
+    end note                    
+}
+Stop --> STOPPED
+
+STOPPED --> [*]
+@enduml
