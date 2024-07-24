@@ -489,3 +489,8 @@ riderModule.iml
 .idea/
 bin/
 obj/
+HermesTests/bin
+HermesTests/obj
+Hermes/bin
+Hermes/obj
+.idea
