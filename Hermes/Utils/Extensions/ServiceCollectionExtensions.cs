@@ -23,6 +23,7 @@ public static class ServiceCollectionExtensions
         collection.AddTransient<FolderWatcherService>();
         collection.AddTransient<SfcSenderService>();
         collection.AddTransient<SfcService>();
+        collection.AddTransient<StopService>();
 
         collection.AddSingleton<ILogger, HermesLogger>();
         collection.AddSingleton<UnitUnderTestBuilder>();
@@ -30,8 +31,12 @@ public static class ServiceCollectionExtensions
         collection.AddTransient<MainViewModel>();
         collection.AddTransient<UutProcessorViewModel>();
         collection.AddTransient<SuccessViewModel>();
-        
+        collection.AddTransient<StopViewModel>();
+        collection.AddTransient<TokenViewModel>();
+
         collection.AddTransient<ViewManager>();
         collection.AddTransient<SuccessView>();
+        collection.AddTransient<StopView>();
+        collection.AddTransient<TokenView>();
     }
 }

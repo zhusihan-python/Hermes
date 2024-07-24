@@ -1,3 +1,4 @@
+using System;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Controls;
 using Avalonia.Threading;
@@ -13,32 +14,42 @@ namespace Hermes.Views;
 
 public class ViewManager : ObservableRecipient
 {
-    private const int Width = 450;
-    private const int Height = 130;
+    private const int SuccessViewWidth = 450;
+    private const int SuccessViewHeight = 130;
 
     private readonly Settings _settings;
     private readonly SuccessView _successView;
     private readonly SuccessViewModel _successViewModel;
+    private readonly StopView _stopView;
+    private readonly StopViewModel _stopViewModel;
 
     public ViewManager(
         Settings settings,
         SuccessView successView,
-        SuccessViewModel successViewModel)
+        SuccessViewModel successViewModel,
+        StopView stopView,
+        StopViewModel stopViewModel)
     {
         this._settings = settings;
         this._successViewModel = successViewModel;
         this._successView = successView;
+        this._stopView = stopView;
+        this._stopViewModel = stopViewModel;
+        stopViewModel.Restored += this.OnStopViewModelRestored;
     }
 
     public void Start()
     {
         Messenger.Register<ShowSuccessMessage>(this, this.ShowUutSuccess);
+        Messenger.Register<ShowStopMessage>(this, this.ShowStop);
     }
 
     public void Stop()
     {
         Messenger.UnregisterAll(this);
         this._successView.Close();
+        this._stopView.CanClose = true;
+        this._stopView.Close();
     }
 
     private void ShowUutSuccess(object recipient, ShowSuccessMessage message)
@@ -58,8 +69,8 @@ public class ViewManager : ObservableRecipient
 
     private void SetBottomCenterPosition(Window window)
     {
-        window.Width = Width;
-        window.Height = Height;
+        window.Width = SuccessViewWidth;
+        window.Height = SuccessViewHeight;
         this._successView.UpdateLayout();
         if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
@@ -67,8 +78,28 @@ public class ViewManager : ObservableRecipient
             var screenSize = screen!.WorkingArea.Size;
 
             window.Position = new PixelPoint(
-                screenSize.Width / 2 - Width / 2,
-                screenSize.Height - Height - 5);
+                screenSize.Width / 2 - SuccessViewWidth / 2,
+                screenSize.Height - SuccessViewHeight - 5);
         }
+    }
+    
+    private void ShowStop(object recipient, ShowStopMessage message)
+    {
+        Dispatcher.UIThread.Invoke(() =>
+        {
+            this._stopView.DataContext = this._stopViewModel;
+            this._stopViewModel.Reset();
+            this._stopViewModel.Stop = message.Value;
+
+            this._stopView.Show();
+        });
+    }
+
+    private void OnStopViewModelRestored(object? sender, EventArgs e)
+    {
+        Dispatcher.UIThread.Invoke(() =>
+        {
+            this._stopView.Hide();
+        });
     }
 }

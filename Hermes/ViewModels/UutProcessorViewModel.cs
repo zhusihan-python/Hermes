@@ -1,5 +1,6 @@
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -17,10 +18,12 @@ public partial class UutProcessorViewModel : ViewModelBase
     [ObservableProperty] private string _serialNumber = string.Empty;
     [ObservableProperty] private UutProcessorState _state = UutProcessorState.Disconnected;
     private readonly SfcSenderService _sfcSenderService;
+    private readonly StopService _stopService;
 
-    public UutProcessorViewModel(SfcSenderService sfcSenderService)
+    public UutProcessorViewModel(SfcSenderService sfcSenderService, StopService stopService)
     {
         this._sfcSenderService = sfcSenderService;
+        this._stopService = stopService;
         sfcSenderService.UnitUnderTestCreated += OnUnitUnderTestCreated;
         sfcSenderService.SfcResponseCreated += OnSfcResponseCreated;
         sfcSenderService.RunStatusChanged += OnSfcSenderRunStatusChanged;
@@ -30,13 +33,15 @@ public partial class UutProcessorViewModel : ViewModelBase
     private void Start()
     {
         this._sfcSenderService.Start();
+        this._stopService.Start();
         this.IsRunning = true;
     }
 
     [RelayCommand]
     public void Stop()
     {
-        _sfcSenderService.Stop();
+        this._sfcSenderService.Stop();
+        this._stopService.Stop();
         this.IsRunning = false;
     }
 
@@ -49,11 +54,20 @@ public partial class UutProcessorViewModel : ViewModelBase
 
     private void OnSfcResponseCreated(object? sender, SfcResponse sfcResponse)
     {
-        this.SerialNumber = string.Empty;
-        this.State = UutProcessorState.Idle;
-        // TODO calc stop
-        Console.WriteLine(Thread.CurrentThread.ManagedThreadId);
-        Messenger.Send(new ShowSuccessMessage(sfcResponse));
+        Task.Run((async () =>
+        {
+            this.SerialNumber = string.Empty;
+            this.State = UutProcessorState.Idle;
+            var stop = await this._stopService.Calculate(sfcResponse);
+            if (stop.IsNull)
+            {
+                Messenger.Send(new ShowSuccessMessage(sfcResponse));
+            }
+            else
+            {
+                Messenger.Send(new ShowStopMessage(stop));
+            }
+        }));
     }
 
     private void OnSfcSenderRunStatusChanged(object? sender, bool isRunning)
