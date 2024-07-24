@@ -1,5 +1,9 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 using Hermes.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,7 +25,7 @@ public class HermesContext : DbContext
         base.OnConfiguring(optionsBuilder);
     }
 
-    public void Initialize()
+    public virtual void Initialize()
     {
         if (Database.GetPendingMigrations().Any())
         {

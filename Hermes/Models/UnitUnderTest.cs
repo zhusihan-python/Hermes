@@ -1,17 +1,21 @@
-using Hermes.Models.Parsers;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Hermes.Utils.Parsers;
 
 namespace Hermes.Models;
 
 public class UnitUnderTest
 {
+    public static readonly UnitUnderTest Null = new NullUnitTest();
+
     [Key] public int Id { get; set; }
-    public string FileName { get; init; }
-    public string Content { get; init; }
+    [MaxLength(250)] public string FileName { get; init; }
+    [MaxLength(250)] public string SerialNumber { get; init; } = string.Empty;
     public bool IsFail { get; init; }
-    public string SerialNumber { get; init; } = string.Empty;
     public List<Defect> Defects { get; init; } = [];
+    [NotMapped] public string Content { get; init; }
+    [NotMapped] public bool IsNull => this == Null;
 
     public UnitUnderTest(string fileName, string content, IUnitUnderTestParser parser) : this(fileName, content)
     {
@@ -24,6 +28,11 @@ public class UnitUnderTest
     {
         this.FileName = fileName;
         this.Content = content;
-        this.FileName = fileName;
+    }
+
+    public UnitUnderTest() : this(string.Empty, string.Empty)
+    {
     }
 }
+
+public class NullUnitTest() : UnitUnderTest(string.Empty, string.Empty);

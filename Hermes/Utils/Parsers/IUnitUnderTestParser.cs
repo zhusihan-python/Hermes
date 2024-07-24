@@ -1,6 +1,7 @@
+using Hermes.Models;
 using System.Collections.Generic;
 
-namespace Hermes.Models.Parsers;
+namespace Hermes.Utils.Parsers;
 
 public interface IUnitUnderTestParser
 {

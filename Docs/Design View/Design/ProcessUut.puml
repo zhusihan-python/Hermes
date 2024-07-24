@@ -6,7 +6,7 @@ class UutProcessorViewModel{
     + SendToSfc(fullPath)
 }
 UutProcessorViewModel *--> Session
-UutProcessorViewModel *--> WindowService
+UutProcessorViewModel *--> Messenger
 UutProcessorViewModel *--> SfcSenderService
 UutProcessorViewModel *--> StopService
 
@@ -15,6 +15,7 @@ UutProcessorViewModel *--> StopService
 class SfcSenderService{
     + UnitUnderTestCreated
     + SfcResponseCreated
+    + Stopped
     
     + Start()
     + Stop()
@@ -46,7 +47,7 @@ class WatchFolderService{
     + Stop()
 }
 
-class WindowService {
+class Messenger {
     + ShowPopup(message, delay)
     + ShowStop(stop)
     + ShowUutSuccess(unitUnderTest)

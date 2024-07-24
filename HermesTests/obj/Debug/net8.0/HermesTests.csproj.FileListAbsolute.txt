@@ -197,3 +197,11 @@ C:\Users\Foxconn\RiderProjects\hermes\HermesTests\bin\Debug\net8.0\Moq.dll
 C:\Users\Foxconn\RiderProjects\hermes\HermesTests\bin\Debug\net8.0\System.Diagnostics.EventLog.dll
 C:\Users\Foxconn\RiderProjects\hermes\HermesTests\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Diagnostics.EventLog.Messages.dll
 C:\Users\Foxconn\RiderProjects\hermes\HermesTests\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Diagnostics.EventLog.dll
+C:\Users\Foxconn\RiderProjects\hermes\HermesTests\bin\Debug\net8.0\NLog.dll
+C:\Users\Foxconn\RiderProjects\hermes\HermesTests\obj\Debug\net8.0\HermesTests.sourcelink.json
+C:\Users\Foxconn\RiderProjects\hermes\HermesTests\bin\Debug\net8.0\Material.Avalonia.dll
+C:\Users\Foxconn\RiderProjects\hermes\HermesTests\bin\Debug\net8.0\Material.Colors.dll
+C:\Users\Foxconn\RiderProjects\hermes\HermesTests\bin\Debug\net8.0\Material.Ripple.dll
+C:\Users\Foxconn\RiderProjects\hermes\HermesTests\bin\Debug\net8.0\Material.Styles.dll
+C:\Users\Foxconn\RiderProjects\hermes\HermesTests\bin\Debug\net8.0\Material.Icons.dll
+C:\Users\Foxconn\RiderProjects\hermes\HermesTests\bin\Debug\net8.0\Material.Icons.Avalonia.dll

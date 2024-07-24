@@ -1,15 +1,55 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:themes="clr-namespace:Material.Styles.Themes;assembly=Material.Styles"
+             xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:sys="clr-namespace:System;assembly=System.Runtime"
              x:Class="Hermes.App"
-             xmlns:local="using:Hermes"
+             xmlns:utils="using:Hermes.Utils"
              RequestedThemeVariant="Default">
-             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
     <Application.DataTemplates>
-        <local:ViewLocator/>
+        <utils:ViewLocator />
     </Application.DataTemplates>
-  
+
+    <Application.Resources>
+        <SolidColorBrush x:Key="LightRedColor" Color="#B54747" />
+        <SolidColorBrush x:Key="DarkRedColor" Color="#BF3428" />
+        <SolidColorBrush x:Key="DarkBlueColor" Color="#3F51B5" />
+        <SolidColorBrush x:Key="DarkGreenColor" Color="#3C603F" />
+        <SolidColorBrush x:Key="LightGreenColor" Color="#4E8752" />
+        <SolidColorBrush x:Key="LightYellowColor" Color="#BE975D" />
+        <SolidColorBrush x:Key="DarkYellowColor" Color="#B48615" />
+
+        <sys:Double x:Key="StopWindowMaxWidth">1024</sys:Double>
+        <sys:Double x:Key="DefaultIconSize">30</sys:Double>
+        <sys:Double x:Key="DefaultSpacing">20</sys:Double>
+        <Thickness x:Key="DefaultMargin">20</Thickness>
+        <Thickness x:Key="DefaultLeftMargin">20 0 0 0</Thickness>
+        <CornerRadius x:Key="DefaultCornerRadius">5</CornerRadius>
+    </Application.Resources>
+
     <Application.Styles>
-        <FluentTheme />
+        <themes:MaterialTheme BaseTheme="Dark" PrimaryColor="BlueGrey" SecondaryColor="Lime" />
+        <materialIcons:MaterialIconStyles />
     </Application.Styles>
+
+    <TrayIcon.Icons>
+        <TrayIcons>
+            <TrayIcon Icon="/AppData/Assets/avalonia-logo.ico"
+                      ToolTipText="Avalonia Tray Icon ToolTip">
+                <TrayIcon.Menu>
+                    <NativeMenu>
+                        <NativeMenuItem Header="Settings">
+                            <NativeMenu>
+                                <NativeMenuItem Header="Option 1" />
+                                <NativeMenuItem Header="Option 2" />
+                                <NativeMenuItemSeparator />
+                                <NativeMenuItem Header="Option 3" />
+                            </NativeMenu>
+                        </NativeMenuItem>
+                    </NativeMenu>
+                </TrayIcon.Menu>
+            </TrayIcon>
+        </TrayIcons>
+    </TrayIcon.Icons>
 </Application>

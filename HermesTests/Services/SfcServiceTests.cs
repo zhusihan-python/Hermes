@@ -9,7 +9,9 @@ namespace HermesTests.Services;
 
 public class SfcServiceTests
 {
-    private readonly SfcResponseBuilder _sfcResponseBuilder = new(new FileService());
+    private readonly SfcResponseBuilder _sfcResponseBuilder =
+        new(new UnitUnderTestBuilder(new FileService(), new Settings()));
+
     private readonly FileServiceMockBuilder _fileServiceMockBuilder = new();
 
     [Fact]
@@ -23,7 +25,7 @@ public class SfcServiceTests
             .TryReadAllTextAsync(sfcResponse.Content)
             .Build();
         var sfcService = BuildSfcService(fileServiceMock);
-        Assert.False((await sfcService.Send(sfcResponse.UnitUnderTest!)).IsFail);
+        Assert.False((await sfcService.SendAsync(sfcResponse.UnitUnderTest!)).IsFail);
     }
 
     [Fact]
@@ -38,17 +40,18 @@ public class SfcServiceTests
             SfcTimeoutSeconds = 0
         };
         var sfcService = BuildSfcService(fileServiceMock, settings);
-        Assert.Equal(SfcErrorType.Timeout, (await sfcService.Send(sfcResponse.UnitUnderTest!)).ErrorType);
+        Assert.Equal(SfcErrorType.Timeout, (await sfcService.SendAsync(sfcResponse.UnitUnderTest!)).ErrorType);
     }
 
     private SfcService BuildSfcService(FileService fileService, Settings? settings = null)
     {
-        var sfcResponseRepositoryMock = new Mock<SfcResponseRepository>();
+        var hermesContext = new HermesContext();
+        var sfcResponseRepositoryMock = new Mock<SfcResponseRepository>(hermesContext);
         sfcResponseRepositoryMock
             .Setup(x => x.AddAsync(It.IsAny<SfcResponse>()))
             .Returns(Task.CompletedTask);
 
-        var unitUnderTestRepositoryMock = new Mock<UnitUnderTestRepository>();
+        var unitUnderTestRepositoryMock = new Mock<UnitUnderTestRepository>(hermesContext);
         unitUnderTestRepositoryMock
             .Setup(x => x.AddAsync(It.IsAny<UnitUnderTest>()))
             .Returns(Task.CompletedTask);

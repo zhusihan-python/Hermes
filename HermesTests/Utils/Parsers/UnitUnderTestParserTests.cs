@@ -1,17 +1,20 @@
 using Hermes.Builders;
+using Hermes.Models;
 using Hermes.Services;
 
-namespace HermesTests.Models.Parsers;
+namespace HermesTests.Utils.Parsers;
 
 public class UnitUnderTestParserTests
 {
-    private UnitUnderTestBuilder Builder { get; } = new(new FileService());
+    private UnitUnderTestBuilder Builder { get; } = new(new FileService(), new Settings());
 
     [Fact]
     public void SetFilename_GivenFileName_FileNameIsSet()
     {
-        const string fileName = "MyName";
+        const string fileExtension = ".log";
+        const string fileName = $"MyFileName.{fileExtension}";
         var uut = this.Builder
+            .InputFileExtension(fileExtension)
             .FileName(fileName)
             .Build();
         Assert.Equal(fileName, uut.FileName);

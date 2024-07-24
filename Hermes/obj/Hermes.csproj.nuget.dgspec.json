@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Foxconn\\RiderProjects\\Hermes\\Hermes\\Hermes.csproj": {}
+    "C:\\Users\\Foxconn\\RiderProjects\\hermes\\Hermes\\Hermes.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Foxconn\\RiderProjects\\Hermes\\Hermes\\Hermes.csproj": {
+    "C:\\Users\\Foxconn\\RiderProjects\\hermes\\Hermes\\Hermes.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Foxconn\\RiderProjects\\Hermes\\Hermes\\Hermes.csproj",
+        "projectUniqueName": "C:\\Users\\Foxconn\\RiderProjects\\hermes\\Hermes\\Hermes.csproj",
         "projectName": "Hermes",
-        "projectPath": "C:\\Users\\Foxconn\\RiderProjects\\Hermes\\Hermes\\Hermes.csproj",
+        "projectPath": "C:\\Users\\Foxconn\\RiderProjects\\hermes\\Hermes\\Hermes.csproj",
         "packagesPath": "C:\\Users\\Foxconn\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Foxconn\\RiderProjects\\Hermes\\Hermes\\obj\\",
+        "outputPath": "C:\\Users\\Foxconn\\RiderProjects\\hermes\\Hermes\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Foxconn\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -62,6 +62,14 @@
               "target": "Package",
               "version": "[8.2.1, )"
             },
+            "Material.Avalonia": {
+              "target": "Package",
+              "version": "[3.6.0, )"
+            },
+            "Material.Icons.Avalonia": {
+              "target": "Package",
+              "version": "[2.1.10, )"
+            },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
@@ -71,6 +79,10 @@
             "Microsoft.EntityFrameworkCore.Sqlite": {
               "target": "Package",
               "version": "[8.0.7, )"
+            },
+            "NLog": {
+              "target": "Package",
+              "version": "[5.3.2, )"
             }
           },
           "imports": [

@@ -7,30 +7,32 @@ namespace Hermes.Models;
 
 public class SfcResponse
 {
-    private static readonly Regex RegexWrongStation =
-        new(@"^go-.+[\r\n]+", RegexOptions.IgnoreCase | RegexOptions.Multiline);
+    public static readonly SfcResponse Null = new SfcResponseNull();
 
-    private static readonly Regex RegexIsOk = new(@"^ok[\r\n]+", RegexOptions.IgnoreCase | RegexOptions.Multiline);
+    private const RegexOptions RgxOptions = RegexOptions.IgnoreCase | RegexOptions.Multiline;
+    private static readonly Regex RegexWrongStation = new(@"^go-.+[\r\n]+", RgxOptions);
+    private static readonly Regex RegexIsOk = new(@"^ok[\r\n]+", RgxOptions);
     private const string TimeoutText = "Timeout";
 
     [Key] public int Id { get; init; }
     public UnitUnderTest? UnitUnderTest { get; init; }
     public int UnitUnderTestId { get; init; }
-    [MaxLength(1000)] public string Content { get; init; } = "";
     public bool IsFail => this.ErrorType != SfcErrorType.None;
     public SfcErrorType ErrorType { get; init; }
-    [NotMapped] public bool UsunitUnderTestFail => this.UnitUnderTest?.IsFail ?? false;
-    [NotMapped] public string UnitUnderTestSerialNumber => UnitUnderTest?.SerialNumber ?? string.Empty;
-
+    [MaxLength(3000)] public string Content { get; init; } = "";
+    [NotMapped] public bool IsRepair => this.UnitUnderTest?.IsFail ?? true && !this.IsFail;
+    [NotMapped] public string SerialNumber => UnitUnderTest?.SerialNumber ?? string.Empty;
     [NotMapped] public string Details => IsFail ? $"{ErrorType}" : "";
+    [NotMapped] public bool IsNull => this == Null;
 
     public SfcResponse()
     {
     }
 
-    public SfcResponse(UnitUnderTest logfile, string content)
+    public SfcResponse(UnitUnderTest unitUnderTest, string content)
     {
-        this.UnitUnderTest = logfile;
+        this.UnitUnderTest = unitUnderTest;
+        this.UnitUnderTestId = unitUnderTest.Id;
         this.Content = content;
         this.ErrorType = ParseErrorType(content);
     }
@@ -59,4 +61,8 @@ public class SfcResponse
     {
         return new SfcResponse(logfile, TimeoutText);
     }
+}
+
+public class SfcResponseNull : SfcResponse
+{
 }

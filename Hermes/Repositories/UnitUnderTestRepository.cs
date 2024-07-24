@@ -2,6 +2,4 @@ using Hermes.Models;
 
 namespace Hermes.Repositories;
 
-public class UnitUnderTestRepository : BaseRepository<UnitUnderTest>
-{
-}
+public class UnitUnderTestRepository(HermesContext db) : BaseRepository<UnitUnderTest>(db);

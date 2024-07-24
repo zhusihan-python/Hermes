@@ -3,7 +3,14 @@
   <component name="AvaloniaProject">
     <option name="projectPerEditor">
       <map>
+        <entry key="Hermes/App.axaml" value="Hermes/Hermes.csproj" />
+        <entry key="Hermes/Views/MainView.axaml" value="Hermes/Hermes.csproj" />
         <entry key="Hermes/Views/MainWindow.axaml" value="Hermes/Hermes.csproj" />
+        <entry key="Hermes/Views/SuccessTemplate.axaml" value="Hermes/Hermes.csproj" />
+        <entry key="Hermes/Views/SuccessView.axaml" value="Hermes/Hermes.csproj" />
+        <entry key="Hermes/Views/UutProcessorView.axaml" value="Hermes/Hermes.csproj" />
+        <entry key="Hermes/Views/UutSuccessControl.axaml" value="Hermes/Hermes.csproj" />
+        <entry key="Hermes/Views/UutSuccessView.axaml" value="Hermes/Hermes.csproj" />
       </map>
     </option>
   </component>

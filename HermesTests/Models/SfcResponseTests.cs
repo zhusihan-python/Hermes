@@ -1,4 +1,5 @@
 using Hermes.Builders;
+using Hermes.Models;
 using Hermes.Services;
 using Hermes.Types;
 
@@ -6,7 +7,7 @@ namespace HermesTests.Models;
 
 public class SfcResponseTests
 {
-    private readonly SfcResponseBuilder _builder = new(new FileService());
+    private readonly SfcResponseBuilder _builder = new(new UnitUnderTestBuilder(new FileService(), new Settings()));
 
     [Fact]
     void IsFail_FailContent_ReturnsTrue()

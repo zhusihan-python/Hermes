@@ -170,3 +170,11 @@ C:\Users\Foxconn\RiderProjects\hermes\Hermes\obj\Debug\net8.0\refint\Avalonia\He
 C:\Users\Foxconn\RiderProjects\hermes\Hermes\obj\Debug\net8.0\Hermes.csproj.Up2Date
 C:\Users\Foxconn\RiderProjects\hermes\Hermes\obj\Debug\net8.0\Hermes.genruntimeconfig.cache
 C:\Users\Foxconn\RiderProjects\hermes\Hermes\obj\Debug\net8.0\ref\Hermes.dll
+C:\Users\Foxconn\RiderProjects\hermes\Hermes\obj\Debug\net8.0\Hermes.sourcelink.json
+C:\Users\Foxconn\RiderProjects\hermes\Hermes\bin\Debug\net8.0\NLog.dll
+C:\Users\Foxconn\RiderProjects\hermes\Hermes\bin\Debug\net8.0\Material.Avalonia.dll
+C:\Users\Foxconn\RiderProjects\hermes\Hermes\bin\Debug\net8.0\Material.Colors.dll
+C:\Users\Foxconn\RiderProjects\hermes\Hermes\bin\Debug\net8.0\Material.Ripple.dll
+C:\Users\Foxconn\RiderProjects\hermes\Hermes\bin\Debug\net8.0\Material.Styles.dll
+C:\Users\Foxconn\RiderProjects\hermes\Hermes\bin\Debug\net8.0\Material.Icons.dll
+C:\Users\Foxconn\RiderProjects\hermes\Hermes\bin\Debug\net8.0\Material.Icons.Avalonia.dll

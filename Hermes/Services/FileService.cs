@@ -23,7 +23,7 @@ public class FileService
         return txt;
     }
 
-    public virtual async Task<string> MoveToBackup(string fullPath)
+    public virtual async Task<string> MoveToBackupAsync(string fullPath)
     {
         var fileName = GetFileName(fullPath);
         var backupFullPath = Path.Combine(Settings.Instance.BackupPath, fileName);

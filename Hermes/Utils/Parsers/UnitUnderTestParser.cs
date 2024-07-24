@@ -1,8 +1,9 @@
+using Hermes.Models;
 using Hermes.Types;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace Hermes.Models.Parsers;
+namespace Hermes.Utils.Parsers;
 
 public class UnitUnderTestParser : IUnitUnderTestParser
 {

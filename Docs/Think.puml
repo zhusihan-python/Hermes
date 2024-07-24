@@ -1,0 +1,18 @@
+@startuml
+class StopViewModel{
+    + SendToSfc(fullPath)
+}
+StopViewModel *--> WindowService
+
+class WindowService {
+    + ShowPopup(message, delay)
+    + ShowStop(stop)
+    + ShowUutSuccess(unitUnderTest)
+}
+WindowService --> StopView
+
+class StopView {
+    
+}
+StopView --> StopViewModel
+@enduml

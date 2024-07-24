@@ -1,0 +1,21 @@
+@startuml
+
+class Messenger {}
+
+class StopViewModel{
+    + SendToSfc(fullPath)
+}
+StopViewModel ..> Messenger
+
+class WindowService {
+    + ShowPopup(message, delay)
+    + ShowStop(stop)
+    + ShowUutSuccess(unitUnderTest)
+}
+WindowService --> StopView
+WindowService ..> Messenger
+
+class StopView {
+}
+StopView --> StopViewModel
+@enduml

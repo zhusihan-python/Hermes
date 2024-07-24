@@ -7,31 +7,166 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f67b6fb6-36be-4955-8c83-71fe06a8f8a2" name="Changes" comment="" />
+    <list default="true" id="f67b6fb6-36be-4955-8c83-71fe06a8f8a2" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Docs/Think.puml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Docs/Think2.puml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Hermes/Models/Messages/ShowSuccessMessage.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Hermes/Types/UutProcessorState.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Hermes/Utils/Extensions/ServiceCollectionExtensions.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Hermes/Utils/HermesLogger.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Hermes/Utils/ILogger.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Hermes/Utils/ViewLocator.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Hermes/ViewModels/SuccessViewModel.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Hermes/ViewModels/UutProcessorViewModel.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Hermes/Views/SuccessView.axaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Hermes/Views/SuccessView.axaml.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Hermes/Views/UutProcessorView.axaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Hermes/Views/UutProcessorView.axaml.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Hermes/Views/ViewManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Hermes/.idea/avalonia.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Hermes/.idea/avalonia.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Hermes/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Hermes/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docs/Design View/Design/ProcessUut.puml" beforeDir="false" afterPath="$PROJECT_DIR$/Docs/Design View/Design/ProcessUut.puml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/App.axaml" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/App.axaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/App.axaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/App.axaml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/Assets/avalonia-logo.ico" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/AppData/Assets/avalonia-logo.ico" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/Builders/SfcResponseBuilder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/Builders/SfcResponseBuilder.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/Builders/UnitUnderTestBuilder.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/Builders/UnitUnderTestBuilder.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/Hermes.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/Hermes.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/Models/Defect.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/Models/Defect.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/Models/Parsers/IUnitUnderTestParser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/Utils/Parsers/IUnitUnderTestParser.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/Models/Parsers/UnitUnderTestParser.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/Utils/Parsers/UnitUnderTestParser.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/Models/Settings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/Models/Settings.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/Models/SfcResponse.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/Models/SfcResponse.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/Models/UnitUnderTest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/Models/UnitUnderTest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/Repositories/BaseRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/Repositories/BaseRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/Repositories/HermesContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/Repositories/HermesContext.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/Repositories/SfcResponseRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/Repositories/SfcResponseRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/Repositories/UnitUnderTestRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/Repositories/UnitUnderTestRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/Services/FileService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/Services/FileService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/Services/FolderWatcherService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/Services/FolderWatcherService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/Services/SfcSenderService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/Services/SfcSenderService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/Services/SfcService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/Services/SfcService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/ViewModels/MainWindowViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/ViewModels/MainViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/ViewModels/ViewModelBase.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/ViewModels/ViewModelBase.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/Views/MainWindow.axaml" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/Views/MainView.axaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/Views/MainWindow.axaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/Views/MainView.axaml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/bin/Debug/net8.0/Hermes.deps.json" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/bin/Debug/net8.0/Hermes.deps.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/bin/Debug/net8.0/Hermes.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/bin/Debug/net8.0/Hermes.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/bin/Debug/net8.0/Hermes.exe" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/bin/Debug/net8.0/Hermes.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/bin/Debug/net8.0/Hermes.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/bin/Debug/net8.0/Hermes.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/obj/Debug/net8.0/Avalonia/Hermes.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/obj/Debug/net8.0/Avalonia/Hermes.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/obj/Debug/net8.0/Avalonia/Hermes.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/obj/Debug/net8.0/Avalonia/Hermes.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/obj/Debug/net8.0/Avalonia/Resources.Inputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/obj/Debug/net8.0/Avalonia/Resources.Inputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/obj/Debug/net8.0/Avalonia/resources" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/obj/Debug/net8.0/Avalonia/resources" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/obj/Debug/net8.0/Hermes.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/obj/Debug/net8.0/Hermes.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/obj/Debug/net8.0/Hermes.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/obj/Debug/net8.0/Hermes.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/obj/Debug/net8.0/Hermes.GeneratedMSBuildEditorConfig.editorconfig" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/obj/Debug/net8.0/Hermes.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/obj/Debug/net8.0/Hermes.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/obj/Debug/net8.0/Hermes.assets.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/obj/Debug/net8.0/Hermes.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/obj/Debug/net8.0/Hermes.csproj.AssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/obj/Debug/net8.0/Hermes.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/obj/Debug/net8.0/Hermes.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/obj/Debug/net8.0/Hermes.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/obj/Debug/net8.0/Hermes.csproj.FileListAbsolute.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/obj/Debug/net8.0/Hermes.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/obj/Debug/net8.0/Hermes.pdb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/obj/Debug/net8.0/apphost.exe" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/obj/Debug/net8.0/apphost.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/obj/Debug/net8.0/ref/Hermes.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/obj/Debug/net8.0/ref/Hermes.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/obj/Debug/net8.0/refint/Avalonia/Hermes.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/obj/Debug/net8.0/refint/Avalonia/Hermes.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/obj/Debug/net8.0/refint/Hermes.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/obj/Hermes.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/obj/Hermes.csproj.nuget.dgspec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/obj/Hermes.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/obj/Hermes.csproj.nuget.g.props" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/obj/Hermes.csproj.nuget.g.targets" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/obj/Hermes.csproj.nuget.g.targets" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/obj/project.assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/obj/project.nuget.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/obj/project.packagespec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Hermes/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/Hermes/obj/rider.project.restore.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HermesTests/HermesTests.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/HermesTests/HermesTests.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HermesTests/Models/Parsers/UnitUnderTestParserTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HermesTests/Utils/Parsers/UnitUnderTestParserTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HermesTests/Models/SfcRequestTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HermesTests/Models/SfcRequestTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HermesTests/Models/SfcResponseTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HermesTests/Models/SfcResponseTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HermesTests/Services/SfcServiceTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HermesTests/Services/SfcServiceTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HermesTests/bin/Debug/net8.0/CoverletSourceRootsMapping_HermesTests" beforeDir="false" afterPath="$PROJECT_DIR$/HermesTests/bin/Debug/net8.0/CoverletSourceRootsMapping_HermesTests" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HermesTests/bin/Debug/net8.0/Hermes.deps.json" beforeDir="false" afterPath="$PROJECT_DIR$/HermesTests/bin/Debug/net8.0/Hermes.deps.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HermesTests/bin/Debug/net8.0/Hermes.dll" beforeDir="false" afterPath="$PROJECT_DIR$/HermesTests/bin/Debug/net8.0/Hermes.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HermesTests/bin/Debug/net8.0/Hermes.exe" beforeDir="false" afterPath="$PROJECT_DIR$/HermesTests/bin/Debug/net8.0/Hermes.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HermesTests/bin/Debug/net8.0/Hermes.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/HermesTests/bin/Debug/net8.0/Hermes.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HermesTests/bin/Debug/net8.0/HermesTests.deps.json" beforeDir="false" afterPath="$PROJECT_DIR$/HermesTests/bin/Debug/net8.0/HermesTests.deps.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HermesTests/bin/Debug/net8.0/HermesTests.dll" beforeDir="false" afterPath="$PROJECT_DIR$/HermesTests/bin/Debug/net8.0/HermesTests.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HermesTests/bin/Debug/net8.0/HermesTests.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/HermesTests/bin/Debug/net8.0/HermesTests.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HermesTests/obj/Debug/net8.0/Avalonia/Resources.Inputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/HermesTests/obj/Debug/net8.0/Avalonia/Resources.Inputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HermesTests/obj/Debug/net8.0/Avalonia/references" beforeDir="false" afterPath="$PROJECT_DIR$/HermesTests/obj/Debug/net8.0/Avalonia/references" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HermesTests/obj/Debug/net8.0/HermesTests.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/HermesTests/obj/Debug/net8.0/HermesTests.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HermesTests/obj/Debug/net8.0/HermesTests.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/HermesTests/obj/Debug/net8.0/HermesTests.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HermesTests/obj/Debug/net8.0/HermesTests.GeneratedMSBuildEditorConfig.editorconfig" beforeDir="false" afterPath="$PROJECT_DIR$/HermesTests/obj/Debug/net8.0/HermesTests.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HermesTests/obj/Debug/net8.0/HermesTests.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/HermesTests/obj/Debug/net8.0/HermesTests.assets.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HermesTests/obj/Debug/net8.0/HermesTests.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/HermesTests/obj/Debug/net8.0/HermesTests.csproj.AssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HermesTests/obj/Debug/net8.0/HermesTests.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/HermesTests/obj/Debug/net8.0/HermesTests.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HermesTests/obj/Debug/net8.0/HermesTests.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/HermesTests/obj/Debug/net8.0/HermesTests.csproj.FileListAbsolute.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HermesTests/obj/Debug/net8.0/HermesTests.dll" beforeDir="false" afterPath="$PROJECT_DIR$/HermesTests/obj/Debug/net8.0/HermesTests.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HermesTests/obj/Debug/net8.0/HermesTests.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/HermesTests/obj/Debug/net8.0/HermesTests.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HermesTests/obj/Debug/net8.0/ref/HermesTests.dll" beforeDir="false" afterPath="$PROJECT_DIR$/HermesTests/obj/Debug/net8.0/ref/HermesTests.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HermesTests/obj/Debug/net8.0/refint/HermesTests.dll" beforeDir="false" afterPath="$PROJECT_DIR$/HermesTests/obj/Debug/net8.0/refint/HermesTests.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HermesTests/obj/HermesTests.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/HermesTests/obj/HermesTests.csproj.nuget.dgspec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HermesTests/obj/HermesTests.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/HermesTests/obj/HermesTests.csproj.nuget.g.props" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HermesTests/obj/HermesTests.csproj.nuget.g.targets" beforeDir="false" afterPath="$PROJECT_DIR$/HermesTests/obj/HermesTests.csproj.nuget.g.targets" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HermesTests/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/HermesTests/obj/project.assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HermesTests/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/HermesTests/obj/project.nuget.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HermesTests/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/HermesTests/obj/project.packagespec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HermesTests/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/HermesTests/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/HermesTests/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/HermesTests/obj/rider.project.restore.info" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="DpaMonitoringSettings">
+    <option name="autoShow" value="false" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="UML Sequence" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;David1906&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/David1906/HermesWIP.git&quot;,
+    &quot;accountId&quot;: &quot;56a4e3af-b4c3-4f8a-8567-abefc10ac242&quot;
+  }
+}</component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/Hermes/Builders/UnitUnderTestBuilderss.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/c47327607d1a4ddca06ba2bc6b6ba8261cc800/b1/e2191853/Dispatcher.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/314af8a5ba96d3b6aeaad61d17179d9662f828477067bba9a4eb876bedef/Dispatcher.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/a3149125329f6ed7bb7b18fd83c159293b8df48beec7926b4bef10c19049c4/IMessenger.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 1
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
   <component name="ProjectId" id="2jc4PBZ1qpdL9qufpyUtJvgspBT" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    ".NET Project.Hermes.executor": "Run",
     "00d18696-bfde-4c8d-9a8d-33baf1c72e49.executor": "Debug",
+    "DefaultPlantUmlFileTemplate": "UML Sequence",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "master",
     "last_opened_file_path": "C:/Users/Foxconn/RiderProjects/Hermes/Docs/Out",
@@ -44,6 +179,9 @@
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "sqlite"
+    ],
     "rider.external.source.directories": [
       "C:\\Users\\Foxconn\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\DecompilerCache",
       "C:\\Users\\Foxconn\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\SourcesCache",
@@ -80,6 +218,8 @@
       <option name="presentableId" value="Default" />
       <updated>1721673005163</updated>
       <workItem from="1721673006607" duration="15397000" />
+      <workItem from="1721746758358" duration="25502000" />
+      <workItem from="1721830534296" duration="15275000" />
     </task>
     <task id="LOCAL-00001" summary="Dev: WIP">
       <option name="closed" value="true" />
@@ -117,17 +257,17 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Hermes/Services/SfcService.cs</url>
-          <line>30</line>
-          <properties documentPath="C:\Users\Foxconn\RiderProjects\Hermes\Hermes\Services\SfcService.cs" containingFunctionPresentation="Method 'Send'">
+          <url>file://$PROJECT_DIR$/Hermes/Services/SfcSenderService.cs</url>
+          <line>73</line>
+          <properties documentPath="C:\Users\Foxconn\RiderProjects\Hermes\Hermes\Services\SfcSenderService.cs" containingFunctionPresentation="Method 'ProcessFilesAsync'">
             <startOffsets>
-              <option value="963" />
+              <option value="2537" />
             </startOffsets>
             <endOffsets>
-              <option value="1023" />
+              <option value="2567" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="2" />
+          <option name="timeStamp" value="29" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

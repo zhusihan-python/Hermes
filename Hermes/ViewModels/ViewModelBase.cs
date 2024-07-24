@@ -2,6 +2,10 @@
 
 namespace Hermes.ViewModels;
 
-public class ViewModelBase : ObservableObject
+public class ViewModelBase : ObservableRecipient
 {
+    public ViewModelBase()
+    {
+        this.IsActive = true;
+    }
 }

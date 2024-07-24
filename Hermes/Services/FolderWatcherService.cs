@@ -18,8 +18,7 @@ public class FolderWatcherService
 
     public void Start()
     {
-        this._watcher = new FileSystemWatcher(this._settings.SfcPath);
-        this._watcher.Filter = this._settings.InputFilter;
+        this._watcher = new FileSystemWatcher(this._settings.InputPath);
         this._watcher.Created += this.OnFileCreated;
         this._watcher.EnableRaisingEvents = true;
     }

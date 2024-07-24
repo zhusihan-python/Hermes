@@ -14,8 +14,11 @@
           "Avalonia.Fonts.Inter": "11.1.0",
           "Avalonia.Themes.Fluent": "11.1.0",
           "CommunityToolkit.Mvvm": "8.2.1",
+          "Material.Avalonia": "3.6.0",
+          "Material.Icons.Avalonia": "2.1.10",
           "Microsoft.EntityFrameworkCore.Design": "8.0.7",
-          "Microsoft.EntityFrameworkCore.Sqlite": "8.0.7"
+          "Microsoft.EntityFrameworkCore.Sqlite": "8.0.7",
+          "NLog": "5.3.2"
         },
         "runtime": {
           "Hermes.dll": {}
@@ -342,6 +345,49 @@
           "lib/net6.0/Humanizer.dll": {
             "assemblyVersion": "2.14.0.0",
             "fileVersion": "2.14.1.48190"
+          }
+        }
+      },
+      "Material.Avalonia/3.6.0": {
+        "dependencies": {
+          "Avalonia": "11.1.0"
+        },
+        "runtime": {
+          "lib/net8.0/Material.Avalonia.dll": {
+            "assemblyVersion": "3.6.0.0",
+            "fileVersion": "3.6.0.0"
+          },
+          "lib/net8.0/Material.Colors.dll": {
+            "assemblyVersion": "3.6.0.0",
+            "fileVersion": "3.6.0.0"
+          },
+          "lib/net8.0/Material.Ripple.dll": {
+            "assemblyVersion": "3.6.0.0",
+            "fileVersion": "3.6.0.0"
+          },
+          "lib/net8.0/Material.Styles.dll": {
+            "assemblyVersion": "3.6.0.0",
+            "fileVersion": "3.6.0.0"
+          }
+        }
+      },
+      "Material.Icons/2.1.10": {
+        "runtime": {
+          "lib/netstandard2.0/Material.Icons.dll": {
+            "assemblyVersion": "2.1.10.0",
+            "fileVersion": "2.1.10.0"
+          }
+        }
+      },
+      "Material.Icons.Avalonia/2.1.10": {
+        "dependencies": {
+          "Avalonia": "11.1.0",
+          "Material.Icons": "2.1.10"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Material.Icons.Avalonia.dll": {
+            "assemblyVersion": "2.1.10.0",
+            "fileVersion": "2.1.10.0"
           }
         }
       },
@@ -782,6 +828,14 @@
           "lib/netstandard2.0/Mono.TextTemplating.dll": {
             "assemblyVersion": "2.2.0.0",
             "fileVersion": "2.2.1.1"
+          }
+        }
+      },
+      "NLog/5.3.2": {
+        "runtime": {
+          "lib/netstandard2.0/NLog.dll": {
+            "assemblyVersion": "5.0.0.0",
+            "fileVersion": "5.3.2.2526"
           }
         }
       },
@@ -1272,6 +1326,27 @@
       "path": "humanizer.core/2.14.1",
       "hashPath": "humanizer.core.2.14.1.nupkg.sha512"
     },
+    "Material.Avalonia/3.6.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Y8SQV+CutVF3cDP2wTZ+zAhmXFdsksxJZ1BrKbgQ6nJ5U2/Uy6HyKl5m2FiRK6FM0kNzqlHiGcvjyo8HgahQ5Q==",
+      "path": "material.avalonia/3.6.0",
+      "hashPath": "material.avalonia.3.6.0.nupkg.sha512"
+    },
+    "Material.Icons/2.1.10": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-nQnLAoVb9lgxWd4OtDADPVzBxERB9UYQd0UWcrqjg0NKFf8oPMuDM2kkxpBKe/Wm6Ayx3C/t3j2+8R1Nscg0Kw==",
+      "path": "material.icons/2.1.10",
+      "hashPath": "material.icons.2.1.10.nupkg.sha512"
+    },
+    "Material.Icons.Avalonia/2.1.10": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-dclTtNbnoLonYK/YI2vgYvOmLeqw08xHxL+ExOSGZEMJKt6k3F6SDmJ41tByOxgXAd+nIDh8V9FqC0FQSEp/CQ==",
+      "path": "material.icons.avalonia/2.1.10",
+      "hashPath": "material.icons.avalonia.2.1.10.nupkg.sha512"
+    },
     "MicroCom.Runtime/0.11.0": {
       "type": "package",
       "serviceable": true,
@@ -1453,6 +1528,13 @@
       "sha512": "sha512-KZYeKBET/2Z0gY1WlTAK7+RHTl7GSbtvTLDXEZZojUdAPqpQNDL6tHv7VUpqfX5VEOh+uRGKaZXkuD253nEOBQ==",
       "path": "mono.texttemplating/2.2.1",
       "hashPath": "mono.texttemplating.2.2.1.nupkg.sha512"
+    },
+    "NLog/5.3.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-cQRQZuDMjSyMe9EQBnI9v55YAMMz8GAfFd6fFJ6tc/kXnG7Hze8p1I8MgvWSBG6E36wA8vSxRrlm8uSIG+SENg==",
+      "path": "nlog/5.3.2",
+      "hashPath": "nlog.5.3.2.nupkg.sha512"
     },
     "SkiaSharp/2.88.8": {
       "type": "package",

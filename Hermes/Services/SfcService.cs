@@ -26,7 +26,7 @@ public class SfcService
         this._stopwatch = new Stopwatch();
     }
 
-    public async Task<SfcResponse> Send(UnitUnderTest unitUnderTest)
+    public async Task<SfcResponse> SendAsync(UnitUnderTest unitUnderTest)
     {
         await this._unitUnderTestRepository.AddAsync(unitUnderTest);
         var sfcRequest = new SfcRequest(unitUnderTest, this._settings.SfcPath, this._settings.SfcResponseExtension);

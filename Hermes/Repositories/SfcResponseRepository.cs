@@ -2,6 +2,4 @@ using Hermes.Models;
 
 namespace Hermes.Repositories;
 
-public class SfcResponseRepository : BaseRepository<SfcResponse>
-{
-}
+public class SfcResponseRepository(HermesContext db) : BaseRepository<SfcResponse>(db);

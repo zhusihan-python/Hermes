@@ -1,0 +1,93 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:vm="clr-namespace:Hermes.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Hermes.Views.UutProcessorView"
+             x:DataType="vm:UutProcessorViewModel">
+
+    <UserControl.Styles>
+        <Style Selector="Border.Online">
+            <Setter Property="Background" Value="{StaticResource LightGreenColor}" />
+        </Style>
+        <Style Selector="Border.Offline">
+            <Setter Property="Background" Value="DimGray" />
+        </Style>
+    </UserControl.Styles>
+
+    <StackPanel
+        VerticalAlignment="Center"
+        HorizontalAlignment="Center"
+        Spacing="{StaticResource DefaultSpacing}">
+
+        <Border
+            CornerRadius="{StaticResource DefaultCornerRadius}"
+            Classes.Online="{Binding IsRunning}"
+            Classes.Offline="{Binding !IsRunning}"
+            Padding="5">
+            <Border
+                CornerRadius="{StaticResource DefaultCornerRadius}"
+                Background="LightSlateGray"
+                Padding="30">
+
+                <StackPanel
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Spacing="5">
+
+                    <avalonia:MaterialIcon
+                        VerticalAlignment="Center"
+                        Width="60"
+                        Height="60"
+                        Kind="FileDocument" />
+
+                    <StackPanel
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        MinWidth="250"
+                        Spacing="10">
+
+                        <StackPanel
+                            Spacing="2">
+
+                            <TextBlock
+                                Classes="Body2"
+                                Text="Status: " />
+
+                            <TextBlock
+                                VerticalAlignment="Bottom"
+                                Classes="Subtitle1"
+                                Text="{Binding State}" />
+                        </StackPanel>
+
+                        <StackPanel
+                            Spacing="2">
+
+                            <TextBlock
+                                Classes="Body2"
+                                Text="Serial number: " />
+
+                            <TextBlock
+                                VerticalAlignment="Bottom"
+                                Classes="Subtitle1"
+                                Text="{Binding SerialNumber}" />
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Border>
+
+        <Button
+            Content="Start"
+            Command="{Binding StartCommand}"
+            IsVisible="{Binding !IsRunning}" />
+
+        <Button
+            Content="Stop"
+            Command="{Binding StopCommand}"
+            IsVisible="{Binding IsRunning}" />
+    </StackPanel>
+</UserControl>
