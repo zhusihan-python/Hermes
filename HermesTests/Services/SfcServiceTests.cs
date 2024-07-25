@@ -9,10 +9,13 @@ namespace HermesTests.Services;
 
 public class SfcServiceTests
 {
-    private readonly SfcResponseBuilder _sfcResponseBuilder =
-        new(new UnitUnderTestBuilder(new FileService(), new Settings()));
-
+    private readonly SfcResponseBuilder _sfcResponseBuilder;
     private readonly FileServiceMockBuilder _fileServiceMockBuilder = new();
+
+    public SfcServiceTests(SfcResponseBuilder sfcResponseBuilder)
+    {
+        this._sfcResponseBuilder = sfcResponseBuilder;
+    }
 
     [Fact]
     public async Task Send_PassContent_ReturnsSfcResponsePass()

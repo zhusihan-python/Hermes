@@ -17,13 +17,6 @@ public class UnitUnderTest
     [NotMapped] public string Content { get; init; }
     [NotMapped] public bool IsNull => this == Null;
 
-    public UnitUnderTest(string fileName, string content, IUnitUnderTestParser parser) : this(fileName, content)
-    {
-        this.IsFail = parser.ParseIsFail(content);
-        this.SerialNumber = parser.ParseSerialNumber(content);
-        this.Defects = parser.ParseDefects(content);
-    }
-
     public UnitUnderTest(string fileName, string content)
     {
         this.FileName = fileName;

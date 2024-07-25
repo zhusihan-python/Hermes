@@ -98,10 +98,9 @@ Session --> State
 class UnitUnderTestParser {
     + Parse()
 }
-
+UnitUnderTestParser --> UnitUnderTest 
 
 class UnitUnderTest {}
-UnitUnderTest *--> UnitUnderTestParser
 UnitUnderTest *--> "*" Defect
 
 class Defect {}

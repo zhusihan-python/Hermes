@@ -12,7 +12,7 @@ namespace Hermes.Builders;
 public class UnitUnderTestBuilder
 {
     public string Content { get; private set; } = "";
-    public List<Defect> Defects { get; private set; } = [];
+    public List<Defect> Defects { get; } = [];
 
     private string _serialNumber = "1A62TESTSERIALNUMBER";
     private string _fileName = "fileName";
@@ -21,12 +21,18 @@ public class UnitUnderTestBuilder
     private readonly FileService _fileService;
     private readonly Settings _settings;
     private readonly Random _random = new();
+    private readonly ParserPrototype _parserPrototype;
 
-    public UnitUnderTestBuilder(FileService fileService, Settings settings)
+
+    public UnitUnderTestBuilder(
+        Settings settings,
+        FileService fileService,
+        ParserPrototype parserPrototype)
     {
         this._fileService = fileService;
         this._settings = settings;
-        this._fileName += settings. InputFileExtension;
+        this._fileName += settings.InputFileExtension;
+        this._parserPrototype = parserPrototype;
     }
 
     public async Task<UnitUnderTest> BuildAsync(string fileFullPath)
@@ -68,15 +74,17 @@ public class UnitUnderTestBuilder
 
     private UnitUnderTest Build(string fileName, string content)
     {
-        if (!HasValidExtension(fileName))
+        var parser = _parserPrototype.GetUnderTestParser(_settings.LogfileType);
+        if (!HasValidExtension(fileName) || parser == null)
         {
             return UnitUnderTest.Null;
         }
 
-        return _settings.LogfileType switch
+        return new UnitUnderTest(fileName, content)
         {
-            LogfileType.TriDefault => new UnitUnderTest(fileName, content, new UnitUnderTestParser()),
-            _ => UnitUnderTest.Null
+            IsFail = parser.ParseIsFail(content),
+            SerialNumber = parser.ParseSerialNumber(content),
+            Defects = parser.ParseDefects(content),
         };
     }
 

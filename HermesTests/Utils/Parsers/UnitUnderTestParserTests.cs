@@ -6,14 +6,19 @@ namespace HermesTests.Utils.Parsers;
 
 public class UnitUnderTestParserTests
 {
-    private UnitUnderTestBuilder Builder { get; } = new(new FileService(), new Settings());
+    private UnitUnderTestBuilder _unitUnderTestBuilder;
+
+    public UnitUnderTestParserTests(UnitUnderTestBuilder unitUnderTestBuilder)
+    {
+        this._unitUnderTestBuilder = unitUnderTestBuilder;
+    }
 
     [Fact]
     public void SetFilename_GivenFileName_FileNameIsSet()
     {
         const string fileExtension = ".log";
         const string fileName = $"MyFileName.{fileExtension}";
-        var uut = this.Builder
+        var uut = this._unitUnderTestBuilder
             .InputFileExtension(fileExtension)
             .FileName(fileName)
             .Build();
@@ -24,7 +29,7 @@ public class UnitUnderTestParserTests
     public void SetContent_ValidSerialNumber_SerialNumberIsParsed()
     {
         const string serialNumber = "1A62FMM00403397RM";
-        var uut = this.Builder
+        var uut = this._unitUnderTestBuilder
             .SerialNumber(serialNumber)
             .Build();
         Assert.Equal(serialNumber, uut.SerialNumber);
@@ -34,7 +39,7 @@ public class UnitUnderTestParserTests
     public void SetContent_NotValidSerialNumber_SerialNumberIsEmpty()
     {
         const string serialNumber = "@";
-        var uut = this.Builder
+        var uut = this._unitUnderTestBuilder
             .SerialNumber(serialNumber)
             .Build();
         Assert.Equal(string.Empty, uut.SerialNumber);
@@ -43,18 +48,18 @@ public class UnitUnderTestParserTests
     [Fact]
     public void SetContent_WithDefects_DefectsParsedOk()
     {
-        var uut = this.Builder
+        var uut = this._unitUnderTestBuilder
             .AddRandomDefect()
             .AddRandomDefect()
             .AddRandomDefect()
             .Build();
-        Assert.Equal(this.Builder.Defects.Count, uut.Defects.Count);
+        Assert.Equal(this._unitUnderTestBuilder.Defects.Count, uut.Defects.Count);
     }
 
     [Fact]
     public void IsFail_PassLogfile_ReturnsFalse()
     {
-        var uut = this.Builder
+        var uut = this._unitUnderTestBuilder
             .IsPass(true)
             .Build();
         Assert.False(uut.IsFail);
@@ -63,7 +68,7 @@ public class UnitUnderTestParserTests
     [Fact]
     public void IsFail_FailLogfile_ReturnsTrue()
     {
-        var uut = this.Builder
+        var uut = this._unitUnderTestBuilder
             .IsPass(false)
             .Build();
         Assert.True(uut.IsFail);
@@ -72,7 +77,7 @@ public class UnitUnderTestParserTests
     [Fact]
     public void GetSfcFormatedContent_FailLogfile_ReturnsTrue()
     {
-        var uut = this.Builder.Build();
-        Assert.Equal(this.Builder.Content, uut.Content);
+        var uut = this._unitUnderTestBuilder.Build();
+        Assert.Equal(this._unitUnderTestBuilder.Content, uut.Content);
     }
 }

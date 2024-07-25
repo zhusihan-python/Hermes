@@ -5,6 +5,7 @@ using Hermes.ViewModels;
 using Hermes.Views;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using Avalonia.Threading;
 using Hermes.Utils;
 using Hermes.Utils.Extensions;
 
@@ -26,18 +27,15 @@ namespace Hermes
         public override void Initialize()
         {
             AvaloniaXamlLoader.Load(this);
-            AppDomain.CurrentDomain.UnhandledException += this.OnUnhandledException;
+            Avalonia.Threading.Dispatcher.UIThread.UnhandledException += this.OnUnhandledException;
         }
 
-        private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        private void OnUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             var message = "Unhandled Exception";
-            if (e.ExceptionObject is Exception exception)
-            {
-                message += $": {exception.Message}";
-            }
-
+            message += $": {e.Exception.Message}";
             this.Services.GetService<HermesLogger>()!.Error(message);
+            e.Handled = true;
         }
 
         public override void OnFrameworkInitializationCompleted()
