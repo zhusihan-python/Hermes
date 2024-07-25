@@ -55,6 +55,7 @@ namespace Hermes
 
         private void OnExit(object sender, ControlledApplicationLifetimeExitEventArgs e)
         {
+            // TODO
             this._viewManager?.Stop();
         }
     }
