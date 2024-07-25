@@ -1,15 +1,19 @@
 using Hermes.Builders;
 using Hermes.Models;
-using Hermes.Services;
 using Hermes.Types;
 
 namespace HermesTests.Models;
 
 public class SfcRequestTests
 {
-    private readonly UnitUnderTestBuilder _unitUnderTestBuilder = new(new FileService(), new Settings());
+    private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
     private const string SfcPath = "/path/";
     private const SfcResponseExtension SfcResponseExtension = Hermes.Types.SfcResponseExtension.RET;
+
+    public SfcRequestTests(UnitUnderTestBuilder unitUnderTestBuilder)
+    {
+        this._unitUnderTestBuilder = unitUnderTestBuilder;
+    }
 
     [Fact]
     public void FullPath_ValidDataGiven_Succeeds()

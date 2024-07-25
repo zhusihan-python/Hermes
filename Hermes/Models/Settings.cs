@@ -8,11 +8,11 @@ public class Settings
 
     public static Settings Instance => _instance ??= new Settings();
 
-    public string InputPath { get; set; } = @"C:\Users\Foxconn\Documents\Tpm\HermesLogfiles\Input"; // TODO
+    public string InputPath { get; set; } = @"C:\Users\david\Documents\Tmp\Hermes\Input"; // TODO
     public string InputFileExtension { get; set; } = @".3dx"; // TODO
     public LogfileType LogfileType { get; set; } = LogfileType.TriDefault; // TODO
-    public string SfcPath { get; set; } = @"C:\Users\Foxconn\Documents\Tpm\HermesLogfiles\Sfc"; // TODO
-    public string BackupPath { get; set; } = @"C:\Users\Foxconn\Documents\Tpm\HermesLogfiles\Backup"; // TODO
+    public string SfcPath { get; set; } = @"C:\Users\david\Documents\Tmp\Hermes\Sfc"; // TODO
+    public string BackupPath { get; set; } = @"C:\Users\david\Documents\Tmp\Hermes\Backup"; // TODO
     public int WatchLogfilesDelayMilliseconds { get; set; } = 500;
     public int SfcTimeoutSeconds { get; set; } = 2;
     public SfcResponseExtension SfcResponseExtension { get; set; } = SfcResponseExtension.RET;

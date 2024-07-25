@@ -487,10 +487,8 @@ $RECYCLE.BIN/
 riderModule.iml
 /_ReSharper.Caches/
 .idea/
-bin/
-obj/
-HermesTests/bin
-HermesTests/obj
+.idea
 Hermes/bin
 Hermes/obj
-.idea
+HermesTests/bin
+HermesTests/obj

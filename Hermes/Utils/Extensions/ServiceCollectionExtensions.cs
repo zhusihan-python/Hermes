@@ -2,6 +2,7 @@
 using Hermes.Models;
 using Hermes.Repositories;
 using Hermes.Services;
+using Hermes.Utils.Parsers;
 using Hermes.ViewModels;
 using Hermes.Views;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,6 +28,8 @@ public static class ServiceCollectionExtensions
 
         collection.AddSingleton<ILogger, HermesLogger>();
         collection.AddSingleton<UnitUnderTestBuilder>();
+        collection.AddSingleton<ParserPrototype>();
+        collection.AddSingleton<HermesLogger>();
 
         collection.AddTransient<MainViewModel>();
         collection.AddTransient<UutProcessorViewModel>();

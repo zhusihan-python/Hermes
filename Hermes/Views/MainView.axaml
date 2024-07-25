@@ -2,8 +2,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:vm="using:Hermes.ViewModels"
+        xmlns:controls="clr-namespace:Material.Styles.Controls;assembly=Material.Styles"
         xmlns:v="clr-namespace:Hermes.Views"
+        xmlns:vm="using:Hermes.ViewModels"
         mc:Ignorable="d"
         x:Name="MainWindow"
         x:Class="Hermes.Views.MainView"
@@ -15,17 +16,23 @@
         Title="Hermes"
         ClosingBehavior="OwnerAndChildWindows">
 
-    <StackPanel
-        VerticalAlignment="Center"
-        HorizontalAlignment="Center"
-        Spacing="{StaticResource DefaultSpacing}">
+    <controls:SnackbarHost HostName="Root">
+        <StackPanel
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+            Spacing="{StaticResource DefaultSpacing}">
 
-        <v:UutProcessorView
-            DataContext="{Binding UutProcessorViewModel}" />
+            <v:UutProcessorView
+                DataContext="{Binding UutProcessorViewModel}" />
 
-        <Button
-            Content="Close"
-            Command="{Binding ExitCommand, Mode=OneWay}"
-            CommandParameter="{Binding ElementName=MainWindow}" />
-    </StackPanel>
+            <Button
+                Content="Close"
+                Command="{Binding ExitCommand, Mode=OneWay}"
+                CommandParameter="{Binding ElementName=MainWindow}" />
+
+            <Button
+                Content="Snack"
+                Click="Button_OnClick" />
+        </StackPanel>
+    </controls:SnackbarHost>
 </Window>
