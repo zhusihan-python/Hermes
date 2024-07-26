@@ -1,9 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Messaging;
 using Hermes.Models;
-using Hermes.Services;
 using Hermes.Utils;
 using System;
+using System.Threading.Tasks;
+using Hermes.Repositories;
 
 namespace Hermes.ViewModels;
 
@@ -11,17 +11,19 @@ public partial class StopViewModel : ViewModelBase
 {
     public event EventHandler? Restored;
     public TokenViewModel TokenViewModel { get; }
-    [ObservableProperty] private Stop _stop = Models.Stop.Null;
+    [ObservableProperty] private Stop _stop = Stop.Null;
     private readonly ILogger _logger;
-
+    private readonly StopRepository _stopRepository;
 
     public StopViewModel(
+        ILogger logger,
         TokenViewModel tokenViewModel,
-        ILogger logger
+        StopRepository stopRepository
     )
     {
         this._logger = logger;
         this.TokenViewModel = tokenViewModel;
+        this._stopRepository = stopRepository;
         tokenViewModel.Unlocked += this.OnTokenUnlocked;
     }
 
@@ -31,14 +33,22 @@ public partial class StopViewModel : ViewModelBase
         this.RestoreStop();
     }
 
+    partial void OnStopChanged(Stop value)
+    {
+        if (!value.IsNull)
+        {
+            Task.Run(() => this._stopRepository.AddAsync(value));
+        }
+    }
+
     private async void RestoreStop()
     {
-        if (this.Stop != null)
+        if (!this.Stop.IsNull)
         {
-            // TODO await this._stopService.RestoreAsync(this._session.Stop);
+            await this._stopRepository.RestoreAsync(this.Stop);
         }
 
-        this._logger.Info($"Stop restore type:{this.Stop?.Type} id:{this.Stop?.Id}");
+        this._logger.Info($"Stop restore type:{this.Stop.Type} id:{this.Stop.Id}");
         this.Restored?.Invoke(this, EventArgs.Empty);
     }
 

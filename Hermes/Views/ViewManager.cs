@@ -9,6 +9,8 @@ using Hermes.Models.Messages;
 using Hermes.Models;
 using Hermes.ViewModels;
 using System.Threading.Tasks;
+using Material.Styles.Controls;
+using Material.Styles.Models;
 
 namespace Hermes.Views;
 
@@ -16,6 +18,8 @@ public class ViewManager : ObservableRecipient
 {
     private const int SuccessViewWidth = 450;
     private const int SuccessViewHeight = 130;
+
+    public Window? MainView { get; set; }
 
     private readonly Settings _settings;
     private readonly SuccessView _successView;
@@ -42,6 +46,8 @@ public class ViewManager : ObservableRecipient
     {
         Messenger.Register<ShowSuccessMessage>(this, this.ShowUutSuccess);
         Messenger.Register<ShowStopMessage>(this, this.ShowStop);
+        Messenger.Register<ShowSnackbarMessage>(this, this.ShowSnackbar);
+        Messenger.Register<ExitMessage>(this, (_, __) => this.Stop());
     }
 
     public void Stop()
@@ -50,6 +56,7 @@ public class ViewManager : ObservableRecipient
         this._successView.Close();
         this._stopView.CanClose = true;
         this._stopView.Close();
+        this.MainView?.Close();
     }
 
     private void ShowUutSuccess(object recipient, ShowSuccessMessage message)
@@ -82,7 +89,7 @@ public class ViewManager : ObservableRecipient
                 screenSize.Height - SuccessViewHeight - 5);
         }
     }
-    
+
     private void ShowStop(object recipient, ShowStopMessage message)
     {
         Dispatcher.UIThread.Invoke(() =>
@@ -97,9 +104,15 @@ public class ViewManager : ObservableRecipient
 
     private void OnStopViewModelRestored(object? sender, EventArgs e)
     {
+        Dispatcher.UIThread.Invoke(() => { this._stopView.Hide(); });
+    }
+
+    public void ShowSnackbar(object recipient, ShowSnackbarMessage message)
+    {
         Dispatcher.UIThread.Invoke(() =>
         {
-            this._stopView.Hide();
+            var snackbarModel = new SnackbarModel(message.Value, TimeSpan.FromSeconds(10));
+            SnackbarHost.Post(snackbarModel, null, DispatcherPriority.Normal);
         });
     }
 }

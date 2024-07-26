@@ -1,5 +1,6 @@
 using Hermes.Types;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Hermes.Models;
 
@@ -12,10 +13,10 @@ public class Stop
     public int SfcResponseId { get; init; }
     public StopType Type { get; init; } = StopType.None;
     public bool IsRestored { get; set; }
-    public bool IsNull => this == Null;
-    public bool IsMachineStop => this.Type == StopType.Machine;
-    public string LogfileSerialNumber => this.SfcResponse?.SerialNumber ?? "";
-    public string Details => $"{Type} - {SfcResponse?.Details ?? ""}";
+    [NotMapped] public bool IsNull => this == Null;
+    [NotMapped] public bool IsMachineStop => this.Type == StopType.Machine;
+    [NotMapped] public string SerialNumber => this.SfcResponse?.SerialNumber ?? "";
+    [NotMapped] public string Details => $"{Type} - {SfcResponse?.Details ?? ""}";
 
     public Stop()
     {

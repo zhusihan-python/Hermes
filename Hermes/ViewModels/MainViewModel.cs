@@ -1,5 +1,7 @@
 ﻿using Avalonia.Controls;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using Hermes.Models.Messages;
 using Hermes.Repositories;
 
 namespace Hermes.ViewModels
@@ -18,7 +20,13 @@ namespace Hermes.ViewModels
         private void Exit(Window window)
         {
             this.UutProcessorViewModel.Stop();
-            window.Close();
+            Messenger.Send(new ExitMessage());
+        }
+
+        [RelayCommand]
+        private void ShowSnackbar()
+        {
+            Messenger.Send(new ShowSnackbarMessage("This is a snackbar!"));
         }
     }
 }

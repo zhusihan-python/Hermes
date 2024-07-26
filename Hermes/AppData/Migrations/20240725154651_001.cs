@@ -68,6 +68,27 @@ namespace Hermes.AppData.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Stops",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    SfcResponseId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Type = table.Column<int>(type: "INTEGER", nullable: false),
+                    IsRestored = table.Column<bool>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Stops", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Stops_SfcResponses_SfcResponseId",
+                        column: x => x.SfcResponseId,
+                        principalTable: "SfcResponses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Defects_UnitUnderTestId",
                 table: "Defects",
@@ -77,6 +98,11 @@ namespace Hermes.AppData.Migrations
                 name: "IX_SfcResponses_UnitUnderTestId",
                 table: "SfcResponses",
                 column: "UnitUnderTestId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Stops_SfcResponseId",
+                table: "Stops",
+                column: "SfcResponseId");
         }
 
         /// <inheritdoc />
@@ -84,6 +110,9 @@ namespace Hermes.AppData.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Defects");
+
+            migrationBuilder.DropTable(
+                name: "Stops");
 
             migrationBuilder.DropTable(
                 name: "SfcResponses");

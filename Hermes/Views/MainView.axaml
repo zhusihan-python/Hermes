@@ -16,7 +16,7 @@
         Title="Hermes"
         ClosingBehavior="OwnerAndChildWindows">
 
-    <controls:SnackbarHost HostName="Root">
+    <controls:SnackbarHost HostName="Root" >
         <StackPanel
             VerticalAlignment="Center"
             HorizontalAlignment="Center"
@@ -32,7 +32,7 @@
 
             <Button
                 Content="Snack"
-                Click="Button_OnClick" />
+                Command="{Binding ShowSnackbarCommand}" />
         </StackPanel>
     </controls:SnackbarHost>
 </Window>

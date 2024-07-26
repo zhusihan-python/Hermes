@@ -73,6 +73,28 @@ namespace Hermes.AppData.Migrations
                     b.ToTable("SfcResponses", (string)null);
                 });
 
+            modelBuilder.Entity("Hermes.Models.Stop", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsRestored")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("SfcResponseId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SfcResponseId");
+
+                    b.ToTable("Stops", (string)null);
+                });
+
             modelBuilder.Entity("Hermes.Models.UnitUnderTest", b =>
                 {
                     b.Property<int>("Id")
@@ -113,6 +135,17 @@ namespace Hermes.AppData.Migrations
                         .IsRequired();
 
                     b.Navigation("UnitUnderTest");
+                });
+
+            modelBuilder.Entity("Hermes.Models.Stop", b =>
+                {
+                    b.HasOne("Hermes.Models.SfcResponse", "SfcResponse")
+                        .WithMany()
+                        .HasForeignKey("SfcResponseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SfcResponse");
                 });
 
             modelBuilder.Entity("Hermes.Models.UnitUnderTest", b =>

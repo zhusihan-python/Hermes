@@ -1,5 +1,4 @@
 using CommunityToolkit.Mvvm.ComponentModel;
-using Hermes.Models;
 
 namespace Hermes.ViewModels;
 

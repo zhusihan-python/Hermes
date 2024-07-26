@@ -16,6 +16,7 @@ public class HermesContext : DbContext
     public DbSet<UnitUnderTest> UnitsUnderTest { get; set; }
     public DbSet<Defect> Defects { get; set; }
     public DbSet<SfcResponse> SfcResponses { get; set; }
+    public DbSet<Stop> Stop { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -38,5 +39,7 @@ public class HermesContext : DbContext
         modelBuilder.Entity<UnitUnderTest>().ToTable("UnitsUnderTest");
         modelBuilder.Entity<Defect>().ToTable("Defects");
         modelBuilder.Entity<SfcResponse>().ToTable("SfcResponses");
+        
+        modelBuilder.Entity<Stop>().ToTable("Stops");
     }
 }

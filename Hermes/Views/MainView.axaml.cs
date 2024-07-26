@@ -11,9 +11,4 @@ public partial class MainView : Window
     {
         InitializeComponent();
     }
-
-    private void Button_OnClick(object? sender, RoutedEventArgs e)
-    {
-        SnackbarHost.Post("See ya next time, user!", null, DispatcherPriority.Normal);
-    }
 }

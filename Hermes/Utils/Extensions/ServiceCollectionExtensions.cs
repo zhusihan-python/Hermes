@@ -17,29 +17,29 @@ public static class ServiceCollectionExtensions
 
         collection.AddSingleton<HermesContext>();
         collection.AddTransient<SfcResponseRepository>();
+        collection.AddTransient<StopRepository>();
         collection.AddTransient<UnitUnderTestRepository>();
 
-        collection.AddTransient<SfcService>();
         collection.AddTransient<FileService>();
         collection.AddTransient<FolderWatcherService>();
         collection.AddTransient<SfcSenderService>();
+        collection.AddTransient<SfcService>();
         collection.AddTransient<SfcService>();
         collection.AddTransient<StopService>();
 
         collection.AddSingleton<ILogger, HermesLogger>();
         collection.AddSingleton<UnitUnderTestBuilder>();
         collection.AddSingleton<ParserPrototype>();
-        collection.AddSingleton<HermesLogger>();
 
         collection.AddTransient<MainViewModel>();
-        collection.AddTransient<UutProcessorViewModel>();
-        collection.AddTransient<SuccessViewModel>();
         collection.AddTransient<StopViewModel>();
+        collection.AddTransient<SuccessViewModel>();
         collection.AddTransient<TokenViewModel>();
+        collection.AddTransient<UutProcessorViewModel>();
 
-        collection.AddTransient<ViewManager>();
-        collection.AddTransient<SuccessView>();
         collection.AddTransient<StopView>();
+        collection.AddTransient<SuccessView>();
         collection.AddTransient<TokenView>();
+        collection.AddTransient<ViewManager>();
     }
 }
