@@ -1,15 +1,19 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:themes="clr-namespace:Material.Styles.Themes;assembly=Material.Styles"
+             xmlns:sukiUi="clr-namespace:SukiUI;assembly=SukiUI"
              xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
              xmlns:sys="clr-namespace:System;assembly=System.Runtime"
              x:Class="Hermes.App"
-             xmlns:utils="using:Hermes.Utils"
-             RequestedThemeVariant="Default">
+             xmlns:common="clr-namespace:Hermes.Common">
 
     <Application.DataTemplates>
-        <utils:ViewLocator />
+        <common:ViewLocator />
     </Application.DataTemplates>
+
+    <Application.Styles>
+        <sukiUi:SukiTheme ThemeColor="Green" />
+        <materialIcons:MaterialIconStyles />
+    </Application.Styles>
 
     <Application.Resources>
         <SolidColorBrush x:Key="LightRedColor" Color="#B54747" />
@@ -24,14 +28,10 @@
         <sys:Double x:Key="DefaultIconSize">30</sys:Double>
         <sys:Double x:Key="DefaultSpacing">20</sys:Double>
         <Thickness x:Key="DefaultMargin">20</Thickness>
+        <Thickness x:Key="DefaultPadding">20</Thickness>
         <Thickness x:Key="DefaultLeftMargin">20 0 0 0</Thickness>
         <CornerRadius x:Key="DefaultCornerRadius">5</CornerRadius>
     </Application.Resources>
-
-    <Application.Styles>
-        <themes:MaterialTheme BaseTheme="Dark" PrimaryColor="Cyan" SecondaryColor="Green" />
-        <materialIcons:MaterialIconStyles />
-    </Application.Styles>
 
     <TrayIcon.Icons>
         <TrayIcons>

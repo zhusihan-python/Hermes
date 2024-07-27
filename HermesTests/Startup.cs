@@ -1,7 +1,7 @@
 using Hermes.Builders;
+using Hermes.Common.Parsers;
 using Hermes.Models;
 using Hermes.Services;
-using Hermes.Utils.Parsers;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HermesTests;

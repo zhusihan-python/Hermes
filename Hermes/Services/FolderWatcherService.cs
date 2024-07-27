@@ -18,9 +18,18 @@ public class FolderWatcherService
 
     public void Start()
     {
+        this.ProcessExistingFiles();
         this._watcher = new FileSystemWatcher(this._settings.InputPath);
         this._watcher.Created += this.OnFileCreated;
         this._watcher.EnableRaisingEvents = true;
+    }
+
+    private void ProcessExistingFiles()
+    {
+        foreach (var file in Directory.EnumerateFiles(this._settings.InputPath))
+        {
+            this.FileCreated?.Invoke(this, file);
+        }
     }
 
     private void OnFileCreated(object sender, FileSystemEventArgs e)

@@ -1,0 +1,83 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:uutProcessor="clr-namespace:Hermes.Features.UutProcessor"
+        xmlns:token="clr-namespace:Hermes.Features.Controls.Token"
+        mc:Ignorable="d"
+        d:Width="1920"
+        d:Height="1080"
+        x:Class="Hermes.Features.UutProcessor.StopView"
+        x:DataType="uutProcessor:StopViewModel"
+        CanResize="False"
+        Topmost="True"
+        WindowStartupLocation="CenterOwner"
+        WindowState="FullScreen"
+        ExtendClientAreaChromeHints="NoChrome"
+        Background="{DynamicResource LightRedColor }">
+
+    <Grid
+        MaxWidth="{StaticResource StopWindowMaxWidth}"
+        Margin="{StaticResource DefaultMargin}"
+        ColumnDefinitions="1*, 100*, 1*"
+        RowDefinitions="*, Auto">
+
+        <StackPanel
+            Grid.Row="0"
+            Grid.Column="1"
+            VerticalAlignment="Center"
+            Spacing="{StaticResource DefaultSpacing}">
+
+            <Border
+                MinHeight="500"
+                CornerRadius="{StaticResource DefaultCornerRadius}"
+                Background="{StaticResource DarkRedColor}"
+                Padding="20">
+
+                <Grid
+                    RowDefinitions="*, Auto">
+
+                    <TextBlock
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        Classes="Headline1"
+                        Text="STOP MACHINE" />
+
+                    <StackPanel
+                        Grid.Row="1"
+                        HorizontalAlignment="Center"
+                        Spacing="{StaticResource DefaultSpacing}">
+
+                        <TextBlock
+                            TextAlignment="Center"
+                            Classes="Headline5"
+                            Text="{Binding Stop.Details}" />
+
+                        <StackPanel
+                            Orientation="Horizontal"
+                            Spacing="{StaticResource DefaultSpacing}">
+
+                            <TextBlock
+                                Classes="Headline5"
+                                Text="Serial Number:" />
+
+                            <TextBlock
+                                Classes="Headline5"
+                                Text="{Binding Stop.SerialNumber}" />
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <token:TokenView
+                DataContext="{Binding TokenViewModel}" />
+        </StackPanel>
+
+        <TextBlock
+            Grid.Row="1"
+            Grid.Column="1"
+            HorizontalAlignment="Center"
+            Classes="Headline5"
+            Text="2024 07 10" />
+    </Grid>
+</Window>

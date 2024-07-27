@@ -2,8 +2,8 @@
 
 public enum UutProcessorState
 {
-    Disconnected,
+    Stopped,
     Idle,
     Processing,
-    Stopped
+    Blocked
 }

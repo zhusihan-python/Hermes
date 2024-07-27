@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System;
-using Hermes.Utils.Parsers;
+using Hermes.Common.Parsers;
 
 namespace Hermes.Builders;
 

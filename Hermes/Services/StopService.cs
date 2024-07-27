@@ -1,7 +1,7 @@
 using System;
 using Hermes.Models;
 using System.Threading.Tasks;
-using Hermes.Utils.Validators;
+using Hermes.Common.Validators;
 
 namespace Hermes.Services;
 

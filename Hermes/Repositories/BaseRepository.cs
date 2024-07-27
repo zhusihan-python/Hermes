@@ -23,7 +23,7 @@ public class BaseRepository<T> : IRepository<T> where T : class
     public void Delete(int id)
     {
         var q = GetById(id);
-        this._db.Set<T>().Remove(q);
+        if (q != null) this._db.Set<T>().Remove(q);
     }
 
     public void Edit(T entity)
@@ -36,7 +36,7 @@ public class BaseRepository<T> : IRepository<T> where T : class
         return this._db.Set<T>().Select(a => a).ToList();
     }
 
-    public T GetById(int id)
+    public T? GetById(int id)
     {
         return this._db.Set<T>().Find(id);
     }

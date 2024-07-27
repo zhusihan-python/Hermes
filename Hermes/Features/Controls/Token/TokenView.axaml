@@ -1,0 +1,64 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+             xmlns:theme="clr-namespace:SukiUI.Theme;assembly=SukiUI"
+             xmlns:token="clr-namespace:Hermes.Features.Controls.Token"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="100"
+             x:Class="Hermes.Features.Controls.Token.TokenView"
+             x:DataType="token:ITokenViewModel">
+
+    <Grid
+        ColumnDefinitions="*, 200">
+
+        <TextBox
+            Watermark="*******"
+            PasswordChar="*"
+            theme:TextBoxExtensions.AddDeleteButton="False"
+            IsEnabled="{Binding !IsUnlocked}" />
+
+        <Button
+            Grid.Column="1"
+            Padding=" 15 10"
+            CornerRadius="{StaticResource DefaultCornerRadius}"
+            Margin="{StaticResource DefaultLeftMargin}"
+            Command="{Binding UnlockCommand}"
+            IsVisible="{Binding !IsUnlocked}">
+
+
+            <StackPanel
+                Orientation="Horizontal"
+                Spacing="5">
+
+                <avalonia:MaterialIcon
+                    Kind="LockOpen"
+                    Height="{StaticResource DefaultIconSize}"
+                    Width="{StaticResource DefaultIconSize}"
+                    Foreground="Black" />
+
+                <TextBlock
+                    VerticalAlignment="Center"
+                    Classes="Headline6"
+                    Text="Unlock" />
+            </StackPanel>
+        </Button>
+
+        <Border
+            Grid.Column="1"
+            Width="40"
+            Height="40"
+            Margin="{StaticResource DefaultLeftMargin}"
+            Background="LawnGreen"
+            CornerRadius="40"
+            IsVisible="{Binding IsUnlocked}">
+
+            <avalonia:MaterialIcon
+                Width="{StaticResource DefaultIconSize}"
+                Height="{StaticResource DefaultIconSize}"
+                Kind="Check"
+                Foreground="Black" />
+        </Border>
+    </Grid>
+</UserControl>

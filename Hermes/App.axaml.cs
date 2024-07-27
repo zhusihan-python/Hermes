@@ -1,30 +1,36 @@
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Controls.Templates;
+using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 using Avalonia;
-using Hermes.Models.Messages;
-using Hermes.Utils.Extensions;
-using Hermes.Utils;
-using Hermes.ViewModels;
-using Hermes.Views;
+using Hermes.Builders;
+using Hermes.Common.Messages;
+using Hermes.Common.Parsers;
+using Hermes.Common;
+using Hermes.Features.Controls.Token;
+using Hermes.Features.UutProcessor;
+using Hermes.Features;
+using Hermes.Models;
+using Hermes.Repositories;
+using Hermes.Services;
 using Microsoft.Extensions.DependencyInjection;
+using System.Linq;
 using System;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace Hermes
 {
     public class App : Application
     {
-        public new static App Current => ((App)Application.Current!);
-        public IServiceProvider Services { get; }
-        private ViewManager? _viewManager;
+        private readonly IServiceProvider? _provider;
+        private WindowService? _windowService;
         private readonly ILogger? _logger;
 
         public App()
         {
-            var collection = new ServiceCollection();
-            collection.AddCommonServices();
-            this.Services = collection.BuildServiceProvider();
-            this._logger = this.Services.GetService<ILogger>()!;
+            this._provider = this.ConfigureServices();
+            this._logger = this._provider?.GetService<ILogger>()!;
         }
 
         public override void Initialize()
@@ -37,13 +43,13 @@ namespace Hermes
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                desktop.MainWindow = new MainWindow
-                {
-                    DataContext = this.Services.GetService<MainWindowViewModel>()
-                };
-                this._viewManager = this.Services.GetService<ViewManager>();
-                this._viewManager!.MainView = desktop.MainWindow;
-                this._viewManager?.Start();
+                var viewLocator = _provider?.GetRequiredService<IDataTemplate>();
+                var mainViewModel = _provider?.GetRequiredService<MainWindowViewModel>();
+                desktop.MainWindow = viewLocator?.Build(mainViewModel) as Window;
+                this._windowService = this._provider!.GetService<WindowService>();
+                this._windowService!.MainView = desktop.MainWindow;
+                this._windowService?.Start();
+                this._provider?.GetRequiredService<HermesContext>().Initialize();
             }
 
             base.OnFrameworkInitializationCompleted();
@@ -51,10 +57,62 @@ namespace Hermes
 
         private void OnUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            var message = $"Unhandled Exception: {e.Exception.Message}";
-            this._logger?.Error(message);
-            this._viewManager?.ShowSnackbar(this, new ShowSnackbarMessage(message));
+            const string title = "Unhandled Exception";
+            this._logger?.Error($"{title}: {e.Exception.Message}");
+            this._windowService?.ShowToast(this, new ShowToastMessage(title, e.Exception.Message));
             e.Handled = true;
+        }
+
+        private IServiceProvider ConfigureServices()
+        {
+            var services = new ServiceCollection();
+
+            // Settings
+            services.AddSingleton<Settings>();
+
+            // Repos
+            services.AddSingleton<HermesContext>();
+            services.AddTransient<SfcResponseRepository>();
+            services.AddTransient<StopRepository>();
+            services.AddTransient<UnitUnderTestRepository>();
+
+            // Common
+            services.AddSingleton<ILogger, HermesLogger>();
+            services.AddSingleton<PageNavigationService>();
+            services.AddSingleton<ParserPrototype>();
+            services.AddSingleton<UnitUnderTestBuilder>();
+
+            // Services
+            services.AddSingleton<IDataTemplate, ViewLocator>();
+            services.AddSingleton<PageNavigationService>();
+            services.AddTransient<FileService>();
+            services.AddTransient<FolderWatcherService>();
+            services.AddTransient<UutSenderService>();
+            services.AddTransient<SfcService>();
+            services.AddTransient<StopService>();
+
+            // ViewModels
+            services.AddSingleton<MainWindowViewModel>();
+            services.AddTransient<WindowService>();
+
+            // Pages
+            var types = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(s => s.GetTypes())
+                .Where(p => !p.IsAbstract && typeof(PageBase).IsAssignableFrom(p));
+            foreach (var type in types)
+            {
+                services.AddSingleton(typeof(PageBase), type);
+            }
+
+            // Views
+            services.AddTransient<StopView>();
+            services.AddTransient<StopViewModel>();
+            services.AddTransient<SuccessView>();
+            services.AddTransient<SuccessViewModel>();
+            services.AddTransient<TokenView>();
+            services.AddTransient<TokenViewModel>();
+
+            return services.BuildServiceProvider();
         }
     }
 }

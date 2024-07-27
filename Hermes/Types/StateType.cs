@@ -2,8 +2,8 @@
 
 public enum StateType
 {
-    Disconnected,
+    Stopped,
     Idle,
     Processing,
-    Stopped
+    Blocked
 }
