@@ -29,7 +29,7 @@
     </Application.Resources>
 
     <Application.Styles>
-        <themes:MaterialTheme BaseTheme="Dark" PrimaryColor="BlueGrey" SecondaryColor="Lime" />
+        <themes:MaterialTheme BaseTheme="Dark" PrimaryColor="Cyan" SecondaryColor="Green" />
         <materialIcons:MaterialIconStyles />
     </Application.Styles>
 

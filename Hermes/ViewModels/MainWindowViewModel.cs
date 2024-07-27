@@ -6,11 +6,11 @@ using Hermes.Repositories;
 
 namespace Hermes.ViewModels
 {
-    public partial class MainViewModel : ViewModelBase
+    public partial class MainWindowViewModel : ViewModelBase
     {
         public UutProcessorViewModel UutProcessorViewModel { get; }
 
-        public MainViewModel(UutProcessorViewModel uutProcessorViewModel, HermesContext hermesContext)
+        public MainWindowViewModel(UutProcessorViewModel uutProcessorViewModel, HermesContext hermesContext)
         {
             this.UutProcessorViewModel = uutProcessorViewModel;
             hermesContext.Initialize();

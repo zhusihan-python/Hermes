@@ -37,9 +37,9 @@ namespace Hermes
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                desktop.MainWindow = new MainView
+                desktop.MainWindow = new MainWindow
                 {
-                    DataContext = this.Services.GetService<MainViewModel>()
+                    DataContext = this.Services.GetService<MainWindowViewModel>()
                 };
                 this._viewManager = this.Services.GetService<ViewManager>();
                 this._viewManager!.MainView = desktop.MainWindow;

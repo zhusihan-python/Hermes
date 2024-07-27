@@ -1,38 +1,178 @@
-<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:controls="clr-namespace:Material.Styles.Controls;assembly=Material.Styles"
-        xmlns:v="clr-namespace:Hermes.Views"
-        xmlns:vm="using:Hermes.ViewModels"
-        mc:Ignorable="d"
-        x:Name="MainWindow"
-        x:Class="Hermes.Views.MainView"
-        x:DataType="vm:MainViewModel"
-        Width="800"
-        Height="500"
-        WindowStartupLocation="CenterScreen"
-        Icon="/AppData/Assets/avalonia-logo.ico"
-        Title="Hermes"
-        ClosingBehavior="OwnerAndChildWindows">
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:controls="clr-namespace:Material.Styles.Controls;assembly=Material.Styles"
+             xmlns:vm="using:Hermes.ViewModels"
+             xmlns:v="clr-namespace:Hermes.Views"
+             mc:Ignorable="d"
+             d:DesignWidth="800"
+             d:DesignHeight="450"
+             x:Class="Hermes.Views.MainView"
+             x:DataType="vm:MainWindowViewModel">
 
-    <controls:SnackbarHost HostName="Root" >
-        <StackPanel
-            VerticalAlignment="Center"
-            HorizontalAlignment="Center"
-            Spacing="{StaticResource DefaultSpacing}">
+    <controls:NavigationDrawer
+        Name="LeftDrawer"
+        Classes="permanent"
+        LeftDrawerOpened="{Binding ElementName=NavDrawerSwitch, Path=IsChecked, Mode=TwoWay}">
+        
+        <controls:NavigationDrawer.LeftDrawerContent>
+            <ScrollViewer>
+                <StackPanel>
+                    <controls:ColorZone
+                        Mode="Accent"
+                        Height="180">
 
-            <v:UutProcessorView
-                DataContext="{Binding UutProcessorViewModel}" />
+                        <StackPanel>
+                            <Image
+                                Width="96"
+                                Height="110"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Source="avares://Hermes/AppData/Assets/avalonia-logo.ico"
+                                Margin="0,0,0,-8"
+                                PointerPressed="MaterialIcon_OnPointerPressed" />
 
-            <Button
-                Content="Close"
-                Command="{Binding ExitCommand, Mode=OneWay}"
-                CommandParameter="{Binding ElementName=MainWindow}" />
+                            <TextBlock
+                                Classes="Headline6"
+                                Text="Hermes"
+                                HorizontalAlignment="Center" />
 
-            <Button
-                Content="Snack"
-                Command="{Binding ShowSnackbarCommand}" />
-        </StackPanel>
-    </controls:SnackbarHost>
-</Window>
+                            <TextBlock
+                                Classes="Subtitle1"
+                                Text="By Ingrasys"
+                                HorizontalAlignment="Center" />
+                        </StackPanel>
+                    </controls:ColorZone>
+
+                    <ListBox
+                        Classes="NoScroll"
+                        Name="DrawerList"
+                        Focusable="{Binding ElementName=LeftDrawer, Path=LeftDrawerOpened}">
+
+                        <ListBox.Styles>
+
+                            <Style Selector="ListBoxItem">
+                                <Setter Property="Height" Value="48" />
+                                <Setter Property="Padding" Value="16,0" />
+                                <Setter Property="VerticalContentAlignment" Value="Center" />
+                            </Style>
+                        </ListBox.Styles>
+
+                        <ListBoxItem>Login</ListBoxItem>
+                        <ListBoxItem>Home</ListBoxItem>
+                    </ListBox>
+                </StackPanel>
+            </ScrollViewer>
+        </controls:NavigationDrawer.LeftDrawerContent>
+
+        <DockPanel LastChildFill="true">
+            <controls:ColorZone
+                VerticalAlignment="Top"
+                HorizontalAlignment="Stretch"
+                DockPanel.Dock="Top"
+                Height="56"
+                Mode="PrimaryMid"
+                ZIndex="1">
+
+                <Grid
+                    Margin="16"
+                    ColumnDefinitions="24,32,*,32,Auto">
+
+                    <ToggleButton
+                        Name="NavDrawerSwitch"
+                        Theme="{StaticResource MaterialFlatButton}"
+                        Width="32"
+                        Height="32"
+                        Padding="4">
+
+                        <avalonia:MaterialIcon
+                            Kind="Menu"
+                            Width="24"
+                            Height="24" />
+                    </ToggleButton>
+
+                    <TextBlock
+                        Grid.Column="2"
+                        Classes="Headline5"
+                        Text="Hermes"
+                        VerticalAlignment="Center" />
+
+                    <Menu
+                        Grid.Column="4"
+                        Height="32"
+                        Padding="0"
+                        Margin="0">
+
+                        <MenuItem
+                            Height="32"
+                            Width="32"
+                            Header="{avalonia:MaterialIconExt DotsVertical, Size=24}">
+
+                            <MenuItem Header="Settings">
+                                <MenuItem.Icon>
+                                    <avalonia:MaterialIcon Kind="Cog" Width="24" Height="24" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <Separator />
+                            <MenuItem Header="Exit">
+                                <MenuItem.Icon>
+                                    <avalonia:MaterialIcon Kind="ExitToApp" Width="24" Height="24" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                        </MenuItem>
+                    </Menu>
+                </Grid>
+            </controls:ColorZone>
+
+            <ScrollViewer
+                Name="mainScroller"
+                DockPanel.Dock="Top"
+                HorizontalContentAlignment="Stretch"
+                HorizontalAlignment="Stretch"
+                HorizontalScrollBarVisibility="Disabled">
+
+                <Border
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch">
+
+                    <Carousel
+                        Name="PageCarousel"
+                        HorizontalAlignment="Stretch">
+
+                        <Carousel.Styles>
+                            <Style Selector="Carousel#PageCarousel:not(.no-transitions)">
+                                <Setter Property="PageTransition">
+                                    <PageSlide Duration="0.25" SlideOutEasing="CircularEaseOut"
+                                               SlideInEasing="CircularEaseOut" />
+                                </Setter>
+                            </Style>
+                        </Carousel.Styles>
+
+                        <!-- Login page -->
+                        <StackPanel
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Spacing="{StaticResource DefaultSpacing}">
+
+                            <v:UutProcessorView
+                                DataContext="{Binding UutProcessorViewModel}" />
+
+                            <Button
+                                Content="Close"
+                                Command="{Binding ExitCommand}"
+                                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
+
+                            <Button
+                                Content="Snack"
+                                Command="{Binding ShowSnackbarCommand}" />
+                        </StackPanel>
+
+                        <!-- Main page -->
+                    </Carousel>
+                </Border>
+            </ScrollViewer>
+        </DockPanel>
+    </controls:NavigationDrawer>
+</UserControl>

@@ -31,7 +31,7 @@ public static class ServiceCollectionExtensions
         collection.AddSingleton<UnitUnderTestBuilder>();
         collection.AddSingleton<ParserPrototype>();
 
-        collection.AddTransient<MainViewModel>();
+        collection.AddTransient<MainWindowViewModel>();
         collection.AddTransient<StopViewModel>();
         collection.AddTransient<SuccessViewModel>();
         collection.AddTransient<TokenViewModel>();
