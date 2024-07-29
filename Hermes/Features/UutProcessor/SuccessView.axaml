@@ -49,7 +49,7 @@
             Background="{StaticResource DarkGreenColor}">
 
             <TextBlock
-                Classes="Headline4"
+                Classes="h1"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Foreground="White"
@@ -68,12 +68,12 @@
 
                 <TextBlock
                     TextAlignment="Center"
-                    Classes="Subtitle1"
+                    Classes="h3"
                     Text="Número de serie:" />
 
                 <TextBlock
                     TextAlignment="Center"
-                    Classes="Headline6"
+                    Classes="h4"
                     Text="{Binding  SerialNumber}" />
             </StackPanel>
         </Border>
