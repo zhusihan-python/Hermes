@@ -47,6 +47,13 @@
                       PointerPressed="MakeFullScreenPressed"
                       ToolTip.Tip="Makes the app fullscreen." />
         </MenuItem>
+        <MenuItem Header="Settings">
+            <MenuItem Header="General Settings">
+                <MenuItem.Icon>
+                    <avalonia:MaterialIcon Kind="Settings" />
+                </MenuItem.Icon>
+            </MenuItem>
+        </MenuItem>
     </suki:SukiWindow.MenuItems>
 
     <suki:SukiSideMenu

@@ -35,8 +35,8 @@
 
     <TrayIcon.Icons>
         <TrayIcons>
-            <TrayIcon Icon="/AppData/Assets/avalonia-logo.ico"
-                      ToolTipText="Avalonia Tray Icon ToolTip">
+            <TrayIcon Icon="avares://Hermes/AppData/Assets/logo-hermes.png"
+                      ToolTipText="Hermes">
                 <TrayIcon.Menu>
                     <NativeMenu>
                         <NativeMenuItem Header="Settings">

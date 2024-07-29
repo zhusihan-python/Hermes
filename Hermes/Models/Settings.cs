@@ -11,8 +11,8 @@ public class Settings
     public int SfcWaitDelaySeconds { get; set; } = 1;
     public int UutSuccessWindowTimeoutSeconds { get; set; } = 5;
     public int WatchLogfilesDelayMilliseconds { get; set; } = 500;
-    public string BackupPath { get; set; } = @"C:\Users\david\Documents\Tmp\Hermes\Backup"; // TODO
+    public string BackupPath { get; set; } = @"C:\Users\Foxconn\Documents\Tpm\HermesLogfiles\Backup"; // TODO
     public string InputFileExtension { get; set; } = @".3dx"; // TODO
-    public string InputPath { get; set; } = @"C:\Users\david\Documents\Tmp\Hermes\Input"; // TODO
-    public string SfcPath { get; set; } = @"C:\Users\david\Documents\Tmp\Hermes\Sfc"; // TODO
+    public string InputPath { get; set; } = @"C:\Users\Foxconn\Documents\Tpm\HermesLogfiles\Input"; // TODO
+    public string SfcPath { get; set; } = @"C:\Users\Foxconn\Documents\Tpm\HermesLogfiles\Sfc"; // TODO
 }
