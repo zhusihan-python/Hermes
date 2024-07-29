@@ -56,41 +56,4 @@ public class SfcResponseBuilder
         this.Content = UnknownContent;
         return this;
     }
-
-
-    public SfcResponseBuilder IsPass(bool isPass)
-    {
-        this._unitUnderTest.IsPass(isPass);
-        return this;
-    }
-
-    public SfcResponseBuilder UutFileName(string fileName)
-    {
-        this._unitUnderTest.FileName(fileName);
-        return this;
-    }
-
-    public SfcResponseBuilder UutSerialNumber(string serialNumber)
-    {
-        this._unitUnderTest.SerialNumber(serialNumber);
-        return this;
-    }
-
-    public SfcResponseBuilder UutIsPass(bool isPass)
-    {
-        this._unitUnderTest.IsPass(isPass);
-        return this;
-    }
-
-    public SfcResponseBuilder UutDefect(Defect defect)
-    {
-        this._unitUnderTest.Defects.Add(defect);
-        return this;
-    }
-
-    public string BuildContent()
-    {
-        var unitUnderTest = this._unitUnderTest.Build();
-        return this.GetContent(unitUnderTest);
-    }
 }

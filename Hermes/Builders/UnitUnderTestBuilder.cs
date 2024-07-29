@@ -112,12 +112,6 @@ public class UnitUnderTestBuilder
         return this;
     }
 
-    public UnitUnderTestBuilder Defect(Defect defect)
-    {
-        this.Defects.Add(defect);
-        return this;
-    }
-
     public UnitUnderTestBuilder InputFileExtension(string value)
     {
         this._settings.InputFileExtension = value;

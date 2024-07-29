@@ -22,9 +22,9 @@ public class Stop
     {
     }
 
-    public Stop(StopType stopType, SfcResponse? logfile)
+    public Stop(StopType stopType, SfcResponse? sfcResponse)
     {
         this.Type = stopType;
-        this.SfcResponse = logfile;
+        this.SfcResponse = sfcResponse;
     }
 }
