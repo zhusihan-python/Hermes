@@ -1,5 +1,5 @@
-using System;
 using Hermes.Features;
+using System;
 
 namespace Hermes.Services;
 

@@ -1,6 +1,5 @@
-using System;
 using NLog;
-using ILogger = Hermes.Common.ILogger;
+using System;
 
 namespace Hermes.Common;
 

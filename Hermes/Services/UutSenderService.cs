@@ -15,6 +15,7 @@ public class UutSenderService
     public event EventHandler<bool>? RunStatusChanged;
 
     private readonly ILogger _logger;
+    private readonly Settings _settings;
     private readonly SfcService _sfcService;
     private readonly FileService _fileService;
     private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
@@ -25,12 +26,14 @@ public class UutSenderService
 
     public UutSenderService(
         ILogger logger,
+        Settings settings,
         SfcService sfcService,
         FileService fileService,
         FolderWatcherService folderWatcherService,
         UnitUnderTestBuilder unitUnderTestBuilder)
     {
         this._logger = logger;
+        this._settings = settings;
         this._sfcService = sfcService;
         this._fileService = fileService;
         this._folderWatcherService = folderWatcherService;
@@ -63,7 +66,7 @@ public class UutSenderService
                 }
                 else
                 {
-                    await Task.Delay(Settings.Instance.WatchLogfilesDelayMilliseconds, cancellationToken);
+                    await Task.Delay(this._settings.WatchLogfilesDelayMilliseconds, cancellationToken);
                 }
             }
         }

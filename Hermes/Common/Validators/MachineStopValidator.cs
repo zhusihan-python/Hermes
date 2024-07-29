@@ -1,6 +1,6 @@
-using System.Threading.Tasks;
 using Hermes.Models;
 using Hermes.Types;
+using System.Threading.Tasks;
 
 namespace Hermes.Common.Validators;
 

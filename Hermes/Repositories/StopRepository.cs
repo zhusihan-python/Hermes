@@ -1,5 +1,5 @@
-using System.Threading.Tasks;
 using Hermes.Models;
+using System.Threading.Tasks;
 
 namespace Hermes.Repositories;
 

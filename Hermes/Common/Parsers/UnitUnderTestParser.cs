@@ -1,7 +1,7 @@
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using Hermes.Models;
 using Hermes.Types;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Hermes.Common.Parsers;
 

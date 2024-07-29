@@ -1,11 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
 using Hermes.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Reflection;
 
 namespace Hermes.Repositories;
 
@@ -39,7 +35,7 @@ public class HermesContext : DbContext
         modelBuilder.Entity<UnitUnderTest>().ToTable("UnitsUnderTest");
         modelBuilder.Entity<Defect>().ToTable("Defects");
         modelBuilder.Entity<SfcResponse>().ToTable("SfcResponses");
-        
+
         modelBuilder.Entity<Stop>().ToTable("Stops");
     }
 }

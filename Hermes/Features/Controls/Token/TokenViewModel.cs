@@ -1,7 +1,7 @@
-using System;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Hermes.Types;
+using System;
 
 namespace Hermes.Features.Controls.Token;
 

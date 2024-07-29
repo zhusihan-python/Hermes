@@ -1,6 +1,5 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Hermes.Services;
 using Material.Icons;
 
 namespace Hermes.Features.Splash;

@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using Hermes.Types;
+using System.Collections.Generic;
 
 namespace Hermes.Common.Parsers;
 

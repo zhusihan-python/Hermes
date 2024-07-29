@@ -1,7 +1,7 @@
-using System;
-using System.Globalization;
 using Avalonia.Data.Converters;
 using Material.Icons;
+using System.Globalization;
+using System;
 
 namespace Hermes.Common.Converters;
 
@@ -11,7 +11,9 @@ public static class BoolToIconConverters
     public static readonly BoolToIconConverter WindowLock = new(MaterialIconKind.Unlocked, MaterialIconKind.Lock);
     public static readonly BoolToIconConverter Visibility = new(MaterialIconKind.EyeClosed, MaterialIconKind.Eye);
     public static readonly BoolToIconConverter Simple = new(MaterialIconKind.Close, MaterialIconKind.Ticket);
-    public static readonly BoolToIconConverter Connection = new(MaterialIconKind.AccessPoint, MaterialIconKind.AccessPointOff);
+
+    public static readonly BoolToIconConverter Connection = new(MaterialIconKind.AccessPoint,
+        MaterialIconKind.AccessPointOff);
 }
 
 public class BoolToIconConverter(MaterialIconKind trueIcon, MaterialIconKind falseIcon) : IValueConverter

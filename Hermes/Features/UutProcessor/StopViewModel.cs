@@ -1,10 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Hermes.Common;
+using Hermes.Features.Controls.Token;
 using Hermes.Models;
 using Hermes.Repositories;
 using System.Threading.Tasks;
 using System;
-using TokenViewModel = Hermes.Features.Controls.Token.TokenViewModel;
 
 namespace Hermes.Features.UutProcessor;
 

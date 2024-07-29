@@ -1,7 +1,7 @@
 using Hermes.Models;
+using Hermes.Repositories;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using Hermes.Repositories;
 
 namespace Hermes.Services;
 

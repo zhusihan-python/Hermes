@@ -1,8 +1,8 @@
-using System;
+using Avalonia.Controls.Templates;
+using Avalonia.Controls;
 using System.Collections.Generic;
 using System.ComponentModel;
-using Avalonia.Controls;
-using Avalonia.Controls.Templates;
+using System;
 
 namespace Hermes.Common;
 

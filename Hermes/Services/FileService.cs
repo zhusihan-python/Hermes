@@ -10,6 +10,13 @@ public class FileService
     private const int NumberOfRetries = 3;
     private const int DelayOnRetry = 1000;
 
+    private readonly Settings _settings;
+
+    public FileService(Settings settings)
+    {
+        this._settings = settings;
+    }
+
     public virtual async Task<string> TryReadAllTextAsync(string fullPath)
     {
         return await Retry(async () => await ReadAllTextAsync(fullPath));
@@ -26,7 +33,7 @@ public class FileService
     public virtual async Task<string> MoveToBackupAsync(string fullPath)
     {
         var fileName = GetFileName(fullPath);
-        var backupFullPath = Path.Combine(Settings.Instance.BackupPath, fileName);
+        var backupFullPath = Path.Combine(this._settings.BackupPath, fileName);
         if (File.Exists(backupFullPath))
         {
             File.Delete(backupFullPath);

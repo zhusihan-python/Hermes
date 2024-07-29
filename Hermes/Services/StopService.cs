@@ -1,7 +1,6 @@
-using System;
+using Hermes.Common.Validators;
 using Hermes.Models;
 using System.Threading.Tasks;
-using Hermes.Common.Validators;
 
 namespace Hermes.Services;
 
