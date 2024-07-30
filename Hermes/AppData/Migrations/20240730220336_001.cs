@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -18,7 +19,8 @@ namespace Hermes.AppData.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     FileName = table.Column<string>(type: "TEXT", maxLength: 250, nullable: false),
                     SerialNumber = table.Column<string>(type: "TEXT", maxLength: 250, nullable: false),
-                    IsFail = table.Column<bool>(type: "INTEGER", nullable: false)
+                    IsFail = table.Column<bool>(type: "INTEGER", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -31,11 +33,10 @@ namespace Hermes.AppData.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    LogfileId = table.Column<int>(type: "INTEGER", nullable: false),
+                    UnitUnderTestId = table.Column<int>(type: "INTEGER", nullable: false),
                     ErrorFlag = table.Column<int>(type: "INTEGER", nullable: false),
                     Location = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    ErrorCode = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    UnitUnderTestId = table.Column<int>(type: "INTEGER", nullable: true)
+                    ErrorCode = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -44,7 +45,8 @@ namespace Hermes.AppData.Migrations
                         name: "FK_Defects_UnitsUnderTest_UnitUnderTestId",
                         column: x => x.UnitUnderTestId,
                         principalTable: "UnitsUnderTest",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

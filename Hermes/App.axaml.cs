@@ -17,6 +17,7 @@ using Hermes.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using System;
+using Hermes.Common.Validators;
 
 namespace Hermes
 {
@@ -68,12 +69,19 @@ namespace Hermes
 
             // Settings
             services.AddSingleton<Settings>();
+            services.AddSingleton<Settings>();
+
+            // Validators
+            services.AddSingleton<ConsecutiveDefectsValidator>();
+            services.AddSingleton<MachineStopValidator>();
+            services.AddSingleton<StopLineValidator>();
 
             // Repos
             services.AddSingleton<HermesContext>();
             services.AddTransient<SfcResponseRepository>();
             services.AddTransient<StopRepository>();
             services.AddTransient<UnitUnderTestRepository>();
+            services.AddTransient<DefectRepository>();
 
             // Common
             services.AddSingleton<ILogger, HermesLogger>();

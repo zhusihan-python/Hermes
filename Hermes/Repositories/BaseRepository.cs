@@ -7,42 +7,42 @@ namespace Hermes.Repositories;
 
 public class BaseRepository<T> : IRepository<T> where T : class
 {
-    private readonly HermesContext _db;
+    protected readonly HermesContext Db;
 
     public BaseRepository(HermesContext db)
     {
-        this._db = db;
+        this.Db = db;
     }
 
     public virtual async Task AddAsync(T entity)
     {
-        await this._db.Set<T>().AddAsync(entity);
+        await this.Db.Set<T>().AddAsync(entity);
         await this.SaveChangesAsync();
     }
 
     public void Delete(int id)
     {
         var q = GetById(id);
-        if (q != null) this._db.Set<T>().Remove(q);
+        if (q != null) this.Db.Set<T>().Remove(q);
     }
 
     public void Edit(T entity)
     {
-        this._db.Entry<T>(entity).State = EntityState.Modified;
+        this.Db.Entry<T>(entity).State = EntityState.Modified;
     }
 
     public List<T> GetAll()
     {
-        return this._db.Set<T>().Select(a => a).ToList();
+        return this.Db.Set<T>().Select(a => a).ToList();
     }
 
     public T? GetById(int id)
     {
-        return this._db.Set<T>().Find(id);
+        return this.Db.Set<T>().Find(id);
     }
 
     public async Task<int> SaveChangesAsync()
     {
-        return await this._db.SaveChangesAsync();
+        return await this.Db.SaveChangesAsync();
     }
 }

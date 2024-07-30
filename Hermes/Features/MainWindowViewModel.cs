@@ -5,7 +5,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Hermes.Common.Messages;
-using Hermes.Features.UutProcessor;
 using Hermes.Models;
 using SukiUI;
 using System.Collections.Generic;
@@ -26,6 +25,7 @@ namespace Hermes.Features
         {
             this.Pages = new AvaloniaList<PageBase>(pages.OrderBy(x => x.Index).ThenBy(x => x.DisplayName));
             this._theme = SukiTheme.GetInstance();
+            this._theme.ChangeBaseTheme(ThemeVariant.Light);
             this.UpdateBaseTheme();
             if (settings.AutostartUutProcessor)
             {
@@ -61,30 +61,12 @@ namespace Hermes.Features
             Messenger.Send(new ExitMessage());
         }
 
-        [RelayCommand]
-        private void ShowSnackbar()
-        {
-            Messenger.Send(new ShowToastMessage("Hello!", "This is a snackbar!"));
-        }
-
         public void Receive(NavigateMessage message)
         {
             var pageType = message.Value.GetType();
             var page = Pages.FirstOrDefault(x => x.GetType() == pageType);
             if (page is null || this.ActivePage?.GetType() == pageType) return;
             this.ActivePage = page;
-        }
-
-        private void OnTemeChanged(object? sender, ThemeVariant themeVariant)
-        {
-            this.BaseTheme = themeVariant;
-        }
-
-        public void Start()
-        {
-            var pageType = typeof(UutProcessorViewModel);
-            var page = Pages.FirstOrDefault(x => x.GetType() == pageType);
-            (page as UutProcessorViewModel)?.StartCommand.Execute(null);
         }
     }
 }

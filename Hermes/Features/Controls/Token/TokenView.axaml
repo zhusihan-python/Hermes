@@ -3,8 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
-             xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
-             xmlns:theme="clr-namespace:SukiUI.Theme;assembly=SukiUI"
+             xmlns:p1="clr-namespace:SukiUI.Theme;assembly=SukiUI"
              xmlns:token="clr-namespace:Hermes.Features.Controls.Token"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="100"
              x:Class="Hermes.Features.Controls.Token.TokenView"
@@ -14,16 +13,18 @@
         ColumnDefinitions="*, 200">
 
         <TextBox
-            Watermark="*******"
+            Watermark="{Binding TextFieldAssist}"
+            Margin="{StaticResource DefaultMargin}"
             PasswordChar="*"
-            theme:TextBoxExtensions.AddDeleteButton="False"
+            p1:TextBoxExtensions.AddDeleteButton="True"
+            Background="White"
             IsEnabled="{Binding !IsUnlocked}" />
 
         <Button
             Grid.Column="1"
+            Classes="Flat"
             Padding=" 15 10"
-            CornerRadius="{StaticResource DefaultCornerRadius}"
-            Margin="{StaticResource DefaultLeftMargin}"
+            Margin="{StaticResource DefaultMargin}"
             Command="{Binding UnlockCommand}"
             IsVisible="{Binding !IsUnlocked}">
 
@@ -34,13 +35,15 @@
 
                 <avalonia:MaterialIcon
                     Kind="LockOpen"
+                    VerticalAlignment="Center"
                     Height="{StaticResource DefaultIconSize}"
                     Width="{StaticResource DefaultIconSize}"
-                    Foreground="Black" />
+                    Foreground="White" />
 
                 <TextBlock
+                    Foreground="White"
                     VerticalAlignment="Center"
-                    Classes="Headline6"
+                    Classes="h4"
                     Text="Unlock" />
             </StackPanel>
         </Button>

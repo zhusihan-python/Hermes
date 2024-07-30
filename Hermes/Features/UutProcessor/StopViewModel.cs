@@ -13,6 +13,7 @@ public partial class StopViewModel : ViewModelBase
     public event EventHandler? Restored;
     public TokenViewModel TokenViewModel { get; }
     [ObservableProperty] private Stop _stop = Stop.Null;
+    [ObservableProperty] private string _dateText = string.Empty;
     private readonly ILogger _logger;
     private readonly StopRepository _stopRepository;
 
@@ -57,5 +58,10 @@ public partial class StopViewModel : ViewModelBase
     {
         this.Stop = Stop.Null;
         this.TokenViewModel.Reset();
+    }
+
+    public void UpdateDate()
+    {
+        this.DateText = DateTime.Now.ToString("yyyy MM dd");
     }
 }

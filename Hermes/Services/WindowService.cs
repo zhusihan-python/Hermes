@@ -95,6 +95,7 @@ public class WindowService : ObservableRecipient
         {
             this._stopView.DataContext = this._stopViewModel;
             this._stopViewModel.Reset();
+            this._stopViewModel.UpdateDate();
             this._stopViewModel.Stop = message.Value;
 
             this._stopView.Show();

@@ -9,7 +9,7 @@ class Conveyor{}
 Conveyor ..> Uut
 
 class Server{
-    + Proccess(Logfile) : Response
+    + Process(Logfile) : Response
 }
 Server --> SFC
 Server --> LineStopper

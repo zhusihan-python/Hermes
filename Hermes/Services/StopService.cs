@@ -1,6 +1,7 @@
 using Hermes.Common.Validators;
 using Hermes.Models;
 using System.Threading.Tasks;
+using Hermes.Repositories;
 
 namespace Hermes.Services;
 
@@ -8,10 +9,13 @@ public class StopService
 {
     private readonly CompoundStopValidator _stopValidator;
 
-    public StopService()
+    public StopService(
+        ConsecutiveDefectsValidator consecutiveDefectsValidator,
+        MachineStopValidator machineStopValidator)
     {
         this._stopValidator = new CompoundStopValidator()
-            .Add(new MachineStopValidator());
+            .Add(consecutiveDefectsValidator)
+            .Add(machineStopValidator);
     }
 
     public void Start()

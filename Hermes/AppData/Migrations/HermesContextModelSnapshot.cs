@@ -36,10 +36,7 @@ namespace Hermes.AppData.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("LogfileId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("UnitUnderTestId")
+                    b.Property<int>("UnitUnderTestId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
@@ -101,6 +98,9 @@ namespace Hermes.AppData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("FileName")
                         .IsRequired()
                         .HasMaxLength(250)
@@ -121,9 +121,13 @@ namespace Hermes.AppData.Migrations
 
             modelBuilder.Entity("Hermes.Models.Defect", b =>
                 {
-                    b.HasOne("Hermes.Models.UnitUnderTest", null)
+                    b.HasOne("Hermes.Models.UnitUnderTest", "UnitUnderTest")
                         .WithMany("Defects")
-                        .HasForeignKey("UnitUnderTestId");
+                        .HasForeignKey("UnitUnderTestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UnitUnderTest");
                 });
 
             modelBuilder.Entity("Hermes.Models.SfcResponse", b =>

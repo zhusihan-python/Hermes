@@ -25,7 +25,7 @@
         <SolidColorBrush x:Key="DarkYellowColor" Color="#B48615" />
 
         <sys:Double x:Key="StopWindowMaxWidth">1024</sys:Double>
-        <sys:Double x:Key="DefaultIconSize">30</sys:Double>
+        <sys:Double x:Key="DefaultIconSize">20</sys:Double>
         <sys:Double x:Key="DefaultSpacing">20</sys:Double>
         <Thickness x:Key="DefaultMargin">20</Thickness>
         <Thickness x:Key="DefaultPadding">20</Thickness>

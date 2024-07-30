@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
@@ -12,6 +13,7 @@ public class UnitUnderTest
     [MaxLength(250)] public string FileName { get; init; }
     [MaxLength(250)] public string SerialNumber { get; init; } = string.Empty;
     public bool IsFail { get; init; }
+    public DateTime CreatedAt { get; set; }
     public List<Defect> Defects { get; init; } = [];
     [NotMapped] public string Content { get; init; }
     [NotMapped] public bool IsNull => this == Null;
