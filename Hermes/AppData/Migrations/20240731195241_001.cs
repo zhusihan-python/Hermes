@@ -79,7 +79,7 @@ namespace Hermes.AppData.Migrations
                     SfcResponseId = table.Column<int>(type: "INTEGER", nullable: false),
                     Type = table.Column<int>(type: "INTEGER", nullable: false),
                     IsRestored = table.Column<bool>(type: "INTEGER", nullable: false),
-                    DefectId = table.Column<int>(type: "INTEGER", nullable: false)
+                    DefectId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -88,8 +88,7 @@ namespace Hermes.AppData.Migrations
                         name: "FK_Stops_Defects_DefectId",
                         column: x => x.DefectId,
                         principalTable: "Defects",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Stops_SfcResponses_SfcResponseId",
                         column: x => x.SfcResponseId,

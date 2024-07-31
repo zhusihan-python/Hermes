@@ -28,7 +28,7 @@ public class SfcService
 
     public async Task<SfcResponse> SendAsync(UnitUnderTest unitUnderTest)
     {
-        await this._unitUnderTestRepository.AddAsync(unitUnderTest);
+        await this._unitUnderTestRepository.AddAndSaveAsync(unitUnderTest);
         var sfcRequest = new SfcRequest(unitUnderTest, this._settings.SfcPath, this._settings.SfcResponseExtension);
         await this._fileService.WriteAllTextAsync(sfcRequest.FullPath, sfcRequest.Content);
 
@@ -41,7 +41,7 @@ public class SfcService
             );
         }
 
-        await this._sfcResponseRepository.AddAsync(sfcResponse);
+        await this._sfcResponseRepository.AddAndSaveAsync(sfcResponse);
         return sfcResponse;
     }
 

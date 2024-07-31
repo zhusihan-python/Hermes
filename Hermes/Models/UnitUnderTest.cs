@@ -13,7 +13,7 @@ public class UnitUnderTest
     [MaxLength(250)] public string FileName { get; init; }
     [MaxLength(250)] public string SerialNumber { get; init; } = string.Empty;
     public bool IsFail { get; init; }
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
     public List<Defect> Defects { get; init; } = [];
     [NotMapped] public string Content { get; init; }
     [NotMapped] public bool IsNull => this == Null;

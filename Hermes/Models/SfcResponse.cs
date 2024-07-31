@@ -26,6 +26,7 @@ public class SfcResponse
     [NotMapped] public bool IsNull => this == Null;
 
     public SfcResponse()
+    
     {
     }
 

@@ -129,4 +129,9 @@ public class UnitUnderTestBuilder
         });
         return this;
     }
+
+    public UnitUnderTestBuilder Clone()
+    {
+        return new UnitUnderTestBuilder(this._settings, this._fileService, this._parserPrototype);
+    }
 }

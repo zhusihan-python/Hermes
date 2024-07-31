@@ -49,7 +49,7 @@ namespace Hermes
                 this._windowService = this._provider!.GetService<WindowService>();
                 this._windowService!.MainView = desktop.MainWindow;
                 this._windowService?.Start();
-                this._provider?.GetRequiredService<HermesContext>().Initialize();
+                this._provider?.GetRequiredService<HermesContext>().Migrate();
             }
 
             base.OnFrameworkInitializationCompleted();

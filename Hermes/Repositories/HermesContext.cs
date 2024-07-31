@@ -7,7 +7,7 @@ namespace Hermes.Repositories;
 
 public class HermesContext : DbContext
 {
-    private const string DbName = "dbSqlite.db";
+    protected string ConnectionString { get; init; } = "Filename=dbSqlite.db";
 
     public DbSet<UnitUnderTest> UnitsUnderTest { get; set; }
     public DbSet<Defect> Defects { get; set; }
@@ -17,12 +17,12 @@ public class HermesContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSqlite(
-            connectionString: "Filename=" + DbName,
+            connectionString: ConnectionString,
             sqliteOptionsAction: op => { op.MigrationsAssembly(Assembly.GetExecutingAssembly().FullName); });
         base.OnConfiguring(optionsBuilder);
     }
 
-    public virtual void Initialize()
+    public void Migrate()
     {
         if (Database.GetPendingMigrations().Any())
         {
@@ -32,10 +32,9 @@ public class HermesContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<UnitUnderTest>().ToTable("UnitsUnderTest");
         modelBuilder.Entity<Defect>().ToTable("Defects");
         modelBuilder.Entity<SfcResponse>().ToTable("SfcResponses");
-
         modelBuilder.Entity<Stop>().ToTable("Stops");
+        modelBuilder.Entity<UnitUnderTest>().ToTable("UnitsUnderTest");
     }
 }

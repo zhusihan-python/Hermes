@@ -39,7 +39,7 @@ public partial class StopViewModel : ViewModelBase
     {
         if (!value.IsNull)
         {
-            Task.Run(() => this._stopRepository.AddAsync(value));
+            Task.Run(() => this._stopRepository.AddAndSaveAsync(value));
         }
     }
 

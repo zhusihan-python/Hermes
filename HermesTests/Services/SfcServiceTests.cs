@@ -21,7 +21,7 @@ public class SfcServiceTests
     public async Task Send_PassContent_ReturnsSfcResponsePass()
     {
         var sfcResponse = this._sfcResponseBuilder
-            .SetPassContent()
+            .SetOkContent()
             .Build();
         var fileServiceMock = this._fileServiceMockBuilder
             .FileExists(true)
@@ -51,12 +51,12 @@ public class SfcServiceTests
         var hermesContext = new HermesContext();
         var sfcResponseRepositoryMock = new Mock<SfcResponseRepository>(hermesContext);
         sfcResponseRepositoryMock
-            .Setup(x => x.AddAsync(It.IsAny<SfcResponse>()))
+            .Setup(x => x.AddAndSaveAsync(It.IsAny<SfcResponse>()))
             .Returns(Task.CompletedTask);
 
         var unitUnderTestRepositoryMock = new Mock<UnitUnderTestRepository>(hermesContext);
         unitUnderTestRepositoryMock
-            .Setup(x => x.AddAsync(It.IsAny<UnitUnderTest>()))
+            .Setup(x => x.AddAndSaveAsync(It.IsAny<UnitUnderTest>()))
             .Returns(Task.CompletedTask);
 
         var sfcService = new SfcService(

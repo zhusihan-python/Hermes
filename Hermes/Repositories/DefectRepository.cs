@@ -1,10 +1,8 @@
 using Hermes.Models;
 using Hermes.Types;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System;
 
 namespace Hermes.Repositories;
 
@@ -35,8 +33,8 @@ public sealed class DefectRepository(HermesContext db) : BaseRepository<Defect>(
     {
         var uutIds = Db.SfcResponses
             .Where(x => x.ErrorType == SfcErrorType.None)
-            .Take(qty)
             .OrderByDescending(x => x.UnitUnderTest.CreatedAt)
+            .Take(qty)
             .Select(x => x.UnitUnderTest.Id);
         return Db.Defects
             .Where(x => uutIds.Contains(x.UnitUnderTestId));

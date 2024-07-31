@@ -14,7 +14,7 @@ public class BaseRepository<T> : IRepository<T> where T : class
         this.Db = db;
     }
 
-    public virtual async Task AddAsync(T entity)
+    public virtual async Task AddAndSaveAsync(T entity)
     {
         await this.Db.Set<T>().AddAsync(entity);
         await this.SaveChangesAsync();

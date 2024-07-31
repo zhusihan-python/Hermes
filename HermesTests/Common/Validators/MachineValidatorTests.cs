@@ -16,7 +16,7 @@ public class MachineValidatorTests
     public async void ValidateAsync_SfcResponseIsSuccess_ReturnStopNull()
     {
         var sfcResponse = _sfcResponseBuilder
-            .SetPassContent()
+            .SetOkContent()
             .Build();
 
         var validator = new MachineStopValidator();

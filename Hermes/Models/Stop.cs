@@ -13,27 +13,12 @@ public class Stop
     public int SfcResponseId { get; init; }
     public StopType Type { get; init; } = StopType.None;
     public bool IsRestored { get; set; }
-    public Defect Defect { get; set; } = Defect.Null;
+    public Defect? Defect { get; set; }
     [NotMapped] public bool IsNull => this == Null;
     [NotMapped] public bool IsMachineStop => this.Type == StopType.Machine;
     [NotMapped] public string SerialNumber => this.SfcResponse?.SerialNumber ?? "";
-
-    [NotMapped]
-    public string Message
-    {
-        get => GetMessage().ToUpper();
-        set => _message = value;
-    }
-
-    [NotMapped]
-    public string Details
-    {
-        get => GetDetails();
-        set => _details = value;
-    }
-
-    private string? _message;
-    private string? _details;
+    [NotMapped] public string Message => GetMessage().ToUpper();
+    [NotMapped] public string Details => GetDetails();
 
     public Stop()
     {
@@ -43,21 +28,26 @@ public class Stop
     {
         this.Type = stopType;
         this.SfcResponse = sfcResponse;
+        this.SfcResponseId = sfcResponse?.Id ?? 0;
     }
 
     private string GetDetails()
     {
-        if (string.IsNullOrWhiteSpace(_details) && SfcResponse != null)
+        if (SfcResponse?.IsNull == false)
         {
             return SfcResponse.Details;
         }
 
-        return _details ?? this.Message;
+        return "";
     }
 
     private string GetMessage()
     {
-        // TODO: Add defect
-        return !string.IsNullOrWhiteSpace(_message) ? _message : $"Stop {Type}";
+        if (this.SfcResponse?.IsFail == true)
+        {
+            return SfcResponse.Content;
+        }
+
+        return $"Stop {Type}";
     }
 }

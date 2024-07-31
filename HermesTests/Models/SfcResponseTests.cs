@@ -27,7 +27,7 @@ public class SfcResponseTests
     void IsFail_PassContent_ReturnsFalse()
     {
         var sfcResponse = this._sfcResponseBuilder
-            .SetPassContent()
+            .SetOkContent()
             .Build();
         Assert.False(sfcResponse.IsFail);
     }
@@ -55,5 +55,53 @@ public class SfcResponseTests
             .SetUnknownContent()
             .Build();
         Assert.Equal(SfcErrorType.Unknown, sfcResponse.ErrorType);
+    }
+
+    [Fact]
+    void IsRepair_RepairContent_ReturnsTrue()
+    {
+        var sfcResponse = this._sfcResponseBuilder
+            .SetRepair(true)
+            .Build();
+        Assert.True(sfcResponse.IsRepair);
+    }
+
+    [Fact]
+    void SerialNumber_ValidContent_ReturnsNotEmptyString()
+    {
+        var sfcResponse = this._sfcResponseBuilder
+            .Build();
+        Assert.False(string.IsNullOrEmpty(sfcResponse.SerialNumber));
+    }
+
+    [Fact]
+    void Details_FailContent_ReturnsNotEmptyString()
+    {
+        var sfcResponse = this._sfcResponseBuilder
+            .SetFailContent()
+            .Build();
+        Assert.False(string.IsNullOrEmpty(sfcResponse.Details));
+    }
+
+    [Fact]
+    void Details_OkContent_ReturnsEmptyString()
+    {
+        var sfcResponse = this._sfcResponseBuilder
+            .SetOkContent()
+            .Build();
+        Assert.True(string.IsNullOrEmpty(sfcResponse.Details));
+    }
+
+    [Fact]
+    void IsNull_NotSfcResponseNull_ReturnsFalse()
+    {
+        var sfcResponse = this._sfcResponseBuilder.Build();
+        Assert.False(sfcResponse.IsNull);
+    }
+
+    [Fact]
+    void IsNull_IsSfcResponseNull_ReturnsTrue()
+    {
+        Assert.True(SfcResponse.Null.IsNull);
     }
 }

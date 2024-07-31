@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hermes.AppData.Migrations
 {
     [DbContext(typeof(HermesContext))]
-    [Migration("20240731151624_001")]
+    [Migration("20240731195241_001")]
     partial class _001
     {
         /// <inheritdoc />
@@ -79,7 +79,7 @@ namespace Hermes.AppData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("DefectId")
+                    b.Property<int?>("DefectId")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("IsRestored")
@@ -151,9 +151,7 @@ namespace Hermes.AppData.Migrations
                 {
                     b.HasOne("Hermes.Models.Defect", "Defect")
                         .WithMany()
-                        .HasForeignKey("DefectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DefectId");
 
                     b.HasOne("Hermes.Models.SfcResponse", "SfcResponse")
                         .WithMany()

@@ -22,12 +22,6 @@ public class FileServiceMockBuilder
         return this;
     }
 
-    public FileServiceMockBuilder Settings(Settings settings)
-    {
-        this._settings = settings;
-        return this;
-    }
-
     public FileService Build()
     {
         var fileServiceMock = new Mock<FileService>(this._settings);
