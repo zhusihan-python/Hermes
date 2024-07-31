@@ -13,6 +13,7 @@ public class Stop
     public int SfcResponseId { get; init; }
     public StopType Type { get; init; } = StopType.None;
     public bool IsRestored { get; set; }
+    public Defect Defect { get; set; } = Defect.Null;
     [NotMapped] public bool IsNull => this == Null;
     [NotMapped] public bool IsMachineStop => this.Type == StopType.Machine;
     [NotMapped] public string SerialNumber => this.SfcResponse?.SerialNumber ?? "";
@@ -56,6 +57,7 @@ public class Stop
 
     private string GetMessage()
     {
+        // TODO: Add defect
         return !string.IsNullOrWhiteSpace(_message) ? _message : $"Stop {Type}";
     }
 }

@@ -15,7 +15,7 @@ public class SfcResponse
     private const string TimeoutText = "Timeout";
 
     [Key] public int Id { get; init; }
-    public UnitUnderTest? UnitUnderTest { get; init; }
+    public UnitUnderTest UnitUnderTest { get; init; } = UnitUnderTest.Null;
     public int UnitUnderTestId { get; init; }
     public bool IsFail => this.ErrorType != SfcErrorType.None;
     public SfcErrorType ErrorType { get; init; }
@@ -59,10 +59,11 @@ public class SfcResponse
 
     public static SfcResponse BuildTimeout(UnitUnderTest logfile)
     {
-        return new SfcResponse(logfile, TimeoutText);
+        return new SfcResponse(logfile, TimeoutText)
+        {
+            UnitUnderTest = UnitUnderTest.Null
+        };
     }
 }
 
-public class SfcResponseNull : SfcResponse
-{
-}
+public class SfcResponseNull() : SfcResponse();

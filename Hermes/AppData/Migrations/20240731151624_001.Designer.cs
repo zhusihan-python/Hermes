@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hermes.AppData.Migrations
 {
     [DbContext(typeof(HermesContext))]
-    [Migration("20240730220336_001")]
+    [Migration("20240731151624_001")]
     partial class _001
     {
         /// <inheritdoc />
@@ -79,6 +79,9 @@ namespace Hermes.AppData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("DefectId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<bool>("IsRestored")
                         .HasColumnType("INTEGER");
 
@@ -89,6 +92,8 @@ namespace Hermes.AppData.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DefectId");
 
                     b.HasIndex("SfcResponseId");
 
@@ -124,13 +129,11 @@ namespace Hermes.AppData.Migrations
 
             modelBuilder.Entity("Hermes.Models.Defect", b =>
                 {
-                    b.HasOne("Hermes.Models.UnitUnderTest", "UnitUnderTest")
+                    b.HasOne("Hermes.Models.UnitUnderTest", null)
                         .WithMany("Defects")
                         .HasForeignKey("UnitUnderTestId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("UnitUnderTest");
                 });
 
             modelBuilder.Entity("Hermes.Models.SfcResponse", b =>
@@ -146,11 +149,19 @@ namespace Hermes.AppData.Migrations
 
             modelBuilder.Entity("Hermes.Models.Stop", b =>
                 {
+                    b.HasOne("Hermes.Models.Defect", "Defect")
+                        .WithMany()
+                        .HasForeignKey("DefectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Hermes.Models.SfcResponse", "SfcResponse")
                         .WithMany()
                         .HasForeignKey("SfcResponseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Defect");
 
                     b.Navigation("SfcResponse");
                 });

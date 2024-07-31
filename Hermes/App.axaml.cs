@@ -72,16 +72,16 @@ namespace Hermes
             services.AddSingleton<Settings>();
 
             // Validators
-            services.AddSingleton<ConsecutiveDefectsValidator>();
             services.AddSingleton<MachineStopValidator>();
-            services.AddSingleton<StopLineValidator>();
+            services.AddSingleton<RuleThreeFiveTenValidator>();
+            services.AddSingleton<ConsecutiveDefectsValidator>();
 
             // Repos
             services.AddSingleton<HermesContext>();
             services.AddTransient<SfcResponseRepository>();
             services.AddTransient<StopRepository>();
             services.AddTransient<UnitUnderTestRepository>();
-            services.AddTransient<DefectRepository>();
+            services.AddTransient<IDefectRepository, DefectRepository>();
 
             // Common
             services.AddSingleton<ILogger, HermesLogger>();

@@ -1,24 +1,44 @@
 using Hermes.Models;
+using Hermes.Types;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System;
 
 namespace Hermes.Repositories;
 
-public class DefectRepository(HermesContext db) : BaseRepository<Defect>(db)
+public sealed class DefectRepository(HermesContext db) : BaseRepository<Defect>(db), IDefectRepository
 {
-    public IEnumerable<Defect> GetAllLastHour()
+    public async Task<Defect> GetConsecutiveSameDefects(int lastUnitsUnderTest)
     {
-        return Db.Defects
-            .Where(x => x.UnitUnderTest.CreatedAt > DateTime.Now.AddHours(-1))
-            .OrderBy(x => x.UnitUnderTest.CreatedAt)
-            .ToList();
+        var defects = await this.GetFromLastSfcResponses(lastUnitsUnderTest)
+            .Where(x => x.ErrorFlag == ErrorFlag.Bad)
+            .GroupBy(x => new { x.Location, x.ErrorCode })
+            .Select(x => new
+            {
+                Id = x.Max(defect => defect.Id),
+                Count = x.Count()
+            })
+            .ToListAsync();
+
+        var result = Defect.Null;
+        foreach (var defect in defects.Where(defect => defect.Count >= lastUnitsUnderTest))
+        {
+            result = this.GetById(defect.Id) ?? Defect.Null;
+        }
+
+        return result;
     }
 
-    public IQueryable<Defect> GetFromLastUnitsUnderTest(int qty)
+    private IQueryable<Defect> GetFromLastSfcResponses(int qty)
     {
-        var uuts = Db.UnitsUnderTest.Take(qty).OrderByDescending(x => x.CreatedAt);
+        var uutIds = Db.SfcResponses
+            .Where(x => x.ErrorType == SfcErrorType.None)
+            .Take(qty)
+            .OrderByDescending(x => x.UnitUnderTest.CreatedAt)
+            .Select(x => x.UnitUnderTest.Id);
         return Db.Defects
-            .Where(x => uuts.Contains(x.UnitUnderTest));
+            .Where(x => uutIds.Contains(x.UnitUnderTestId));
     }
 }

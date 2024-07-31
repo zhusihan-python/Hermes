@@ -5,10 +5,10 @@ namespace Hermes.Repositories;
 
 interface IRepository<T> where T : class
 {
-    List<T> GetAll();
-    T? GetById(int id);
-    Task AddAsync(T entity);
-    void Edit(T entity);
-    void Delete(int id);
-    Task<int> SaveChangesAsync();
+    public List<T> GetAll();
+    public T? GetById(int id);
+    public Task AddAsync(T entity);
+    public void Edit(T entity);
+    public void Delete(int id);
+    public Task<int> SaveChangesAsync();
 }

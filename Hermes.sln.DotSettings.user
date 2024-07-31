@@ -4,6 +4,14 @@
   &lt;Assembly Path="C:\Users\david\.nuget\packages\communitytoolkit.mvvm\8.2.1\lib\net6.0\CommunityToolkit.Mvvm.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String>
 	
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=30650351_002D897c_002D40c0_002Dbcee_002D45e7a85eb940/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from &amp;lt;HermesTests&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Project Location="C:\Users\david\RiderProjects\HermesWIP\HermesTests" Presentation="&amp;lt;HermesTests&amp;gt;" /&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=30650351_002D897c_002D40c0_002Dbcee_002D45e7a85eb940/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from &amp;lt;HermesTests&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::31B57559-0391-445A-8BCF-8ECC4E617EE6::net8.0::HermesTests.Common.Validators.MachineValidatorTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::31B57559-0391-445A-8BCF-8ECC4E617EE6::net8.0::HermesTests.Common.Validators.ConsecutiveDefectsValidatorTests.ValidateAsync_HasConsecutiveDefects_ReturnStop&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=90e89a9b_002D0e35_002D4136_002D86ab_002D01915358644a/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="ValidateAsync_HasConsecutiveDefects_ReturnStop" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::31B57559-0391-445A-8BCF-8ECC4E617EE6::net8.0::HermesTests.Common.Validators.ConsecutiveDefectsValidatorTests&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

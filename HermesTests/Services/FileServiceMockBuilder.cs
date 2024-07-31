@@ -30,10 +30,10 @@ public class FileServiceMockBuilder
 
     public FileService Build()
     {
-        var fileServiceMoc = new Mock<FileService>(this._settings);
-        fileServiceMoc.Setup(x => x.FileExists(It.IsAny<string>())).Returns(this._fileExists);
-        fileServiceMoc.Setup(x => x.TryReadAllTextAsync(It.IsAny<string>()))
+        var fileServiceMock = new Mock<FileService>(this._settings);
+        fileServiceMock.Setup(x => x.FileExists(It.IsAny<string>())).Returns(this._fileExists);
+        fileServiceMock.Setup(x => x.TryReadAllTextAsync(It.IsAny<string>()))
             .Returns(Task.FromResult(this._tryReadAllTextAsync));
-        return fileServiceMoc.Object;
+        return fileServiceMock.Object;
     }
 }
