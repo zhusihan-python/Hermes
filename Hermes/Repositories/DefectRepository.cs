@@ -27,7 +27,6 @@ public sealed class DefectRepository(HermesContext db) : BaseRepository<Defect>(
         return Task.FromResult(Defect.Null);
     }
 
-
     public async Task<Defect> GetConsecutiveSameDefects(int qty)
     {
         return await GetRepeatedDefect(

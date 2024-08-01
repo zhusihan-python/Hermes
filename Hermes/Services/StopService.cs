@@ -10,9 +10,11 @@ public class StopService
 
     public StopService(
         RuleThreeFiveTenValidator ruleThreeFiveTenValidator,
-        MachineStopValidator machineStopValidator)
+        MachineStopValidator machineStopValidator,
+        CriticalLocationStopValidator criticalLocationStopValidator)
     {
         this._stopValidator = new CompoundStopValidator()
+            .Add(criticalLocationStopValidator)
             .Add(ruleThreeFiveTenValidator)
             .Add(machineStopValidator);
     }

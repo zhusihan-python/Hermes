@@ -120,15 +120,21 @@ public class UnitUnderTestBuilder
         return this;
     }
 
-    public UnitUnderTestBuilder AddRandomDefect()
+    public UnitUnderTestBuilder AddRandomDefect(string? location = null)
     {
         var rnd = this._random.Next();
         this.Defects.Add(new Defect()
         {
             ErrorFlag = ErrorFlag.Good,
-            Location = $"L{rnd}",
+            Location = location ?? $"L{rnd}",
             ErrorCode = $"EC{rnd}"
         });
+        return this;
+    }
+
+    public UnitUnderTestBuilder AddDefect(Defect defect)
+    {
+        this.Defects.Add(defect);
         return this;
     }
 

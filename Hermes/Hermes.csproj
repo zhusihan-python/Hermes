@@ -81,6 +81,5 @@
 
     <ItemGroup>
       <Folder Include="AppData\Migrations\" />
-      <Folder Include="Common\Extensions\" />
     </ItemGroup>
 </Project>

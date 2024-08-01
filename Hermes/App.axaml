@@ -16,13 +16,13 @@
     </Application.Styles>
 
     <Application.Resources>
-        <SolidColorBrush x:Key="LightRedColor" Color="#B54747" />
-        <SolidColorBrush x:Key="DarkRedColor" Color="#BF3428" />
+        <SolidColorBrush x:Key="LightRedColor" Color="#ce3f39" />
+        <SolidColorBrush x:Key="DarkRedColor" Color="#a8342f" />
         <SolidColorBrush x:Key="DarkBlueColor" Color="#3F51B5" />
-        <SolidColorBrush x:Key="DarkGreenColor" Color="#3C603F" />
-        <SolidColorBrush x:Key="LightGreenColor" Color="#4E8752" />
+        <SolidColorBrush x:Key="DarkGreenColor" Color="#3c5432" />
+        <SolidColorBrush x:Key="LightGreenColor" Color="#537834" />
         <SolidColorBrush x:Key="LightYellowColor" Color="#BE975D" />
-        <SolidColorBrush x:Key="DarkYellowColor" Color="#B48615" />
+        <SolidColorBrush x:Key="DarkYellowColor" Color="#d48806" />
 
         <sys:Double x:Key="StopWindowMaxWidth">1024</sys:Double>
         <sys:Double x:Key="DefaultIconSize">20</sys:Double>

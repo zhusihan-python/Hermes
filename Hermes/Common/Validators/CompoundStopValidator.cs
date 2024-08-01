@@ -14,7 +14,7 @@ public class CompoundStopValidator : IStopValidator
         return this;
     }
 
-    public async Task<Stop> ValidateAsync(SfcResponse sfcResponse)
+    public virtual async Task<Stop> ValidateAsync(SfcResponse sfcResponse)
     {
         foreach (var validator in _validators)
         {

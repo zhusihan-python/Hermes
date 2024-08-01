@@ -1,6 +1,5 @@
 using Hermes.Builders;
 using Hermes.Models;
-using Hermes.Services;
 using Hermes.Types;
 
 namespace HermesTests.Models;
@@ -8,10 +7,14 @@ namespace HermesTests.Models;
 public class SfcResponseTests
 {
     private readonly SfcResponseBuilder _sfcResponseBuilder;
+    private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
 
-    public SfcResponseTests(SfcResponseBuilder sfcResponseSfcResponseBuilder)
+    public SfcResponseTests(
+        SfcResponseBuilder sfcResponseSfcResponseBuilder,
+        UnitUnderTestBuilder unitUnderTestBuilder)
     {
         this._sfcResponseBuilder = sfcResponseSfcResponseBuilder;
+        this._unitUnderTestBuilder = unitUnderTestBuilder;
     }
 
     [Fact]
@@ -103,5 +106,78 @@ public class SfcResponseTests
     void IsNull_IsSfcResponseNull_ReturnsTrue()
     {
         Assert.True(SfcResponse.Null.IsNull);
+    }
+
+    [Fact]
+    void BuildTimeout_ValidUnitUnderTest_ReturnsSameUnitUnderTests()
+    {
+        var uut = this._unitUnderTestBuilder
+            .Build();
+        var sut = SfcResponse.BuildTimeout(uut);
+        Assert.Equal(uut, sut.UnitUnderTest);
+    }
+
+    [Fact]
+    void GetDefectByLocation_WithCriticalDefect_ReturnsDefect()
+    {
+        const string criticalLocation = "L0";
+        var defect = new Defect()
+        {
+            ErrorFlag = ErrorFlag.Bad,
+            Location = criticalLocation,
+        };
+        var uut = this._unitUnderTestBuilder
+            .AddDefect(defect)
+            .Build();
+        var sut = _sfcResponseBuilder
+            .UnitUnderTest(uut)
+            .Build();
+        Assert.Equal(defect.Location, sut.GetDefectByLocation(criticalLocation).Location);
+        Assert.Equal(defect.ErrorFlag, sut.GetDefectByLocation(criticalLocation).ErrorFlag);
+    }
+
+    [Fact]
+    void GetDefectByLocation_NotCriticalDefect_ReturnsDefectNull()
+    {
+        const string criticalLocation = "L0";
+        var defect = new Defect()
+        {
+            ErrorFlag = ErrorFlag.Good,
+            Location = criticalLocation,
+        };
+        var uut = this._unitUnderTestBuilder
+            .AddDefect(defect)
+            .Build();
+        var sut = _sfcResponseBuilder
+            .UnitUnderTest(uut)
+            .Build();
+        Assert.True(sut.GetDefectByLocation(criticalLocation).IsNull);
+    }
+
+    [Fact]
+    void GetDefectByLocation_WithMultipleCriticalDefect_ReturnsDefect()
+    {
+        const string criticalLocation = "L0";
+        var defect = new Defect()
+        {
+            ErrorFlag = ErrorFlag.Bad,
+            Location = criticalLocation,
+        };
+        var uut = this._unitUnderTestBuilder
+            .AddDefect(defect)
+            .Build();
+        var sut = _sfcResponseBuilder
+            .UnitUnderTest(uut)
+            .Build();
+        Assert.Equal(defect.Location, sut.GetDefectByLocation($"{criticalLocation.ToLower()},L1,L2").Location);
+        Assert.Equal(defect.ErrorFlag, sut.GetDefectByLocation(criticalLocation).ErrorFlag);
+    }
+
+    [Fact]
+    void GetDefectByLocation_WithoutDefects_ReturnsDefectNull()
+    {
+        const string criticalLocation = "L0";
+        var sut = _sfcResponseBuilder.Build();
+        Assert.True(sut.GetDefectByLocation(criticalLocation).IsNull);
     }
 }

@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using Hermes.Types;
 
 namespace Hermes.Models;
 
@@ -26,6 +28,14 @@ public class UnitUnderTest
 
     public UnitUnderTest() : this(string.Empty, string.Empty)
     {
+    }
+
+    public Defect GetDefectByLocation(string criticalLocations)
+    {
+        return Defects
+            .Where(x => x.ErrorFlag == ErrorFlag.Bad)
+            .Where(x => criticalLocations.Contains(x.Location, StringComparison.OrdinalIgnoreCase))
+            .FirstOrDefault(Defect.Null);
     }
 }
 

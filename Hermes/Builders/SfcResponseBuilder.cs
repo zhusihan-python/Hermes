@@ -13,6 +13,7 @@ public class SfcResponseBuilder
 
     private string Content { get; set; } = UnknownContent;
     private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
+    private UnitUnderTest? _unitUnderTest;
 
     public SfcResponseBuilder(UnitUnderTestBuilder unitUnderTestBuilderBuilder)
     {
@@ -21,7 +22,7 @@ public class SfcResponseBuilder
 
     public SfcResponse Build()
     {
-        var unitUnderTest = this._unitUnderTestBuilder.Build();
+        var unitUnderTest = _unitUnderTest ?? this._unitUnderTestBuilder.Build();
         return new SfcResponse(unitUnderTest, this.GetContent(unitUnderTest));
     }
 
@@ -87,6 +88,12 @@ public class SfcResponseBuilder
     public SfcResponseBuilder CreatedAt(DateTime createdAt)
     {
         this._unitUnderTestBuilder.CreatedAt(createdAt);
+        return this;
+    }
+
+    public SfcResponseBuilder UnitUnderTest(UnitUnderTest uut)
+    {
+        this._unitUnderTest = uut;
         return this;
     }
 }

@@ -1,5 +1,6 @@
 using Hermes.Builders;
 using Hermes.Common.Validators;
+using Hermes.Types;
 
 namespace HermesTests.Common.Validators;
 
@@ -19,8 +20,8 @@ public class MachineValidatorTests
             .SetOkContent()
             .Build();
 
-        var validator = new MachineStopValidator();
-        Assert.True((await validator.ValidateAsync(sfcResponse)).IsNull);
+        var sut = new MachineStopValidator();
+        Assert.True((await sut.ValidateAsync(sfcResponse)).IsNull);
     }
 
     [Fact]
@@ -30,8 +31,19 @@ public class MachineValidatorTests
             .SetFailContent()
             .Build();
 
-        var validator = new MachineStopValidator();
-        Assert.False((await validator.ValidateAsync(sfcResponse)).IsNull);
+        var sut = new MachineStopValidator();
+        Assert.False((await sut.ValidateAsync(sfcResponse)).IsNull);
+    }
+
+    [Fact]
+    public async void ValidateAsync_SfcResponseIsFail_ReturnStopTypeMachine()
+    {
+        var sfcResponse = _sfcResponseBuilder
+            .SetFailContent()
+            .Build();
+
+        var sut = new MachineStopValidator();
+        Assert.Equal(StopType.Machine, (await sut.ValidateAsync(sfcResponse)).Type);
     }
 
     [Fact]
@@ -41,7 +53,7 @@ public class MachineValidatorTests
             .SetFailContent()
             .Build();
 
-        var validator = new MachineStopValidator();
-        Assert.False((await validator.ValidateAsync(sfcResponse)).IsNull);
+        var sut = new MachineStopValidator();
+        Assert.False((await sut.ValidateAsync(sfcResponse)).IsNull);
     }
 }

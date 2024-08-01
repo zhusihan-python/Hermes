@@ -14,7 +14,8 @@
         WindowStartupLocation="CenterOwner"
         WindowState="FullScreen"
         ExtendClientAreaChromeHints="NoChrome"
-        Background="{DynamicResource LightRedColor }">
+        Background="{DynamicResource LightRedColor }"
+        Icon="avares://Hermes/AppData/Assets/logo-hermes.png">
 
     <Grid
         MaxWidth="{StaticResource StopWindowMaxWidth }"
@@ -36,8 +37,8 @@
 
                 <Grid
                     RowDefinitions="*, Auto">
-
                     <TextBlock
+                        TextWrapping="Wrap"
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center"
                         Classes="h1"
@@ -47,29 +48,35 @@
                     <StackPanel
                         Grid.Row="1"
                         HorizontalAlignment="Center"
+                        Margin="0"
                         Spacing="{StaticResource DefaultSpacing}">
-
-                        <TextBlock
-                            TextAlignment="Center"
-                            Classes="h4"
-                            Foreground="White"
-                            Text="{Binding Stop.Details}" />
 
                         <StackPanel
                             VerticalAlignment="Center"
                             Orientation="Horizontal"
+                            Margin="0"
                             Spacing="{StaticResource DefaultSpacing}">
 
                             <TextBlock
                                 Classes="h4"
+                                Margin="0"
                                 Foreground="White"
                                 Text="Serial Number:" />
 
                             <TextBlock
                                 Classes="h4"
+                                Margin="0"
                                 Foreground="White"
                                 Text="{Binding Stop.SerialNumber}" />
                         </StackPanel>
+
+                        <TextBlock
+                            TextWrapping="Wrap"
+                            TextAlignment="Center"
+                            Classes="h4"
+                            Margin="0"
+                            Foreground="White"
+                            Text="{Binding Stop.Details}" />
                     </StackPanel>
                 </Grid>
             </Border>

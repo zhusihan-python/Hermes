@@ -11,7 +11,7 @@ public class Stop
     [Key] public int Id { get; init; }
     public SfcResponse? SfcResponse { get; set; }
     public int SfcResponseId { get; init; }
-    public StopType Type { get; init; } = StopType.None;
+    public StopType Type { get; set; } = StopType.None;
     public bool IsRestored { get; set; }
     public Defect? Defect { get; set; }
     [NotMapped] public bool IsNull => this == Null;

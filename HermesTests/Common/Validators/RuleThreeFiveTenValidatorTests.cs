@@ -40,14 +40,27 @@ public class RuleThreeFiveTenValidatorTests
     }
 
     [Fact]
+    public async void ValidateAsync_WithConsecutiveDefects_ReturnStopTypeLine()
+    {
+        var sfcResponse = _sfcResponseBuilder
+            .SetOkContent()
+            .Build();
+        var stop = new Stop(StopType.Line, sfcResponse);
+        var sut = BuildSut(consecutiveDefectsStop: stop);
+
+        Assert.Equal(stop, await sut.ValidateAsync(sfcResponse));
+    }
+
+    [Fact]
     public async void ValidateAsync_NotSameDefectsWithin1Hour_ReturnStopNull()
     {
         var sfcResponse = _sfcResponseBuilder
             .SetOkContent()
             .Build();
-        var sut = BuildSut(sameDefectsWithin1HourStop: Stop.Null);
+        var stop = new Stop(StopType.Line, sfcResponse);
+        var sut = BuildSut(sameDefectsWithin1HourStop: stop);
 
-        Assert.True((await sut.ValidateAsync(sfcResponse)).IsNull);
+        Assert.Equal(StopType.Line, (await sut.ValidateAsync(sfcResponse)).Type);
     }
 
     [Fact]

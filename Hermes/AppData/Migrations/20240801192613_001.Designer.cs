@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hermes.AppData.Migrations
 {
     [DbContext(typeof(HermesContext))]
-    [Migration("20240731195241_001")]
+    [Migration("20240801192613_001")]
     partial class _001
     {
         /// <inheritdoc />

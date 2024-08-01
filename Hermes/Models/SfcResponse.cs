@@ -1,3 +1,4 @@
+using Hermes.Common.Extensions;
 using Hermes.Types;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
@@ -22,11 +23,11 @@ public class SfcResponse
     [MaxLength(3000)] public string Content { get; init; } = "";
     [NotMapped] public bool IsRepair => this.UnitUnderTest?.IsFail ?? true && !this.IsFail;
     [NotMapped] public string SerialNumber => UnitUnderTest?.SerialNumber ?? string.Empty;
-    [NotMapped] public string Details => IsFail ? $"{ErrorType}" : "";
+    [NotMapped] public string Details => IsFail ? $"{ErrorType} - {ErrorType.GetDescription()}" : "";
     [NotMapped] public bool IsNull => this == Null;
 
     public SfcResponse()
-    
+
     {
     }
 
@@ -58,12 +59,14 @@ public class SfcResponse
         return SfcErrorType.Unknown;
     }
 
-    public static SfcResponse BuildTimeout(UnitUnderTest logfile)
+    public static SfcResponse BuildTimeout(UnitUnderTest unitUnderTest)
     {
-        return new SfcResponse(logfile, TimeoutText)
-        {
-            UnitUnderTest = UnitUnderTest.Null
-        };
+        return new SfcResponse(unitUnderTest, TimeoutText);
+    }
+
+    public virtual Defect GetDefectByLocation(string criticalLocations)
+    {
+        return this.UnitUnderTest.GetDefectByLocation(criticalLocations);
     }
 }
 
