@@ -27,7 +27,9 @@ public class ConsecutiveDefectsValidator : IStopValidator
         {
             return new Stop(StopType.Line, sfcResponse)
             {
-                Defect = defect
+                Defect = defect,
+                Details =
+                    $"{_maxConsecutiveDefects} consecutive defects in {defect.Location} with error code {defect.ErrorCode}"
             };
         }
 

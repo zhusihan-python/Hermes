@@ -73,9 +73,11 @@ public class StopTests
     }
 
     [Fact]
-    public void Details_SfcResponseNull_ReturnsEmptyString()
+    public void Details_SfcResponseNull_ReturnsDetails()
     {
         var stop = new Stop(StopType.Machine, SfcResponse.Null);
-        Assert.True(string.IsNullOrEmpty(stop.Details));
+        const string details = "details";
+        stop.Details = details;
+        Assert.Equal(details, stop.Details);
     }
 }

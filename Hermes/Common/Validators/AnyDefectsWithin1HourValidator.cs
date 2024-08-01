@@ -27,7 +27,8 @@ public class AnyDefectsWithin1HourValidator : IStopValidator
         {
             return new Stop(StopType.Line, sfcResponse)
             {
-                Defect = defect
+                Defect = defect,
+                Details = $"{_maxDefects} defects within 1 hour"
             };
         }
 

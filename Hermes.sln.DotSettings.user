@@ -3,7 +3,10 @@
   &lt;Assembly Path="C:\Users\david\.nuget\packages\sukiui\5.3.0\lib\netstandard2.0\SukiUI.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Users\david\.nuget\packages\communitytoolkit.mvvm\8.2.1\lib\net6.0\CommunityToolkit.Mvvm.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=17f80fe1_002Dd998_002D41bf_002D8805_002Dfcdce7987d61/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="GetDefectByLocation_WithCriticalDefect_ReturnsDefect" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=17f80fe1_002Dd998_002D41bf_002D8805_002Dfcdce7987d61/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="GetDefectByLocation_WithCriticalDefect_ReturnsDefect" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Project Location="C:\Users\Foxconn\RiderProjects\hermes\HermesTests" Presentation="&amp;lt;HermesTests&amp;gt;" /&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=259f77ec_002D0f67_002D40bd_002Dafca_002D9581ae01a618/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Details_SfcResponseNull_ReturnsDetails" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;Project Location="C:\Users\Foxconn\RiderProjects\hermes\HermesTests" Presentation="&amp;lt;HermesTests&amp;gt;" /&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	

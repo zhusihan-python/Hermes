@@ -18,7 +18,7 @@ public class SfcResponse
     [Key] public int Id { get; init; }
     public UnitUnderTest UnitUnderTest { get; init; } = UnitUnderTest.Null;
     public int UnitUnderTestId { get; init; }
-    public bool IsFail => this.ErrorType != SfcErrorType.None;
+    public virtual bool IsFail => this.ErrorType != SfcErrorType.None;
     public SfcErrorType ErrorType { get; init; }
     [MaxLength(3000)] public string Content { get; init; } = "";
     [NotMapped] public bool IsRepair => this.UnitUnderTest?.IsFail ?? true && !this.IsFail;

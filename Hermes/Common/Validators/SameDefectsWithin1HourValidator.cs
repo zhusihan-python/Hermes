@@ -27,7 +27,9 @@ public class SameDefectsWithin1HourValidator : IStopValidator
         {
             return new Stop(StopType.Line, sfcResponse)
             {
-                Defect = defect
+                Defect = defect,
+                Details =
+                    $"{_maxSameDefects} same defects within 1 hour in {defect.Location} with error code {defect.ErrorCode}"
             };
         }
 

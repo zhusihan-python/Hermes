@@ -25,7 +25,22 @@ public class CriticalLocationStopValidatorTests
             Location = criticalLocation
         };
         var sfcResponse = GetSfcResponseMock(defect);
-        var sut = new CriticalLocationStopValidator(criticalLocation);
+        var sut = new CriticalLocationStopValidator(new CoreSettings() { CriticalLocations = criticalLocation });
+        var result = await sut.ValidateAsync(sfcResponse);
+        Assert.False(result.IsNull);
+        Assert.Equal(defect, result.Defect);
+    }
+
+    [Fact]
+    public async void ValidateAsync_SfcResponseIsError_ReturnStopNull()
+    {
+        var criticalLocation = "L0";
+        var defect = new Defect()
+        {
+            Location = criticalLocation
+        };
+        var sfcResponse = GetSfcResponseMock(defect);
+        var sut = new CriticalLocationStopValidator(new CoreSettings() { CriticalLocations = criticalLocation });
         var result = await sut.ValidateAsync(sfcResponse);
         Assert.False(result.IsNull);
         Assert.Equal(defect, result.Defect);
@@ -39,9 +54,9 @@ public class CriticalLocationStopValidatorTests
         {
             Location = criticalLocation
         };
-        var sfcResponse = GetSfcResponseMock(defect);
-        var sut = new CriticalLocationStopValidator(criticalLocation);
-        Assert.Equal(StopType.Line, (await sut.ValidateAsync(sfcResponse)).Type);
+        var sfcResponse = GetSfcResponseMock(defect, true);
+        var sut = new CriticalLocationStopValidator(new CoreSettings() { CriticalLocations = criticalLocation });
+        Assert.True((await sut.ValidateAsync(sfcResponse)).IsNull);
     }
 
     [Fact]
@@ -49,16 +64,19 @@ public class CriticalLocationStopValidatorTests
     {
         var criticalLocation = "L0";
         var sfcResponse = GetSfcResponseMock();
-        var sut = new CriticalLocationStopValidator(criticalLocation);
+        var sut = new CriticalLocationStopValidator(new CoreSettings() { CriticalLocations = criticalLocation });
         Assert.True((await sut.ValidateAsync(sfcResponse)).IsNull);
     }
 
-    private SfcResponse GetSfcResponseMock(Defect? defect = null)
+    private SfcResponse GetSfcResponseMock(Defect? defect = null, bool isFail = false)
     {
         var mock = new Mock<SfcResponse>();
         mock
             .Setup(x => x.GetDefectByLocation(It.IsAny<string>()))
             .Returns(defect ?? Defect.Null);
+        mock
+            .Setup(x => x.IsFail)
+            .Returns(isFail);
         return mock.Object;
     }
 }

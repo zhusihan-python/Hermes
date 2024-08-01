@@ -69,7 +69,7 @@ namespace Hermes
 
             // Settings
             services.AddSingleton<Settings>();
-            services.AddSingleton<Settings>();
+            services.AddSingleton<CoreSettings>();
 
             // Validators
             services.AddSingleton<MachineStopValidator>();

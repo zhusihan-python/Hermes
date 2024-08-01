@@ -18,7 +18,15 @@ public class Stop
     [NotMapped] public bool IsMachineStop => this.Type == StopType.Machine;
     [NotMapped] public string SerialNumber => this.SfcResponse?.SerialNumber ?? "";
     [NotMapped] public string Message => GetMessage().ToUpper();
-    [NotMapped] public string Details => GetDetails();
+
+    [NotMapped]
+    public string Details
+    {
+        get => GetDetails();
+        set => _details = value;
+    }
+
+    private string _details;
 
     public Stop()
     {
@@ -31,23 +39,23 @@ public class Stop
         this.SfcResponseId = sfcResponse?.Id ?? 0;
     }
 
-    private string GetDetails()
-    {
-        if (SfcResponse?.IsNull == false)
-        {
-            return SfcResponse.Details;
-        }
-
-        return "";
-    }
-
     private string GetMessage()
     {
-        if (this.SfcResponse?.IsFail == true)
+        if (this.SfcResponse?.IsFail == true && this.Type == StopType.Machine)
         {
             return SfcResponse.Content;
         }
 
         return $"Stop {Type}";
+    }
+
+    private string GetDetails()
+    {
+        if (SfcResponse?.IsNull == false && this.Type == StopType.Machine)
+        {
+            return SfcResponse.Details;
+        }
+
+        return this._details;
     }
 }
