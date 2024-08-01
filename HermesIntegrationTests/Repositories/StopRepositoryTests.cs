@@ -11,10 +11,10 @@ public class StopRepositoryTests
     private readonly HermesContext _context;
     private readonly SfcResponseBuilder _sfcResponseBuilder;
 
-    public StopRepositoryTests(SfcResponseBuilder sfcResponseBuilder)
+    public StopRepositoryTests(SfcResponseBuilder sfcResponseBuilder, HermesContext hermesContext)
     {
         this._sfcResponseBuilder = sfcResponseBuilder;
-        this._context = HermesContextFactory.Build();
+        this._context = hermesContext;
         this._sut = new StopRepository(_context);
     }
 

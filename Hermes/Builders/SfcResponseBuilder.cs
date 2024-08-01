@@ -83,4 +83,10 @@ public class SfcResponseBuilder
     {
         return new SfcResponseBuilder(this._unitUnderTestBuilder.Clone());
     }
+
+    public SfcResponseBuilder CreatedAt(DateTime createdAt)
+    {
+        this._unitUnderTestBuilder.CreatedAt(createdAt);
+        return this;
+    }
 }

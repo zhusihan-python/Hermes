@@ -1,7 +1,7 @@
 using Hermes.Builders;
-using Hermes.Models;
 using Hermes.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Xunit;
 
 namespace HermesIntegrationTests.Repositories;
 
@@ -11,10 +11,10 @@ public class UnitUnderTestRepositoryTests
     private readonly HermesContext _context;
     private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
 
-    public UnitUnderTestRepositoryTests(UnitUnderTestBuilder unitUnderTestBuilder)
+    public UnitUnderTestRepositoryTests(UnitUnderTestBuilder unitUnderTestBuilder, HermesContext hermesContext)
     {
         this._unitUnderTestBuilder = unitUnderTestBuilder;
-        this._context = HermesContextFactory.Build();
+        this._context = hermesContext;
         this._sut = new UnitUnderTestRepository(_context);
     }
 
@@ -57,8 +57,6 @@ public class UnitUnderTestRepositoryTests
             await _sut.AddAndSaveAsync(uut);
         }
 
-        await _context.SaveChangesAsync();
-
-        Assert.Equal(_context.UnitsUnderTest.Count(), _sut.GetAll().Count);
+        Assert.True(listLength <= _sut.GetAll().Count);
     }
 }

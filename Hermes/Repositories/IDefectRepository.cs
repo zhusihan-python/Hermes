@@ -6,7 +6,9 @@ namespace Hermes.Repositories;
 
 public interface IDefectRepository
 {
-    Task<Defect> GetConsecutiveSameDefects(int lastUnitsUnderTest);
+    Task<Defect> GetConsecutiveSameDefects(int qty);
+    Task<Defect> GetSameDefectsWithin1Hour(int qty);
+    Task<Defect> GetAnyDefectsWithin1Hour(int qty);
     Task AddAndSaveAsync(Defect entity);
     void Delete(int id);
     void Edit(Defect entity);

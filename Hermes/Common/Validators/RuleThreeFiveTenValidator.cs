@@ -2,10 +2,13 @@ namespace Hermes.Common.Validators;
 
 public class RuleThreeFiveTenValidator : CompoundStopValidator
 {
-    public RuleThreeFiveTenValidator(ConsecutiveDefectsValidator consecutiveDefectsValidator)
+    public RuleThreeFiveTenValidator(
+        ConsecutiveDefectsValidator consecutiveDefectsValidator,
+        SameDefectsWithin1HourValidator sameDefectsWithin1HourValidator,
+        AnyDefectsWithin1HourValidator anyDefectsWithin1HourValidator)
     {
-        this.Add(consecutiveDefectsValidator);
-        // TODO: SameFailuresWithin1Hour
-        // TODO: FailuresWithin1Hour
+        this.Add(consecutiveDefectsValidator)
+            .Add(sameDefectsWithin1HourValidator)
+            .Add(anyDefectsWithin1HourValidator);
     }
 }

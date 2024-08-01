@@ -5,24 +5,24 @@ using System.Threading.Tasks;
 
 namespace Hermes.Common.Validators;
 
-public class ConsecutiveDefectsValidator : IStopValidator
+public class SameDefectsWithin1HourValidator : IStopValidator
 {
-    public const int DefaultMaxConsecutiveDefects = 3;
+    public const int DefaultMaxSameDefects = 3;
 
     private readonly IDefectRepository _defectRepository;
-    private readonly int _maxConsecutiveDefects;
+    private readonly int _maxSameDefects;
 
-    public ConsecutiveDefectsValidator(
+    public SameDefectsWithin1HourValidator(
         IDefectRepository defectRepository,
-        int maxConsecutiveDefects = DefaultMaxConsecutiveDefects)
+        int maxSameDefects = DefaultMaxSameDefects)
     {
         this._defectRepository = defectRepository;
-        this._maxConsecutiveDefects = maxConsecutiveDefects;
+        this._maxSameDefects = maxSameDefects;
     }
 
     public virtual async Task<Stop> ValidateAsync(SfcResponse sfcResponse)
     {
-        var defect = await this._defectRepository.GetConsecutiveSameDefects(_maxConsecutiveDefects);
+        var defect = await this._defectRepository.GetSameDefectsWithin1Hour(_maxSameDefects);
         if (!defect.IsNull)
         {
             return new Stop(StopType.Line, sfcResponse)

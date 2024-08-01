@@ -75,6 +75,7 @@ namespace Hermes
             services.AddSingleton<MachineStopValidator>();
             services.AddSingleton<RuleThreeFiveTenValidator>();
             services.AddSingleton<ConsecutiveDefectsValidator>();
+            services.AddSingleton<SameDefectsWithin1HourValidator>();
 
             // Repos
             services.AddSingleton<HermesContext>();

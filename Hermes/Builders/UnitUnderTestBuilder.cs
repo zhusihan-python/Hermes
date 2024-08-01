@@ -17,6 +17,7 @@ public class UnitUnderTestBuilder
     private string _serialNumber = "1A62TESTSERIALNUMBER";
     private string _fileName = "fileName";
     private bool _isPass = true;
+    private DateTime _createdAt = DateTime.Now;
 
     private readonly FileService _fileService;
     private readonly Settings _settings;
@@ -85,6 +86,7 @@ public class UnitUnderTestBuilder
             IsFail = parser.ParseIsFail(content),
             SerialNumber = parser.ParseSerialNumber(content),
             Defects = parser.ParseDefects(content),
+            CreatedAt = this._createdAt
         };
     }
 
@@ -133,5 +135,11 @@ public class UnitUnderTestBuilder
     public UnitUnderTestBuilder Clone()
     {
         return new UnitUnderTestBuilder(this._settings, this._fileService, this._parserPrototype);
+    }
+
+    public UnitUnderTestBuilder CreatedAt(DateTime createdAt)
+    {
+        this._createdAt = createdAt;
+        return this;
     }
 }

@@ -9,7 +9,7 @@ public class HermesContextTests
 
     public HermesContextTests()
     {
-        this._sut = HermesContextFactory.Build();
+        this._sut = new HermesContext();
     }
 
     [Fact]
