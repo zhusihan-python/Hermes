@@ -18,9 +18,10 @@ public class HermesLogger : ILogger
         logfile.Layout = Layout;
         consoleTarget.Layout = Layout;
 
-        config.AddRule(LogLevel.Info, LogLevel.Fatal, consoleTarget);
 #if !DEBUG
-        config.AddRule(LogLevel.Debug, LogLevel.Fatal, logfile);
+        config.AddRule(LogLevel.Error, LogLevel.Fatal, consoleTarget);
+#else
+        config.AddRule(LogLevel.Trace, LogLevel.Fatal, consoleTarget);
 #endif
         NLog.LogManager.Configuration = config;
 

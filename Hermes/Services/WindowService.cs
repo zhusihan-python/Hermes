@@ -105,6 +105,7 @@ public class WindowService : ObservableRecipient
     private void OnStopViewModelRestored(object? sender, EventArgs e)
     {
         Dispatcher.UIThread.Invoke(() => { this._stopView.Hide(); });
+        Messenger.Send(new UnblockMessage());
     }
 
     public void ShowToast(object recipient, ShowToastMessage message)

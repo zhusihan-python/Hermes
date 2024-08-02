@@ -22,6 +22,7 @@ public class UutSenderService
     private readonly FolderWatcherService _folderWatcherService;
     private readonly ConcurrentQueue<string> _pendingFiles = new();
     private CancellationTokenSource? _cancellationTokenSource;
+    private int _canProcessFiles = 1;
     private bool _isRunning;
 
     public UutSenderService(
@@ -56,8 +57,9 @@ public class UutSenderService
             this.OnRunStatusChanged(true);
             while (!cancellationToken.IsCancellationRequested)
             {
-                if (this._pendingFiles.TryDequeue(out var fullPath))
+                if (this._canProcessFiles == 1 && this._pendingFiles.TryDequeue(out var fullPath))
                 {
+                    this._logger.Debug($"Processing file: {fullPath}");
                     var sfcResponse = await this.SendFileToSfcAsync(fullPath);
                     if (!sfcResponse.IsNull)
                     {
@@ -111,6 +113,7 @@ public class UutSenderService
 
     private void OnFileCreated(object? sender, string fullPath)
     {
+        _logger.Debug("File created: " + fullPath);
         this._pendingFiles.Enqueue(fullPath);
     }
 
@@ -129,5 +132,24 @@ public class UutSenderService
         this._isRunning = isRunning;
         RunStatusChanged?.Invoke(this, isRunning);
         this._logger.Info($"SfcSenderService {(isRunning ? "started" : "stopped")}");
+    }
+
+    public async Task WaitUntilUnblocked()
+    {
+        Interlocked.Exchange(ref _canProcessFiles, 0);
+        while (_canProcessFiles == 0)
+        {
+            await Task.Delay(100);
+        }
+    }
+
+    public void Block()
+    {
+        Interlocked.Exchange(ref _canProcessFiles, 0);
+    }
+
+    public void Unblock()
+    {
+        Interlocked.Exchange(ref _canProcessFiles, 1);
     }
 }

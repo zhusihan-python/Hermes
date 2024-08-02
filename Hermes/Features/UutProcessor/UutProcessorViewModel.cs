@@ -33,6 +33,7 @@ public partial class UutProcessorViewModel : PageBase
         this._uutSenderService.SfcResponseCreated += OnSfcResponseCreated;
         this._uutSenderService.RunStatusChanged += OnSfcSenderRunStatusChanged;
         Messenger.Register<StartUutProcessorMessage>(this, this.OnStartReceive);
+        Messenger.Register<UnblockMessage>(this, this.OnUnblockReceive);
         Messenger.Register<ExitMessage>(this, this.OnExitReceive);
         base.OnActivated();
     }
@@ -70,15 +71,13 @@ public partial class UutProcessorViewModel : PageBase
     {
         this.SerialNumber = unitUnderTest.SerialNumber;
         this.State = UutProcessorState.Processing;
-        // TODO
+        this._uutSenderService.Block();
     }
 
     private void OnSfcResponseCreated(object? sender, SfcResponse sfcResponse)
     {
         Task.Run((Func<Task?>)(async () =>
         {
-            this.SerialNumber = string.Empty;
-            this.State = UutProcessorState.Idle;
             var stop = await this._stopService.Calculate(sfcResponse);
             if (stop.IsNull)
             {
@@ -87,7 +86,12 @@ public partial class UutProcessorViewModel : PageBase
             else
             {
                 Messenger.Send(new ShowStopMessage(stop));
+                this.State = UutProcessorState.Blocked;
+                await this._uutSenderService.WaitUntilUnblocked();
             }
+
+            this.State = UutProcessorState.Idle;
+            this.SerialNumber = string.Empty;
         }));
     }
 
@@ -108,5 +112,10 @@ public partial class UutProcessorViewModel : PageBase
     private void OnExitReceive(object recipient, ExitMessage message)
     {
         this.Stop();
+    }
+
+    private void OnUnblockReceive(object recipient, UnblockMessage message)
+    {
+        this._uutSenderService.Unblock();
     }
 }
