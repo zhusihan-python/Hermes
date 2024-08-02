@@ -16,12 +16,14 @@ public partial class UutProcessorViewModel : PageBase
     [ObservableProperty] private bool _isRunning;
     [ObservableProperty] private string _serialNumber = string.Empty;
     [ObservableProperty] private UutProcessorState _state = UutProcessorState.Stopped;
-    private readonly UutSenderService _uutSenderService;
+    private readonly Session _session;
     private readonly StopService _stopService;
+    private readonly UutSenderService _uutSenderService;
 
-    public UutProcessorViewModel(StopService stopService, UutSenderService uutSenderService)
+    public UutProcessorViewModel(Session session, StopService stopService, UutSenderService uutSenderService)
         : base("UUT Processor", MaterialIconKind.FolderEye, 0)
     {
+        this._session = session;
         this._stopService = stopService;
         this._uutSenderService = uutSenderService;
         this.IsActive = true;
@@ -29,6 +31,7 @@ public partial class UutProcessorViewModel : PageBase
 
     protected override void OnActivated()
     {
+        this._session.UutProcessorStateChanged += OnUutProcessorStateChanged;
         this._uutSenderService.UnitUnderTestCreated += OnUnitUnderTestCreated;
         this._uutSenderService.SfcResponseCreated += OnSfcResponseCreated;
         this._uutSenderService.RunStatusChanged += OnSfcSenderRunStatusChanged;
@@ -70,8 +73,7 @@ public partial class UutProcessorViewModel : PageBase
     private void OnUnitUnderTestCreated(object? sender, UnitUnderTest unitUnderTest)
     {
         this.SerialNumber = unitUnderTest.SerialNumber;
-        this.State = UutProcessorState.Processing;
-        this._uutSenderService.Block();
+        this._session.UutProcessorState = UutProcessorState.Processing;
     }
 
     private void OnSfcResponseCreated(object? sender, SfcResponse sfcResponse)
@@ -85,19 +87,29 @@ public partial class UutProcessorViewModel : PageBase
             }
             else
             {
+                _session.Stop = stop;
+                this._session.UutProcessorState = UutProcessorState.Blocked;
                 Messenger.Send(new ShowStopMessage(stop));
-                this.State = UutProcessorState.Blocked;
-                await this._uutSenderService.WaitUntilUnblocked();
+                await this.WaitUntilUnblocked();
+                _session.ResetStop();
             }
 
-            this.State = UutProcessorState.Idle;
             this.SerialNumber = string.Empty;
+            this._session.UutProcessorState = UutProcessorState.Idle;
         }));
+    }
+
+    private async Task WaitUntilUnblocked()
+    {
+        while (this._session.IsUutProcessorBlocked)
+        {
+            await Task.Delay(100);
+        }
     }
 
     private void OnSfcSenderRunStatusChanged(object? sender, bool isRunning)
     {
-        this.State = isRunning ? UutProcessorState.Idle : UutProcessorState.Stopped;
+        this._session.UutProcessorState = isRunning ? UutProcessorState.Idle : UutProcessorState.Stopped;
         if (!isRunning)
         {
             this.Stop();
@@ -114,8 +126,14 @@ public partial class UutProcessorViewModel : PageBase
         this.Stop();
     }
 
+    private void OnUutProcessorStateChanged(object? sender, UutProcessorState uutProcessorState)
+    {
+        this.State = uutProcessorState;
+    }
+
+
     private void OnUnblockReceive(object recipient, UnblockMessage message)
     {
-        this._uutSenderService.Unblock();
+        this._session.UutProcessorState = UutProcessorState.Idle;
     }
 }

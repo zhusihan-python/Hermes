@@ -51,7 +51,7 @@ public class SfcService
         this._stopwatch.Restart();
         while (!this._fileService.FileExists(fullPath) && this._stopwatch.ElapsedMilliseconds <= timeout)
         {
-            await Task.Delay(this._settings.SfcWaitDelaySeconds * 1000);
+            await Task.Delay(this._settings.WaitDelayMilliseconds);
         }
 
         this._stopwatch.Stop();

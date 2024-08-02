@@ -23,9 +23,9 @@ public class HermesLogger : ILogger
 #else
         config.AddRule(LogLevel.Trace, LogLevel.Fatal, consoleTarget);
 #endif
-        NLog.LogManager.Configuration = config;
+        LogManager.Configuration = config;
 
-        this._logger = NLog.LogManager.GetCurrentClassLogger();
+        this._logger = LogManager.GetCurrentClassLogger();
     }
 
     public void Error(Exception ex, string message)

@@ -1,10 +1,11 @@
+using Hermes.Builders;
+using Hermes.Common;
 using Hermes.Models;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using System.Threading;
 using System;
-using Hermes.Builders;
-using Hermes.Common;
+using System.Linq;
 
 namespace Hermes.Services;
 
@@ -14,6 +15,7 @@ public class UutSenderService
     public event EventHandler<SfcResponse>? SfcResponseCreated;
     public event EventHandler<bool>? RunStatusChanged;
 
+    private readonly Session _session;
     private readonly ILogger _logger;
     private readonly Settings _settings;
     private readonly SfcService _sfcService;
@@ -22,10 +24,11 @@ public class UutSenderService
     private readonly FolderWatcherService _folderWatcherService;
     private readonly ConcurrentQueue<string> _pendingFiles = new();
     private CancellationTokenSource? _cancellationTokenSource;
-    private int _canProcessFiles = 1;
     private bool _isRunning;
+    private int _retries = 0;
 
     public UutSenderService(
+        Session session,
         ILogger logger,
         Settings settings,
         SfcService sfcService,
@@ -33,6 +36,7 @@ public class UutSenderService
         FolderWatcherService folderWatcherService,
         UnitUnderTestBuilder unitUnderTestBuilder)
     {
+        this._session = session;
         this._logger = logger;
         this._settings = settings;
         this._sfcService = sfcService;
@@ -57,7 +61,7 @@ public class UutSenderService
             this.OnRunStatusChanged(true);
             while (!cancellationToken.IsCancellationRequested)
             {
-                if (this._canProcessFiles == 1 && this._pendingFiles.TryDequeue(out var fullPath))
+                if (this._session.IsUutProcessorIdle && this._pendingFiles.TryDequeue(out var fullPath))
                 {
                     this._logger.Debug($"Processing file: {fullPath}");
                     var sfcResponse = await this.SendFileToSfcAsync(fullPath);
@@ -68,7 +72,7 @@ public class UutSenderService
                 }
                 else
                 {
-                    await Task.Delay(this._settings.WatchLogfilesDelayMilliseconds, cancellationToken);
+                    await Task.Delay(this._settings.WaitDelayMilliseconds, cancellationToken);
                 }
             }
         }
@@ -91,17 +95,46 @@ public class UutSenderService
 
     public async Task<SfcResponse> SendFileToSfcAsync(string fullPath)
     {
+        var unitUnderTest = await this.BuildUnitUnderTest(fullPath);
+        if (unitUnderTest.IsNull)
+        {
+            return SfcResponse.Null;
+        }
+
+        var sfcResponse = await this._sfcService.SendAsync(unitUnderTest);
+        if (sfcResponse.IsTimeout && this._retries < this._settings.MaxSfcRetries - 1)
+        {
+            this.EnqueueFullPath(fullPath);
+            this._retries += 1;
+            this._logger.Error($"Timeout: {fullPath} | retry: {this._retries}");
+        }
+        else
+        {
+            await this._fileService.MoveToBackupAsync(fullPath);
+            this._retries = 0;
+        }
+
+        return sfcResponse;
+    }
+
+    private async Task<UnitUnderTest> BuildUnitUnderTest(string fullPath)
+    {
         var unitUnderTest = await this._unitUnderTestBuilder.BuildAsync(fullPath);
         if (unitUnderTest.IsNull)
         {
             this._logger.Error($"Invalid file: {fullPath}");
-            return SfcResponse.Null;
+            await this._fileService.MoveToBackupAsync(fullPath);
+            return UnitUnderTest.Null;
         }
 
         this.OnUnitUnderTestCreated(unitUnderTest);
-        var sfcResponse = await this._sfcService.SendAsync(unitUnderTest);
-        await this._fileService.MoveToBackupAsync(fullPath);
-        return sfcResponse;
+        return unitUnderTest;
+    }
+
+    private void EnqueueFullPath(string fullPath)
+    {
+        this.OnFileCreated(this, fullPath);
+        this._pendingFiles.Enqueue(fullPath);
     }
 
     public void Stop()
@@ -132,24 +165,5 @@ public class UutSenderService
         this._isRunning = isRunning;
         RunStatusChanged?.Invoke(this, isRunning);
         this._logger.Info($"SfcSenderService {(isRunning ? "started" : "stopped")}");
-    }
-
-    public async Task WaitUntilUnblocked()
-    {
-        Interlocked.Exchange(ref _canProcessFiles, 0);
-        while (_canProcessFiles == 0)
-        {
-            await Task.Delay(100);
-        }
-    }
-
-    public void Block()
-    {
-        Interlocked.Exchange(ref _canProcessFiles, 0);
-    }
-
-    public void Unblock()
-    {
-        Interlocked.Exchange(ref _canProcessFiles, 1);
     }
 }

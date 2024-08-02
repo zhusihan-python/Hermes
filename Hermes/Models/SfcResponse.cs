@@ -25,6 +25,7 @@ public class SfcResponse
     [NotMapped] public string SerialNumber => UnitUnderTest?.SerialNumber ?? string.Empty;
     [NotMapped] public string Details => IsFail ? $"{ErrorType} - {ErrorType.GetDescription()}" : "";
     [NotMapped] public bool IsNull => this == Null;
+    [NotMapped] public bool IsTimeout => ErrorType == SfcErrorType.Timeout;
 
     public SfcResponse()
 

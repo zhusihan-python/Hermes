@@ -70,6 +70,7 @@ namespace Hermes
             // Settings
             services.AddSingleton<Settings>();
             services.AddSingleton<CoreSettings>();
+            services.AddSingleton<Session>();
 
             // Validators
             services.AddSingleton<MachineStopValidator>();
@@ -80,7 +81,7 @@ namespace Hermes
             services.AddSingleton<CriticalLocationStopValidator>();
 
             // Repos
-            services.AddSingleton<HermesContext>();
+            services.AddScoped<HermesContext>();
             services.AddTransient<SfcResponseRepository>();
             services.AddTransient<StopRepository>();
             services.AddTransient<UnitUnderTestRepository>();
