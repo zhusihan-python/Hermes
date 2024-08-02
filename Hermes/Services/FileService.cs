@@ -32,14 +32,29 @@ public class FileService
 
     public virtual async Task<string> MoveToBackupAsync(string fullPath)
     {
-        var fileName = GetFileName(fullPath);
-        var backupFullPath = Path.Combine(this._settings.BackupPath, fileName);
+        var backupFullPath = this.GetBackupFullPath(fullPath);
         if (File.Exists(backupFullPath))
         {
             File.Delete(backupFullPath);
         }
 
         return await TryMove(fullPath, backupFullPath);
+    }
+
+    public async Task<string> CopyToBackupAsync(string fullPath)
+    {
+        return await Retry(() =>
+        {
+            var backupFullPath = this.GetBackupFullPath(fullPath);
+            File.Move(fullPath, this.GetBackupFullPath(backupFullPath));
+            return backupFullPath;
+        });
+    }
+
+    private string GetBackupFullPath(string fullPath)
+    {
+        var fileName = GetFileName(fullPath);
+        return Path.Combine(this._settings.BackupPath, fileName);
     }
 
     private static string GetFileName(string fullPath)

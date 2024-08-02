@@ -26,6 +26,11 @@ public class SfcResponseBuilder
         return new SfcResponse(unitUnderTest, this.GetContent(unitUnderTest));
     }
 
+    public string GetContent()
+    {
+        return this.GetContent(Hermes.Models.UnitUnderTest.Null);
+    }
+
     public string GetContent(UnitUnderTest unitUnderTest)
     {
         return this.Content.Replace("{UuTSerialNumber}", unitUnderTest.SerialNumber);

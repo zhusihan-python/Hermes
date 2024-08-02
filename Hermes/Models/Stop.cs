@@ -26,7 +26,7 @@ public class Stop
         set => _details = value;
     }
 
-    private string _details;
+    private string _details = "";
 
     public Stop()
     {

@@ -110,7 +110,6 @@ public class UutSenderService
         }
         else
         {
-            await this._fileService.MoveToBackupAsync(fullPath);
             this._retries = 0;
         }
 
@@ -126,7 +125,8 @@ public class UutSenderService
             await this._fileService.MoveToBackupAsync(fullPath);
             return UnitUnderTest.Null;
         }
-
+        
+        await this._fileService.CopyToBackupAsync(fullPath);
         this.OnUnitUnderTestCreated(unitUnderTest);
         return unitUnderTest;
     }

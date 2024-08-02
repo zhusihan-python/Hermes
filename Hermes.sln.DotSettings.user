@@ -6,7 +6,7 @@
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=17f80fe1_002Dd998_002D41bf_002D8805_002Dfcdce7987d61/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="GetDefectByLocation_WithCriticalDefect_ReturnsDefect" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;Project Location="C:\Users\Foxconn\RiderProjects\hermes\HermesTests" Presentation="&amp;lt;HermesTests&amp;gt;" /&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=259f77ec_002D0f67_002D40bd_002Dafca_002D9581ae01a618/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Details_SfcResponseNull_ReturnsDetails" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=259f77ec_002D0f67_002D40bd_002Dafca_002D9581ae01a618/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Details_SfcResponseNull_ReturnsDetails" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;Project Location="C:\Users\Foxconn\RiderProjects\hermes\HermesTests" Presentation="&amp;lt;HermesTests&amp;gt;" /&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	
@@ -42,8 +42,11 @@
     &lt;Project Location="C:\Users\Foxconn\RiderProjects\hermes\HermesTests" Presentation="&amp;lt;HermesTests&amp;gt;" /&gt;&#xD;
   &lt;/Or&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=eed8d422_002D6116_002D4c8c_002D82eb_002D6ab37ce87dff/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Message_FailSfcResponse_ReturnsSfcResponseDetails" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b3a584c9_002D5b6b_002D4426_002D8b46_002Df20df8413f36/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="ResponseFullPath_ValidDataGiven_Succeeds" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::31B57559-0391-445A-8BCF-8ECC4E617EE6::net8.0::HermesTests.Models.StopTests.Message_FailSfcResponse_ReturnsSfcResponseDetails&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::31B57559-0391-445A-8BCF-8ECC4E617EE6::net8.0::HermesTests.Models.SfcRequestTests.ResponseFullPath_ValidDataGiven_Succeeds&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=eed8d422_002D6116_002D4c8c_002D82eb_002D6ab37ce87dff/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Message_FailSfcResponse_ReturnsSfcResponseDetails" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Project Location="C:\Users\Foxconn\RiderProjects\hermes\HermesTests" Presentation="&amp;lt;HermesTests&amp;gt;" /&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

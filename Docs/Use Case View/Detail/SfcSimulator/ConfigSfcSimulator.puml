@@ -1,0 +1,30 @@
+@startuml ConfigSfcSimulator Use Case Detail
+hide empty description
+
+[*] --> ConfigSfcSimulator
+    note on link #LightBlue;line:blue;
+        **User requests:**
+        * ConfigSfcSimulator
+    end note
+    
+state ConfigSfcSimulator{
+    state S1 as " "
+
+    [*] --> S1
+    note on link
+        **System requires:**
+        * Mode:
+        ** Ok
+        ** WrongStation
+        ** Timeout
+        ** Unknown
+    end note   
+    
+    S1 --> [*]    
+    note on link #LightBlue;line:blue;
+        **User provides:**
+        * Mode
+    end note
+}
+ConfigSfcSimulator  --> [*]
+@enduml

@@ -1,0 +1,18 @@
+@startuml SfcSimulator Use Cases
+left to right direction
+
+:Time:
+:Admin:
+
+package SfcSimulator { 
+    :Admin: --> (ShowSuccessView) 
+    :Admin: --> (ShowRepairView) 
+    :Admin: --> (ShowStopMachineView) 
+    :Admin: --> (ShowStopLineView) 
+    :Admin: --> (ConfigSfcSimulator)
+    :Admin: --> (Start)
+    :Admin: --> (Stop)
+    
+    :Time: --> (ProcessUut)
+}
+@enduml

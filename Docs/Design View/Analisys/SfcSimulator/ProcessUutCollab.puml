@@ -1,0 +1,59 @@
+@startuml ProcessUutCollab Collab
+
+package Models{
+    card SfcSimulatorSettings
+}
+
+package Builders{
+    card SfcResponseBuilder
+}
+
+package Services{
+    card SfcSimulatorService
+    card WatchFolderService
+    card FileService
+    
+    SfcSimulatorService --> FileService
+        note on link
+            * Write(fullPath, content)
+        end note        
+    SfcSimulatorService --> WatchFolderService 
+        note on link
+            * SubscribeToFileCreated()
+        end note
+    SfcSimulatorService --> SfcSimulatorSettings 
+        note on link
+            * GetMode()
+        end note
+    SfcSimulatorService --> SfcResponseBuilder 
+        note on link
+            * SetOkContent()
+            * SetFailContent()
+            * SetWrongStation()
+            * SetUnknownContent()
+            * GetContent()
+        end note
+    WatchFolderService ..> SfcSimulatorService
+        note on link
+            * FileCreated()
+        end note
+}
+
+package ViewModels{
+    card ProcessUutViewModel
+    
+    ProcessUutViewModel --> SfcSimulatorService
+        note on link
+           * Process()
+        end note
+}
+
+package Views {
+    card ProcessUutView
+    
+    ProcessUutView --> ProcessUutViewModel
+        note on link
+            * Process() 
+        end note
+}
+@enduml

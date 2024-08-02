@@ -1,0 +1,51 @@
+@startuml
+
+class SfcSimulatorViewModel {
+    + Start()
+    + Stop()
+    + Process(fullPath)
+}
+SfcSimulatorViewModel *--> SfcSimulatorService
+SfcSimulatorViewModel ..> SfcErrorType
+
+class SfcSimulatorService {
+    + Start()
+    + Stop()
+    + Process(fullPath)
+}
+SfcSimulatorService *--> WatchFolderService
+SfcSimulatorService *--> SfcResponseBuilder
+SfcSimulatorService ..> SfcErrorType
+SfcSimulatorService *--> Settings
+SfcSimulatorService *--> FileService
+
+class WatchFolderService {
+    + OnFileCreated
+    + Start()
+    + Stop()
+}
+
+class FileService {
+    + Write(fullPath, content)
+}
+
+enum SfcErrorType{
+    * None
+    * Timeout
+    * WrongStation
+    * Unknown
+}
+
+class Settings{
+    + SfcResponseExtension
+    + InputPath
+}
+
+class SfcResponseBuilder {
+    SetOkContent()
+    SetFailContent()
+    SetWrongStation()
+    SetUnknownContent()
+    GetContent()
+}
+@enduml
