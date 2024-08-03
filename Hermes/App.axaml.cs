@@ -18,6 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using System;
 using Hermes.Common.Validators;
+using Hermes.Features.SfcSimulator;
 
 namespace Hermes
 {
@@ -92,19 +93,22 @@ namespace Hermes
             services.AddSingleton<PageNavigationService>();
             services.AddSingleton<ParserPrototype>();
             services.AddSingleton<UnitUnderTestBuilder>();
+            services.AddSingleton<SfcResponseBuilder>();
 
             // Services
             services.AddSingleton<IDataTemplate, ViewLocator>();
+            services.AddTransient<ISfcService, SharedFolderSfcService>();
             services.AddSingleton<PageNavigationService>();
             services.AddTransient<FileService>();
             services.AddTransient<FolderWatcherService>();
             services.AddTransient<UutSenderService>();
-            services.AddTransient<SfcService>();
             services.AddTransient<StopService>();
+            services.AddTransient<SfcSimulatorService>();
 
             // ViewModels
-            services.AddSingleton<MainWindowViewModel>();
             services.AddTransient<WindowService>();
+            services.AddSingleton<MainWindowViewModel>();
+            services.AddSingleton<SfcSimulatorViewModel>();
 
             // Pages
             var types = AppDomain.CurrentDomain.GetAssemblies()

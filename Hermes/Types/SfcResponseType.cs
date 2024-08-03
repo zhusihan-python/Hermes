@@ -2,10 +2,10 @@
 
 namespace Hermes.Types;
 
-public enum SfcErrorType
+public enum SfcResponseType
 {
-    [Description("No existe ningún error.")]
-    None,
+    [Description("Tarea ejecutada con exito.")]
+    Ok,
 
     [Description("El servidor de SFC no responde, por favor contacte al departameto de IT.")]
     Timeout,

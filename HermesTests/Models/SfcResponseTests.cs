@@ -39,7 +39,7 @@ public class SfcResponseTests
     void ErrorType_TimeoutContent_ReturnsSfcErrorTypeTimeout()
     {
         var sfcResponse = this._sfcResponseBuilder.BuildTimeout();
-        Assert.Equal(SfcErrorType.Timeout, sfcResponse.ErrorType);
+        Assert.Equal(SfcResponseType.Timeout, sfcResponse.ResponseType);
     }
 
     [Fact]
@@ -48,7 +48,7 @@ public class SfcResponseTests
         var sfcResponse = this._sfcResponseBuilder
             .SetWrongStation()
             .Build();
-        Assert.Equal(SfcErrorType.WrongStation, sfcResponse.ErrorType);
+        Assert.Equal(SfcResponseType.WrongStation, sfcResponse.ResponseType);
     }
 
     [Fact]
@@ -57,7 +57,7 @@ public class SfcResponseTests
         var sfcResponse = this._sfcResponseBuilder
             .SetUnknownContent()
             .Build();
-        Assert.Equal(SfcErrorType.Unknown, sfcResponse.ErrorType);
+        Assert.Equal(SfcResponseType.Unknown, sfcResponse.ResponseType);
     }
 
     [Fact]

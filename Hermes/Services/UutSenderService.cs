@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System;
 using System.Linq;
+using Hermes.Common.Extensions;
 
 namespace Hermes.Services;
 
@@ -18,7 +19,7 @@ public class UutSenderService
     private readonly Session _session;
     private readonly ILogger _logger;
     private readonly Settings _settings;
-    private readonly SfcService _sfcService;
+    private readonly ISfcService _sfcService;
     private readonly FileService _fileService;
     private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
     private readonly FolderWatcherService _folderWatcherService;
@@ -31,7 +32,7 @@ public class UutSenderService
         Session session,
         ILogger logger,
         Settings settings,
-        SfcService sfcService,
+        ISfcService sfcService,
         FileService fileService,
         FolderWatcherService folderWatcherService,
         UnitUnderTestBuilder unitUnderTestBuilder)
@@ -49,7 +50,8 @@ public class UutSenderService
     public void Start()
     {
         if (_isRunning) return;
-        this._folderWatcherService.Start();
+        this._folderWatcherService.Filter = "*" + this._settings.InputFileExtension.GetDescription();
+        this._folderWatcherService.Start(_settings.InputPath);
         this._cancellationTokenSource = new CancellationTokenSource();
         Task.Run(() => this.ProcessFilesAsync(this._cancellationTokenSource.Token));
     }
@@ -64,7 +66,7 @@ public class UutSenderService
                 if (this._session.IsUutProcessorIdle && this._pendingFiles.TryDequeue(out var fullPath))
                 {
                     this._logger.Debug($"Processing file: {fullPath}");
-                    var sfcResponse = await this.SendFileToSfcAsync(fullPath);
+                    var sfcResponse = await this.SendFileAsync(fullPath);
                     if (!sfcResponse.IsNull)
                     {
                         this.OnSfcResponseCreated(sfcResponse);
@@ -93,7 +95,7 @@ public class UutSenderService
         }
     }
 
-    public async Task<SfcResponse> SendFileToSfcAsync(string fullPath)
+    public async Task<SfcResponse> SendFileAsync(string fullPath)
     {
         var unitUnderTest = await this.BuildUnitUnderTest(fullPath);
         if (unitUnderTest.IsNull)
@@ -104,13 +106,14 @@ public class UutSenderService
         var sfcResponse = await this._sfcService.SendAsync(unitUnderTest);
         if (sfcResponse.IsTimeout && this._retries < this._settings.MaxSfcRetries - 1)
         {
-            this.EnqueueFullPath(fullPath);
             this._retries += 1;
             this._logger.Error($"Timeout: {fullPath} | retry: {this._retries}");
+            this.EnqueueFullPath(fullPath, "File re-enqueued");
         }
         else
         {
             this._retries = 0;
+            await this._fileService.MoveToBackupAsync(fullPath);
         }
 
         return sfcResponse;
@@ -123,18 +126,13 @@ public class UutSenderService
         {
             this._logger.Error($"Invalid file: {fullPath}");
             await this._fileService.MoveToBackupAsync(fullPath);
-            return UnitUnderTest.Null;
         }
-        
-        await this._fileService.CopyToBackupAsync(fullPath);
-        this.OnUnitUnderTestCreated(unitUnderTest);
-        return unitUnderTest;
-    }
+        else
+        {
+            this.OnUnitUnderTestCreated(unitUnderTest);
+        }
 
-    private void EnqueueFullPath(string fullPath)
-    {
-        this.OnFileCreated(this, fullPath);
-        this._pendingFiles.Enqueue(fullPath);
+        return unitUnderTest;
     }
 
     public void Stop()
@@ -146,9 +144,15 @@ public class UutSenderService
 
     private void OnFileCreated(object? sender, string fullPath)
     {
-        _logger.Debug("File created: " + fullPath);
+        this.EnqueueFullPath(fullPath);
+    }
+
+    private void EnqueueFullPath(string fullPath, string message = "File enqueued")
+    {
+        _logger.Debug($"{message}: {fullPath}");
         this._pendingFiles.Enqueue(fullPath);
     }
+
 
     protected virtual void OnUnitUnderTestCreated(UnitUnderTest unitUnderTest)
     {

@@ -5,7 +5,12 @@ using System.Threading.Tasks;
 
 namespace Hermes.Services;
 
-public class SfcService
+public interface ISfcService
+{
+    Task<SfcResponse> SendAsync(UnitUnderTest unitUnderTest);
+}
+
+public class SharedFolderSfcService : ISfcService
 {
     private readonly Settings _settings;
     private readonly Stopwatch _stopwatch;
@@ -13,7 +18,7 @@ public class SfcService
     private readonly UnitUnderTestRepository _unitUnderTestRepository;
     private readonly SfcResponseRepository _sfcResponseRepository;
 
-    public SfcService(
+    public SharedFolderSfcService(
         Settings settings,
         FileService fileService,
         UnitUnderTestRepository unitUnderTestRepository,
@@ -39,6 +44,7 @@ public class SfcService
                 unitUnderTest,
                 content: await this._fileService.TryReadAllTextAsync(sfcRequest.ResponseFullPath)
             );
+            await _fileService.MoveToBackupAsync(sfcRequest.ResponseFullPath);
         }
 
         await this._sfcResponseRepository.AddAndSaveAsync(sfcResponse);

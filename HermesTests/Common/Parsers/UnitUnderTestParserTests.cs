@@ -1,8 +1,8 @@
 using Hermes.Builders;
-using Hermes.Models;
-using Hermes.Services;
+using Hermes.Common.Extensions;
+using Hermes.Types;
 
-namespace HermesTests.Utils.Parsers;
+namespace HermesTests.Common.Parsers;
 
 public class UnitUnderTestParserTests
 {
@@ -16,8 +16,8 @@ public class UnitUnderTestParserTests
     [Fact]
     public void SetFilename_GivenFileName_FileNameIsSet()
     {
-        const string fileExtension = ".log";
-        const string fileName = $"MyFileName.{fileExtension}";
+        const FileExtension fileExtension = FileExtension.Log;
+        string fileName = $"MyFileName.{fileExtension.GetDescription()}";
         var uut = this._unitUnderTestBuilder
             .InputFileExtension(fileExtension)
             .FileName(fileName)

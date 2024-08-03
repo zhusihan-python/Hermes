@@ -59,7 +59,7 @@ public sealed class DefectRepository(HermesContext db) : BaseRepository<Defect>(
     {
         var dateTimeLowerLimit = DateTime.Now - fromHours;
         var uutIds = Db.SfcResponses
-            .Where(x => x.ErrorType == SfcErrorType.None)
+            .Where(x => x.ResponseType == SfcResponseType.Ok)
             .Where(x => x.UnitUnderTest.CreatedAt > dateTimeLowerLimit)
             .OrderByDescending(x => x.UnitUnderTest.CreatedAt)
             .Select(x => x.UnitUnderTest.Id);
@@ -70,7 +70,7 @@ public sealed class DefectRepository(HermesContext db) : BaseRepository<Defect>(
     private IQueryable<Defect> GetFromLastUnitsUnderTest(int qty)
     {
         var uutIds = Db.SfcResponses
-            .Where(x => x.ErrorType == SfcErrorType.None)
+            .Where(x => x.ResponseType == SfcResponseType.Ok)
             .OrderByDescending(x => x.UnitUnderTest.CreatedAt)
             .Take(qty)
             .Select(x => x.UnitUnderTest.Id);

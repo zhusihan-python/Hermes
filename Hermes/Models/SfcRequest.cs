@@ -13,19 +13,19 @@ public class SfcRequest
     public string FullPath { get; init; }
     public string Content => this.UnitUnderTest.Content;
 
-    public SfcRequest(UnitUnderTest unitUnderTest, string sfcInputPath, SfcResponseExtension sfcResponseExtension)
+    public SfcRequest(UnitUnderTest unitUnderTest, string sfcInputPath, FileExtension fileExtension)
     {
         this.UnitUnderTest = unitUnderTest;
         this.FullPath = Path.Combine(sfcInputPath, unitUnderTest.FileName);
-        this.ResponseFullPath = GetResponseFullpath(this.FullPath, sfcResponseExtension);
+        this.ResponseFullPath = GetResponseFullpath(this.FullPath, fileExtension);
     }
 
-    public static string GetResponseFullpath(string fullPath, SfcResponseExtension sfcResponseExtension)
+    public static string GetResponseFullpath(string fullPath, FileExtension fileExtension)
     {
         return Path
             .Combine(
                 Path.GetDirectoryName(fullPath)!,
-                $"{Path.GetFileNameWithoutExtension(fullPath)}.{sfcResponseExtension.ToString().ToLower()}")
+                $"{Path.GetFileNameWithoutExtension(fullPath)}.{fileExtension.ToString().ToLower()}")
             .Replace("\\", "/");
     }
 }

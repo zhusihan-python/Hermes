@@ -7,12 +7,12 @@ using Moq;
 
 namespace HermesTests.Services;
 
-public class SfcServiceTests
+public class SharedFolderSfcServiceTests
 {
     private readonly SfcResponseBuilder _sfcResponseBuilder;
     private readonly FileServiceMockBuilder _fileServiceMockBuilder = new();
 
-    public SfcServiceTests(SfcResponseBuilder sfcResponseBuilder)
+    public SharedFolderSfcServiceTests(SfcResponseBuilder sfcResponseBuilder)
     {
         this._sfcResponseBuilder = sfcResponseBuilder;
     }
@@ -43,10 +43,10 @@ public class SfcServiceTests
             SfcTimeoutSeconds = 0
         };
         var sfcService = BuildSfcService(fileServiceMock, settings);
-        Assert.Equal(SfcErrorType.Timeout, (await sfcService.SendAsync(sfcResponse.UnitUnderTest!)).ErrorType);
+        Assert.Equal(SfcResponseType.Timeout, (await sfcService.SendAsync(sfcResponse.UnitUnderTest!)).ResponseType);
     }
 
-    private SfcService BuildSfcService(FileService fileService, Settings? settings = null)
+    private SharedFolderSfcService BuildSfcService(FileService fileService, Settings? settings = null)
     {
         var hermesContext = new HermesContext();
         var sfcResponseRepositoryMock = new Mock<SfcResponseRepository>(hermesContext);
@@ -59,7 +59,7 @@ public class SfcServiceTests
             .Setup(x => x.AddAndSaveAsync(It.IsAny<UnitUnderTest>()))
             .Returns(Task.CompletedTask);
 
-        var sfcService = new SfcService(
+        var sfcService = new SharedFolderSfcService(
             settings ?? new Settings(),
             fileService,
             unitUnderTestRepositoryMock.Object,

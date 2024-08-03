@@ -71,6 +71,19 @@ public class FileService
         });
     }
 
+    public async Task<string> DeleteIfExists(string fullPath)
+    {
+        return await Retry(() =>
+        {
+            if (File.Exists(fullPath))
+            {
+                File.Delete(fullPath);
+            }
+
+            return fullPath;
+        });
+    }
+
     private static async Task<T> Retry<T>(Func<T> func)
     {
         for (var i = 0; i < NumberOfRetries; ++i)

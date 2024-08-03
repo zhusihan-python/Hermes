@@ -56,7 +56,7 @@ namespace Hermes.AppData.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     UnitUnderTestId = table.Column<int>(type: "INTEGER", nullable: false),
-                    ErrorType = table.Column<int>(type: "INTEGER", nullable: false),
+                    ResponseType = table.Column<int>(type: "INTEGER", nullable: false),
                     Content = table.Column<string>(type: "TEXT", maxLength: 3000, nullable: false)
                 },
                 constraints: table =>

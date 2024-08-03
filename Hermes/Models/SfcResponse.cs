@@ -18,14 +18,14 @@ public class SfcResponse
     [Key] public int Id { get; init; }
     public UnitUnderTest UnitUnderTest { get; init; } = UnitUnderTest.Null;
     public int UnitUnderTestId { get; init; }
-    public virtual bool IsFail => this.ErrorType != SfcErrorType.None;
-    public SfcErrorType ErrorType { get; init; }
+    public virtual bool IsFail => this.ResponseType != SfcResponseType.Ok;
+    public SfcResponseType ResponseType { get; init; }
     [MaxLength(3000)] public string Content { get; init; } = "";
     [NotMapped] public bool IsRepair => this.UnitUnderTest?.IsFail ?? true && !this.IsFail;
     [NotMapped] public string SerialNumber => UnitUnderTest?.SerialNumber ?? string.Empty;
-    [NotMapped] public string Details => IsFail ? $"{ErrorType} - {ErrorType.GetDescription()}" : "";
+    [NotMapped] public string Details => IsFail ? $"{ResponseType} - {ResponseType.GetDescription()}" : "";
     [NotMapped] public bool IsNull => this == Null;
-    [NotMapped] public bool IsTimeout => ErrorType == SfcErrorType.Timeout;
+    [NotMapped] public bool IsTimeout => ResponseType == SfcResponseType.Timeout;
 
     public SfcResponse()
 
@@ -37,27 +37,27 @@ public class SfcResponse
         this.UnitUnderTest = unitUnderTest;
         this.UnitUnderTestId = unitUnderTest.Id;
         this.Content = content;
-        this.ErrorType = ParseErrorType(content);
+        this.ResponseType = ParseErrorType(content);
     }
 
-    private static SfcErrorType ParseErrorType(string content)
+    private static SfcResponseType ParseErrorType(string content)
     {
         if (RegexIsOk.Match(content).Success)
         {
-            return SfcErrorType.None;
+            return SfcResponseType.Ok;
         }
 
         if (RegexWrongStation.Match(content).Success)
         {
-            return SfcErrorType.WrongStation;
+            return SfcResponseType.WrongStation;
         }
 
         if (content == TimeoutText)
         {
-            return SfcErrorType.Timeout;
+            return SfcResponseType.Timeout;
         }
 
-        return SfcErrorType.Unknown;
+        return SfcResponseType.Unknown;
     }
 
     public static SfcResponse BuildTimeout(UnitUnderTest unitUnderTest)

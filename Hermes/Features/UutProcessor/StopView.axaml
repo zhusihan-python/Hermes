@@ -2,6 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sukiUi="clr-namespace:SukiUI;assembly=SukiUI"
         xmlns:uutProcessor="clr-namespace:Hermes.Features.UutProcessor"
         xmlns:token="clr-namespace:Hermes.Features.Controls.Token"
         mc:Ignorable="d"
@@ -16,7 +17,7 @@
         ExtendClientAreaChromeHints="NoChrome"
         Background="{DynamicResource LightRedColor }"
         Icon="avares://Hermes/AppData/Assets/logo-hermes.png">
-
+    
     <Grid
         MaxWidth="{StaticResource StopWindowMaxWidth }"
         Margin="{StaticResource DefaultMargin}"

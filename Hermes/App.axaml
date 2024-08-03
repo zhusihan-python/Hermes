@@ -26,10 +26,10 @@
 
         <sys:Double x:Key="StopWindowMaxWidth">1024</sys:Double>
         <sys:Double x:Key="DefaultIconSize">20</sys:Double>
-        <sys:Double x:Key="DefaultSpacing">20</sys:Double>
-        <Thickness x:Key="DefaultMargin">20</Thickness>
-        <Thickness x:Key="DefaultPadding">20</Thickness>
-        <Thickness x:Key="DefaultLeftMargin">20 0 0 0</Thickness>
+        <sys:Double x:Key="DefaultSpacing">10</sys:Double>
+        <Thickness x:Key="DefaultMargin">10</Thickness>
+        <Thickness x:Key="DefaultPadding">10</Thickness>
+        <Thickness x:Key="DefaultLeftMargin">10 0 0 0</Thickness>
         <CornerRadius x:Key="DefaultCornerRadius">5</CornerRadius>
     </Application.Resources>
 

@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Hermes.Builders;
 using Hermes.Common;
+using Hermes.Common.Extensions;
 using Hermes.Models;
 using Hermes.Types;
 
@@ -11,7 +12,7 @@ namespace Hermes.Services;
 
 public class SfcSimulatorService
 {
-    public SfcErrorType Mode { get; set; } = SfcErrorType.None;
+    public SfcResponseType Mode { get; set; } = SfcResponseType.Ok;
     public event EventHandler<bool>? RunStatusChanged;
 
     private bool _isRunning;
@@ -20,12 +21,14 @@ public class SfcSimulatorService
     private readonly ILogger _logger;
     private readonly Settings _settings;
     private readonly SfcResponseBuilder _sfcResponseBuilder;
+    private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
 
 
     public SfcSimulatorService(
         ILogger logger,
         Settings settings,
         FileService fileService,
+        UnitUnderTestBuilder unitUnderTestBuilder,
         SfcResponseBuilder sfcResponseBuilder,
         FolderWatcherService folderWatcherService
     )
@@ -33,6 +36,7 @@ public class SfcSimulatorService
         this._logger = logger;
         this._settings = settings;
         this._fileService = fileService;
+        this._unitUnderTestBuilder = unitUnderTestBuilder;
         this._sfcResponseBuilder = sfcResponseBuilder;
         this._folderWatcherService = folderWatcherService;
     }
@@ -40,7 +44,8 @@ public class SfcSimulatorService
     public void Start()
     {
         if (_isRunning) return;
-        this._folderWatcherService.Start();
+        this._folderWatcherService.Start(_settings.SfcPath);
+        this._folderWatcherService.Filter = "*" + _settings.InputFileExtension.GetDescription();
         this._folderWatcherService.FileCreated += this.OnFileCreated;
         this.OnRunStatusChanged(true);
     }
@@ -62,26 +67,29 @@ public class SfcSimulatorService
     private async Task Process(string fullPath)
     {
         _logger.Info($"SfcSimulator Process: {fullPath} | Mode: {this.Mode}");
-        if (this.Mode == SfcErrorType.Timeout)
+        await this._fileService.DeleteIfExists(fullPath);
+        if (this.Mode == SfcResponseType.Timeout)
         {
             return;
         }
 
-        await this._fileService.MoveToBackupAsync(fullPath);
         await this._fileService.WriteAllTextAsync(
             SfcRequest.GetResponseFullpath(fullPath, this._settings.SfcResponseExtension),
-            this.GetContent()
+            await this.GetContent(fullPath)
         );
     }
 
-    private string GetContent()
+    private async Task<string> GetContent(string fullPath)
     {
-        if (this.Mode == SfcErrorType.WrongStation)
+        if (this.Mode == SfcResponseType.WrongStation)
             this._sfcResponseBuilder.SetWrongStation();
-        else if (this.Mode == SfcErrorType.Unknown)
+        else if (this.Mode == SfcResponseType.Unknown)
             this._sfcResponseBuilder.SetUnknownContent();
         else
             this._sfcResponseBuilder.SetOkContent();
+
+        this._sfcResponseBuilder.UnitUnderTest(
+            await this._unitUnderTestBuilder.BuildAsync(fullPath));
 
         return this._sfcResponseBuilder.GetContent();
     }

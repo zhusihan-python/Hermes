@@ -57,7 +57,7 @@ namespace Hermes.AppData.Migrations
                         .HasMaxLength(3000)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("ErrorType")
+                    b.Property<int>("ResponseType")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("UnitUnderTestId")

@@ -6,27 +6,23 @@ namespace Hermes.Services;
 
 public class FolderWatcherService
 {
+    public string Filter { get; set; } = "*.*";
     public event EventHandler<string>? FileCreated;
 
     private FileSystemWatcher? _watcher;
-    private readonly Settings _settings;
 
-    public FolderWatcherService(Settings settings)
+    public void Start(string path)
     {
-        this._settings = settings;
-    }
-
-    public void Start()
-    {
-        this.ProcessExistingFiles();
-        this._watcher = new FileSystemWatcher(this._settings.InputPath);
+        this.ProcessExistingFiles(path);
+        this._watcher = new FileSystemWatcher(path);
+        this._watcher.Filter = this.Filter;
         this._watcher.Created += this.OnFileCreated;
         this._watcher.EnableRaisingEvents = true;
     }
 
-    private void ProcessExistingFiles()
+    private void ProcessExistingFiles(string path)
     {
-        foreach (var file in Directory.EnumerateFiles(this._settings.InputPath))
+        foreach (var file in Directory.EnumerateFiles(path))
         {
             this.FileCreated?.Invoke(this, file);
         }

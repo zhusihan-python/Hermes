@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System;
+using Hermes.Common.Extensions;
 
 namespace Hermes.Builders;
 
@@ -32,7 +33,7 @@ public class UnitUnderTestBuilder
     {
         this._fileService = fileService;
         this._settings = settings;
-        this._fileName += settings.InputFileExtension;
+        this._fileName += settings.InputFileExtension.GetDescription();
         this._parserPrototype = parserPrototype;
     }
 
@@ -92,8 +93,8 @@ public class UnitUnderTestBuilder
 
     private bool HasValidExtension(string fileName)
     {
-        return _settings.InputFileExtension == "*.*" ||
-               _settings.InputFileExtension.Contains(Path.GetExtension(fileName), StringComparison.OrdinalIgnoreCase);
+        return _settings.InputFileExtension.GetDescription() == "*.*" ||
+               _settings.InputFileExtension.GetDescription().Contains(Path.GetExtension(fileName), StringComparison.OrdinalIgnoreCase);
     }
 
     public UnitUnderTestBuilder FileName(string fileName)
@@ -114,7 +115,7 @@ public class UnitUnderTestBuilder
         return this;
     }
 
-    public UnitUnderTestBuilder InputFileExtension(string value)
+    public UnitUnderTestBuilder InputFileExtension(FileExtension value)
     {
         this._settings.InputFileExtension = value;
         return this;

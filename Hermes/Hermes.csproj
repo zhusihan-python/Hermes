@@ -78,8 +78,4 @@
     <ItemGroup>
       <AdditionalFiles Include="Features\Splash\SplashView.axaml" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="AppData\Migrations\" />
-    </ItemGroup>
 </Project>

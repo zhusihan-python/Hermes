@@ -8,7 +8,7 @@ public class SfcRequestTests
 {
     private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
     private const string SfcPath = "/path/";
-    private const SfcResponseExtension SfcResponseExtension = Hermes.Types.SfcResponseExtension.RET;
+    private const FileExtension SfcResponseExtension = Hermes.Types.FileExtension.Ret;
 
     public SfcRequestTests(UnitUnderTestBuilder unitUnderTestBuilder)
     {
