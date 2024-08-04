@@ -14,6 +14,7 @@ public class Defect
     [MaxLength(100)] public string Location { get; init; } = "";
     [MaxLength(100)] public string ErrorCode { get; init; } = "";
     public bool IsNull => this == Null;
+    public bool IsRestored => StopId != null;
 }
 
 public class DefectNull : Defect

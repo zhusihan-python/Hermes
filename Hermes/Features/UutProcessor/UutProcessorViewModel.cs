@@ -33,7 +33,7 @@ public partial class UutProcessorViewModel : PageBase
     {
         this._session.UutProcessorStateChanged += OnUutProcessorStateChanged;
         this._uutSenderService.UnitUnderTestCreated += OnUnitUnderTestCreated;
-        this._uutSenderService.SfcResponseCreated += OnSfcResponseCreated;
+        this._uutSenderService.SfcResponse += OnSfcResponse;
         this._uutSenderService.RunStatusChanged += OnSfcSenderRunStatusChanged;
         Messenger.Register<StartUutProcessorMessage>(this, this.OnStartReceive);
         Messenger.Register<UnblockMessage>(this, this.OnUnblockReceive);
@@ -44,7 +44,7 @@ public partial class UutProcessorViewModel : PageBase
     protected override void OnDeactivated()
     {
         this._uutSenderService.UnitUnderTestCreated -= OnUnitUnderTestCreated;
-        this._uutSenderService.SfcResponseCreated -= OnSfcResponseCreated;
+        this._uutSenderService.SfcResponse -= OnSfcResponse;
         this._uutSenderService.RunStatusChanged -= OnSfcSenderRunStatusChanged;
         Messenger.UnregisterAll(this);
     }
@@ -76,14 +76,14 @@ public partial class UutProcessorViewModel : PageBase
         this._session.UutProcessorState = UutProcessorState.Processing;
     }
 
-    private void OnSfcResponseCreated(object? sender, SfcResponse sfcResponse)
+    private void OnSfcResponse(object? sender, UnitUnderTest unitUnderTest)
     {
         Task.Run((Func<Task?>)(async () =>
         {
-            var stop = await this._stopService.Calculate(sfcResponse);
+            var stop = await this._stopService.Calculate(unitUnderTest);
             if (stop.IsNull)
             {
-                Messenger.Send(new ShowSuccessMessage(sfcResponse));
+                Messenger.Send(new ShowSuccessMessage(unitUnderTest));
             }
             else
             {

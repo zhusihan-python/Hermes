@@ -13,16 +13,12 @@ public class SfcResponse
     private const RegexOptions RgxOptions = RegexOptions.IgnoreCase | RegexOptions.Multiline;
     private static readonly Regex RegexWrongStation = new(@"^go-.+[\r\n]+", RgxOptions);
     private static readonly Regex RegexIsOk = new(@"^ok[\r\n]+", RgxOptions);
-    private const string TimeoutText = "Timeout";
+    public const string TimeoutText = "Timeout";
 
     [Key] public int Id { get; init; }
-    public UnitUnderTest UnitUnderTest { get; init; } = UnitUnderTest.Null;
-    public int UnitUnderTestId { get; init; }
     public virtual bool IsFail => this.ResponseType != SfcResponseType.Ok;
     public SfcResponseType ResponseType { get; init; }
     [MaxLength(3000)] public string Content { get; init; } = "";
-    [NotMapped] public bool IsRepair => this.UnitUnderTest?.IsFail ?? true && !this.IsFail;
-    [NotMapped] public string SerialNumber => UnitUnderTest?.SerialNumber ?? string.Empty;
     [NotMapped] public string Details => IsFail ? $"{ResponseType} - {ResponseType.GetDescription()}" : "";
     [NotMapped] public bool IsNull => this == Null;
     [NotMapped] public bool IsTimeout => ResponseType == SfcResponseType.Timeout;
@@ -32,10 +28,8 @@ public class SfcResponse
     {
     }
 
-    public SfcResponse(UnitUnderTest unitUnderTest, string content)
+    public SfcResponse(string content)
     {
-        this.UnitUnderTest = unitUnderTest;
-        this.UnitUnderTestId = unitUnderTest.Id;
         this.Content = content;
         this.ResponseType = ParseErrorType(content);
     }
@@ -60,14 +54,9 @@ public class SfcResponse
         return SfcResponseType.Unknown;
     }
 
-    public static SfcResponse BuildTimeout(UnitUnderTest unitUnderTest)
+    public static SfcResponse BuildTimeout()
     {
-        return new SfcResponse(unitUnderTest, TimeoutText);
-    }
-
-    public virtual Defect GetDefectByLocation(string criticalLocations)
-    {
-        return this.UnitUnderTest.GetDefectByLocation(criticalLocations);
+        return new SfcResponse(TimeoutText);
     }
 }
 

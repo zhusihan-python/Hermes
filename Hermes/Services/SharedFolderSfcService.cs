@@ -5,11 +5,6 @@ using System.Threading.Tasks;
 
 namespace Hermes.Services;
 
-public interface ISfcService
-{
-    Task<SfcResponse> SendAsync(UnitUnderTest unitUnderTest);
-}
-
 public class SharedFolderSfcService : ISfcService
 {
     private readonly Settings _settings;
@@ -33,11 +28,10 @@ public class SharedFolderSfcService : ISfcService
         var sfcRequest = new SfcRequest(unitUnderTest, this._settings.SfcPath, this._settings.SfcResponseExtension);
         await this._fileService.WriteAllTextAsync(sfcRequest.FullPath, sfcRequest.Content);
 
-        var sfcResponse = SfcResponse.BuildTimeout(unitUnderTest);
+        var sfcResponse = SfcResponse.BuildTimeout();
         if (await WaitForFileCreationAsync(sfcRequest.ResponseFullPath))
         {
             sfcResponse = new SfcResponse(
-                unitUnderTest,
                 content: await this._fileService.TryReadAllTextAsync(sfcRequest.ResponseFullPath)
             );
             await _fileService.MoveToBackupAsync(sfcRequest.ResponseFullPath);

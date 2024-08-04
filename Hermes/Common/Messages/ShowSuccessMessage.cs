@@ -3,4 +3,4 @@ using Hermes.Models;
 
 namespace Hermes.Common.Messages;
 
-public class ShowSuccessMessage(SfcResponse sfcResponse) : ValueChangedMessage<SfcResponse>(sfcResponse);
+public class ShowSuccessMessage(UnitUnderTest unitUnderTest) : ValueChangedMessage<UnitUnderTest>(unitUnderTest);

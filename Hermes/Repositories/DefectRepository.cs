@@ -35,16 +35,12 @@ public sealed class DefectRepository(HermesContext db) : BaseRepository<Defect>(
     private async Task<List<Defect>> GetNotRestoredRepeatedDefects(IQueryable<Defect> defectsQueryable, int qty)
     {
         var defects = await defectsQueryable
-            .Join(
-                db.Stop,
-                defect => defect.StopId,
-                stop => stop.Id,
-                (defect, stop) => new { defect, stop })
-            .Where(x => x.defect.ErrorFlag == ErrorFlag.Bad)
-            .GroupBy(x => new { x.defect.Location, x.defect.ErrorCode })
+            .Where(x => x.StopId == null)
+            .Where(x => x.ErrorFlag == ErrorFlag.Bad)
+            .GroupBy(x => new { x.Location, x.ErrorCode })
             .Select(x => new
             {
-                Ids = string.Join(",", x.Select(y => y.defect.Id)),
+                Ids = string.Join(",", x.Select(y => y.Id)),
                 Count = x.Count()
             })
             .ToListAsync();
@@ -61,22 +57,22 @@ public sealed class DefectRepository(HermesContext db) : BaseRepository<Defect>(
     private IQueryable<Defect> GetFromLastUnitsUnderTest(TimeSpan fromHours)
     {
         var dateTimeLowerLimit = DateTime.Now - fromHours;
-        var uutIds = Db.SfcResponses
-            .Where(x => x.ResponseType == SfcResponseType.Ok)
-            .Where(x => x.UnitUnderTest.CreatedAt >= dateTimeLowerLimit)
-            .OrderByDescending(x => x.UnitUnderTest.CreatedAt)
-            .Select(x => x.UnitUnderTest.Id);
+        var uutIds = Db.UnitsUnderTest
+            .Where(x => x.SfcResponse != null && x.SfcResponse.ResponseType == SfcResponseType.Ok)
+            .Where(x => x.CreatedAt >= dateTimeLowerLimit)
+            .OrderByDescending(x => x.CreatedAt)
+            .Select(x => x.Id);
         return Db.Defects
             .Where(x => uutIds.Contains(x.UnitUnderTestId));
     }
 
     private IQueryable<Defect> GetFromLastUnitsUnderTest(int qty)
     {
-        var uutIds = Db.SfcResponses
-            .Where(x => x.ResponseType == SfcResponseType.Ok)
-            .OrderByDescending(x => x.UnitUnderTest.CreatedAt)
+        var uutIds = Db.UnitsUnderTest
+            .Where(x => x.SfcResponse != null && x.SfcResponse.ResponseType == SfcResponseType.Ok)
+            .OrderByDescending(x => x.CreatedAt)
             .Take(qty)
-            .Select(x => x.UnitUnderTest.Id);
+            .Select(x => x.Id);
         return Db.Defects
             .Where(x => uutIds.Contains(x.UnitUnderTestId));
     }

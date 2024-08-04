@@ -6,12 +6,12 @@ namespace Hermes.Common.Validators;
 
 public class MachineStopValidator : IStopValidator
 {
-    public Task<Stop> ValidateAsync(SfcResponse sfcResponse)
+    public Task<Stop> ValidateAsync(UnitUnderTest unitUnderTest)
     {
         var result = Stop.Null;
-        if (sfcResponse.IsFail)
+        if (unitUnderTest.IsSfcFail)
         {
-            result = new Stop(StopType.Machine, sfcResponse);
+            result = new Stop(StopType.Machine);
         }
 
         return Task.FromResult(result);

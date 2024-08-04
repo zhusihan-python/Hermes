@@ -8,11 +8,11 @@ namespace HermesTests.Common.Validators;
 
 public class AnyDefectsWithin1HourValidatorTests
 {
-    private readonly SfcResponseBuilder _sfcResponseBuilder;
+    private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
 
-    public AnyDefectsWithin1HourValidatorTests(SfcResponseBuilder sfcResponseBuilder)
+    public AnyDefectsWithin1HourValidatorTests(UnitUnderTestBuilder unitUnderTestBuilder)
     {
-        this._sfcResponseBuilder = sfcResponseBuilder;
+        this._unitUnderTestBuilder = unitUnderTestBuilder;
     }
 
     [Fact]
@@ -20,20 +20,20 @@ public class AnyDefectsWithin1HourValidatorTests
     {
         var defect = new Defect();
         var defectRepositoryMock = GetDefectRepositoryMock(defect);
-        var sfcResponse = _sfcResponseBuilder.Build();
+        var unitUnderTest = _unitUnderTestBuilder.Build();
 
         var sut = new AnyDefectsWithin1HourValidator(defectRepositoryMock);
-        Assert.False((await sut.ValidateAsync(sfcResponse)).IsNull);
+        Assert.False((await sut.ValidateAsync(unitUnderTest)).IsNull);
     }
 
     [Fact]
     public async void ValidateAsync_NotConsecutiveDefects_ReturnStopNull()
     {
         var defectRepositoryMock = GetDefectRepositoryMock(Defect.Null);
-        var sfcResponse = _sfcResponseBuilder.Build();
+        var unitUnderTest = _unitUnderTestBuilder.Build();
 
         var sut = new AnyDefectsWithin1HourValidator(defectRepositoryMock);
-        Assert.True((await sut.ValidateAsync(sfcResponse)).IsNull);
+        Assert.True((await sut.ValidateAsync(unitUnderTest)).IsNull);
     }
 
     private IDefectRepository GetDefectRepositoryMock(Defect? defect = null)

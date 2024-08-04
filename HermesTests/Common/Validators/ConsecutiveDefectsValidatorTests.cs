@@ -8,11 +8,11 @@ namespace HermesTests.Common.Validators;
 
 public class ConsecutiveDefectsValidatorTests
 {
-    private readonly SfcResponseBuilder _sfcResponseBuilder;
+    private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
 
-    public ConsecutiveDefectsValidatorTests(SfcResponseBuilder sfcResponseBuilder)
+    public ConsecutiveDefectsValidatorTests(UnitUnderTestBuilder unitUnderTestBuilder)
     {
-        this._sfcResponseBuilder = sfcResponseBuilder;
+        this._unitUnderTestBuilder = unitUnderTestBuilder;
     }
 
     [Fact]
@@ -20,20 +20,20 @@ public class ConsecutiveDefectsValidatorTests
     {
         var defect = new Defect();
         var defectRepositoryMock = GetDefectRepositoryMock(defect);
-        var sfcResponse = _sfcResponseBuilder.Build();
+        var unitUnderTest = _unitUnderTestBuilder.Build();
 
         var validator = new ConsecutiveDefectsValidator(defectRepositoryMock);
-        Assert.False((await validator.ValidateAsync(sfcResponse)).IsNull);
+        Assert.False((await validator.ValidateAsync(unitUnderTest)).IsNull);
     }
 
     [Fact]
     public async void ValidateAsync_NotConsecutiveDefects_ReturnStopNull()
     {
         var defectRepositoryMock = GetDefectRepositoryMock(Defect.Null);
-        var sfcResponse = _sfcResponseBuilder.Build();
+        var unitUnderTest = _unitUnderTestBuilder.Build();
 
         var validator = new ConsecutiveDefectsValidator(defectRepositoryMock);
-        Assert.True((await validator.ValidateAsync(sfcResponse)).IsNull);
+        Assert.True((await validator.ValidateAsync(unitUnderTest)).IsNull);
     }
 
     private IDefectRepository GetDefectRepositoryMock(Defect? defect = null)

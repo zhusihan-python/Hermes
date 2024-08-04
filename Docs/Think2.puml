@@ -1,21 +1,14 @@
 @startuml
 
-class Messenger {}
+class UnitUnderTest {}
+ UnitUnderTest --> Stop
+ UnitUnderTest --> "*" Defect
+ UnitUnderTest --> SfcResponse
 
-class StopViewModel{
-    + SendToSfc(fullPath)
-}
-StopViewModel ..> Messenger
+class Stop {}
+Stop --> Defect
 
-class WindowService {
-    + ShowPopup(message, delay)
-    + ShowStop(stop)
-    + ShowUutSuccess(unitUnderTest)
-}
-WindowService --> StopView
-WindowService ..> Messenger
+class SfcResponse {}
 
-class StopView {
-}
-StopView --> StopViewModel
+
 @enduml

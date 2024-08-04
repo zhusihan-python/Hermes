@@ -21,7 +21,7 @@ public class SameDefectsWithin1HourValidator : IStopValidator
         this._maxSameDefects = maxSameDefects;
     }
 
-    public virtual async Task<Stop> ValidateAsync(SfcResponse sfcResponse)
+    public virtual async Task<Stop> ValidateAsync(UnitUnderTest unitUnderTest)
     {
         var defects = await this._defectRepository.GetNotRestoredSameDefectsWithin1Hour(_maxSameDefects);
         if (defects.Count <= 0)
@@ -30,7 +30,7 @@ public class SameDefectsWithin1HourValidator : IStopValidator
         }
 
         var defect = defects.First();
-        return new Stop(StopType.Line, sfcResponse)
+        return new Stop(StopType.Line)
         {
             Defects = defects,
             Details =

@@ -9,11 +9,11 @@ namespace HermesTests.Common.Validators;
 
 public class CriticalLocationStopValidatorTests
 {
-    private readonly SfcResponseBuilder _sfcResponseBuilder;
+    private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
 
-    public CriticalLocationStopValidatorTests(SfcResponseBuilder sfcResponseBuilder)
+    public CriticalLocationStopValidatorTests(UnitUnderTestBuilder unitUnderTestBuilder)
     {
-        this._sfcResponseBuilder = sfcResponseBuilder;
+        this._unitUnderTestBuilder = unitUnderTestBuilder;
     }
 
     [Fact]
@@ -24,9 +24,9 @@ public class CriticalLocationStopValidatorTests
         {
             Location = criticalLocation
         };
-        var sfcResponse = GetSfcResponseMock(defect);
+        var unitUnderTest = GetUnitUnderTestMock(defect);
         var sut = new CriticalLocationStopValidator(new CoreSettings() { CriticalLocations = criticalLocation });
-        var result = await sut.ValidateAsync(sfcResponse);
+        var result = await sut.ValidateAsync(unitUnderTest);
         Assert.False(result.IsNull);
         Assert.Equal(defect, result.Defects.First());
     }
@@ -39,9 +39,9 @@ public class CriticalLocationStopValidatorTests
         {
             Location = criticalLocation
         };
-        var sfcResponse = GetSfcResponseMock(defect);
+        var unitUnderTest = GetUnitUnderTestMock(defect);
         var sut = new CriticalLocationStopValidator(new CoreSettings() { CriticalLocations = criticalLocation });
-        var result = await sut.ValidateAsync(sfcResponse);
+        var result = await sut.ValidateAsync(unitUnderTest);
         Assert.False(result.IsNull);
         Assert.Equal(defect, result.Defects.First());
     }
@@ -54,23 +54,23 @@ public class CriticalLocationStopValidatorTests
         {
             Location = criticalLocation
         };
-        var sfcResponse = GetSfcResponseMock(defect, true);
+        var unitUnderTest = GetUnitUnderTestMock(defect, true);
         var sut = new CriticalLocationStopValidator(new CoreSettings() { CriticalLocations = criticalLocation });
-        Assert.True((await sut.ValidateAsync(sfcResponse)).IsNull);
+        Assert.True((await sut.ValidateAsync(unitUnderTest)).IsNull);
     }
 
     [Fact]
     public async void ValidateAsync_NotCriticalDefects_ReturnStopNull()
     {
         var criticalLocation = "L0";
-        var sfcResponse = GetSfcResponseMock();
+        var unitUnderTest = GetUnitUnderTestMock();
         var sut = new CriticalLocationStopValidator(new CoreSettings() { CriticalLocations = criticalLocation });
-        Assert.True((await sut.ValidateAsync(sfcResponse)).IsNull);
+        Assert.True((await sut.ValidateAsync(unitUnderTest)).IsNull);
     }
 
-    private SfcResponse GetSfcResponseMock(Defect? defect = null, bool isFail = false)
+    private UnitUnderTest GetUnitUnderTestMock(Defect? defect = null, bool isFail = false)
     {
-        var mock = new Mock<SfcResponse>();
+        var mock = new Mock<UnitUnderTest>();
         mock
             .Setup(x => x.GetDefectByLocation(It.IsAny<string>()))
             .Returns(defect ?? Defect.Null);

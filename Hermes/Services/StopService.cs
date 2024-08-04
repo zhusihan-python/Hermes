@@ -29,8 +29,10 @@ public class StopService
         // TODO
     }
 
-    public async Task<Stop> Calculate(SfcResponse sfcResponse)
+    public async Task<Stop> Calculate(UnitUnderTest unitUnderTest)
     {
-        return await this._stopValidator.ValidateAsync(sfcResponse);
+        var stop = await this._stopValidator.ValidateAsync(unitUnderTest);
+        stop.SerialNumber = unitUnderTest.SerialNumber;
+        return stop;
     }
 }

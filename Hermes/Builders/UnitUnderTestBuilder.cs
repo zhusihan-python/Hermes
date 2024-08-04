@@ -7,6 +7,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System;
 using Hermes.Common.Extensions;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace Hermes.Builders;
 
@@ -24,17 +25,21 @@ public class UnitUnderTestBuilder
     private readonly Settings _settings;
     private readonly Random _random = new();
     private readonly ParserPrototype _parserPrototype;
+    private readonly SfcResponseBuilder _sfcResponseBuilder;
 
 
     public UnitUnderTestBuilder(
         Settings settings,
         FileService fileService,
-        ParserPrototype parserPrototype)
+        ParserPrototype parserPrototype,
+        SfcResponseBuilder sfcResponseBuilder)
     {
         this._fileService = fileService;
         this._settings = settings;
         this._fileName += settings.InputFileExtension.GetDescription();
         this._parserPrototype = parserPrototype;
+        this._sfcResponseBuilder = sfcResponseBuilder;
+        sfcResponseBuilder.SetOkContent();
     }
 
     public async Task<UnitUnderTest> BuildAsync(string fileFullPath)
@@ -87,14 +92,18 @@ public class UnitUnderTestBuilder
             IsFail = parser.ParseIsFail(content),
             SerialNumber = parser.ParseSerialNumber(content),
             Defects = parser.ParseDefects(content),
-            CreatedAt = this._createdAt
+            CreatedAt = this._createdAt,
+            SfcResponse = _sfcResponseBuilder
+                .SerialNumber(_serialNumber)
+                .Build()
         };
     }
 
     private bool HasValidExtension(string fileName)
     {
         return _settings.InputFileExtension.GetDescription() == "*.*" ||
-               _settings.InputFileExtension.GetDescription().Contains(Path.GetExtension(fileName), StringComparison.OrdinalIgnoreCase);
+               _settings.InputFileExtension.GetDescription()
+                   .Contains(Path.GetExtension(fileName), StringComparison.OrdinalIgnoreCase);
     }
 
     public UnitUnderTestBuilder FileName(string fileName)
@@ -121,12 +130,12 @@ public class UnitUnderTestBuilder
         return this;
     }
 
-    public UnitUnderTestBuilder AddRandomDefect(string? location = null)
+    public UnitUnderTestBuilder AddRandomDefect(string? location = null, bool isBad = false)
     {
         var rnd = this._random.Next();
         this.Defects.Add(new Defect()
         {
-            ErrorFlag = ErrorFlag.Good,
+            ErrorFlag = isBad ? ErrorFlag.Bad : ErrorFlag.Good,
             Location = location ?? $"L{rnd}",
             ErrorCode = $"EC{rnd}"
         });
@@ -141,12 +150,44 @@ public class UnitUnderTestBuilder
 
     public UnitUnderTestBuilder Clone()
     {
-        return new UnitUnderTestBuilder(this._settings, this._fileService, this._parserPrototype);
+        return new UnitUnderTestBuilder(
+            this._settings,
+            this._fileService,
+            this._parserPrototype,
+            this._sfcResponseBuilder);
     }
 
     public UnitUnderTestBuilder CreatedAt(DateTime createdAt)
     {
         this._createdAt = createdAt;
+        return this;
+    }
+
+    public UnitUnderTestBuilder IsSfcFail(bool isFail)
+    {
+        if (isFail)
+        {
+            this._sfcResponseBuilder.SetFailContent();
+        }
+        else
+        {
+            this._sfcResponseBuilder.SetOkContent();
+        }
+
+        return this;
+    }
+
+    public UnitUnderTestBuilder IsSfcTimeout(bool isTimeout)
+    {
+        if (isTimeout)
+        {
+            this._sfcResponseBuilder.SetTimeoutContent();
+        }
+        else
+        {
+            this._sfcResponseBuilder.SetOkContent();
+        }
+
         return this;
     }
 }

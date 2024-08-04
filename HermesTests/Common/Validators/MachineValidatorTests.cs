@@ -6,18 +6,19 @@ namespace HermesTests.Common.Validators;
 
 public class MachineValidatorTests
 {
-    private readonly SfcResponseBuilder _sfcResponseBuilder;
+    private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
 
-    public MachineValidatorTests(SfcResponseBuilder sfcResponseBuilder)
+    public MachineValidatorTests(UnitUnderTestBuilder unitUnderTestBuilder)
     {
-        this._sfcResponseBuilder = sfcResponseBuilder;
+        this._unitUnderTestBuilder = unitUnderTestBuilder;
     }
 
     [Fact]
     public async void ValidateAsync_SfcResponseIsSuccess_ReturnStopNull()
     {
-        var sfcResponse = _sfcResponseBuilder
-            .SetOkContent()
+        var sfcResponse = _unitUnderTestBuilder
+            .IsPass(true)
+            .IsSfcFail(false)
             .Build();
 
         var sut = new MachineStopValidator();
@@ -27,8 +28,8 @@ public class MachineValidatorTests
     [Fact]
     public async void ValidateAsync_SfcResponseIsFail_ReturnStop()
     {
-        var sfcResponse = _sfcResponseBuilder
-            .SetFailContent()
+        var sfcResponse = _unitUnderTestBuilder
+            .IsSfcFail(true)
             .Build();
 
         var sut = new MachineStopValidator();
@@ -38,8 +39,8 @@ public class MachineValidatorTests
     [Fact]
     public async void ValidateAsync_SfcResponseIsFail_ReturnStopTypeMachine()
     {
-        var sfcResponse = _sfcResponseBuilder
-            .SetFailContent()
+        var sfcResponse = _unitUnderTestBuilder
+            .IsSfcFail(true)
             .Build();
 
         var sut = new MachineStopValidator();
@@ -49,8 +50,8 @@ public class MachineValidatorTests
     [Fact]
     public async void ValidateAsync_SfcResponseIsTimeout_ReturnStop()
     {
-        var sfcResponse = _sfcResponseBuilder
-            .SetFailContent()
+        var sfcResponse = _unitUnderTestBuilder
+            .IsSfcTimeout(true)
             .Build();
 
         var sut = new MachineStopValidator();

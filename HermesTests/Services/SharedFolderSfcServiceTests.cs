@@ -28,7 +28,7 @@ public class SharedFolderSfcServiceTests
             .TryReadAllTextAsync(sfcResponse.Content)
             .Build();
         var sfcService = BuildSfcService(fileServiceMock);
-        Assert.False((await sfcService.SendAsync(sfcResponse.UnitUnderTest!)).IsFail);
+        Assert.False((await sfcService.SendAsync(UnitUnderTest.Null)).IsFail);
     }
 
     [Fact]
@@ -43,7 +43,7 @@ public class SharedFolderSfcServiceTests
             SfcTimeoutSeconds = 0
         };
         var sfcService = BuildSfcService(fileServiceMock, settings);
-        Assert.Equal(SfcResponseType.Timeout, (await sfcService.SendAsync(sfcResponse.UnitUnderTest!)).ResponseType);
+        Assert.Equal(SfcResponseType.Timeout, (await sfcService.SendAsync(UnitUnderTest.Null)).ResponseType);
     }
 
     private SharedFolderSfcService BuildSfcService(FileService fileService, Settings? settings = null)

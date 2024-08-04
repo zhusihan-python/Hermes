@@ -14,7 +14,7 @@ namespace Hermes.Services;
 public class UutSenderService
 {
     public event EventHandler<UnitUnderTest>? UnitUnderTestCreated;
-    public event EventHandler<SfcResponse>? SfcResponseCreated;
+    public event EventHandler<UnitUnderTest>? SfcResponse;
     public event EventHandler<bool>? RunStatusChanged;
 
     private readonly Session _session;
@@ -70,10 +70,10 @@ public class UutSenderService
                 if (this._session.IsUutProcessorIdle && this._pendingFiles.TryDequeue(out var fullPath))
                 {
                     this._logger.Debug($"Processing file: {fullPath}");
-                    var sfcResponse = await this.SendFileAsync(fullPath);
-                    if (!sfcResponse.IsNull)
+                    var unitUnderTest = await this.SendFileAsync(fullPath);
+                    if (!unitUnderTest.IsNull)
                     {
-                        this.OnSfcResponseCreated(sfcResponse);
+                        this.OnSfcResponse(unitUnderTest);
                     }
                 }
                 else
@@ -99,17 +99,17 @@ public class UutSenderService
         }
     }
 
-    public async Task<SfcResponse> SendFileAsync(string fullPath)
+    private async Task<UnitUnderTest> SendFileAsync(string fullPath)
     {
         var backupFullPath = await this._fileService.MoveToBackupAsync(fullPath);
         var unitUnderTest = await this.BuildUnitUnderTest(backupFullPath);
         if (unitUnderTest.IsNull)
         {
-            return SfcResponse.Null;
+            return UnitUnderTest.Null;
         }
 
-        var sfcResponse = await this._sfcService.SendAsync(unitUnderTest);
-        if (sfcResponse.IsTimeout && this._retries < this._settings.MaxSfcRetries - 1)
+        unitUnderTest.SfcResponse = await this._sfcService.SendAsync(unitUnderTest);
+        if (unitUnderTest.IsSfcTimeout && this._retries < this._settings.MaxSfcRetries - 1)
         {
             this._retries += 1;
             this._logger.Error($"Timeout: {backupFullPath} | retry: {this._retries}");
@@ -120,7 +120,8 @@ public class UutSenderService
             this._retries = 0;
         }
 
-        return sfcResponse;
+        await _unitUnderTestRepository.SaveChangesAsync();
+        return unitUnderTest;
     }
 
     private async Task<UnitUnderTest> BuildUnitUnderTest(string fullPath)
@@ -164,9 +165,9 @@ public class UutSenderService
         UnitUnderTestCreated?.Invoke(this, unitUnderTest);
     }
 
-    protected virtual void OnSfcResponseCreated(SfcResponse sfcResponse)
+    protected virtual void OnSfcResponse(UnitUnderTest unitUnderTest)
     {
-        SfcResponseCreated?.Invoke(this, sfcResponse);
+        SfcResponse?.Invoke(this, unitUnderTest);
     }
 
     protected virtual void OnRunStatusChanged(bool isRunning)

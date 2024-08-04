@@ -8,11 +8,11 @@ namespace HermesTests.Common.Validators;
 
 public class SameDefectsWithin1HourValidatorTests
 {
-    private readonly SfcResponseBuilder _sfcResponseBuilder;
+    private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
 
-    public SameDefectsWithin1HourValidatorTests(SfcResponseBuilder sfcResponseBuilder)
+    public SameDefectsWithin1HourValidatorTests(UnitUnderTestBuilder unitUnderTestBuilder)
     {
-        this._sfcResponseBuilder = sfcResponseBuilder;
+        this._unitUnderTestBuilder = unitUnderTestBuilder;
     }
 
     [Fact]
@@ -20,7 +20,7 @@ public class SameDefectsWithin1HourValidatorTests
     {
         var defect = new Defect();
         var defectRepositoryMock = GetDefectRepositoryMock(defect);
-        var sfcResponse = _sfcResponseBuilder.Build();
+        var sfcResponse = _unitUnderTestBuilder.Build();
 
         var sut = new SameDefectsWithin1HourValidator(defectRepositoryMock);
         Assert.False((await sut.ValidateAsync(sfcResponse)).IsNull);
@@ -30,7 +30,7 @@ public class SameDefectsWithin1HourValidatorTests
     public async void ValidateAsync_NotConsecutiveDefects_ReturnStopNull()
     {
         var defectRepositoryMock = GetDefectRepositoryMock(Defect.Null);
-        var sfcResponse = _sfcResponseBuilder.Build();
+        var sfcResponse = _unitUnderTestBuilder.Build();
 
         var sut = new SameDefectsWithin1HourValidator(defectRepositoryMock);
         Assert.True((await sut.ValidateAsync(sfcResponse)).IsNull);

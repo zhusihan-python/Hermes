@@ -9,11 +9,11 @@ public class DefectRepositoryTests
 {
     private readonly DefectRepository _sut;
     private readonly HermesContext _context;
-    private readonly SfcResponseBuilder _sfcResponseBuilder;
+    private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
 
-    public DefectRepositoryTests(SfcResponseBuilder sfcResponseBuilder, HermesContext hermesContext)
+    public DefectRepositoryTests(UnitUnderTestBuilder unitUnderTestBuilder, HermesContext hermesContext)
     {
-        this._sfcResponseBuilder = sfcResponseBuilder;
+        this._unitUnderTestBuilder = unitUnderTestBuilder;
         this._context = hermesContext;
         this._context.Database.EnsureDeleted();
         this._context.Database.EnsureCreated();
@@ -21,24 +21,40 @@ public class DefectRepositoryTests
     }
 
     [Fact]
-    public async void GetConsecutiveSameDefects_WithConsecutiveDefects_ReturnsDefectList()
+    public async void GetConsecutiveSameDefects_AllDefectsAreRestored_ReturnsEmptyList()
     {
         const int qty = 3;
-        var sfcResponseBuilderWithDefects = _sfcResponseBuilder
-            .SetOkContent()
-            .AddBadDefect();
+        var uutBuilder = _unitUnderTestBuilder
+            .AddRandomDefect(isBad: true);
         for (var i = 0; i < qty; i++)
         {
-            _context.SfcResponses.Add(sfcResponseBuilderWithDefects.Build());
+            _context.UnitsUnderTest.Add(uutBuilder.Build());
         }
 
         await _context.SaveChangesAsync();
 
-        _context.Stop.Add(new Stop()
+        _context.Stops.Add(new Stop()
         {
             Defects = _context.Defects.ToList(),
             IsRestored = false
         });
+
+        await _context.SaveChangesAsync();
+
+        var result = await _sut.GetNotRestoredConsecutiveSameDefects(qty);
+        Assert.Empty(result);
+    }
+
+    [Fact]
+    public async void GetConsecutiveSameDefects_WithConsecutiveDefects_ReturnsDefectList()
+    {
+        const int qty = 3;
+        var uutBuilder = _unitUnderTestBuilder
+            .AddRandomDefect(isBad: true);
+        for (var i = 0; i < qty; i++)
+        {
+            _context.UnitsUnderTest.Add(uutBuilder.Build());
+        }
 
         await _context.SaveChangesAsync();
 
@@ -49,14 +65,12 @@ public class DefectRepositoryTests
     [Fact]
     public async void GetConsecutiveSameDefects_NotConsecutiveDefects_ReturnsEmptyList()
     {
-        var sfcResponseBuilder = _sfcResponseBuilder
-            .SetOkContent();
-        var sfcResponseBuilderWithDefects = _sfcResponseBuilder.Clone()
-            .SetOkContent()
-            .AddBadDefect();
-        _context.SfcResponses.Add(sfcResponseBuilderWithDefects.Build());
-        _context.SfcResponses.Add(sfcResponseBuilderWithDefects.Build());
-        _context.SfcResponses.Add(sfcResponseBuilder.Build());
+        var uutBuilder = _unitUnderTestBuilder;
+        var uutBuilderWithDefect = _unitUnderTestBuilder.Clone()
+            .AddRandomDefect(isBad: true);
+        _context.UnitsUnderTest.Add(uutBuilderWithDefect.Build());
+        _context.UnitsUnderTest.Add(uutBuilderWithDefect.Build());
+        _context.UnitsUnderTest.Add(uutBuilder.Build());
         await _context.SaveChangesAsync();
 
         var result = await _sut.GetNotRestoredConsecutiveSameDefects(3);
@@ -66,21 +80,19 @@ public class DefectRepositoryTests
     [Fact]
     public async void GetSameDefectsWithin1Hour_WithSameDefectsWithin1Hour_ReturnsDefectList()
     {
-        var sfcResponseBuilder = _sfcResponseBuilder
-            .SetOkContent();
-        var sfcResponseBuilderWithDefects = _sfcResponseBuilder
+        var uutBuilder = _unitUnderTestBuilder;
+        var uutBuilderWithDefects = _unitUnderTestBuilder
             .Clone()
-            .SetOkContent()
-            .AddBadDefect();
+            .AddRandomDefect(isBad: true);
         const int qty = 5;
         var timeLapse = TimeSpan.FromMinutes(59);
         var step = timeLapse / qty;
         while (timeLapse.TotalMinutes > 0)
         {
-            sfcResponseBuilder.CreatedAt(DateTime.Now - timeLapse);
-            sfcResponseBuilderWithDefects.CreatedAt(DateTime.Now - timeLapse);
-            _context.SfcResponses.Add(sfcResponseBuilder.Build());
-            _context.SfcResponses.Add(sfcResponseBuilderWithDefects.Build());
+            uutBuilder.CreatedAt(DateTime.Now - timeLapse);
+            uutBuilderWithDefects.CreatedAt(DateTime.Now - timeLapse);
+            _context.UnitsUnderTest.Add(uutBuilder.Build());
+            _context.UnitsUnderTest.Add(uutBuilderWithDefects.Build());
             timeLapse -= step;
         }
 
@@ -98,10 +110,9 @@ public class DefectRepositoryTests
         var step = TimeSpan.FromMinutes(Math.Round(60.0 / qty));
         while (timeLapse.TotalMinutes > 0)
         {
-            _context.SfcResponses.Add(_sfcResponseBuilder
+            _context.UnitsUnderTest.Add(_unitUnderTestBuilder
                 .Clone()
-                .SetOkContent()
-                .AddBadDefect()
+                .AddRandomDefect(isBad: true)
                 .CreatedAt(DateTime.Now - timeLapse)
                 .Build());
             timeLapse -= step;
@@ -119,10 +130,9 @@ public class DefectRepositoryTests
         const int qty = 10;
         for (var i = 0; i < qty; i++)
         {
-            _context.SfcResponses.Add(_sfcResponseBuilder
+            _context.UnitsUnderTest.Add(_unitUnderTestBuilder
                 .Clone()
-                .SetOkContent()
-                .AddBadDefect()
+                .AddRandomDefect(isBad: true)
                 .CreatedAt(DateTime.Now)
                 .Build());
         }
@@ -141,8 +151,7 @@ public class DefectRepositoryTests
         const int qty = 10;
         for (var i = 0; i <= qty; i++)
         {
-            _context.SfcResponses.Add(_sfcResponseBuilder
-                .SetOkContent()
+            _context.UnitsUnderTest.Add(_unitUnderTestBuilder
                 .CreatedAt(DateTime.Now)
                 .Build());
         }

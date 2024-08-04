@@ -21,7 +21,7 @@ public class ConsecutiveDefectsValidator : IStopValidator
         this._maxConsecutiveDefects = maxConsecutiveDefects;
     }
 
-    public virtual async Task<Stop> ValidateAsync(SfcResponse sfcResponse)
+    public virtual async Task<Stop> ValidateAsync(UnitUnderTest unitUnderTest)
     {
         var defects = await this._defectRepository.GetNotRestoredConsecutiveSameDefects(_maxConsecutiveDefects);
         if (defects.Count <= 0)
@@ -30,7 +30,7 @@ public class ConsecutiveDefectsValidator : IStopValidator
         }
 
         var defect = defects.First();
-        return new Stop(StopType.Line, sfcResponse)
+        return new Stop(StopType.Line)
         {
             Defects = defects,
             Details =

@@ -88,8 +88,8 @@ public class SfcSimulatorService
         else
             this._sfcResponseBuilder.SetOkContent();
 
-        this._sfcResponseBuilder.UnitUnderTest(
-            await this._unitUnderTestBuilder.BuildAsync(fullPath));
+        this._sfcResponseBuilder.SerialNumber(
+            (await this._unitUnderTestBuilder.BuildAsync(fullPath)).SerialNumber);
 
         return this._sfcResponseBuilder.GetContent();
     }

@@ -12,7 +12,7 @@ public class HermesContext : DbContext
     public DbSet<UnitUnderTest> UnitsUnderTest { get; set; }
     public DbSet<Defect> Defects { get; set; }
     public DbSet<SfcResponse> SfcResponses { get; set; }
-    public DbSet<Stop> Stop { get; set; }
+    public DbSet<Stop> Stops { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

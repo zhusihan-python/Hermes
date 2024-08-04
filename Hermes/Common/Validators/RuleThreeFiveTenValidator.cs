@@ -16,9 +16,9 @@ public class RuleThreeFiveTenValidator : CompoundStopValidator
             .Add(anyDefectsWithin1HourValidator);
     }
 
-    public override async Task<Stop> ValidateAsync(SfcResponse sfcResponse)
+    public override async Task<Stop> ValidateAsync(UnitUnderTest unitUnderTest)
     {
-        var stop = await base.ValidateAsync(sfcResponse);
+        var stop = await base.ValidateAsync(unitUnderTest);
         if (!stop.IsNull)
         {
             stop.Type = StopType.Line;

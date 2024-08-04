@@ -9,19 +9,17 @@ namespace HermesTests.Common.Validators;
 
 public class RuleThreeFiveTenValidatorTests
 {
-    private readonly SfcResponseBuilder _sfcResponseBuilder;
+    private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
 
-    public RuleThreeFiveTenValidatorTests(SfcResponseBuilder sfcResponseBuilder)
+    public RuleThreeFiveTenValidatorTests(UnitUnderTestBuilder unitUnderTestBuilder)
     {
-        this._sfcResponseBuilder = sfcResponseBuilder;
+        this._unitUnderTestBuilder = unitUnderTestBuilder;
     }
 
     [Fact]
     public async void ValidateAsync_NotConsecutiveDefects_ReturnStopNull()
     {
-        var sfcResponse = _sfcResponseBuilder
-            .SetOkContent()
-            .Build();
+        var sfcResponse = _unitUnderTestBuilder.Build();
         var sut = BuildSut(consecutiveDefectsStop: Stop.Null);
 
         Assert.True((await sut.ValidateAsync(sfcResponse)).IsNull);
@@ -30,10 +28,8 @@ public class RuleThreeFiveTenValidatorTests
     [Fact]
     public async void ValidateAsync_WithConsecutiveDefects_ReturnStop()
     {
-        var sfcResponse = _sfcResponseBuilder
-            .SetOkContent()
-            .Build();
-        var stop = new Stop(StopType.Line, sfcResponse);
+        var sfcResponse = _unitUnderTestBuilder.Build();
+        var stop = new Stop(StopType.Line);
         var sut = BuildSut(consecutiveDefectsStop: stop);
 
         Assert.Equal(stop, await sut.ValidateAsync(sfcResponse));
@@ -42,10 +38,8 @@ public class RuleThreeFiveTenValidatorTests
     [Fact]
     public async void ValidateAsync_WithConsecutiveDefects_ReturnStopTypeLine()
     {
-        var sfcResponse = _sfcResponseBuilder
-            .SetOkContent()
-            .Build();
-        var stop = new Stop(StopType.Line, sfcResponse);
+        var sfcResponse = _unitUnderTestBuilder.Build();
+        var stop = new Stop(StopType.Line);
         var sut = BuildSut(consecutiveDefectsStop: stop);
 
         Assert.Equal(stop, await sut.ValidateAsync(sfcResponse));
@@ -54,10 +48,8 @@ public class RuleThreeFiveTenValidatorTests
     [Fact]
     public async void ValidateAsync_NotSameDefectsWithin1Hour_ReturnStopNull()
     {
-        var sfcResponse = _sfcResponseBuilder
-            .SetOkContent()
-            .Build();
-        var stop = new Stop(StopType.Line, sfcResponse);
+        var sfcResponse = _unitUnderTestBuilder.Build();
+        var stop = new Stop(StopType.Line);
         var sut = BuildSut(sameDefectsWithin1HourStop: stop);
 
         Assert.Equal(StopType.Line, (await sut.ValidateAsync(sfcResponse)).Type);
@@ -66,10 +58,8 @@ public class RuleThreeFiveTenValidatorTests
     [Fact]
     public async void ValidateAsync_WithSameDefectsWithin1Hour_ReturnStop()
     {
-        var sfcResponse = _sfcResponseBuilder
-            .SetOkContent()
-            .Build();
-        var stop = new Stop(StopType.Line, sfcResponse);
+        var sfcResponse = _unitUnderTestBuilder.Build();
+        var stop = new Stop(StopType.Line);
         var sut = BuildSut(sameDefectsWithin1HourStop: stop);
 
         Assert.Equal(stop, await sut.ValidateAsync(sfcResponse));
@@ -78,9 +68,7 @@ public class RuleThreeFiveTenValidatorTests
     [Fact]
     public async void ValidateAsync_NotAnyDefectsWithin1Hour_ReturnStopNull()
     {
-        var sfcResponse = _sfcResponseBuilder
-            .SetOkContent()
-            .Build();
+        var sfcResponse = _unitUnderTestBuilder.Build();
         var sut = BuildSut(anyDefectsWithin1HourStop: Stop.Null);
 
         Assert.True((await sut.ValidateAsync(sfcResponse)).IsNull);
@@ -89,10 +77,8 @@ public class RuleThreeFiveTenValidatorTests
     [Fact]
     public async void ValidateAsync_WithAnyDefectsWithin1Hour_ReturnStop()
     {
-        var sfcResponse = _sfcResponseBuilder
-            .SetOkContent()
-            .Build();
-        var stop = new Stop(StopType.Line, sfcResponse);
+        var sfcResponse = _unitUnderTestBuilder.Build();
+        var stop = new Stop(StopType.Line);
         var sut = BuildSut(anyDefectsWithin1HourStop: stop);
 
         Assert.Equal(stop, await sut.ValidateAsync(sfcResponse));
@@ -101,10 +87,8 @@ public class RuleThreeFiveTenValidatorTests
     [Fact]
     public async void ValidateAsync_UnitUnderTest_ReturnStopNull()
     {
-        var sfcResponse = _sfcResponseBuilder
-            .SetOkContent()
-            .Build();
-        var stop = new Stop(StopType.Line, sfcResponse);
+        var sfcResponse = _unitUnderTestBuilder.Build();
+        var stop = new Stop(StopType.Line);
         var sut = BuildSut(anyDefectsWithin1HourStop: stop);
 
         Assert.Equal(stop, await sut.ValidateAsync(sfcResponse));
@@ -128,7 +112,7 @@ public class RuleThreeFiveTenValidatorTests
             defectRepository.Object,
             ConsecutiveDefectsValidator.DefaultMaxConsecutiveDefects);
         mock
-            .Setup(x => x.ValidateAsync(It.IsAny<SfcResponse>()))
+            .Setup(x => x.ValidateAsync(It.IsAny<UnitUnderTest>()))
             .Returns(Task.FromResult(stop ?? Stop.Null));
         return mock.Object;
     }

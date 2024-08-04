@@ -24,7 +24,7 @@ public class StopRepositoryTests
         var sfcResponse = _sfcResponseBuilder.Build();
         await _context.SfcResponses.AddAsync(sfcResponse);
         await _context.SaveChangesAsync();
-        var stop = new Stop(StopType.Machine, sfcResponse);
+        var stop = new Stop(StopType.Machine);
         await this._sut.AddAndSaveAsync(stop);
         await this._sut.RestoreAsync(stop);
         Assert.True(stop.IsRestored);

@@ -14,11 +14,11 @@ public class CompoundStopValidator : IStopValidator
         return this;
     }
 
-    public virtual async Task<Stop> ValidateAsync(SfcResponse sfcResponse)
+    public virtual async Task<Stop> ValidateAsync(UnitUnderTest unitUnderTest)
     {
         foreach (var validator in _validators)
         {
-            var validation = await validator.ValidateAsync(sfcResponse);
+            var validation = await validator.ValidateAsync(unitUnderTest);
             if (!validation.IsNull)
             {
                 return validation;

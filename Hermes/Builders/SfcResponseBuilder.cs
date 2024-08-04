@@ -10,35 +10,25 @@ public class SfcResponseBuilder
     private const string FailContent = "FAIL";
     private const string WrongStation = "GO-ICT\n{UuTSerialNumber}";
     private const string UnknownContent = "UNKNOWN";
+    private const string TimeoutContent = "Timeout";
+
+    private string _serialNumber = "1A26TEST";
 
     private string Content { get; set; } = UnknownContent;
-    private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
-    private UnitUnderTest? _unitUnderTest;
-
-    public SfcResponseBuilder(UnitUnderTestBuilder unitUnderTestBuilderBuilder)
-    {
-        this._unitUnderTestBuilder = unitUnderTestBuilderBuilder;
-    }
 
     public SfcResponse Build()
     {
-        var unitUnderTest = _unitUnderTest ?? this._unitUnderTestBuilder.Build();
-        return new SfcResponse(unitUnderTest, this.GetContent(unitUnderTest));
+        return new SfcResponse(this.GetContent());
     }
 
     public string GetContent()
     {
-        return this.GetContent(Hermes.Models.UnitUnderTest.Null);
-    }
-
-    public string GetContent(UnitUnderTest unitUnderTest)
-    {
-        return this.Content.Replace("{UuTSerialNumber}", unitUnderTest.SerialNumber);
+        return this.Content.Replace("{UuTSerialNumber}", _serialNumber);
     }
 
     public SfcResponse BuildTimeout()
     {
-        return SfcResponse.BuildTimeout(this._unitUnderTestBuilder.Build());
+        return SfcResponse.BuildTimeout();
     }
 
     public SfcResponseBuilder SetOkContent()
@@ -65,40 +55,20 @@ public class SfcResponseBuilder
         return this;
     }
 
-    public SfcResponseBuilder AddBadDefect()
+    public SfcResponseBuilder SetTimeoutContent()
     {
-        var random = new Random().Next();
-        this._unitUnderTestBuilder.Defects.Add(new Defect()
-        {
-            ErrorFlag = ErrorFlag.Bad,
-            ErrorCode = $"{random}x0000",
-            Location = $"L{random}"
-        });
-        this._unitUnderTestBuilder.IsPass(false);
+        this.Content = SfcResponse.TimeoutText;
         return this;
     }
 
-    public SfcResponseBuilder SetRepair(bool isRepair)
+    public SfcResponseBuilder SerialNumber(string serialNumber)
     {
-        this._unitUnderTestBuilder.IsPass(!isRepair);
-        this.SetOkContent();
+        _serialNumber = serialNumber;
         return this;
     }
 
     public SfcResponseBuilder Clone()
     {
-        return new SfcResponseBuilder(this._unitUnderTestBuilder.Clone());
-    }
-
-    public SfcResponseBuilder CreatedAt(DateTime createdAt)
-    {
-        this._unitUnderTestBuilder.CreatedAt(createdAt);
-        return this;
-    }
-
-    public SfcResponseBuilder UnitUnderTest(UnitUnderTest uut)
-    {
-        this._unitUnderTest = uut;
-        return this;
+        return new SfcResponseBuilder();
     }
 }

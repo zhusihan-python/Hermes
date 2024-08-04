@@ -36,48 +36,24 @@ public class StopTests
     [Fact]
     public void SerialNumber_ValidSfcResponse_ReturnsNotNullString()
     {
-        var sfcResponse = this._sfcResponseBuilder.Build();
-        var stop = new Stop(StopType.Machine, sfcResponse);
-        Assert.False(string.IsNullOrWhiteSpace(stop.SerialNumber));
-    }
-
-    [Fact]
-    public void Message_FailSfcResponse_ReturnsSfcResponseDetails()
-    {
-        var sfcResponse = this._sfcResponseBuilder
-            .SetFailContent()
-            .Build();
-        var stop = new Stop(StopType.Machine, sfcResponse);
-        Assert.Equal(sfcResponse.Content, stop.Message);
+        var serialNumber = "1234";
+        var stop = new Stop(StopType.Machine) { SerialNumber = serialNumber };
+        Assert.Equal(serialNumber, stop.SerialNumber);
     }
 
     [Fact]
     public void Message_SuccessSfcResponse_ReturnsStopType()
     {
-        var sfcResponse = this._sfcResponseBuilder
-            .SetOkContent()
-            .Build();
         var stopType = StopType.Machine;
-        var stop = new Stop(stopType, sfcResponse);
-        Assert.Contains(stopType.ToString().ToUpper(), stop.Message);
+        var stop = new Stop(stopType);
+        Assert.Contains(stopType.ToString(), stop.Message, StringComparison.InvariantCultureIgnoreCase);
     }
 
     [Fact]
-    public void Details_SuccessSfcResponse_ReturnsSfcResponseDetails()
+    public void Details_Called_ReturnsDetails()
     {
-        var sfcResponse = this._sfcResponseBuilder
-            .SetOkContent()
-            .Build();
-        var stop = new Stop(StopType.Machine, sfcResponse);
-        Assert.Equal(sfcResponse.Details, stop.Details);
-    }
-
-    [Fact]
-    public void Details_SfcResponseNull_ReturnsDetails()
-    {
-        var stop = new Stop(StopType.Machine, SfcResponse.Null);
-        const string details = "details";
-        stop.Details = details;
+        var details = "details";
+        var stop = new Stop(StopType.Machine) { Details = details };
         Assert.Equal(details, stop.Details);
     }
 }

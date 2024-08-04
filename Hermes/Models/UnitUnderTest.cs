@@ -14,11 +14,16 @@ public class UnitUnderTest
     [Key] public int Id { get; set; }
     [MaxLength(250)] public string FileName { get; init; }
     [MaxLength(250)] public string SerialNumber { get; init; } = string.Empty;
-    public bool IsFail { get; init; }
+    public virtual bool IsFail { get; init; }
     public DateTime CreatedAt { get; set; } = DateTime.Now;
-    public List<Defect> Defects { get; init; } = [];
+    public List<Defect> Defects { get; set; } = [];
+    public Stop? Stop { get; set; }
+    public SfcResponse? SfcResponse { get; set; }
     [NotMapped] public string Content { get; init; }
     [NotMapped] public bool IsNull => this == Null;
+    [NotMapped] public bool IsRepair => this.IsFail && this.SfcResponse?.IsFail == false;
+    [NotMapped] public bool IsSfcTimeout => this.SfcResponse?.IsTimeout == true;
+    [NotMapped] public bool IsSfcFail => this.SfcResponse?.IsFail == true;
 
     public UnitUnderTest(string fileName, string content)
     {
@@ -30,7 +35,7 @@ public class UnitUnderTest
     {
     }
 
-    public Defect GetDefectByLocation(string criticalLocations)
+    public virtual Defect GetDefectByLocation(string criticalLocations)
     {
         return Defects
             .Where(x => x.ErrorFlag == ErrorFlag.Bad)
