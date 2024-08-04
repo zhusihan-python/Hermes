@@ -98,6 +98,18 @@ public class RuleThreeFiveTenValidatorTests
         Assert.Equal(stop, await sut.ValidateAsync(sfcResponse));
     }
 
+    [Fact]
+    public async void ValidateAsync_UnitUnderTest_ReturnStopNull()
+    {
+        var sfcResponse = _sfcResponseBuilder
+            .SetOkContent()
+            .Build();
+        var stop = new Stop(StopType.Line, sfcResponse);
+        var sut = BuildSut(anyDefectsWithin1HourStop: stop);
+
+        Assert.Equal(stop, await sut.ValidateAsync(sfcResponse));
+    }
+
     private RuleThreeFiveTenValidator BuildSut(
         Stop? consecutiveDefectsStop = null,
         Stop? sameDefectsWithin1HourStop = null,

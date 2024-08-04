@@ -7,6 +7,7 @@ using System.Threading;
 using System;
 using System.Linq;
 using Hermes.Common.Extensions;
+using Hermes.Repositories;
 
 namespace Hermes.Services;
 
@@ -23,6 +24,7 @@ public class UutSenderService
     private readonly FileService _fileService;
     private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
     private readonly FolderWatcherService _folderWatcherService;
+    private readonly UnitUnderTestRepository _unitUnderTestRepository;
     private readonly ConcurrentQueue<string> _pendingFiles = new();
     private CancellationTokenSource? _cancellationTokenSource;
     private bool _isRunning;
@@ -35,13 +37,15 @@ public class UutSenderService
         ISfcService sfcService,
         FileService fileService,
         FolderWatcherService folderWatcherService,
-        UnitUnderTestBuilder unitUnderTestBuilder)
+        UnitUnderTestBuilder unitUnderTestBuilder,
+        UnitUnderTestRepository unitUnderTestRepository)
     {
         this._session = session;
         this._logger = logger;
         this._settings = settings;
         this._sfcService = sfcService;
         this._fileService = fileService;
+        this._unitUnderTestRepository = unitUnderTestRepository;
         this._folderWatcherService = folderWatcherService;
         this._unitUnderTestBuilder = unitUnderTestBuilder;
         this._folderWatcherService.FileCreated += this.OnFileCreated;
@@ -97,7 +101,8 @@ public class UutSenderService
 
     public async Task<SfcResponse> SendFileAsync(string fullPath)
     {
-        var unitUnderTest = await this.BuildUnitUnderTest(fullPath);
+        var backupFullPath = await this._fileService.MoveToBackupAsync(fullPath);
+        var unitUnderTest = await this.BuildUnitUnderTest(backupFullPath);
         if (unitUnderTest.IsNull)
         {
             return SfcResponse.Null;
@@ -107,13 +112,12 @@ public class UutSenderService
         if (sfcResponse.IsTimeout && this._retries < this._settings.MaxSfcRetries - 1)
         {
             this._retries += 1;
-            this._logger.Error($"Timeout: {fullPath} | retry: {this._retries}");
-            this.EnqueueFullPath(fullPath, "File re-enqueued");
+            this._logger.Error($"Timeout: {backupFullPath} | retry: {this._retries}");
+            await this._fileService.CopyFromBackupToInputAsync(backupFullPath);
         }
         else
         {
             this._retries = 0;
-            await this._fileService.MoveToBackupAsync(fullPath);
         }
 
         return sfcResponse;
@@ -130,6 +134,7 @@ public class UutSenderService
         else
         {
             this.OnUnitUnderTestCreated(unitUnderTest);
+            await this._unitUnderTestRepository.AddAndSaveAsync(unitUnderTest);
         }
 
         return unitUnderTest;

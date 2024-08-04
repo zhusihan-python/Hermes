@@ -2,32 +2,41 @@
 using System.IO;
 using System.Threading.Tasks;
 using System;
+using Polly;
+using Polly.Retry;
 
 namespace Hermes.Services;
 
 public class FileService
 {
-    private const int NumberOfRetries = 3;
-    private const int DelayOnRetry = 1000;
+    private const string BackupPrefix = "_backupAt_";
 
     private readonly Settings _settings;
+    private readonly ResiliencePipeline _retryPipeline;
 
     public FileService(Settings settings)
     {
         this._settings = settings;
+        this._retryPipeline = new ResiliencePipelineBuilder()
+            .AddRetry(new RetryStrategyOptions())
+            .AddTimeout(TimeSpan.FromSeconds(10))
+            .Build();
     }
 
     public virtual async Task<string> TryReadAllTextAsync(string fullPath)
     {
-        return await Retry(async () => await ReadAllTextAsync(fullPath));
-    }
+        if (!FileExists(fullPath))
+        {
+            return string.Empty;
+        }
 
-    private static async Task<string> ReadAllTextAsync(string fileFullPath)
-    {
-        await using var s = new FileStream(fileFullPath, FileMode.Open, FileAccess.Read, FileShare.Delete);
-        using var tr = new StreamReader(s);
-        var txt = await tr.ReadToEndAsync();
-        return txt;
+        return await _retryPipeline.ExecuteAsync(async (cancellationToken) =>
+        {
+            await using var s = new FileStream(fullPath, FileMode.Open, FileAccess.Read, FileShare.Delete);
+            using var tr = new StreamReader(s);
+            var txt = await tr.ReadToEndAsync(cancellationToken);
+            return txt;
+        });
     }
 
     public virtual async Task<string> MoveToBackupAsync(string fullPath)
@@ -41,86 +50,93 @@ public class FileService
         return await TryMove(fullPath, backupFullPath);
     }
 
-    public async Task<string> CopyToBackupAsync(string fullPath)
+    public async Task<string> CopyFromBackupToInputAsync(string backupFullPath)
     {
-        return await Retry(() =>
+        var inputFullPath = Path.Combine(this._settings.InputPath, GetFileNameWithoutCurrentDate(backupFullPath));
+        if (File.Exists(inputFullPath))
         {
-            var backupFullPath = this.GetBackupFullPath(fullPath);
-            File.Move(fullPath, this.GetBackupFullPath(backupFullPath));
-            return backupFullPath;
-        });
+            return inputFullPath;
+        }
+
+        return await TryCopy(backupFullPath, inputFullPath);
+    }
+
+    private static string GetFileNameWithoutCurrentDate(string fullPath)
+    {
+        var fileName = Path.GetFileNameWithoutExtension(fullPath);
+        var index = fileName.IndexOf(BackupPrefix, StringComparison.OrdinalIgnoreCase);
+
+        if (index != -1)
+            fileName = string.Concat(fileName.AsSpan(0, index), Path.GetExtension(fullPath));
+        return fileName;
     }
 
     private string GetBackupFullPath(string fullPath)
     {
-        var fileName = GetFileName(fullPath);
+        var fileName = GetFileNameWithCurrentDate(fullPath);
         return Path.Combine(this._settings.BackupPath, fileName);
     }
 
-    private static string GetFileName(string fullPath)
+    private static string GetFileNameWithCurrentDate(string fullPath)
     {
-        return $"{Path.GetFileNameWithoutExtension(fullPath)}_{DateTime.Now:dd_MM_HHmmss}{Path.GetExtension(fullPath)}";
+        return
+            $"{Path.GetFileNameWithoutExtension(fullPath)}{BackupPrefix}{DateTime.Now:dd_MM_HHmmss}{Path.GetExtension(fullPath)}";
     }
 
-    private static async Task<string> TryMove(string fullPath, string backupFullPath)
+    private async Task<string> TryCopy(string source, string dest)
     {
-        return await Retry(() =>
+        return await _retryPipeline.ExecuteAsync((_) =>
         {
-            File.Move(fullPath, backupFullPath);
-            return backupFullPath;
+            CreateDirectoryIfNotExists(dest);
+            File.Copy(source, dest);
+            return ValueTask.FromResult(dest);
         });
     }
 
-    public async Task<string> DeleteIfExists(string fullPath)
+    private async Task<string> TryMove(string source, string dest)
     {
-        return await Retry(() =>
+        return await _retryPipeline.ExecuteAsync((_) =>
+        {
+            CreateDirectoryIfNotExists(dest);
+            File.Move(source, dest);
+            return ValueTask.FromResult(dest);
+        });
+    }
+
+    public async Task<string> DeleteFileIfExists(string fullPath)
+    {
+        return await _retryPipeline.ExecuteAsync((_) =>
         {
             if (File.Exists(fullPath))
             {
                 File.Delete(fullPath);
             }
 
-            return fullPath;
+            return ValueTask.FromResult(fullPath);
         });
     }
 
-    private static async Task<T> Retry<T>(Func<T> func)
+    public void DeleteFolderIfExists(string path)
     {
-        for (var i = 0; i < NumberOfRetries; ++i)
+        if (Directory.Exists(path))
         {
-            try
-            {
-                return func.Invoke();
-            }
-            catch
-            {
-                await Task.Delay(DelayOnRetry);
-            }
+            Directory.Delete(path, true);
         }
-
-        return default!;
-    }
-
-    private static async Task<T> Retry<T>(Func<Task<T>> func)
-    {
-        for (var i = 0; i < NumberOfRetries; ++i)
-        {
-            try
-            {
-                return await func.Invoke();
-            }
-            catch
-            {
-                await Task.Delay(DelayOnRetry);
-            }
-        }
-
-        return default!;
     }
 
     public virtual async Task WriteAllTextAsync(string path, string content)
     {
+        CreateDirectoryIfNotExists(path);
         await File.WriteAllTextAsync(path, content);
+    }
+
+    private static void CreateDirectoryIfNotExists(string path)
+    {
+        var dir = Path.GetDirectoryName(path);
+        if (dir != null && !Directory.Exists(dir))
+        {
+            Directory.CreateDirectory(dir);
+        }
     }
 
     public virtual string FileName(string fullPath)

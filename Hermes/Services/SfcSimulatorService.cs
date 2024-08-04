@@ -67,7 +67,7 @@ public class SfcSimulatorService
     private async Task Process(string fullPath)
     {
         _logger.Info($"SfcSimulator Process: {fullPath} | Mode: {this.Mode}");
-        await this._fileService.DeleteIfExists(fullPath);
+        await this._fileService.DeleteFileIfExists(fullPath);
         if (this.Mode == SfcResponseType.Timeout)
         {
             return;

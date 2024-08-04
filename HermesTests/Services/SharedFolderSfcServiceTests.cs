@@ -62,7 +62,6 @@ public class SharedFolderSfcServiceTests
         var sfcService = new SharedFolderSfcService(
             settings ?? new Settings(),
             fileService,
-            unitUnderTestRepositoryMock.Object,
             sfcResponseRepositoryMock.Object
         );
 

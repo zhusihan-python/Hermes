@@ -15,25 +15,21 @@ public class SharedFolderSfcService : ISfcService
     private readonly Settings _settings;
     private readonly Stopwatch _stopwatch;
     private readonly FileService _fileService;
-    private readonly UnitUnderTestRepository _unitUnderTestRepository;
     private readonly SfcResponseRepository _sfcResponseRepository;
 
     public SharedFolderSfcService(
         Settings settings,
         FileService fileService,
-        UnitUnderTestRepository unitUnderTestRepository,
         SfcResponseRepository sfcResponseRepository)
     {
         this._settings = settings;
         this._fileService = fileService;
-        this._unitUnderTestRepository = unitUnderTestRepository;
         this._sfcResponseRepository = sfcResponseRepository;
         this._stopwatch = new Stopwatch();
     }
 
     public async Task<SfcResponse> SendAsync(UnitUnderTest unitUnderTest)
     {
-        await this._unitUnderTestRepository.AddAndSaveAsync(unitUnderTest);
         var sfcRequest = new SfcRequest(unitUnderTest, this._settings.SfcPath, this._settings.SfcResponseExtension);
         await this._fileService.WriteAllTextAsync(sfcRequest.FullPath, sfcRequest.Content);
 

@@ -4,6 +4,7 @@
   &lt;Assembly Path="C:\Users\david\.nuget\packages\communitytoolkit.mvvm\8.2.1\lib\net6.0\CommunityToolkit.Mvvm.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Users\david\.nuget\packages\sukiui\6.0.0-beta\lib\netstandard2.0\SukiUI.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String>
+	
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=17f80fe1_002Dd998_002D41bf_002D8805_002Dfcdce7987d61/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="GetDefectByLocation_WithCriticalDefect_ReturnsDefect" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;Project Location="C:\Users\Foxconn\RiderProjects\hermes\HermesTests" Presentation="&amp;lt;HermesTests&amp;gt;" /&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
@@ -27,6 +28,11 @@
     &lt;/TestAncestor&gt;&#xD;
     &lt;Project Location="C:\Users\david\RiderProjects\HermesWIP\HermesIntegrationTests" Presentation="&amp;lt;HermesIntegrationTests&amp;gt;" /&gt;&#xD;
   &lt;/Or&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=38d7d7ce_002D6673_002D4651_002D8751_002D5be6bafb28af/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="MoveToBackupAsync_FileExists_MovesToBackup" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::41BABB46-7CD2-485D-95A5-ACA05522BD9A::net8.0::HermesIntegrationTests.Services.FileServicesTests.MoveToBackupAsync_FileExists_MovesToBackup&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=3d791dcb_002D4d15_002D4125_002Db154_002D6e72a964ba2e/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="ValidateAsync_NotConsecutiveDefects_ReturnStopNull" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;Or&gt;&#xD;
