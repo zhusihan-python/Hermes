@@ -66,6 +66,8 @@
     &lt;TestId&gt;xUnit::31B57559-0391-445A-8BCF-8ECC4E617EE6::net8.0::HermesTests.Models.SfcRequestTests.ResponseFullPath_ValidDataGiven_Succeeds&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=eed8d422_002D6116_002D4c8c_002D82eb_002D6ab37ce87dff/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Message_FailSfcResponse_ReturnsSfcResponseDetails" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Project Location="C:\Users\Foxconn\RiderProjects\hermes\HermesTests" Presentation="&amp;lt;HermesTests&amp;gt;" /&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=eed8d422_002D6116_002D4c8c_002D82eb_002D6ab37ce87dff/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Message_FailSfcResponse_ReturnsSfcResponseDetails" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::31B57559-0391-445A-8BCF-8ECC4E617EE6::net8.0::HermesTests.Models.CoreSettingsTests.GetFirstCriticalDefectLocationTest&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

@@ -55,7 +55,8 @@ public class UnitUnderTestBuilder
         return Build(this._fileName, this.Content);
     }
 
-    private string GetContent()
+    // TODO: Agregar botones para crear archivos Pass, Fail, Critical, Modo supervisor activado
+    public string GetContent()
     {
         var content = $"""
                        {this._serialNumber}

@@ -7,7 +7,7 @@ namespace Hermes.Common.Validators;
 
 public class AnyDefectsWithin1HourValidator : IStopValidator
 {
-    public const int DefaultMaxDefects = 3;
+    public const int DefaultMaxDefects = 10;
 
     private readonly IDefectRepository _defectRepository;
     private readonly int _maxDefects;

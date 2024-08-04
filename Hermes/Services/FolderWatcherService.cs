@@ -24,7 +24,10 @@ public class FolderWatcherService
     {
         foreach (var file in Directory.EnumerateFiles(path))
         {
-            this.FileCreated?.Invoke(this, file);
+            if (this.Filter.Contains(Path.GetExtension(file), StringComparison.InvariantCultureIgnoreCase))
+            {
+                this.FileCreated?.Invoke(this, file);
+            }
         }
     }
 

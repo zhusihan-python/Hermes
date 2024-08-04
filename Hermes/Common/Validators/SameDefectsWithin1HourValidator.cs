@@ -8,7 +8,7 @@ namespace Hermes.Common.Validators;
 
 public class SameDefectsWithin1HourValidator : IStopValidator
 {
-    public const int DefaultMaxSameDefects = 3;
+    public const int DefaultMaxSameDefects = 5;
 
     private readonly IDefectRepository _defectRepository;
     private readonly int _maxSameDefects;

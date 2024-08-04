@@ -111,7 +111,7 @@ public class UutSenderService
         }
 
         unitUnderTest.SfcResponse = await this._sfcService.SendAsync(unitUnderTest);
-        if (unitUnderTest.IsSfcTimeout && this._retries < this._settings.MaxSfcRetries - 1)
+        if (unitUnderTest.SfcResponse.IsTimeout && this._retries < this._settings.MaxSfcRetries - 1)
         {
             this._retries += 1;
             this._logger.Error($"Timeout: {backupFullPath} | retry: {this._retries}");
@@ -120,9 +120,9 @@ public class UutSenderService
         else
         {
             this._retries = 0;
+            await _unitUnderTestRepository.SaveChangesAsync();
         }
 
-        await _unitUnderTestRepository.SaveChangesAsync();
         return unitUnderTest;
     }
 

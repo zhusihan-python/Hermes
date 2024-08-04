@@ -54,14 +54,14 @@ public sealed class DefectRepository(HermesContext db) : BaseRepository<Defect>(
 
     private IQueryable<Defect> GetFromLastUnitsUnderTest(int? qty = null, TimeSpan? fromHours = null)
     {
-        var dateTimeLowerLimit = DateTime.Now - fromHours;
         var uutQuery = Db.UnitsUnderTest
             .Where(x => x.SfcResponse != null && x.SfcResponse.ResponseType == SfcResponseType.Ok)
-            .OrderByDescending(x => x.CreatedAt)
+            .OrderByDescending(x => x.Id)
             .AsQueryable();
 
         if (fromHours != null)
         {
+            var dateTimeLowerLimit = DateTime.Now - fromHours;
             uutQuery = uutQuery.Where(x => x.CreatedAt >= dateTimeLowerLimit);
         }
 

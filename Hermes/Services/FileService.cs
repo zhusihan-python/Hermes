@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using System;
+using Hermes.Common.Extensions;
 using Polly;
 using Polly.Retry;
 
@@ -122,6 +123,12 @@ public class FileService
         {
             Directory.Delete(path, true);
         }
+    }
+
+    public virtual async Task WriteAllTextToInputPathAsync(string fileNameWithoutExtension, string content)
+    {
+        var path = Path.Combine(this._settings.InputPath, fileNameWithoutExtension + _settings.InputFileExtension.GetDescription());
+        await WriteAllTextAsync(path, content);
     }
 
     public virtual async Task WriteAllTextAsync(string path, string content)

@@ -10,6 +10,7 @@ using Hermes.Models;
 using SukiUI.Controls;
 using System.Threading.Tasks;
 using System;
+using System.Threading;
 
 namespace Hermes.Services;
 
@@ -25,6 +26,7 @@ public class WindowService : ObservableRecipient
     private readonly SuccessViewModel _successViewModel;
     private readonly StopView _stopView;
     private readonly StopViewModel _stopViewModel;
+    private CancellationTokenSource _cts = new();
 
     public WindowService(
         Settings settings,
@@ -60,6 +62,8 @@ public class WindowService : ObservableRecipient
 
     private void ShowUutSuccess(object recipient, ShowSuccessMessage message)
     {
+        _cts.Cancel();
+        _cts = new CancellationTokenSource();
         Dispatcher.UIThread.InvokeAsync(async Task () =>
         {
             this._successView.DataContext = this._successViewModel;
@@ -67,9 +71,13 @@ public class WindowService : ObservableRecipient
             this._successViewModel.IsRepair = message.Value.IsRepair;
 
             this.SetBottomCenterPosition(this._successView);
+            this._successView.UpdateLayout();
             this._successView.Show();
-            await Task.Delay(this._settings.UutSuccessWindowTimeoutSeconds * 1000);
-            this._successView.Hide();
+            await Task.Delay(this._settings.UutSuccessWindowTimeoutSeconds * 1000, _cts.Token);
+            if (!_cts.Token.IsCancellationRequested)
+            {
+                this._successView.Hide();
+            }
         });
     }
 

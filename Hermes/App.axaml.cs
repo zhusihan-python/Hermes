@@ -83,7 +83,7 @@ namespace Hermes
             services.AddSingleton<CriticalLocationStopValidator>();
 
             // Repos
-            services.AddScoped<HermesContext>();
+            services.AddSingleton<HermesContext>();
             services.AddTransient<SfcResponseRepository>();
             services.AddTransient<StopRepository>();
             services.AddTransient<UnitUnderTestRepository>();
