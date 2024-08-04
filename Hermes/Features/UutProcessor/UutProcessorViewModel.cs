@@ -52,11 +52,22 @@ public partial class UutProcessorViewModel : PageBase
     [RelayCommand]
     private void Start()
     {
-        if (this.IsRunning) return;
-        this._uutSenderService.Start();
-        this._stopService.Start();
-        this.IsRunning = true;
-        Messenger.Send(new ShowToastMessage("Info", "UUT Processor started"));
+        try
+        {
+            if (this.IsRunning) return;
+            this._uutSenderService.Start();
+            this._stopService.Start();
+            this.IsRunning = true;
+            Messenger.Send(new ShowToastMessage("Info", "UUT Processor started"));
+        }
+        catch (Exception e)
+        {
+            Task.Run(async () =>
+            {
+                await Task.Delay(2000);
+                Messenger.Send(new ShowToastMessage("Error in UUT Processor ", e.Message));
+            });
+        }
     }
 
     [RelayCommand]

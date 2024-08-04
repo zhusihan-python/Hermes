@@ -110,6 +110,9 @@ public class WindowService : ObservableRecipient
 
     public void ShowToast(object recipient, ShowToastMessage message)
     {
-        Dispatcher.UIThread.Invoke(() => { SukiHost.ShowToast(message.Title, message.Value); });
+        Dispatcher.UIThread.Invoke(() =>
+        {
+            SukiHost.ShowToast(message.Title, message.Value, duration: TimeSpan.FromSeconds(message.Duration));
+        });
     }
 }

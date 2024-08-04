@@ -51,6 +51,7 @@ namespace Hermes
                 this._windowService!.MainView = desktop.MainWindow;
                 this._windowService?.Start();
                 this._provider?.GetRequiredService<HermesContext>().Migrate();
+                if (mainViewModel != null) mainViewModel.IsActive = true;
             }
 
             base.OnFrameworkInitializationCompleted();
