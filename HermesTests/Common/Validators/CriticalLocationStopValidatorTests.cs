@@ -52,11 +52,12 @@ public class CriticalLocationStopValidatorTests
         var criticalLocation = "L0";
         var defect = new Defect()
         {
+            ErrorFlag = ErrorFlag.Bad,
             Location = criticalLocation
         };
         var unitUnderTest = GetUnitUnderTestMock(defect, true);
         var sut = new CriticalLocationStopValidator(new CoreSettings() { CriticalLocations = criticalLocation });
-        Assert.True((await sut.ValidateAsync(unitUnderTest)).IsNull);
+        Assert.Equal(StopType.Line, (await sut.ValidateAsync(unitUnderTest)).Type);
     }
 
     [Fact]
