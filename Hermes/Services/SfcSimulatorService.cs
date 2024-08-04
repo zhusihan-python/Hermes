@@ -44,8 +44,8 @@ public class SfcSimulatorService
     public void Start()
     {
         if (_isRunning) return;
-        this._folderWatcherService.Start(_settings.SfcPath);
         this._folderWatcherService.Filter = "*" + _settings.InputFileExtension.GetDescription();
+        this._folderWatcherService.Start(_settings.SfcPath);
         this._folderWatcherService.FileCreated += this.OnFileCreated;
         this.OnRunStatusChanged(true);
     }

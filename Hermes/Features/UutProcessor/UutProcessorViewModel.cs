@@ -21,7 +21,7 @@ public partial class UutProcessorViewModel : PageBase
     private readonly UutSenderService _uutSenderService;
 
     public UutProcessorViewModel(Session session, StopService stopService, UutSenderService uutSenderService)
-        : base("UUT Processor", MaterialIconKind.FolderEye, 0)
+        : base("UUT Processor", MaterialIconKind.FolderEye, 1)
     {
         this._session = session;
         this._stopService = stopService;

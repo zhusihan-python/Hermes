@@ -24,6 +24,9 @@ public class HermesContext : DbContext
 
     public void Migrate()
     {
+#if DEBUG
+        Database.EnsureDeleted();
+#endif
         if (Database.GetPendingMigrations().Any())
         {
             Database.Migrate();

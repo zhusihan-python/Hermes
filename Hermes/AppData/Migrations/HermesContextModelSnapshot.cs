@@ -65,12 +65,7 @@ namespace Hermes.AppData.Migrations
                     b.Property<int>("ResponseType")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("UnitUnderTestId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UnitUnderTestId");
 
                     b.ToTable("SfcResponses", (string)null);
                 });
@@ -84,15 +79,10 @@ namespace Hermes.AppData.Migrations
                     b.Property<bool>("IsRestored")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("SfcResponseId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("Type")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("SfcResponseId");
 
                     b.ToTable("Stops", (string)null);
                 });
@@ -119,7 +109,17 @@ namespace Hermes.AppData.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("SfcResponseId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("StopId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("SfcResponseId");
+
+                    b.HasIndex("StopId");
 
                     b.ToTable("UnitsUnderTest", (string)null);
                 });
@@ -137,26 +137,19 @@ namespace Hermes.AppData.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Hermes.Models.SfcResponse", b =>
-                {
-                    b.HasOne("Hermes.Models.UnitUnderTest", "UnitUnderTest")
-                        .WithMany()
-                        .HasForeignKey("UnitUnderTestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("UnitUnderTest");
-                });
-
-            modelBuilder.Entity("Hermes.Models.Stop", b =>
+            modelBuilder.Entity("Hermes.Models.UnitUnderTest", b =>
                 {
                     b.HasOne("Hermes.Models.SfcResponse", "SfcResponse")
                         .WithMany()
-                        .HasForeignKey("SfcResponseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SfcResponseId");
+
+                    b.HasOne("Hermes.Models.Stop", "Stop")
+                        .WithMany()
+                        .HasForeignKey("StopId");
 
                     b.Navigation("SfcResponse");
+
+                    b.Navigation("Stop");
                 });
 
             modelBuilder.Entity("Hermes.Models.Stop", b =>

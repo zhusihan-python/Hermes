@@ -87,10 +87,12 @@ public class UutSenderService
             if (e is not OperationCanceledException)
             {
                 this._logger.Error(e.Message);
+#if DEBUG
                 if (!this._cancellationTokenSource?.IsCancellationRequested ?? false)
                 {
                     this.Stop();
                 }
+#endif
             }
         }
         finally

@@ -16,7 +16,7 @@ public class CriticalLocationStopValidator : IStopValidator
     public Task<Stop> ValidateAsync(UnitUnderTest unitUnderTest)
     {
         var defect = unitUnderTest.GetDefectByLocation(this._coreSettings.CriticalLocations);
-        if (defect.IsNull || unitUnderTest.IsFail)
+        if (defect.IsNull || unitUnderTest.IsSfcFail)
         {
             return Task.FromResult(Stop.Null);
         }

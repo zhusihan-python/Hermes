@@ -7,7 +7,7 @@ public class Settings
     public LogfileType LogfileType { get; set; } = LogfileType.TriDefault; // TODO
     public FileExtension SfcResponseExtension { get; set; } = FileExtension.Ret;
     public bool AutostartUutProcessor { get; set; } = true;
-    public int SfcTimeoutSeconds { get; set; } = 2;
+    public int SfcTimeoutSeconds { get; set; } = 10;
     public int WaitDelayMilliseconds { get; set; } = 100;
     public int UutSuccessWindowTimeoutSeconds { get; set; } = 5;
     public string BackupPath { get; set; } = @"C:\Users\david\Documents\Tmp\Hermes\Backup"; // TODO

@@ -21,7 +21,57 @@ public class DefectRepositoryTests
     }
 
     [Fact]
-    public async void GetConsecutiveSameDefects_AllDefectsAreRestored_ReturnsEmptyList()
+    public async void GetAnyNotRestoredDefectsWithin1Hour_AllDefectsAreRestored_ReturnsEmptyList()
+    {
+        const int qty = 3;
+        var uutBuilder = _unitUnderTestBuilder
+            .AddRandomDefect(isBad: true);
+        for (var i = 0; i < qty; i++)
+        {
+            _context.UnitsUnderTest.Add(uutBuilder.Build());
+        }
+
+        await _context.SaveChangesAsync();
+
+        _context.Stops.Add(new Stop()
+        {
+            Defects = _context.Defects.ToList(),
+            IsRestored = false
+        });
+
+        await _context.SaveChangesAsync();
+
+        var result = await _sut.GetAnyNotRestoredDefectsWithin1Hour(qty);
+        Assert.Empty(result);
+    }
+
+    [Fact]
+    public async void GetNotRestoredSameDefectsWithin1Hour_AllDefectsAreRestored_ReturnsEmptyList()
+    {
+        const int qty = 3;
+        var uutBuilder = _unitUnderTestBuilder
+            .AddRandomDefect(isBad: true);
+        for (var i = 0; i < qty; i++)
+        {
+            _context.UnitsUnderTest.Add(uutBuilder.Build());
+        }
+
+        await _context.SaveChangesAsync();
+
+        _context.Stops.Add(new Stop()
+        {
+            Defects = _context.Defects.ToList(),
+            IsRestored = false
+        });
+
+        await _context.SaveChangesAsync();
+
+        var result = await _sut.GetNotRestoredSameDefectsWithin1Hour(qty);
+        Assert.Empty(result);
+    }
+
+    [Fact]
+    public async void GetNotRestoredConsecutiveSameDefects_AllDefectsAreRestored_ReturnsEmptyList()
     {
         const int qty = 3;
         var uutBuilder = _unitUnderTestBuilder
@@ -46,7 +96,7 @@ public class DefectRepositoryTests
     }
 
     [Fact]
-    public async void GetConsecutiveSameDefects_WithConsecutiveDefects_ReturnsDefectList()
+    public async void GetNotRestoredConsecutiveSameDefects_WithConsecutiveDefects_ReturnsDefectList()
     {
         const int qty = 3;
         var uutBuilder = _unitUnderTestBuilder

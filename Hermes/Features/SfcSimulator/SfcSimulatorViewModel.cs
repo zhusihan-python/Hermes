@@ -18,7 +18,7 @@ public partial class SfcSimulatorViewModel : PageBase
     private readonly SfcSimulatorService _sfcSimulatorService;
 
     public SfcSimulatorViewModel(SfcSimulatorService sfcSimulatorService)
-        : base("Sfc Simulator", MaterialIconKind.BugPlay, 1)
+        : base("Sfc Simulator", MaterialIconKind.BugPlay, 0)
     {
         _sfcSimulatorService = sfcSimulatorService;
 

@@ -5,7 +5,7 @@ using Material.Icons;
 namespace Hermes.Features.Splash;
 
 public partial class SplashViewModel()
-    : Features.PageBase("About", MaterialIconKind.InfoOutline, 1)
+    : Features.PageBase("About", MaterialIconKind.InfoOutline, 2)
 {
     [ObservableProperty] private bool _dashBoardVisited;
 

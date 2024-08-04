@@ -11,7 +11,10 @@ public class MachineStopValidator : IStopValidator
         var result = Stop.Null;
         if (unitUnderTest.IsSfcFail)
         {
-            result = new Stop(StopType.Machine);
+            result = new Stop(StopType.Machine)
+            {
+                Details = unitUnderTest.SfcResponse?.Details ?? "Error en SFC"
+            };
         }
 
         return Task.FromResult(result);

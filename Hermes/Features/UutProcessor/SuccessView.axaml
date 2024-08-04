@@ -34,33 +34,49 @@
         <Style Selector="TextBlock.Repair">
             <Setter Property="Text" Value="Repair" />
         </Style>
+
+        <Style Selector="Border.OkLight">
+            <Setter Property="Background" Value="{StaticResource LightGreenColor}" />
+        </Style>
+
+        <Style Selector="Grid.OkGridLight">
+            <Setter Property="Background" Value="{StaticResource LightGreenColor}" />
+        </Style>
+
+        <Style Selector="Border.OkDark">
+            <Setter Property="Background" Value="{StaticResource DarkGreenColor}" />
+        </Style>
+
+        <Style Selector="TextBlock.Ok">
+            <Setter Property="Text" Value="Ok" />
+        </Style>
     </Window.Styles>
 
     <Grid
         ColumnDefinitions="120, *"
         Classes.RepairGridLight="{Binding IsRepair}"
-        Background="{StaticResource LightGreenColor}">
+        Classes.OkGridLight="{Binding !IsRepair}">
 
         <Border
             Grid.Column="0"
             CornerRadius=" 0 10 10 0"
             BoxShadow="4 2 20 0 gray"
             Classes.RepairDark="{Binding IsRepair}"
-            Background="{StaticResource DarkGreenColor}">
+            Classes.OkDark="{Binding !IsRepair}">
 
             <TextBlock
-                Classes="h1"
+                Classes="h2"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Foreground="White"
                 Classes.Repair="{Binding IsRepair}"
-                Text="OK" />
+                Classes.Ok="{Binding !IsRepair}" />
         </Border>
 
         <Border
             Grid.Column="1"
             Classes.RepairLight="{Binding IsRepair}"
-            Background="{StaticResource LightGreenColor}">
+            Classes.OkLight="{Binding !IsRepair}">
 
             <StackPanel
                 VerticalAlignment="Center"
