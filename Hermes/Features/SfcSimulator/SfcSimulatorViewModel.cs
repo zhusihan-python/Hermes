@@ -101,6 +101,21 @@ public partial class SfcSimulatorViewModel : PageBase
     }
 
     [RelayCommand]
+    private async Task CreatePassLogfileWithCustomDefect()
+    {
+        var builder = this._unitUnderTestBuilder
+            .Clone()
+            .IsPass(true)
+            .AddDefect(new Defect()
+            {
+                ErrorFlag = this.DefectErrorFlag,
+                Location = this.DefectLocation,
+                ErrorCode = this.DefectErrorCode
+            });
+        await this.WriteLogfile(builder, "Pass");
+    }
+
+    [RelayCommand]
     private async Task CreateFailLogfileWithCustomDefect()
     {
         var builder = this._unitUnderTestBuilder

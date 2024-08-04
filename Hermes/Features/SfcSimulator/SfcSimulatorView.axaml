@@ -108,6 +108,11 @@
                         Command="{Binding CreatePassLogfileCommand}" />
 
                     <Button
+                        Classes="Flat Outlined"
+                        Content="Create Pass Logfile With Custom Defect"
+                        Command="{Binding CreatePassLogfileWithCustomDefectCommand}" />
+
+                    <Button
                         Classes="Flat Accent Outlined"
                         Content="Create Fail Logfile"
                         Command="{Binding CreateFailLogfileCommand}" />
