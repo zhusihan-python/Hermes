@@ -1,3 +1,4 @@
+using System.Linq;
 using Hermes.Models;
 using Hermes.Repositories;
 using Hermes.Types;
@@ -22,17 +23,18 @@ public class ConsecutiveDefectsValidator : IStopValidator
 
     public virtual async Task<Stop> ValidateAsync(SfcResponse sfcResponse)
     {
-        var defect = await this._defectRepository.GetConsecutiveSameDefects(_maxConsecutiveDefects);
-        if (!defect.IsNull)
+        var defects = await this._defectRepository.GetNotRestoredConsecutiveSameDefects(_maxConsecutiveDefects);
+        if (defects.Count <= 0)
         {
-            return new Stop(StopType.Line, sfcResponse)
-            {
-                Defect = defect,
-                Details =
-                    $"{_maxConsecutiveDefects} consecutive defects in {defect.Location} with error code {defect.ErrorCode}"
-            };
+            return Stop.Null;
         }
 
-        return Stop.Null;
+        var defect = defects.First();
+        return new Stop(StopType.Line, sfcResponse)
+        {
+            Defects = defects,
+            Details =
+                $"{_maxConsecutiveDefects} consecutive defects in {defect.Location} with error code {defect.ErrorCode}"
+        };
     }
 }

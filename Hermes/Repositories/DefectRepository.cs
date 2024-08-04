@@ -1,58 +1,61 @@
-using System;
 using Hermes.Models;
 using Hermes.Types;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System;
 
 namespace Hermes.Repositories;
 
 public sealed class DefectRepository(HermesContext db) : BaseRepository<Defect>(db), IDefectRepository
 {
-    public async Task<Defect> GetSameDefectsWithin1Hour(int qty)
+    public Task<List<Defect>> GetAnyNotRestoredDefectsWithin1Hour(int qty)
     {
-        return await GetRepeatedDefect(
+        var defects = this.GetFromLastUnitsUnderTest(TimeSpan.FromHours(1)).ToList();
+        return defects.Count >= qty
+            ? Task.FromResult(defects.ToList())
+            : Task.FromResult(new List<Defect>());
+    }
+
+    public async Task<List<Defect>> GetNotRestoredSameDefectsWithin1Hour(int qty)
+    {
+        return await GetNotRestoredRepeatedDefects(
             this.GetFromLastUnitsUnderTest(TimeSpan.FromHours(1)),
             qty);
     }
 
-    public Task<Defect> GetAnyDefectsWithin1Hour(int qty)
+    public async Task<List<Defect>> GetNotRestoredConsecutiveSameDefects(int qty)
     {
-        var defects = this.GetFromLastUnitsUnderTest(TimeSpan.FromHours(1)).ToList();
-        if (defects.Count >= qty)
-        {
-            return Task.FromResult(defects.Last());
-        }
-
-        return Task.FromResult(Defect.Null);
-    }
-
-    public async Task<Defect> GetConsecutiveSameDefects(int qty)
-    {
-        return await GetRepeatedDefect(
+        return await GetNotRestoredRepeatedDefects(
             this.GetFromLastUnitsUnderTest(qty),
             qty);
     }
 
-    private async Task<Defect> GetRepeatedDefect(IQueryable<Defect> defectsQueryable, int qty)
+    private async Task<List<Defect>> GetNotRestoredRepeatedDefects(IQueryable<Defect> defectsQueryable, int qty)
     {
         var defects = await defectsQueryable
-            .Where(x => x.ErrorFlag == ErrorFlag.Bad)
-            .GroupBy(x => new { x.Location, x.ErrorCode })
+            .Join(
+                db.Stop,
+                defect => defect.StopId,
+                stop => stop.Id,
+                (defect, stop) => new { defect, stop })
+            .Where(x => x.defect.ErrorFlag == ErrorFlag.Bad)
+            .GroupBy(x => new { x.defect.Location, x.defect.ErrorCode })
             .Select(x => new
             {
-                Id = x.Max(defect => defect.Id),
+                Ids = string.Join(",", x.Select(y => y.defect.Id)),
                 Count = x.Count()
             })
             .ToListAsync();
 
-        var result = Defect.Null;
+        var ids = Array.Empty<int>();
         foreach (var defect in defects.Where(defect => defect.Count >= qty))
         {
-            result = this.GetById(defect.Id) ?? Defect.Null;
+            ids = defect.Ids.Split(',').Select(int.Parse).ToArray();
         }
 
-        return result;
+        return Db.Defects.Where(x => ids.Contains(x.Id)).ToList();
     }
 
     private IQueryable<Defect> GetFromLastUnitsUnderTest(TimeSpan fromHours)
@@ -60,7 +63,7 @@ public sealed class DefectRepository(HermesContext db) : BaseRepository<Defect>(
         var dateTimeLowerLimit = DateTime.Now - fromHours;
         var uutIds = Db.SfcResponses
             .Where(x => x.ResponseType == SfcResponseType.Ok)
-            .Where(x => x.UnitUnderTest.CreatedAt > dateTimeLowerLimit)
+            .Where(x => x.UnitUnderTest.CreatedAt >= dateTimeLowerLimit)
             .OrderByDescending(x => x.UnitUnderTest.CreatedAt)
             .Select(x => x.UnitUnderTest.Id);
         return Db.Defects

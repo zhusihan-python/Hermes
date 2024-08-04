@@ -1,5 +1,7 @@
 using Hermes.Builders;
+using Hermes.Models;
 using Hermes.Repositories;
+using Hermes.Types;
 
 namespace HermesIntegrationTests.Repositories;
 
@@ -19,23 +21,33 @@ public class DefectRepositoryTests
     }
 
     [Fact]
-    public async void GetConsecutiveSameDefects_WithConsecutiveDefects_ReturnsDefect()
+    public async void GetConsecutiveSameDefects_WithConsecutiveDefects_ReturnsDefectList()
     {
+        const int qty = 3;
         var sfcResponseBuilderWithDefects = _sfcResponseBuilder
             .SetOkContent()
             .AddBadDefect();
-        _context.SfcResponses.Add(sfcResponseBuilderWithDefects.Build());
-        _context.SfcResponses.Add(sfcResponseBuilderWithDefects.Build());
-        _context.SfcResponses.Add(sfcResponseBuilderWithDefects.Build());
+        for (var i = 0; i < qty; i++)
+        {
+            _context.SfcResponses.Add(sfcResponseBuilderWithDefects.Build());
+        }
+
         await _context.SaveChangesAsync();
 
-        var result = await _sut.GetConsecutiveSameDefects(3);
-        Assert.False(result.IsNull);
-        await _context.DisposeAsync();
+        _context.Stop.Add(new Stop()
+        {
+            Defects = _context.Defects.ToList(),
+            IsRestored = false
+        });
+
+        await _context.SaveChangesAsync();
+
+        var result = await _sut.GetNotRestoredConsecutiveSameDefects(qty);
+        Assert.Equal(qty, result.Count);
     }
 
     [Fact]
-    public async void GetConsecutiveSameDefects_NotConsecutiveDefects_ReturnsDefectNull()
+    public async void GetConsecutiveSameDefects_NotConsecutiveDefects_ReturnsEmptyList()
     {
         var sfcResponseBuilder = _sfcResponseBuilder
             .SetOkContent();
@@ -47,21 +59,22 @@ public class DefectRepositoryTests
         _context.SfcResponses.Add(sfcResponseBuilder.Build());
         await _context.SaveChangesAsync();
 
-        var result = await _sut.GetConsecutiveSameDefects(3);
-        Assert.True(result.IsNull);
+        var result = await _sut.GetNotRestoredConsecutiveSameDefects(3);
+        Assert.Empty(result);
     }
 
     [Fact]
-    public async void GetSameDefectsWithin1Hour_WithSameDefectsWithin1Hour_ReturnsDefect()
+    public async void GetSameDefectsWithin1Hour_WithSameDefectsWithin1Hour_ReturnsDefectList()
     {
-        const int qty = 5;
         var sfcResponseBuilder = _sfcResponseBuilder
             .SetOkContent();
         var sfcResponseBuilderWithDefects = _sfcResponseBuilder
+            .Clone()
             .SetOkContent()
             .AddBadDefect();
-        var timeLapse = TimeSpan.FromHours(1);
-        var step = TimeSpan.FromMinutes(Math.Round(60.0 / qty));
+        const int qty = 5;
+        var timeLapse = TimeSpan.FromMinutes(59);
+        var step = timeLapse / qty;
         while (timeLapse.TotalMinutes > 0)
         {
             sfcResponseBuilder.CreatedAt(DateTime.Now - timeLapse);
@@ -73,12 +86,12 @@ public class DefectRepositoryTests
 
         await _context.SaveChangesAsync();
 
-        var result = await _sut.GetSameDefectsWithin1Hour(qty);
-        Assert.False(result.IsNull);
+        var result = await _sut.GetNotRestoredSameDefectsWithin1Hour(qty);
+        Assert.Equal(qty, result.Count);
     }
 
     [Fact]
-    public async void GetSameDefectsWithin1Hour_NotSameDefectsWithin1Hour_ReturnsDefectNull()
+    public async void GetSameDefectsWithin1Hour_NotSameDefectsWithin1Hour_ReturnsEmptyList()
     {
         const int qty = 5;
         var timeLapse = TimeSpan.FromHours(1);
@@ -96,15 +109,15 @@ public class DefectRepositoryTests
 
         await _context.SaveChangesAsync();
 
-        var result = await _sut.GetSameDefectsWithin1Hour(qty);
-        Assert.True(result.IsNull);
+        var result = await _sut.GetNotRestoredSameDefectsWithin1Hour(qty);
+        Assert.Empty(result);
     }
 
     [Fact]
-    public async void GetDefectsWithin1Hour_AnyDefectsWithin1Hour_ReturnsDefectNull()
+    public async void GetDefectsWithin1Hour_AnyDefectsWithin1Hour_ReturnsDefectList()
     {
         const int qty = 10;
-        for (int i = 0; i <= qty; i++)
+        for (var i = 0; i < qty; i++)
         {
             _context.SfcResponses.Add(_sfcResponseBuilder
                 .Clone()
@@ -116,17 +129,17 @@ public class DefectRepositoryTests
 
         await _context.SaveChangesAsync();
 
-        var result = await _sut.GetAnyDefectsWithin1Hour(qty);
-        Assert.False(result.IsNull);
+        var result = await _sut.GetAnyNotRestoredDefectsWithin1Hour(qty);
+        Assert.True(result.Count >= qty);
     }
 
     [Fact]
-    public async void GetDefectsWithin1Hour_NoDefectsWithin1Hour_ReturnsDefectNull()
+    public async void GetDefectsWithin1Hour_NoDefectsWithin1Hour_ReturnsEmptyList()
     {
         _context.Defects.RemoveRange(_context.Defects);
         await _context.SaveChangesAsync();
         const int qty = 10;
-        for (int i = 0; i <= qty; i++)
+        for (var i = 0; i <= qty; i++)
         {
             _context.SfcResponses.Add(_sfcResponseBuilder
                 .SetOkContent()
@@ -136,7 +149,7 @@ public class DefectRepositoryTests
 
         await _context.SaveChangesAsync();
 
-        var result = await _sut.GetAnyDefectsWithin1Hour(qty);
-        Assert.True(result.IsNull);
+        var result = await _sut.GetAnyNotRestoredDefectsWithin1Hour(qty);
+        Assert.Empty(result);
     }
 }

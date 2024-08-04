@@ -28,28 +28,6 @@ namespace Hermes.AppData.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Defects",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    UnitUnderTestId = table.Column<int>(type: "INTEGER", nullable: false),
-                    ErrorFlag = table.Column<int>(type: "INTEGER", nullable: false),
-                    Location = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    ErrorCode = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Defects", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Defects_UnitsUnderTest_UnitUnderTestId",
-                        column: x => x.UnitUnderTestId,
-                        principalTable: "UnitsUnderTest",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "SfcResponses",
                 columns: table => new
                 {
@@ -78,17 +56,11 @@ namespace Hermes.AppData.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     SfcResponseId = table.Column<int>(type: "INTEGER", nullable: false),
                     Type = table.Column<int>(type: "INTEGER", nullable: false),
-                    IsRestored = table.Column<bool>(type: "INTEGER", nullable: false),
-                    DefectId = table.Column<int>(type: "INTEGER", nullable: true)
+                    IsRestored = table.Column<bool>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Stops", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Stops_Defects_DefectId",
-                        column: x => x.DefectId,
-                        principalTable: "Defects",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Stops_SfcResponses_SfcResponseId",
                         column: x => x.SfcResponseId,
@@ -96,6 +68,39 @@ namespace Hermes.AppData.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "Defects",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    StopId = table.Column<int>(type: "INTEGER", nullable: true),
+                    UnitUnderTestId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ErrorFlag = table.Column<int>(type: "INTEGER", nullable: false),
+                    Location = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    ErrorCode = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Defects", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Defects_Stops_StopId",
+                        column: x => x.StopId,
+                        principalTable: "Stops",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Defects_UnitsUnderTest_UnitUnderTestId",
+                        column: x => x.UnitUnderTestId,
+                        principalTable: "UnitsUnderTest",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Defects_StopId",
+                table: "Defects",
+                column: "StopId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Defects_UnitUnderTestId",
@@ -108,11 +113,6 @@ namespace Hermes.AppData.Migrations
                 column: "UnitUnderTestId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Stops_DefectId",
-                table: "Stops",
-                column: "DefectId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Stops_SfcResponseId",
                 table: "Stops",
                 column: "SfcResponseId");
@@ -122,10 +122,10 @@ namespace Hermes.AppData.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Stops");
+                name: "Defects");
 
             migrationBuilder.DropTable(
-                name: "Defects");
+                name: "Stops");
 
             migrationBuilder.DropTable(
                 name: "SfcResponses");

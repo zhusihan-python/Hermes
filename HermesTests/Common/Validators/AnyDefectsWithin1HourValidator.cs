@@ -38,10 +38,16 @@ public class AnyDefectsWithin1HourValidatorTests
 
     private IDefectRepository GetDefectRepositoryMock(Defect? defect = null)
     {
+        var defects = new List<Defect>();
+        if (defect is { IsNull: false })
+        {
+            defects.Add(defect);
+        }
+
         var defectRepositoryMock = new Mock<IDefectRepository>();
         defectRepositoryMock
-            .Setup(x => x.GetAnyDefectsWithin1Hour(It.IsAny<int>()))
-            .Returns(Task.FromResult(defect ?? Defect.Null));
+            .Setup(x => x.GetAnyNotRestoredDefectsWithin1Hour(It.IsAny<int>()))
+            .Returns(Task.FromResult(defects));
         return defectRepositoryMock.Object;
     }
 }

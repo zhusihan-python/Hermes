@@ -1,3 +1,4 @@
+using System.Linq;
 using Hermes.Models;
 using Hermes.Repositories;
 using Hermes.Types;
@@ -22,17 +23,18 @@ public class SameDefectsWithin1HourValidator : IStopValidator
 
     public virtual async Task<Stop> ValidateAsync(SfcResponse sfcResponse)
     {
-        var defect = await this._defectRepository.GetSameDefectsWithin1Hour(_maxSameDefects);
-        if (!defect.IsNull)
+        var defects = await this._defectRepository.GetNotRestoredSameDefectsWithin1Hour(_maxSameDefects);
+        if (defects.Count <= 0)
         {
-            return new Stop(StopType.Line, sfcResponse)
-            {
-                Defect = defect,
-                Details =
-                    $"{_maxSameDefects} same defects within 1 hour in {defect.Location} with error code {defect.ErrorCode}"
-            };
+            return Stop.Null;
         }
 
-        return Stop.Null;
+        var defect = defects.First();
+        return new Stop(StopType.Line, sfcResponse)
+        {
+            Defects = defects,
+            Details =
+                $"{_maxSameDefects} same defects within 1 hour in {defect.Location} with error code {defect.ErrorCode}"
+        };
     }
 }

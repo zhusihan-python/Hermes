@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Hermes.Types;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -13,7 +14,7 @@ public class Stop
     public int SfcResponseId { get; init; }
     public StopType Type { get; set; } = StopType.None;
     public bool IsRestored { get; set; }
-    public Defect? Defect { get; set; }
+    public List<Defect> Defects { get; set; } = [];
     [NotMapped] public bool IsNull => this == Null;
     [NotMapped] public bool IsMachineStop => this.Type == StopType.Machine;
     [NotMapped] public string SerialNumber => this.SfcResponse?.SerialNumber ?? "";

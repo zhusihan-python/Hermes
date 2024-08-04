@@ -28,7 +28,7 @@ public class CriticalLocationStopValidatorTests
         var sut = new CriticalLocationStopValidator(new CoreSettings() { CriticalLocations = criticalLocation });
         var result = await sut.ValidateAsync(sfcResponse);
         Assert.False(result.IsNull);
-        Assert.Equal(defect, result.Defect);
+        Assert.Equal(defect, result.Defects.First());
     }
 
     [Fact]
@@ -43,7 +43,7 @@ public class CriticalLocationStopValidatorTests
         var sut = new CriticalLocationStopValidator(new CoreSettings() { CriticalLocations = criticalLocation });
         var result = await sut.ValidateAsync(sfcResponse);
         Assert.False(result.IsNull);
-        Assert.Equal(defect, result.Defect);
+        Assert.Equal(defect, result.Defects.First());
     }
 
     [Fact]

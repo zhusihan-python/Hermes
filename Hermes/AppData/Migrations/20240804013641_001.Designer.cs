@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hermes.AppData.Migrations
 {
     [DbContext(typeof(HermesContext))]
-    [Migration("20240803051912_001")]
+    [Migration("20240804013641_001")]
     partial class _001
     {
         /// <inheritdoc />
@@ -39,10 +39,15 @@ namespace Hermes.AppData.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("StopId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("UnitUnderTestId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("StopId");
 
                     b.HasIndex("UnitUnderTestId");
 
@@ -79,9 +84,6 @@ namespace Hermes.AppData.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("DefectId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<bool>("IsRestored")
                         .HasColumnType("INTEGER");
 
@@ -92,8 +94,6 @@ namespace Hermes.AppData.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DefectId");
 
                     b.HasIndex("SfcResponseId");
 
@@ -129,6 +129,10 @@ namespace Hermes.AppData.Migrations
 
             modelBuilder.Entity("Hermes.Models.Defect", b =>
                 {
+                    b.HasOne("Hermes.Models.Stop", null)
+                        .WithMany("Defects")
+                        .HasForeignKey("StopId");
+
                     b.HasOne("Hermes.Models.UnitUnderTest", null)
                         .WithMany("Defects")
                         .HasForeignKey("UnitUnderTestId")
@@ -149,19 +153,18 @@ namespace Hermes.AppData.Migrations
 
             modelBuilder.Entity("Hermes.Models.Stop", b =>
                 {
-                    b.HasOne("Hermes.Models.Defect", "Defect")
-                        .WithMany()
-                        .HasForeignKey("DefectId");
-
                     b.HasOne("Hermes.Models.SfcResponse", "SfcResponse")
                         .WithMany()
                         .HasForeignKey("SfcResponseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Defect");
-
                     b.Navigation("SfcResponse");
+                });
+
+            modelBuilder.Entity("Hermes.Models.Stop", b =>
+                {
+                    b.Navigation("Defects");
                 });
 
             modelBuilder.Entity("Hermes.Models.UnitUnderTest", b =>

@@ -20,7 +20,7 @@
 &lt;/SessionState&gt;</s:String>
 	
 	
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=30650351_002D897c_002D40c0_002Dbcee_002D45e7a85eb940/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from &amp;lt;HermesTests&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=30650351_002D897c_002D40c0_002Dbcee_002D45e7a85eb940/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from &amp;lt;HermesTests&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;Or&gt;&#xD;
     &lt;Project Location="C:\Users\david\RiderProjects\HermesWIP\HermesTests" Presentation="&amp;lt;HermesTests&amp;gt;" /&gt;&#xD;
     &lt;TestAncestor&gt;&#xD;
@@ -44,6 +44,15 @@
   &lt;Or&gt;&#xD;
     &lt;Project Location="C:\Users\Foxconn\RiderProjects\hermes\HermesIntegrationTests" Presentation="&amp;lt;HermesIntegrationTests&amp;gt;" /&gt;&#xD;
     &lt;Project Location="C:\Users\Foxconn\RiderProjects\hermes\HermesTests" Presentation="&amp;lt;HermesTests&amp;gt;" /&gt;&#xD;
+  &lt;/Or&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=62507bbb_002Dc57d_002D4678_002Db91e_002Db3e089b6edf2/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Session" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Or&gt;&#xD;
+    &lt;Project Location="C:\Users\david\RiderProjects\HermesWIP\HermesTests" Presentation="&amp;lt;HermesTests&amp;gt;" /&gt;&#xD;
+    &lt;TestAncestor&gt;&#xD;
+      &lt;TestId&gt;xUnit::41BABB46-7CD2-485D-95A5-ACA05522BD9A::net8.0::HermesIntegrationTests.Repositories.DefectRepositoryTests&lt;/TestId&gt;&#xD;
+    &lt;/TestAncestor&gt;&#xD;
+    &lt;Project Location="C:\Users\david\RiderProjects\HermesWIP\HermesIntegrationTests" Presentation="&amp;lt;HermesIntegrationTests&amp;gt;" /&gt;&#xD;
   &lt;/Or&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=90e89a9b_002D0e35_002D4136_002D86ab_002D01915358644a/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="ValidateAsync_HasConsecutiveDefects_ReturnStop" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;

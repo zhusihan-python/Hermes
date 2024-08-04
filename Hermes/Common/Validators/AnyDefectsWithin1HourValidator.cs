@@ -22,16 +22,16 @@ public class AnyDefectsWithin1HourValidator : IStopValidator
 
     public virtual async Task<Stop> ValidateAsync(SfcResponse sfcResponse)
     {
-        var defect = await this._defectRepository.GetAnyDefectsWithin1Hour(_maxDefects);
-        if (!defect.IsNull)
+        var defect = await this._defectRepository.GetAnyNotRestoredDefectsWithin1Hour(_maxDefects);
+        if (defect.Count == 0)
         {
-            return new Stop(StopType.Line, sfcResponse)
-            {
-                Defect = defect,
-                Details = $"{_maxDefects} defects within 1 hour"
-            };
+            return Stop.Null;
         }
 
-        return Stop.Null;
+        return new Stop(StopType.Line, sfcResponse)
+        {
+            Defects = defect,
+            Details = $"{_maxDefects} defects within 1 hour"
+        };
     }
 }
