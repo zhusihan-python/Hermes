@@ -24,6 +24,7 @@ public partial class TokenViewModel : ViewModelBase, ITokenViewModel
     [RelayCommand(CanExecute = nameof(CanExecuteUnlock))]
     private void Unlock()
     {
+        // TODO: Validar token
         this.IsUnlocked = true;
         this.Unlocked?.Invoke(this, EventArgs.Empty);
     }
@@ -33,5 +34,10 @@ public partial class TokenViewModel : ViewModelBase, ITokenViewModel
     public void Reset()
     {
         this.IsUnlocked = false;
+    }
+
+    public TokenViewModel Clone()
+    {
+        return new TokenViewModel();
     }
 }

@@ -18,6 +18,7 @@ public class Stop
     [NotMapped] public string Message => $"Stop {Type}";
     [NotMapped] public string Details { get; set; } = "";
     [NotMapped] public string SerialNumber { get; set; } = "";
+    [NotMapped] public bool IsFake { get; init; }
 
     public Stop()
     {

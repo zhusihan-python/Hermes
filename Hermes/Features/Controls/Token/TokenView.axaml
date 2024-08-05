@@ -5,29 +5,37 @@
              xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
              xmlns:p1="clr-namespace:SukiUI.Theme;assembly=SukiUI"
              xmlns:token="clr-namespace:Hermes.Features.Controls.Token"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="100"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="80"
              x:Class="Hermes.Features.Controls.Token.TokenView"
              x:DataType="token:ITokenViewModel">
 
     <Grid
-        ColumnDefinitions="*, 200">
+        IsEnabled="{Binding CanUnlock}"
+        ColumnDefinitions="*, 120">
 
         <TextBox
-            Watermark="{Binding TextFieldAssist}"
-            Margin="{StaticResource DefaultMargin}"
+            Margin="0"
+            MinHeight="50"
             PasswordChar="*"
-            p1:TextBoxExtensions.AddDeleteButton="True"
             Background="White"
+            p1:TextBoxExtensions.AddDeleteButton="True"
+            Watermark="{Binding TextFieldAssist}"
             IsEnabled="{Binding !IsUnlocked}" />
 
         <Button
             Grid.Column="1"
+            x:Name="UnlockButton"
+            CornerRadius="{StaticResource DefaultCornerRadius}"
+            Margin="0 6"
+            MinHeight="40"
             Classes="Flat"
-            Padding=" 15 10"
-            Margin="{StaticResource DefaultMargin}"
             Command="{Binding UnlockCommand}"
             IsVisible="{Binding !IsUnlocked}">
-
+            <Button.Styles>
+                <Style Selector="Button:disabled">
+                    <Setter Property="Background" Value="{DynamicResource SukiPrimaryColor50}"></Setter>
+                </Style>
+            </Button.Styles>
 
             <StackPanel
                 Orientation="Horizontal"
@@ -35,26 +43,24 @@
 
                 <avalonia:MaterialIcon
                     Kind="LockOpen"
-                    VerticalAlignment="Center"
                     Height="{StaticResource DefaultIconSize}"
                     Width="{StaticResource DefaultIconSize}"
                     Foreground="White" />
 
                 <TextBlock
-                    Foreground="White"
                     VerticalAlignment="Center"
-                    Classes="h4"
+                    Foreground="White"
                     Text="Unlock" />
             </StackPanel>
         </Button>
 
         <Border
             Grid.Column="1"
-            Width="40"
-            Height="40"
-            Margin="{StaticResource DefaultLeftMargin}"
+            Width="{Binding ElementName=UnlockButton, Path=MinHeight}"
+            Height="{Binding ElementName=UnlockButton, Path=MinHeight}"
+            Margin="{Binding ElementName=UnlockButton, Path=Margin}"
             Background="LawnGreen"
-            CornerRadius="40"
+            CornerRadius="50"
             IsVisible="{Binding IsUnlocked}">
 
             <avalonia:MaterialIcon

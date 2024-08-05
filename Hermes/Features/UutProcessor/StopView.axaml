@@ -16,7 +16,7 @@
         ExtendClientAreaChromeHints="NoChrome"
         Background="{DynamicResource LightRedColor }"
         Icon="avares://Hermes/AppData/Assets/logo-hermes.png">
-    
+
     <Grid
         MaxWidth="{StaticResource StopWindowMaxWidth }"
         Margin="{StaticResource DefaultMargin}"
@@ -37,6 +37,7 @@
 
                 <Grid
                     RowDefinitions="*, Auto">
+
                     <TextBlock
                         TextWrapping="Wrap"
                         VerticalAlignment="Center"
@@ -81,8 +82,46 @@
                 </Grid>
             </Border>
 
-            <token:TokenView
-                DataContext="{Binding TokenViewModel}" />
+            <StackPanel>
+                <token:TokenView
+                    IsVisible="{Binding ElementName=StopLineTokens, Path=!IsVisible}"
+                    DataContext="{Binding StopMachineTokenViewModel}" />
+
+                <StackPanel
+                    x:Name="StopLineTokens"
+                    IsVisible="{Binding !IsMachineStop}"
+                    Spacing="{StaticResource DefaultSpacing}">
+
+                    <ItemsControl
+                        Margin="0"
+                        ItemsSource="{Binding StopLineTokenViewModels}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <token:TokenView
+                                    DataContext="{Binding }" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                    <Label
+                        Foreground="White"
+                        Content="Actions:" />
+
+                    <TextBox UseFloatingWatermark="True"
+                             AcceptsReturn="True"
+                             TextWrapping="Wrap"
+                             Background="White"
+                             Foreground="DarkGray"
+                             VerticalContentAlignment="Top"
+                             ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                             Padding="{StaticResource DefaultPadding}"
+                             CornerRadius="{StaticResource DefaultCornerRadius}"
+                             Text="{Binding Actions, Mode=TwoWay}"
+                             MaxLines="20"
+                             Height="200">
+                    </TextBox>
+                </StackPanel>
+            </StackPanel>
         </StackPanel>
 
         <TextBlock

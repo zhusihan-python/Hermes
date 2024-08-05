@@ -7,7 +7,7 @@
              xmlns:controls="clr-namespace:SukiUI.Controls;assembly=SukiUI"
              xmlns:converters="clr-namespace:Hermes.Common.Converters"
              xmlns:theme="clr-namespace:SukiUI.Theme;assembly=SukiUI"
-             mc:Ignorable="d" d:DesignWidth="950" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="1250" d:DesignHeight="650"
              x:Class="Hermes.Features.SfcSimulator.SfcSimulatorView"
              x:DataType="sfcSimulator:SfcSimulatorViewModel">
 
@@ -22,7 +22,7 @@
 
     <ScrollViewer
         HorizontalAlignment="Center"
-        VerticalScrollBarVisibility="Hidden">
+        VerticalScrollBarVisibility="Auto">
 
         <WrapPanel Margin="{StaticResource DefaultMargin}"
                    theme:WrapPanelExtensions.AnimatedScroll="True"
@@ -148,6 +148,35 @@
                             </TextBox>
                         </StackPanel>
                     </Expander>
+                </StackPanel>
+            </controls:GlassCard>
+            
+            <!-- Show windows buttons -->
+            <controls:GlassCard
+                Margin="{StaticResource DefaultMargin}">
+                
+                <StackPanel
+                    Spacing="{StaticResource DefaultSpacing}">
+                    
+                    <Button
+                        Classes="Flat Outlined"
+                        Content="Show pass view"
+                        Command="{Binding ShowPassViewCommand}" />
+                    
+                    <Button
+                        Classes="Flat Outlined"
+                        Content="Show repair view"
+                        Command="{Binding ShowRepairViewCommand}" />
+                    
+                    <Button
+                        Classes="Flat Outlined"
+                        Content="Show stop machine view"
+                        Command="{Binding ShowStopMachineViewCommand}" />
+                    
+                    <Button
+                        Classes="Flat Outlined"
+                        Content="Show stop line view"
+                        Command="{Binding ShowStopLineViewCommand}" />
                 </StackPanel>
             </controls:GlassCard>
         </WrapPanel>

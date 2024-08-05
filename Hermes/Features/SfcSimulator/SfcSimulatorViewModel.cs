@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Avalonia;
 using Hermes.Builders;
 using Hermes.Models;
+using Microsoft.EntityFrameworkCore.Sqlite.Migrations.Internal;
 
 namespace Hermes.Features.SfcSimulator;
 
@@ -129,6 +130,50 @@ public partial class SfcSimulatorViewModel : PageBase
             });
         await this.WriteLogfile(builder, "Fail");
     }
+
+    [RelayCommand]
+    private void ShowPassView()
+    {
+        ShowSuccessView(isPass: true);
+    }
+
+    [RelayCommand]
+    private void ShowRepairView()
+    {
+        ShowSuccessView(isPass: false);
+    }
+
+    private void ShowSuccessView(bool isPass)
+    {
+        var uut = this._unitUnderTestBuilder.Clone()
+            .IsPass(isPass)
+            .Build();
+        Messenger.Send(new ShowSuccessMessage(uut));
+    }
+
+    [RelayCommand]
+    private void ShowStopMachineView()
+    {
+        ShowStopView(StopType.Machine);
+    }
+
+    [RelayCommand]
+    private void ShowStopLineView()
+    {
+        ShowStopView(StopType.Line);
+    }
+
+    private void ShowStopView(StopType type)
+    {
+        var stop = new Stop()
+        {
+            IsFake = true,
+            SerialNumber = this._unitUnderTestBuilder.Build().SerialNumber,
+            Type = type
+        };
+        Messenger.Send(new ShowStopMessage(stop));
+    }
+
 
     private async Task WriteLogfile(UnitUnderTestBuilder builder, string fileNameWithoutExtension)
     {
