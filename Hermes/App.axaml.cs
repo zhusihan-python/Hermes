@@ -18,6 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using System;
 using Hermes.Common.Validators;
+using Hermes.Features.SettingsConfig;
 using Hermes.Features.SfcSimulator;
 
 namespace Hermes
@@ -127,6 +128,7 @@ namespace Hermes
             services.AddTransient<SuccessViewModel>();
             services.AddTransient<TokenView>();
             services.AddTransient<TokenViewModel>();
+            services.AddTransient<GeneralSettingsView>();
 
             return services.BuildServiceProvider();
         }

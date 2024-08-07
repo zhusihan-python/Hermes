@@ -1,0 +1,23 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="clr-namespace:ConfigFactory.Avalonia;assembly=ConfigFactory.Avalonia"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Hermes.Features.SettingsConfig.GeneralSettingsView"
+        Title="General settings"
+        Background="{DynamicResource SukiCardBackground}">
+
+    <Window.Styles>
+        <FluentTheme />
+        <StyleInclude Source="avares://ConfigFactory.Avalonia/Themes/Fluent/ConfigFactory.Avalonia.axaml" />
+    </Window.Styles>
+
+    <controls:ConfigPage Name="ConfigPage">
+        <controls:ConfigPage.Styles>
+            <Style Selector="Grid#PART_FocusDelegate_1">
+                <Setter Property="Background" Value="Blue"></Setter>
+            </Style>
+        </controls:ConfigPage.Styles>
+    </controls:ConfigPage>
+</Window>

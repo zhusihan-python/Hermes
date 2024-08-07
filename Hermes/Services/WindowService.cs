@@ -11,6 +11,7 @@ using SukiUI.Controls;
 using System.Threading.Tasks;
 using System;
 using System.Threading;
+using Hermes.Features.SettingsConfig;
 
 namespace Hermes.Services;
 
@@ -26,6 +27,7 @@ public class WindowService : ObservableRecipient
     private readonly SuccessViewModel _successViewModel;
     private readonly StopView _stopView;
     private readonly StopViewModel _stopViewModel;
+    private readonly GeneralSettingsView _generalSettingsView;
     private CancellationTokenSource _cts = new();
 
     public WindowService(
@@ -33,22 +35,25 @@ public class WindowService : ObservableRecipient
         SuccessView successView,
         SuccessViewModel successViewModel,
         StopView stopView,
-        StopViewModel stopViewModel)
+        StopViewModel stopViewModel,
+        GeneralSettingsView generalSettingsView)
     {
         this._settings = settings;
         this._successViewModel = successViewModel;
         this._successView = successView;
         this._stopView = stopView;
         this._stopViewModel = stopViewModel;
+        this._generalSettingsView = generalSettingsView;
         stopViewModel.Restored += this.OnStopViewModelRestored;
     }
 
     public void Start()
     {
-        Messenger.Register<ShowSuccessMessage>(this, this.ShowUutSuccess);
-        Messenger.Register<ShowStopMessage>(this, this.ShowStop);
-        Messenger.Register<ShowToastMessage>(this, this.ShowToast);
         Messenger.Register<ExitMessage>(this, (_, __) => this.Stop());
+        Messenger.Register<ShowSettingsMessage>(this, this.ShowSettings);
+        Messenger.Register<ShowStopMessage>(this, this.ShowStop);
+        Messenger.Register<ShowSuccessMessage>(this, this.ShowUutSuccess);
+        Messenger.Register<ShowToastMessage>(this, this.ShowToast);
     }
 
     public void Stop()
@@ -122,5 +127,10 @@ public class WindowService : ObservableRecipient
         {
             SukiHost.ShowToast(message.Title, message.Value, duration: TimeSpan.FromSeconds(message.Duration));
         });
+    }
+
+    private void ShowSettings(object recipient, ShowSettingsMessage message)
+    {
+        Dispatcher.UIThread.Invoke(() => { this._generalSettingsView.Show(); });
     }
 }

@@ -5,10 +5,10 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Hermes.Common.Messages;
-using Hermes.Models;
 using SukiUI;
 using System.Collections.Generic;
 using System.Linq;
+using Hermes.Models;
 
 namespace Hermes.Features
 {
@@ -59,6 +59,12 @@ namespace Hermes.Features
         private void Exit(Window window)
         {
             Messenger.Send(new ExitMessage());
+        }
+
+        [RelayCommand]
+        private void ShowSettings()
+        {
+            Messenger.Send(new ShowSettingsMessage());
         }
 
         public void Receive(NavigateMessage message)
