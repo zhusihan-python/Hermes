@@ -17,7 +17,7 @@ public class CriticalLocationStopValidatorTests
     }
 
     [Fact]
-    public async void ValidateAsync_WithCriticalDefects_ReturnStop()
+    public async Task ValidateAsync_WithCriticalDefects_ReturnStop()
     {
         var criticalLocation = "L0";
         var defect = new Defect()
@@ -32,7 +32,7 @@ public class CriticalLocationStopValidatorTests
     }
 
     [Fact]
-    public async void ValidateAsync_SfcResponseIsError_ReturnStopNull()
+    public async Task ValidateAsync_SfcResponseIsError_ReturnStopNull()
     {
         var criticalLocation = "L0";
         var defect = new Defect()
@@ -47,7 +47,7 @@ public class CriticalLocationStopValidatorTests
     }
 
     [Fact]
-    public async void ValidateAsync_WithCriticalDefects_ReturnStopTypeLine()
+    public async Task ValidateAsync_WithCriticalDefects_ReturnStopTypeLine()
     {
         var criticalLocation = "L0";
         var defect = new Defect()
@@ -61,7 +61,7 @@ public class CriticalLocationStopValidatorTests
     }
 
     [Fact]
-    public async void ValidateAsync_NotCriticalDefects_ReturnStopNull()
+    public async Task ValidateAsync_NotCriticalDefects_ReturnStopNull()
     {
         var criticalLocation = "L0";
         var unitUnderTest = GetUnitUnderTestMock();

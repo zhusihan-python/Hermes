@@ -14,7 +14,7 @@ public class MachineValidatorTests
     }
 
     [Fact]
-    public async void ValidateAsync_SfcResponseIsSuccess_ReturnStopNull()
+    public async Task ValidateAsync_SfcResponseIsSuccess_ReturnStopNull()
     {
         var sfcResponse = _unitUnderTestBuilder
             .IsPass(true)
@@ -26,7 +26,7 @@ public class MachineValidatorTests
     }
 
     [Fact]
-    public async void ValidateAsync_SfcResponseIsFail_ReturnStop()
+    public async Task ValidateAsync_SfcResponseIsFail_ReturnStop()
     {
         var sfcResponse = _unitUnderTestBuilder
             .IsSfcFail(true)
@@ -37,7 +37,7 @@ public class MachineValidatorTests
     }
 
     [Fact]
-    public async void ValidateAsync_SfcResponseIsFail_ReturnStopTypeMachine()
+    public async Task ValidateAsync_SfcResponseIsFail_ReturnStopTypeMachine()
     {
         var sfcResponse = _unitUnderTestBuilder
             .IsSfcFail(true)
@@ -48,7 +48,7 @@ public class MachineValidatorTests
     }
 
     [Fact]
-    public async void ValidateAsync_SfcResponseIsTimeout_ReturnStop()
+    public async Task ValidateAsync_SfcResponseIsTimeout_ReturnStop()
     {
         var sfcResponse = _unitUnderTestBuilder
             .IsSfcTimeout(true)

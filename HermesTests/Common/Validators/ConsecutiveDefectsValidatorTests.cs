@@ -16,7 +16,7 @@ public class ConsecutiveDefectsValidatorTests
     }
 
     [Fact]
-    public async void ValidateAsync_ConsecutiveDefects_ReturnStop()
+    public async Task ValidateAsync_ConsecutiveDefects_ReturnStop()
     {
         var defect = new Defect();
         var defectRepositoryMock = GetDefectRepositoryMock(defect);
@@ -27,7 +27,7 @@ public class ConsecutiveDefectsValidatorTests
     }
 
     [Fact]
-    public async void ValidateAsync_NotConsecutiveDefects_ReturnStopNull()
+    public async Task ValidateAsync_NotConsecutiveDefects_ReturnStopNull()
     {
         var defectRepositoryMock = GetDefectRepositoryMock(Defect.Null);
         var unitUnderTest = _unitUnderTestBuilder.Build();

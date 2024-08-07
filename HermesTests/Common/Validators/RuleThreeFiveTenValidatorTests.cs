@@ -17,7 +17,7 @@ public class RuleThreeFiveTenValidatorTests
     }
 
     [Fact]
-    public async void ValidateAsync_NotConsecutiveDefects_ReturnStopNull()
+    public async Task ValidateAsync_NotConsecutiveDefects_ReturnStopNull()
     {
         var sfcResponse = _unitUnderTestBuilder.Build();
         var sut = BuildSut(consecutiveDefectsStop: Stop.Null);
@@ -26,7 +26,7 @@ public class RuleThreeFiveTenValidatorTests
     }
 
     [Fact]
-    public async void ValidateAsync_WithConsecutiveDefects_ReturnStop()
+    public async Task ValidateAsync_WithConsecutiveDefects_ReturnStop()
     {
         var sfcResponse = _unitUnderTestBuilder.Build();
         var stop = new Stop(StopType.Line);
@@ -36,7 +36,7 @@ public class RuleThreeFiveTenValidatorTests
     }
 
     [Fact]
-    public async void ValidateAsync_WithConsecutiveDefects_ReturnStopTypeLine()
+    public async Task ValidateAsync_WithConsecutiveDefects_ReturnStopTypeLine()
     {
         var sfcResponse = _unitUnderTestBuilder.Build();
         var stop = new Stop(StopType.Line);
@@ -46,7 +46,7 @@ public class RuleThreeFiveTenValidatorTests
     }
 
     [Fact]
-    public async void ValidateAsync_NotSameDefectsWithin1Hour_ReturnStopNull()
+    public async Task ValidateAsync_NotSameDefectsWithin1Hour_ReturnStopNull()
     {
         var sfcResponse = _unitUnderTestBuilder.Build();
         var stop = new Stop(StopType.Line);
@@ -56,7 +56,7 @@ public class RuleThreeFiveTenValidatorTests
     }
 
     [Fact]
-    public async void ValidateAsync_WithSameDefectsWithin1Hour_ReturnStop()
+    public async Task ValidateAsync_WithSameDefectsWithin1Hour_ReturnStop()
     {
         var sfcResponse = _unitUnderTestBuilder.Build();
         var stop = new Stop(StopType.Line);
@@ -66,7 +66,7 @@ public class RuleThreeFiveTenValidatorTests
     }
 
     [Fact]
-    public async void ValidateAsync_NotAnyDefectsWithin1Hour_ReturnStopNull()
+    public async Task ValidateAsync_NotAnyDefectsWithin1Hour_ReturnStopNull()
     {
         var sfcResponse = _unitUnderTestBuilder.Build();
         var sut = BuildSut(anyDefectsWithin1HourStop: Stop.Null);
@@ -75,7 +75,7 @@ public class RuleThreeFiveTenValidatorTests
     }
 
     [Fact]
-    public async void ValidateAsync_WithAnyDefectsWithin1Hour_ReturnStop()
+    public async Task ValidateAsync_WithAnyDefectsWithin1Hour_ReturnStop()
     {
         var sfcResponse = _unitUnderTestBuilder.Build();
         var stop = new Stop(StopType.Line);
@@ -85,7 +85,7 @@ public class RuleThreeFiveTenValidatorTests
     }
 
     [Fact]
-    public async void ValidateAsync_UnitUnderTest_ReturnStopNull()
+    public async Task ValidateAsync_UnitUnderTest_ReturnStopNull()
     {
         var sfcResponse = _unitUnderTestBuilder.Build();
         var stop = new Stop(StopType.Line);

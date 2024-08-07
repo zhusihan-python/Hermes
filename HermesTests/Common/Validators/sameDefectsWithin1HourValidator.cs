@@ -16,7 +16,7 @@ public class SameDefectsWithin1HourValidatorTests
     }
 
     [Fact]
-    public async void ValidateAsync_WithAnyDefects_ReturnStop()
+    public async Task ValidateAsync_WithAnyDefects_ReturnStop()
     {
         var defect = new Defect();
         var defectRepositoryMock = GetDefectRepositoryMock(defect);
@@ -27,7 +27,7 @@ public class SameDefectsWithin1HourValidatorTests
     }
 
     [Fact]
-    public async void ValidateAsync_NotConsecutiveDefects_ReturnStopNull()
+    public async Task ValidateAsync_NotConsecutiveDefects_ReturnStopNull()
     {
         var defectRepositoryMock = GetDefectRepositoryMock(Defect.Null);
         var sfcResponse = _unitUnderTestBuilder.Build();
