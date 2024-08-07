@@ -19,7 +19,7 @@ public class StopRepositoryTests
     }
 
     [Fact]
-    public async void GetConsecutiveSameDefects_WithConsecutiveDefects_ReturnsDefect()
+    public async Task GetConsecutiveSameDefects_WithConsecutiveDefects_ReturnsDefect()
     {
         var sfcResponse = _sfcResponseBuilder.Build();
         await _context.SfcResponses.AddAsync(sfcResponse);

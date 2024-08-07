@@ -19,7 +19,7 @@ public class UnitUnderTestRepositoryTests
     }
 
     [Fact]
-    public async void AddAndSaveAsync_ValidUnitUnderTest_AddsAndSaves()
+    public async Task AddAndSaveAsync_ValidUnitUnderTest_AddsAndSaves()
     {
         var uut = _unitUnderTestBuilder.Build();
         await _sut.AddAndSaveAsync(uut);
@@ -29,7 +29,7 @@ public class UnitUnderTestRepositoryTests
     }
 
     [Fact]
-    public async void Delete_ValidUnitUnderTest_Deletes()
+    public async Task Delete_ValidUnitUnderTest_Deletes()
     {
         var uut = _unitUnderTestBuilder.Build();
         await _sut.AddAndSaveAsync(uut);
@@ -48,7 +48,7 @@ public class UnitUnderTestRepositoryTests
     }
 
     [Fact]
-    public async void GetAll_ValidUnitUnderTest_GetsAll()
+    public async Task GetAll_ValidUnitUnderTest_GetsAll()
     {
         const int listLength = 3;
         for (int i = 0; i < listLength; i++)

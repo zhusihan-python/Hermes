@@ -19,7 +19,7 @@ public class FileServicesTests
     }
 
     [Fact]
-    public async void TryReadAllTextAsync_FileExists_ReturnsContent()
+    public async Task TryReadAllTextAsync_FileExists_ReturnsContent()
     {
         const string content = "content";
         var fullPath = Path.Combine(_settings.InputPath, "test.txt");
@@ -28,14 +28,14 @@ public class FileServicesTests
     }
 
     [Fact]
-    public async void TryReadAllTextAsync_NotFileExists_ReturnsEmptyString()
+    public async Task TryReadAllTextAsync_NotFileExists_ReturnsEmptyString()
     {
         var fullPath = Path.Combine(_settings.InputPath, "doesNotExists.txt");
         Assert.Equal(string.Empty, await _sut.TryReadAllTextAsync(fullPath));
     }
 
     [Fact]
-    public async void WriteAllTextAsync_FileExists_WritesContentInFile()
+    public async Task WriteAllTextAsync_FileExists_WritesContentInFile()
     {
         const string content = "content";
         var fullPath = Path.Combine(_settings.InputPath, "test.txt");
@@ -44,7 +44,7 @@ public class FileServicesTests
     }
 
     [Fact]
-    public async void MoveToBackupAsync_FileExists_MovesToBackup()
+    public async Task MoveToBackupAsync_FileExists_MovesToBackup()
     {
         const string content = "content";
         var inputFullPath = Path.Combine(_settings.InputPath, "test.txt");
@@ -56,7 +56,7 @@ public class FileServicesTests
     }
 
     [Fact]
-    public async void CopyFromBackupToInputAsync_FileExists_CopyToInput()
+    public async Task CopyFromBackupToInputAsync_FileExists_CopyToInput()
     {
         const string content = "content";
         var inputFullPath = Path.Combine(_settings.InputPath, "test.txt");
@@ -68,7 +68,7 @@ public class FileServicesTests
     }
 
     [Fact]
-    public async void DeleteFileIfExists_FileExists_DeletesFile()
+    public async Task DeleteFileIfExists_FileExists_DeletesFile()
     {
         const string content = "content";
         var inputFullPath = Path.Combine(_settings.InputPath, "test.txt");

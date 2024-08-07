@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
              xmlns:p1="clr-namespace:SukiUI.Theme;assembly=SukiUI"
+             xmlns:lang="clr-namespace:Hermes.Language;assembly=Hermes.Language"
              xmlns:token="clr-namespace:Hermes.Features.Controls.Token"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="80"
              x:Class="Hermes.Features.Controls.Token.TokenView"
@@ -19,7 +20,7 @@
             PasswordChar="*"
             Background="White"
             p1:TextBoxExtensions.AddDeleteButton="True"
-            Watermark="{Binding TextFieldAssist}"
+            Watermark="{Binding Watermark}"
             IsEnabled="{Binding !IsUnlocked}" />
 
         <Button
@@ -50,7 +51,7 @@
                 <TextBlock
                     VerticalAlignment="Center"
                     Foreground="White"
-                    Text="Unlock" />
+                    Text="{x:Static lang:Resources.c_token_unlock_button}" />
             </StackPanel>
         </Button>
 

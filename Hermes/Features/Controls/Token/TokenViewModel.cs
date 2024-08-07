@@ -1,5 +1,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Hermes.Language;
 using Hermes.Types;
 using System;
 
@@ -7,18 +8,16 @@ namespace Hermes.Features.Controls.Token;
 
 public partial class TokenViewModel : ViewModelBase, ITokenViewModel
 {
-    private const string TokenText = "Token";
-
     [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(UnlockCommand))]
     private bool _canUnlock = true;
 
     [ObservableProperty] private bool _isUnlocked;
-    [ObservableProperty] private string _textFieldAssist = TokenText;
+    [ObservableProperty] private string _watermark = Resources.c_token_watermark;
     public event EventHandler? Unlocked;
 
     public DepartmentType Department
     {
-        set => this.TextFieldAssist = $"{value.ToString().ToUpper()} {TokenText}";
+        set => this.Watermark = $"{value.ToString().ToUpper()} {Resources.c_token_watermark.ToLower()}";
     }
 
     [RelayCommand(CanExecute = nameof(CanExecuteUnlock))]

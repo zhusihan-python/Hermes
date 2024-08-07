@@ -21,7 +21,7 @@ public class DefectRepositoryTests
     }
 
     [Fact]
-    public async void GetAnyNotRestoredDefectsWithin1Hour_AllDefectsAreRestored_ReturnsEmptyList()
+    public async Task GetAnyNotRestoredDefectsWithin1Hour_AllDefectsAreRestored_ReturnsEmptyList()
     {
         const int qty = 3;
         var uutBuilder = _unitUnderTestBuilder
@@ -46,7 +46,7 @@ public class DefectRepositoryTests
     }
 
     [Fact]
-    public async void GetNotRestoredSameDefectsWithin1Hour_AllDefectsAreRestored_ReturnsEmptyList()
+    public async Task GetNotRestoredSameDefectsWithin1Hour_AllDefectsAreRestored_ReturnsEmptyList()
     {
         const int qty = 3;
         var uutBuilder = _unitUnderTestBuilder
@@ -71,7 +71,7 @@ public class DefectRepositoryTests
     }
 
     [Fact]
-    public async void GetNotRestoredConsecutiveSameDefects_AllDefectsAreRestored_ReturnsEmptyList()
+    public async Task GetNotRestoredConsecutiveSameDefects_AllDefectsAreRestored_ReturnsEmptyList()
     {
         const int qty = 3;
         var uutBuilder = _unitUnderTestBuilder
@@ -96,7 +96,7 @@ public class DefectRepositoryTests
     }
 
     [Fact]
-    public async void GetNotRestoredConsecutiveSameDefects_WithConsecutiveDefects_ReturnsDefectList()
+    public async Task GetNotRestoredConsecutiveSameDefects_WithConsecutiveDefects_ReturnsDefectList()
     {
         const int qty = 3;
         var uutBuilder = _unitUnderTestBuilder
@@ -113,7 +113,7 @@ public class DefectRepositoryTests
     }
 
     [Fact]
-    public async void GetConsecutiveSameDefects_NotConsecutiveDefects_ReturnsEmptyList()
+    public async Task GetConsecutiveSameDefects_NotConsecutiveDefects_ReturnsEmptyList()
     {
         var uutBuilder = _unitUnderTestBuilder;
         var uutBuilderWithDefect = _unitUnderTestBuilder.Clone()
@@ -128,7 +128,7 @@ public class DefectRepositoryTests
     }
 
     [Fact]
-    public async void GetSameDefectsWithin1Hour_WithSameDefectsWithin1Hour_ReturnsDefectList()
+    public async Task GetSameDefectsWithin1Hour_WithSameDefectsWithin1Hour_ReturnsDefectList()
     {
         var uutBuilder = _unitUnderTestBuilder;
         var uutBuilderWithDefects = _unitUnderTestBuilder
@@ -153,7 +153,7 @@ public class DefectRepositoryTests
     }
 
     [Fact]
-    public async void GetSameDefectsWithin1Hour_NotSameDefectsWithin1Hour_ReturnsEmptyList()
+    public async Task GetSameDefectsWithin1Hour_NotSameDefectsWithin1Hour_ReturnsEmptyList()
     {
         const int qty = 5;
         var timeLapse = TimeSpan.FromHours(1);
@@ -175,7 +175,7 @@ public class DefectRepositoryTests
     }
 
     [Fact]
-    public async void GetDefectsWithin1Hour_AnyDefectsWithin1Hour_ReturnsDefectList()
+    public async Task GetDefectsWithin1Hour_AnyDefectsWithin1Hour_ReturnsDefectList()
     {
         const int qty = 10;
         for (var i = 0; i < qty; i++)
@@ -194,7 +194,7 @@ public class DefectRepositoryTests
     }
 
     [Fact]
-    public async void GetDefectsWithin1Hour_NoDefectsWithin1Hour_ReturnsEmptyList()
+    public async Task GetDefectsWithin1Hour_NoDefectsWithin1Hour_ReturnsEmptyList()
     {
         _context.Defects.RemoveRange(_context.Defects);
         await _context.SaveChangesAsync();

@@ -71,4 +71,16 @@
     &lt;Project Location="C:\Users\Foxconn\RiderProjects\hermes\HermesIntegrationTests" Presentation="&amp;lt;HermesIntegrationTests&amp;gt;" /&gt;&#xD;
     &lt;Project Location="C:\Users\Foxconn\RiderProjects\hermes\HermesTests" Presentation="&amp;lt;HermesTests&amp;gt;" /&gt;&#xD;
   &lt;/Or&gt;&#xD;
-&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
+&lt;/SessionState&gt;</s:String>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Hermes_002ELanguage_002FResources_002FResources/@EntryIndexedValue">True</s:Boolean>
+	
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Language_002FResources/@EntryIndexedValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Language_002FResources/@EntryIndexRemoved">True</s:Boolean>
+	
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Language_002FResources_002FResources/@EntryIndexedValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=Language_002FResources_002FResources/@EntryIndexRemoved">True</s:Boolean>
+	<s:String x:Key="/Default/ResxEditorPersonal/DisabledLanguages/@EntryValue"></s:String>
+	
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/Initialized/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/ShowOnlyErrors/@EntryValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/ShowOnlyStringResources/@EntryValue">False</s:Boolean></wpf:ResourceDictionary>

@@ -7,16 +7,17 @@
              xmlns:controls="clr-namespace:SukiUI.Controls;assembly=SukiUI"
              xmlns:converters="clr-namespace:Hermes.Common.Converters"
              xmlns:theme="clr-namespace:SukiUI.Theme;assembly=SukiUI"
+             xmlns:lang="clr-namespace:Hermes.Language;assembly=Hermes.Language"
              mc:Ignorable="d" d:DesignWidth="1250" d:DesignHeight="650"
              x:Class="Hermes.Features.SfcSimulator.SfcSimulatorView"
              x:DataType="sfcSimulator:SfcSimulatorViewModel">
 
     <UserControl.Styles>
         <Style Selector="TextBlock.Running">
-            <Setter Property="Text" Value="Running" />
+            <Setter Property="Text" Value="{x:Static lang:Resources.txt_running}" />
         </Style>
         <Style Selector="TextBlock.Stopped">
-            <Setter Property="Text" Value="Stopped" />
+            <Setter Property="Text" Value="{x:Static lang:Resources.txt_stopped}" />
         </Style>
     </UserControl.Styles>
 
@@ -64,8 +65,10 @@
                                 <TextBlock
                                     VerticalAlignment="Center"
                                     Classes="h4"
-                                    Margin="0"
-                                    Text="Status: " />
+                                    Margin="0">
+                                    <Run Text="{x:Static lang:Resources.txt_status}" />
+                                    <Run Text=":" />
+                                </TextBlock>
 
                                 <TextBlock
                                     VerticalAlignment="Center"
@@ -77,17 +80,19 @@
 
                     <Button
                         Classes="Flat"
-                        Content="Start"
+                        Content="{x:Static lang:Resources.txt_start}"
                         Command="{Binding StartCommand}"
                         IsVisible="{Binding !IsRunning}" />
 
                     <Button
                         Classes="Flat Accent"
-                        Content="Stop"
+                        Content="{x:Static lang:Resources.txt_stop}"
                         Command="{Binding StopCommand}"
                         IsVisible="{Binding IsRunning}" />
 
-                    <Label>Response Mode:</Label>
+                    <Label
+                        Content="{x:Static lang:Resources.c_sfc_simulator_response_mode}">
+                    </Label>
 
                     <ComboBox
                         ItemsSource="{Binding SfcErrorTypes}"
@@ -150,29 +155,29 @@
                     </Expander>
                 </StackPanel>
             </controls:GlassCard>
-            
+
             <!-- Show windows buttons -->
             <controls:GlassCard
                 Margin="{StaticResource DefaultMargin}">
-                
+
                 <StackPanel
                     Spacing="{StaticResource DefaultSpacing}">
-                    
+
                     <Button
                         Classes="Flat Outlined"
                         Content="Show pass view"
                         Command="{Binding ShowPassViewCommand}" />
-                    
+
                     <Button
                         Classes="Flat Outlined"
                         Content="Show repair view"
                         Command="{Binding ShowRepairViewCommand}" />
-                    
+
                     <Button
                         Classes="Flat Outlined"
                         Content="Show stop machine view"
                         Command="{Binding ShowStopMachineViewCommand}" />
-                    
+
                     <Button
                         Classes="Flat Outlined"
                         Content="Show stop line view"
