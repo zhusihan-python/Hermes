@@ -46,7 +46,7 @@ namespace Hermes
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                _provider?.GetService<GeneralSettingsRepository>()?.Load();
+                _provider?.GetService<GeneralSettingsConfigModel>()?.Load();
                 var viewLocator = _provider?.GetRequiredService<IDataTemplate>();
                 var mainViewModel = _provider?.GetRequiredService<MainWindowViewModel>();
                 desktop.MainWindow = viewLocator?.Build(mainViewModel) as Window;

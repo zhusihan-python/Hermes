@@ -22,12 +22,18 @@ public abstract class SettingsConfigModel<TConfigModel, TSettingsModel> : Observ
     public ConfigPropertyCollection Properties { get; }
 
     private readonly ILogger _logger;
+    private readonly TSettingsModel _settings;
     private readonly SettingsRepository<TSettingsModel> _settingsRepository;
     private readonly Mapper _mapper;
+    private readonly IMapper _settingsMapper;
 
-    public SettingsConfigModel(ILogger logger, SettingsRepository<TSettingsModel> settingsRepository)
+    public SettingsConfigModel(
+        ILogger logger,
+        TSettingsModel settings,
+        SettingsRepository<TSettingsModel> settingsRepository)
     {
         this._logger = logger;
+        this._settings = settings;
         this._settingsRepository = settingsRepository;
         this.LocalPath = this._settingsRepository.Path;
         this.Properties = ConfigPropertyCollection.Generate<TConfigModel>();
@@ -36,6 +42,9 @@ public abstract class SettingsConfigModel<TConfigModel, TSettingsModel> : Observ
             .CreateMap<TConfigModel, TSettingsModel>()
             .ReverseMap());
         this._mapper = new Mapper(config);
+        this._settingsMapper = new MapperConfiguration(cfg => cfg
+                .CreateMap<TSettingsModel, TSettingsModel>())
+            .CreateMapper();
         this.Load();
     }
 
@@ -67,8 +76,9 @@ public abstract class SettingsConfigModel<TConfigModel, TSettingsModel> : Observ
         try
         {
             if (!File.Exists(LocalPath)) return;
-            var generalSettings = this._settingsRepository.Read();
-            this._mapper.Map(generalSettings, this);
+            var settings = this._settingsRepository.Read();
+            this._mapper.Map(settings, this);
+            this.MapToGlobalSettings(settings);
         }
         catch (Exception ex)
         {
@@ -83,13 +93,13 @@ public abstract class SettingsConfigModel<TConfigModel, TSettingsModel> : Observ
         this.Load();
     }
 
-    public async void Save()
+    public void Save()
     {
         try
         {
-            var generalSettings = _mapper.Map<TSettingsModel>(this);
-            this._settingsRepository.Save(generalSettings);
-            await Task.Delay(2000);
+            var settings = _mapper.Map<TSettingsModel>(this);
+            this._settingsRepository.Save(settings);
+            this.MapToGlobalSettings(settings);
         }
         catch (Exception ex)
         {
@@ -97,5 +107,10 @@ public abstract class SettingsConfigModel<TConfigModel, TSettingsModel> : Observ
             _logger.Error(msg);
             throw new Exception(msg, ex);
         }
+    }
+
+    public virtual void MapToGlobalSettings(TSettingsModel settings)
+    {
+        this._settingsMapper.Map(settings, this._settings);
     }
 }

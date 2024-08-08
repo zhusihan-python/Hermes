@@ -12,7 +12,7 @@ public class GeneralSettingsRepositoryTests
     public GeneralSettingsRepositoryTests(AesEncryptor aesEncryptor)
     {
         _generalSettings = new GeneralSettings();
-        _sut = new GeneralSettingsRepository(_generalSettings, aesEncryptor);
+        _sut = new GeneralSettingsRepository(aesEncryptor);
     }
 
     [Fact]
@@ -28,14 +28,5 @@ public class GeneralSettingsRepositoryTests
         _sut.Save(_generalSettings);
         var loadedSettings = _sut.Read();
         Assert.Equivalent(_generalSettings, loadedSettings);
-    }
-
-    [Fact]
-    public void Load_ValidGeneralSettings_ReadsFile()
-    {
-        var generalSettings = new GeneralSettings() { BackupPath = "backupPath" };
-        _sut.Save(generalSettings);
-        _sut.Load();
-        Assert.Equivalent(_generalSettings, generalSettings);
     }
 }

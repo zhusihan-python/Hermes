@@ -1,15 +1,20 @@
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
 using ConfigFactory.Core.Attributes;
 using Hermes.Common.Extensions;
 using Hermes.Common;
+using Hermes.Common.Messages;
 using Hermes.Models;
 using Hermes.Repositories;
 using Hermes.Types;
 
 namespace Hermes.Features.SettingsConfig;
 
-public partial class GeneralSettingsConfigModel(ILogger logger, GeneralSettingsRepository settingsRepository)
-    : SettingsConfigModel<GeneralSettingsConfigModel, GeneralSettings>(logger, settingsRepository)
+public partial class GeneralSettingsConfigModel(
+    ILogger logger,
+    GeneralSettings settings,
+    GeneralSettingsRepository settingsRepository)
+    : SettingsConfigModel<GeneralSettingsConfigModel, GeneralSettings>(logger, settings, settingsRepository)
 {
     #region General
 
@@ -199,5 +204,11 @@ public partial class GeneralSettingsConfigModel(ILogger logger, GeneralSettingsR
                 SendRepairFile = true;
                 break;
         }
+    }
+
+    public override void MapToGlobalSettings(GeneralSettings settings)
+    {
+        WeakReferenceMessenger.Default.Send(new GeneralSettingsUpdateMessage(settings));
+        base.MapToGlobalSettings(settings);
     }
 }

@@ -14,6 +14,7 @@ namespace Hermes.Features.UutProcessor;
 public partial class UutProcessorViewModel : PageBase
 {
     [ObservableProperty] private bool _isRunning;
+    [ObservableProperty] private string _path = "";
     [ObservableProperty] private string _serialNumber = string.Empty;
     [ObservableProperty] private UutProcessorState _state = UutProcessorState.Stopped;
     private readonly Session _session;
@@ -38,6 +39,7 @@ public partial class UutProcessorViewModel : PageBase
         Messenger.Register<StartUutProcessorMessage>(this, this.OnStartReceive);
         Messenger.Register<UnblockMessage>(this, this.OnUnblockReceive);
         Messenger.Register<ExitMessage>(this, this.OnExitReceive);
+        Messenger.Register<GeneralSettingsUpdateMessage>(this, this.OnGeneralSettingsUpdateReceive);
         base.OnActivated();
     }
 
@@ -146,5 +148,11 @@ public partial class UutProcessorViewModel : PageBase
     private void OnUnblockReceive(object recipient, UnblockMessage message)
     {
         this._session.UutProcessorState = UutProcessorState.Idle;
+    }
+
+    private void OnGeneralSettingsUpdateReceive(object recipient, GeneralSettingsUpdateMessage message)
+    {
+        // TODO: Cambiar path solo cuando este detenido, no cuando el path cambie. Lanzar evento al iniciar la aplicacin.
+        this.Path = message.Value.InputPath;
     }
 }

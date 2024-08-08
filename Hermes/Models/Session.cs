@@ -1,10 +1,12 @@
 using System;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Hermes.Types;
 
 namespace Hermes.Models;
 
-public class Session
+public partial class Session : ObservableObject
 {
+    [ObservableProperty] private string _path = string.Empty;
     public Stop Stop { get; set; } = Stop.Null;
 
     public UutProcessorState UutProcessorState

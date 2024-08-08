@@ -85,6 +85,15 @@
                 Content="Stop"
                 Command="{Binding StopCommand}"
                 IsVisible="{Binding IsRunning}" />
+
+            <TextBlock
+                VerticalAlignment="Center"
+                Classes="Caption"
+                Margin="0">
+                <Run Text="Path " />
+                <Run Text=":" />
+                <Run Text="{Binding Path}" />
+            </TextBlock>
         </StackPanel>
     </controls:GlassCard>
 </UserControl>
