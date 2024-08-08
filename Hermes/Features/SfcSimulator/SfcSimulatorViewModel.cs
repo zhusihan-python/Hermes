@@ -40,7 +40,7 @@ public partial class SfcSimulatorViewModel : PageBase
         FileService fileService,
         SfcSimulatorService sfcSimulatorService,
         UnitUnderTestBuilder underTestBuilder)
-        : base("Sfc Simulator", MaterialIconKind.BugPlay, 0)
+        : base("Sfc Simulator", MaterialIconKind.BugPlay, 1)
     {
         _coreSettings = coreSettings;
         _fileService = fileService;

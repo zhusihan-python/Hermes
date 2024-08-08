@@ -46,6 +46,7 @@ namespace Hermes
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
+                _provider?.GetService<GeneralSettingsRepository>()?.Load();
                 var viewLocator = _provider?.GetRequiredService<IDataTemplate>();
                 var mainViewModel = _provider?.GetRequiredService<MainWindowViewModel>();
                 desktop.MainWindow = viewLocator?.Build(mainViewModel) as Window;
@@ -73,7 +74,7 @@ namespace Hermes
             var services = new ServiceCollection();
 
             // Settings
-            services.AddSingleton<Settings>();
+            services.AddSingleton<GeneralSettings>();
             services.AddSingleton<CoreSettings>();
             services.AddSingleton<Session>();
 
@@ -90,6 +91,7 @@ namespace Hermes
             services.AddTransient<SfcResponseRepository>();
             services.AddTransient<StopRepository>();
             services.AddTransient<UnitUnderTestRepository>();
+            services.AddTransient<GeneralSettingsRepository>();
             services.AddTransient<IDefectRepository, DefectRepository>();
 
             // Common
@@ -98,6 +100,8 @@ namespace Hermes
             services.AddSingleton<ParserPrototype>();
             services.AddSingleton<UnitUnderTestBuilder>();
             services.AddSingleton<SfcResponseBuilder>();
+            services.AddSingleton<AesEncryptor>();
+            services.AddSingleton<GeneralSettingsConfigModel>();
 
             // Services
             services.AddSingleton<IDataTemplate, ViewLocator>();

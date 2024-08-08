@@ -8,7 +8,7 @@ public class FileServiceMockBuilder
 {
     private bool _fileExists = true;
     private string _tryReadAllTextAsync = String.Empty;
-    private Settings _settings = new();
+    private GeneralSettings _generalSettings = new();
 
     public FileServiceMockBuilder FileExists(bool fileExists)
     {
@@ -24,7 +24,7 @@ public class FileServiceMockBuilder
 
     public FileService Build()
     {
-        var fileServiceMock = new Mock<FileService>(this._settings);
+        var fileServiceMock = new Mock<FileService>(this._generalSettings);
         fileServiceMock.Setup(x => x.FileExists(It.IsAny<string>())).Returns(this._fileExists);
         fileServiceMock.Setup(x => x.TryReadAllTextAsync(It.IsAny<string>()))
             .Returns(Task.FromResult(this._tryReadAllTextAsync));

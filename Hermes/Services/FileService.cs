@@ -12,12 +12,12 @@ public class FileService
 {
     private const string BackupPrefix = "_backupAt_";
 
-    private readonly Settings _settings;
+    private readonly GeneralSettings _generalSettings;
     private readonly ResiliencePipeline _retryPipeline;
 
-    public FileService(Settings settings)
+    public FileService(GeneralSettings generalSettings)
     {
-        this._settings = settings;
+        this._generalSettings = generalSettings;
         this._retryPipeline = new ResiliencePipelineBuilder()
             .AddRetry(new RetryStrategyOptions())
             .AddTimeout(TimeSpan.FromSeconds(10))
@@ -53,7 +53,7 @@ public class FileService
 
     public async Task<string> CopyFromBackupToInputAsync(string backupFullPath)
     {
-        var inputFullPath = Path.Combine(this._settings.InputPath, GetFileNameWithoutCurrentDate(backupFullPath));
+        var inputFullPath = Path.Combine(this._generalSettings.InputPath, GetFileNameWithoutCurrentDate(backupFullPath));
         if (File.Exists(inputFullPath))
         {
             return inputFullPath;
@@ -75,7 +75,7 @@ public class FileService
     private string GetBackupFullPath(string fullPath)
     {
         var fileName = GetFileNameWithCurrentDate(fullPath);
-        return Path.Combine(this._settings.BackupPath, fileName);
+        return Path.Combine(this._generalSettings.BackupPath, fileName);
     }
 
     private static string GetFileNameWithCurrentDate(string fullPath)
@@ -127,7 +127,7 @@ public class FileService
 
     public virtual async Task WriteAllTextToInputPathAsync(string fileNameWithoutExtension, string content)
     {
-        var path = Path.Combine(this._settings.InputPath, fileNameWithoutExtension + _settings.InputFileExtension.GetDescription());
+        var path = Path.Combine(this._generalSettings.InputPath, fileNameWithoutExtension + _generalSettings.InputFileExtension.GetDescription());
         await WriteAllTextAsync(path, content);
     }
 

@@ -2,5 +2,8 @@
 
 public enum LogfileType
 {
-    TriDefault
+    Default,
+    TriDefault,
+    VitroxDefault,
+    MagicDefault
 }

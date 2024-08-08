@@ -10,7 +10,7 @@ public class Startup
 {
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddTransient<Settings>();
+        services.AddTransient<GeneralSettings>();
         services.AddTransient<FileService>();
         services.AddTransient<ParserPrototype>();
         services.AddTransient<UnitUnderTestBuilder>();

@@ -19,14 +19,14 @@ public class SfcSimulatorService
     private readonly FileService _fileService;
     private readonly FolderWatcherService _folderWatcherService;
     private readonly ILogger _logger;
-    private readonly Settings _settings;
+    private readonly GeneralSettings _generalSettings;
     private readonly SfcResponseBuilder _sfcResponseBuilder;
     private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
 
 
     public SfcSimulatorService(
         ILogger logger,
-        Settings settings,
+        GeneralSettings generalSettings,
         FileService fileService,
         UnitUnderTestBuilder unitUnderTestBuilder,
         SfcResponseBuilder sfcResponseBuilder,
@@ -34,7 +34,7 @@ public class SfcSimulatorService
     )
     {
         this._logger = logger;
-        this._settings = settings;
+        this._generalSettings = generalSettings;
         this._fileService = fileService;
         this._unitUnderTestBuilder = unitUnderTestBuilder;
         this._sfcResponseBuilder = sfcResponseBuilder;
@@ -44,9 +44,9 @@ public class SfcSimulatorService
     public void Start()
     {
         if (_isRunning) return;
-        this._folderWatcherService.Filter = "*" + _settings.InputFileExtension.GetDescription();
+        this._folderWatcherService.Filter = "*" + _generalSettings.InputFileExtension.GetDescription();
         this._folderWatcherService.FileCreated += this.OnFileCreated;
-        this._folderWatcherService.Start(_settings.SfcPath);
+        this._folderWatcherService.Start(_generalSettings.SfcPath);
         this.OnRunStatusChanged(true);
     }
 
@@ -74,7 +74,7 @@ public class SfcSimulatorService
         }
 
         await this._fileService.WriteAllTextAsync(
-            SfcRequest.GetResponseFullpath(fullPath, this._settings.SfcResponseExtension),
+            SfcRequest.GetResponseFullpath(fullPath, this._generalSettings.SfcResponseExtension),
             await this.GetContent(fullPath)
         );
     }

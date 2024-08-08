@@ -7,17 +7,17 @@ namespace Hermes.Services;
 
 public class SharedFolderSfcService : ISfcService
 {
-    private readonly Settings _settings;
+    private readonly GeneralSettings _generalSettings;
     private readonly Stopwatch _stopwatch;
     private readonly FileService _fileService;
     private readonly SfcResponseRepository _sfcResponseRepository;
 
     public SharedFolderSfcService(
-        Settings settings,
+        GeneralSettings generalSettings,
         FileService fileService,
         SfcResponseRepository sfcResponseRepository)
     {
-        this._settings = settings;
+        this._generalSettings = generalSettings;
         this._fileService = fileService;
         this._sfcResponseRepository = sfcResponseRepository;
         this._stopwatch = new Stopwatch();
@@ -25,7 +25,7 @@ public class SharedFolderSfcService : ISfcService
 
     public async Task<SfcResponse> SendAsync(UnitUnderTest unitUnderTest)
     {
-        var sfcRequest = new SfcRequest(unitUnderTest, this._settings.SfcPath, this._settings.SfcResponseExtension);
+        var sfcRequest = new SfcRequest(unitUnderTest, this._generalSettings.SfcPath, this._generalSettings.SfcResponseExtension);
         await this._fileService.WriteAllTextAsync(sfcRequest.FullPath, sfcRequest.Content);
 
         var sfcResponse = SfcResponse.BuildTimeout();
@@ -43,11 +43,11 @@ public class SharedFolderSfcService : ISfcService
 
     private async Task<bool> WaitForFileCreationAsync(string fullPath)
     {
-        var timeout = this._settings.SfcTimeoutSeconds * 1000;
+        var timeout = this._generalSettings.SfcTimeoutSeconds * 1000;
         this._stopwatch.Restart();
         while (!this._fileService.FileExists(fullPath) && this._stopwatch.ElapsedMilliseconds <= timeout)
         {
-            await Task.Delay(this._settings.WaitDelayMilliseconds);
+            await Task.Delay(this._generalSettings.WaitDelayMilliseconds);
         }
 
         this._stopwatch.Stop();

@@ -21,13 +21,13 @@ namespace Hermes.Features
 
         private readonly SukiTheme _theme;
 
-        public MainWindowViewModel(IEnumerable<PageBase> pages, Settings settings)
+        public MainWindowViewModel(IEnumerable<PageBase> pages, GeneralSettings generalSettings)
         {
             this.Pages = new AvaloniaList<PageBase>(pages.OrderBy(x => x.Index).ThenBy(x => x.DisplayName));
             this._theme = SukiTheme.GetInstance();
             this._theme.ChangeBaseTheme(ThemeVariant.Light);
             this.UpdateBaseTheme();
-            if (settings.AutostartUutProcessor)
+            if (generalSettings.AutostartUutProcessor)
             {
                 Messenger.Send(new StartUutProcessorMessage());
             }

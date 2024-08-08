@@ -15,4 +15,10 @@ public partial class StopView : Window
         this.CanClose = true;
 #endif
     }
+
+    public void ForceClose()
+    {
+        this.CanClose = true;
+        this.Close();
+    }
 }

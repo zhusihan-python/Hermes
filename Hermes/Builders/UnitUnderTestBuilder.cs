@@ -22,21 +22,21 @@ public class UnitUnderTestBuilder
     private DateTime _createdAt = DateTime.Now;
 
     private readonly FileService _fileService;
-    private readonly Settings _settings;
+    private readonly GeneralSettings _generalSettings;
     private readonly Random _random = new();
     private readonly ParserPrototype _parserPrototype;
     private readonly SfcResponseBuilder _sfcResponseBuilder;
 
 
     public UnitUnderTestBuilder(
-        Settings settings,
+        GeneralSettings generalSettings,
         FileService fileService,
         ParserPrototype parserPrototype,
         SfcResponseBuilder sfcResponseBuilder)
     {
         this._fileService = fileService;
-        this._settings = settings;
-        this._fileName += settings.InputFileExtension.GetDescription();
+        this._generalSettings = generalSettings;
+        this._fileName += generalSettings.InputFileExtension.GetDescription();
         this._parserPrototype = parserPrototype;
         this._sfcResponseBuilder = sfcResponseBuilder;
         sfcResponseBuilder.SetOkContent();
@@ -82,7 +82,7 @@ public class UnitUnderTestBuilder
 
     private UnitUnderTest Build(string fileName, string content)
     {
-        var parser = _parserPrototype.GetUnderTestParser(_settings.LogfileType);
+        var parser = _parserPrototype.GetUnderTestParser(_generalSettings.LogfileType);
         if (!HasValidExtension(fileName) || parser == null)
         {
             return UnitUnderTest.Null;
@@ -102,8 +102,8 @@ public class UnitUnderTestBuilder
 
     private bool HasValidExtension(string fileName)
     {
-        return _settings.InputFileExtension.GetDescription() == "*.*" ||
-               _settings.InputFileExtension.GetDescription()
+        return _generalSettings.InputFileExtension.GetDescription() == "*.*" ||
+               _generalSettings.InputFileExtension.GetDescription()
                    .Contains(Path.GetExtension(fileName), StringComparison.OrdinalIgnoreCase);
     }
 
@@ -127,7 +127,7 @@ public class UnitUnderTestBuilder
 
     public UnitUnderTestBuilder InputFileExtension(FileExtension value)
     {
-        this._settings.InputFileExtension = value;
+        this._generalSettings.InputFileExtension = value;
         return this;
     }
 
@@ -152,7 +152,7 @@ public class UnitUnderTestBuilder
     public UnitUnderTestBuilder Clone()
     {
         return new UnitUnderTestBuilder(
-            this._settings,
+            this._generalSettings,
             this._fileService,
             this._parserPrototype,
             this._sfcResponseBuilder);

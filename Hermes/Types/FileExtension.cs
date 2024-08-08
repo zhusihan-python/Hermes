@@ -13,4 +13,8 @@ public enum FileExtension
     Log,
     [Description(".rle")]
     Rle,
+    [Description(".txt")]
+    Txt,
+    [Description(".res")]
+    Res
 }

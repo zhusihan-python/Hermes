@@ -38,7 +38,7 @@ public class SharedFolderSfcServiceTests
         var fileServiceMock = this._fileServiceMockBuilder
             .FileExists(false)
             .Build();
-        var settings = new Settings()
+        var settings = new GeneralSettings()
         {
             SfcTimeoutSeconds = 0
         };
@@ -46,7 +46,7 @@ public class SharedFolderSfcServiceTests
         Assert.Equal(SfcResponseType.Timeout, (await sfcService.SendAsync(UnitUnderTest.Null)).ResponseType);
     }
 
-    private SharedFolderSfcService BuildSfcService(FileService fileService, Settings? settings = null)
+    private SharedFolderSfcService BuildSfcService(FileService fileService, GeneralSettings? settings = null)
     {
         var hermesContext = new HermesContext();
         var sfcResponseRepositoryMock = new Mock<SfcResponseRepository>(hermesContext);
@@ -60,7 +60,7 @@ public class SharedFolderSfcServiceTests
             .Returns(Task.CompletedTask);
 
         var sfcService = new SharedFolderSfcService(
-            settings ?? new Settings(),
+            settings ?? new GeneralSettings(),
             fileService,
             sfcResponseRepositoryMock.Object
         );

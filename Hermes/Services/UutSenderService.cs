@@ -19,7 +19,7 @@ public class UutSenderService
 
     private readonly Session _session;
     private readonly ILogger _logger;
-    private readonly Settings _settings;
+    private readonly GeneralSettings _generalSettings;
     private readonly ISfcService _sfcService;
     private readonly FileService _fileService;
     private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
@@ -33,7 +33,7 @@ public class UutSenderService
     public UutSenderService(
         Session session,
         ILogger logger,
-        Settings settings,
+        GeneralSettings generalSettings,
         ISfcService sfcService,
         FileService fileService,
         FolderWatcherService folderWatcherService,
@@ -42,7 +42,7 @@ public class UutSenderService
     {
         this._session = session;
         this._logger = logger;
-        this._settings = settings;
+        this._generalSettings = generalSettings;
         this._sfcService = sfcService;
         this._fileService = fileService;
         this._unitUnderTestRepository = unitUnderTestRepository;
@@ -54,8 +54,8 @@ public class UutSenderService
     public void Start()
     {
         if (_isRunning) return;
-        this._folderWatcherService.Filter = "*" + this._settings.InputFileExtension.GetDescription();
-        this._folderWatcherService.Start(_settings.InputPath);
+        this._folderWatcherService.Filter = "*" + this._generalSettings.InputFileExtension.GetDescription();
+        this._folderWatcherService.Start(_generalSettings.InputPath);
         this._cancellationTokenSource = new CancellationTokenSource();
         Task.Run(() => this.ProcessFilesAsync(this._cancellationTokenSource.Token));
     }
@@ -78,7 +78,7 @@ public class UutSenderService
                 }
                 else
                 {
-                    await Task.Delay(this._settings.WaitDelayMilliseconds, cancellationToken);
+                    await Task.Delay(this._generalSettings.WaitDelayMilliseconds, cancellationToken);
                 }
             }
         }
@@ -111,7 +111,7 @@ public class UutSenderService
         }
 
         unitUnderTest.SfcResponse = await this._sfcService.SendAsync(unitUnderTest);
-        if (unitUnderTest.SfcResponse.IsTimeout && this._retries < this._settings.MaxSfcRetries - 1)
+        if (unitUnderTest.SfcResponse.IsTimeout && this._retries < this._generalSettings.MaxSfcRetries - 1)
         {
             this._retries += 1;
             this._logger.Error($"Timeout: {backupFullPath} | retry: {this._retries}");
