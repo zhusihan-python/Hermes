@@ -4,11 +4,15 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 using Avalonia;
+using ConfigFactory.Avalonia.Helpers;
 using Hermes.Builders;
 using Hermes.Common.Messages;
 using Hermes.Common.Parsers;
+using Hermes.Common.Validators;
 using Hermes.Common;
 using Hermes.Features.Controls.Token;
+using Hermes.Features.SettingsConfig;
+using Hermes.Features.SfcSimulator;
 using Hermes.Features.UutProcessor;
 using Hermes.Features;
 using Hermes.Models;
@@ -17,9 +21,6 @@ using Hermes.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using System;
-using Hermes.Common.Validators;
-using Hermes.Features.SettingsConfig;
-using Hermes.Features.SfcSimulator;
 
 namespace Hermes
 {
@@ -53,6 +54,7 @@ namespace Hermes
                 this._windowService?.Start();
                 this._provider?.GetRequiredService<HermesContext>().Migrate();
                 if (mainViewModel != null) mainViewModel.IsActive = true;
+                BrowserDialog.StorageProvider = desktop.MainWindow?.StorageProvider;
             }
 
             base.OnFrameworkInitializationCompleted();
