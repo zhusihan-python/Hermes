@@ -10,7 +10,7 @@ namespace Hermes.Features.SettingsConfig;
 
 public partial class SettingsConfigModel(
     ILogger logger,
-    SettingsRepository settingsRepository)
+    ISettingsRepository settingsRepository)
     : BaseConfigModel<SettingsConfigModel>(logger, settingsRepository)
 {
     #region General

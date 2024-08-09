@@ -35,7 +35,7 @@ public class WindowService : ObservableRecipient
     private CancellationTokenSource _cts = new();
 
     public WindowService(
-        ISettingsRepository settingsRepositoryRepository,
+        ISettingsRepository settingsRepository,
         SuccessView successView,
         SuccessViewModel successViewModel,
         StopView stopView,
@@ -43,7 +43,7 @@ public class WindowService : ObservableRecipient
         SettingsView generalSettingsView,
         SettingsConfigModel settingsConfigModel)
     {
-        this._settingsRepository = settingsRepositoryRepository;
+        this._settingsRepository = settingsRepository;
         this._successViewModel = successViewModel;
         this._successView = successView;
         this._stopView = stopView;

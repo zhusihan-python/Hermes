@@ -89,6 +89,7 @@ public partial class UutProcessorViewModel : PageBase
         this._stopService.Stop();
         this.IsRunning = false;
         this.SerialNumber = string.Empty;
+        this.Path = _settingsRepository.Settings.InputPath;
         Messenger.Send(new ShowToastMessage("Info", "UUT Processor stopped"));
     }
 
@@ -161,6 +162,9 @@ public partial class UutProcessorViewModel : PageBase
 
     private void OnSettingsChanged(Settings settings)
     {
-        this.Path = settings.InputPath;
+        if (!this.IsRunning)
+        {
+            this.Path = settings.InputPath;
+        }
     }
 }
