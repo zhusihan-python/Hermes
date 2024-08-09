@@ -15,7 +15,7 @@
         <value>Desbloquear</value>
     </data>
     <data name="c_token_watermark" xml:space="preserve">
-        <value>Token valido</value>
+        <value>Token </value>
     </data>
     <data name="txt_start" xml:space="preserve">
         <value>Iniciar</value>
@@ -34,5 +34,218 @@
     </data>
     <data name="c_sfc_simulator_response_mode" xml:space="preserve">
         <value>Modo de respuesta</value>
+    </data>
+    <data name="c_main_window_tooltip_fullscreen" xml:space="preserve">
+        <value>Cambiar a modo pantalla completa</value>
+    </data>
+    <data name="c_main_window_tooltip_toggle_top_menu" xml:space="preserve">
+        <value>Click para mostrar u ocultar el menú superior</value>
+    </data>
+    <data name="txt_exit" xml:space="preserve">
+        <value>Salir</value>
+    </data>
+    <data name="txt_file" xml:space="preserve">
+        <value>Archivo</value>
+    </data>
+    <data name="txt_fullscreen" xml:space="preserve">
+        <value>Pantalla completa</value>
+    </data>
+    <data name="txt_general_settings" xml:space="preserve">
+        <value>Configuración general</value>
+    </data>
+    <data name="txt_settings" xml:space="preserve">
+        <value>Configuraciones</value>
+    </data>
+    <data name="txt_view" xml:space="preserve">
+        <value>Vista</value>
+    </data>
+    <data name="txt_hidden" xml:space="preserve">
+        <value>Ocultado</value>
+    </data>
+    <data name="txt_shown" xml:space="preserve">
+        <value>Mostrado</value>
+    </data>
+    <data name="txt_title_bar" xml:space="preserve">
+        <value>Barra de título</value>
+    </data>
+    <data name="txt_visible" xml:space="preserve">
+        <value>Visible </value>
+    </data>
+    <data name="c_main_window_title_bar_hidden" xml:space="preserve">
+        <value>Barra de tíitulos ocultada</value>
+    </data>
+    <data name="c_main_window_title_bar_hidden_msg" xml:space="preserve">
+        <value>La barra de tíitulos ha sido ocultada</value>
+    </data>
+    <data name="c_main_window_title_bar_visible_msg" xml:space="preserve">
+        <value>La barra de títulos ha sido mostrada</value>
+    </data>
+    <data name="c_main_window_title_bar_vissible" xml:space="preserve">
+        <value>Barra de títulos mostrada</value>
+    </data>
+    <data name="txt_dark_theme" xml:space="preserve">
+        <value>Tema oscuro</value>
+    </data>
+    <data name="txt_light_theme" xml:space="preserve">
+        <value>Tema claro</value>
+    </data>
+    <data name="txt_uut_processor" xml:space="preserve">
+        <value>Procesador de unidades</value>
+    </data>
+    <data name="txt_serial_number" xml:space="preserve">
+        <value>Número de serie</value>
+    </data>
+    <data name="txt_path" xml:space="preserve">
+        <value>Ruta</value>
+    </data>
+    <data name="enum_blocked" xml:space="preserve">
+        <value>Bloqueado</value>
+    </data>
+    <data name="enum_idle" xml:space="preserve">
+        <value>Idle </value>
+    </data>
+    <data name="enum_processing" xml:space="preserve">
+        <value>Procesando</value>
+    </data>
+    <data name="enum_stopped" xml:space="preserve">
+        <value>Detenido</value>
+    </data>
+    <data name="txt_repair" xml:space="preserve">
+        <value>Reparación</value>
+    </data>
+    <data name="txt_ok" xml:space="preserve">
+        <value>Ok </value>
+    </data>
+    <data name="txt_actions" xml:space="preserve">
+        <value>Acciones</value>
+    </data>
+    <data name="enum_ok" xml:space="preserve">
+        <value>Ok </value>
+    </data>
+    <data name="enum_timeout" xml:space="preserve">
+        <value>Timeout </value>
+    </data>
+    <data name="enum_wrongstation" xml:space="preserve">
+        <value>Estación incorrecta</value>
+    </data>
+    <data name="enum_unknown" xml:space="preserve">
+        <value>Desconocido</value>
+    </data>
+    <data name="c_sfc_sim_create_log_critical_fail" xml:space="preserve">
+        <value>Crear logfile de falla crítica </value>
+    </data>
+    <data name="c_sfc_sim_create_log_fail" xml:space="preserve">
+        <value>Crear logfile de falla</value>
+    </data>
+    <data name="c_sfc_sim_create_log_fail_with_custom_defect" xml:space="preserve">
+        <value>Crear logfile de falla con defecto personalizado</value>
+    </data>
+    <data name="c_sfc_sim_create_log_pass" xml:space="preserve">
+        <value>Crear logfile pass</value>
+    </data>
+    <data name="c_sfc_sim_create_log_pass_with_defect" xml:space="preserve">
+        <value>Crear logfile pass con defecto personalizado</value>
+    </data>
+    <data name="c_sfc_sim_show_pass" xml:space="preserve">
+        <value>Mostrar ventana de pass</value>
+    </data>
+    <data name="c_sfc_sim_show_repair" xml:space="preserve">
+        <value>Mostrar ventana de reparación</value>
+    </data>
+    <data name="c_sfc_sim_show_stop_machine" xml:space="preserve">
+        <value>Mostrar ventana paro de máquina</value>
+    </data>
+    <data name="c_sfc_sim_show_top_line" xml:space="preserve">
+        <value>Mostrar ventana paro de línea</value>
+    </data>
+    <data name="txt_defect" xml:space="preserve">
+        <value>Defecto</value>
+    </data>
+    <data name="txt_error_code" xml:space="preserve">
+        <value>Error code </value>
+    </data>
+    <data name="txt_error_flag" xml:space="preserve">
+        <value>Error flag </value>
+    </data>
+    <data name="txt_location" xml:space="preserve">
+        <value>Location </value>
+    </data>
+    <data name="c_settings_category_general" xml:space="preserve">
+        <value>General </value>
+    </data>
+    <data name="c_settings_group_common" xml:space="preserve">
+        <value>Común</value>
+    </data>
+    <data name="c_settings_category_uut_processor" xml:space="preserve">
+        <value>Procesador de unidades</value>
+    </data>
+    <data name="c_settings_description_language" xml:space="preserve">
+        <value>Idioma de la interfáz</value>
+    </data>
+    <data name="c_settings_group_paths" xml:space="preserve">
+        <value>Rutas</value>
+    </data>
+    <data name="c_settings_group_station" xml:space="preserve">
+        <value>Estación</value>
+    </data>
+    <data name="c_settings_group_time" xml:space="preserve">
+        <value>Tiempo</value>
+    </data>
+    <data name="c_settings_header_autostart_uut_processor" xml:space="preserve">
+        <value>Auto-iniciar procesador de unidades</value>
+    </data>
+    <data name="c_settings_header_backup_path" xml:space="preserve">
+        <value>Ruta de respaldos</value>
+    </data>
+    <data name="c_settings_header_input_file_ext" xml:space="preserve">
+        <value>Extensión del archivo de entrada</value>
+    </data>
+    <data name="c_settings_header_input_path" xml:space="preserve">
+        <value>Ruta de entrada</value>
+    </data>
+    <data name="c_settings_header_language" xml:space="preserve">
+        <value>Lenguaje</value>
+    </data>
+    <data name="c_settings_header_line_name" xml:space="preserve">
+        <value>Nombre de línea</value>
+    </data>
+    <data name="c_settings_header_logfile_type" xml:space="preserve">
+        <value>Tipo de logfile</value>
+    </data>
+    <data name="c_settings_header_machine_type" xml:space="preserve">
+        <value>Tipo de máquina</value>
+    </data>
+    <data name="c_settings_header_max_retries" xml:space="preserve">
+        <value>Reintentos máximos</value>
+    </data>
+    <data name="c_settings_header_send_repair_file" xml:space="preserve">
+        <value>Enviar unidad a reparación</value>
+    </data>
+    <data name="c_settings_header_sfc_path" xml:space="preserve">
+        <value>Ruta de Sfc</value>
+    </data>
+    <data name="c_settings_header_sfc_response_ext" xml:space="preserve">
+        <value>Extensión del archivo de respuesta</value>
+    </data>
+    <data name="c_settings_header_sfc_timeout" xml:space="preserve">
+        <value>Timeout de Sfc</value>
+    </data>
+    <data name="c_settings_header_station" xml:space="preserve">
+        <value>Estación</value>
+    </data>
+    <data name="c_settings_header_success_window_timeout" xml:space="preserve">
+        <value>Timeout de ventana ok o repair</value>
+    </data>
+    <data name="c_settings_header_wait_delay_ms" xml:space="preserve">
+        <value>Delay de espera (ms)</value>
+    </data>
+    <data name="c_settings_description_wait_delay_ms" xml:space="preserve">
+        <value>Delay general para esperar a que las acciones se ejecuten</value>
+    </data>
+    <data name="c_settings_description_max_retries" xml:space="preserve">
+        <value>Reintentos máximos al fallar el Sfc</value>
+    </data>
+    <data name="c_settings_description_success_window_timeout" xml:space="preserve">
+        <value>Cerrar ventana ok o reparación cuando transcurra este tiempo</value>
     </data>
 </root>

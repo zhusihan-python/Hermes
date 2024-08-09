@@ -1,13 +1,13 @@
 ﻿<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
-             xmlns:sfcSimulator="clr-namespace:Hermes.Features.SfcSimulator"
              xmlns:controls="clr-namespace:SukiUI.Controls;assembly=SukiUI"
              xmlns:converters="clr-namespace:Hermes.Common.Converters"
-             xmlns:theme="clr-namespace:SukiUI.Theme;assembly=SukiUI"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:lang="clr-namespace:Hermes.Language;assembly=Hermes.Language"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:sfcSimulator="clr-namespace:Hermes.Features.SfcSimulator"
+             xmlns:theme="clr-namespace:SukiUI.Theme;assembly=SukiUI"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              mc:Ignorable="d" d:DesignWidth="1250" d:DesignHeight="650"
              x:Class="Hermes.Features.SfcSimulator.SfcSimulatorView"
              x:DataType="sfcSimulator:SfcSimulatorViewModel">
@@ -90,13 +90,22 @@
                         Command="{Binding StopCommand}"
                         IsVisible="{Binding IsRunning}" />
 
-                    <Label
-                        Content="{x:Static lang:Resources.c_sfc_simulator_response_mode}">
-                    </Label>
+                    <TextBlock
+                        Classes="Caption">
+                        <Run Text="{x:Static lang:Resources.c_sfc_simulator_response_mode}" />
+                        <Run Text=":" />
+                    </TextBlock>
 
                     <ComboBox
                         ItemsSource="{Binding SfcErrorTypes}"
-                        SelectedItem="{Binding Mode, Mode=TwoWay}" />
+                        SelectedItem="{Binding Mode, Mode=TwoWay}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock
+                                    Text="{Binding Converter={x:Static converters:EnumToTranslatedTextConverters.SfcResponseTypeConverter}}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                 </StackPanel>
             </controls:GlassCard>
 
@@ -109,46 +118,58 @@
 
                     <Button
                         Classes="Flat Outlined"
-                        Content="Create Pass Logfile"
+                        Content="{x:Static lang:Resources.c_sfc_sim_create_log_pass}"
                         Command="{Binding CreatePassLogfileCommand}" />
 
                     <Button
                         Classes="Flat Outlined"
-                        Content="Create Pass Logfile With Custom Defect"
+                        Content="{x:Static lang:Resources.c_sfc_sim_create_log_pass_with_defect}"
                         Command="{Binding CreatePassLogfileWithCustomDefectCommand}" />
 
                     <Button
                         Classes="Flat Accent Outlined"
-                        Content="Create Fail Logfile"
+                        Content="{x:Static lang:Resources.c_sfc_sim_create_log_fail}"
                         Command="{Binding CreateFailLogfileCommand}" />
 
                     <Button
                         Classes="Flat Accent Outlined"
-                        Content="Create Critical Fail Logfile"
+                        Content="{x:Static lang:Resources.c_sfc_sim_create_log_critical_fail}"
                         Command="{Binding CreateCriticalFailLogfileCommand}" />
 
                     <Button
                         Classes="Flat Accent Outlined"
-                        Content="Create Fail Logfile With Custom Defect"
+                        Content="{x:Static lang:Resources.c_sfc_sim_create_log_fail_with_custom_defect}"
                         Command="{Binding CreateFailLogfileWithCustomDefectCommand}" />
 
                     <Expander
                         ExpandDirection="Down"
-                        Header="Defect"
+                        Header="{x:Static lang:Resources.txt_defect}"
                         IsExpanded="True">
                         <StackPanel>
-                            <Label>Error flag:</Label>
+                            <TextBlock
+                                Classes="Caption">
+                                <Run Text="{x:Static lang:Resources.txt_error_flag}" />
+                                <Run Text=":" />
+                            </TextBlock>
                             <ComboBox
                                 ItemsSource="{Binding ErrorFlags}"
                                 SelectedItem="{Binding DefectErrorFlag, Mode=TwoWay}" />
-                            <Label>Location:</Label>
+                            <TextBlock
+                                Classes="Caption">
+                                <Run Text="{x:Static lang:Resources.txt_location}" />
+                                <Run Text=":" />
+                            </TextBlock>
                             <TextBox
-                                Watermark="Location"
+                                Watermark="{x:Static lang:Resources.txt_location}"
                                 Text="{Binding DefectLocation, Mode=TwoWay}">
                             </TextBox>
-                            <Label>Error code:</Label>
+                            <TextBlock
+                                Classes="Caption">
+                                <Run Text="{x:Static lang:Resources.txt_error_code}" />
+                                <Run Text=":" />
+                            </TextBlock>
                             <TextBox
-                                Watermark="Error code"
+                                Watermark="{x:Static lang:Resources.txt_error_code}"
                                 Text="{Binding DefectErrorCode, Mode=TwoWay}">
                             </TextBox>
                         </StackPanel>
@@ -165,22 +186,22 @@
 
                     <Button
                         Classes="Flat Outlined"
-                        Content="Show pass view"
+                        Content="{x:Static lang:Resources.c_sfc_sim_show_pass}"
                         Command="{Binding ShowPassViewCommand}" />
 
                     <Button
                         Classes="Flat Outlined"
-                        Content="Show repair view"
+                        Content="{x:Static lang:Resources.c_sfc_sim_show_repair}"
                         Command="{Binding ShowRepairViewCommand}" />
 
                     <Button
                         Classes="Flat Outlined"
-                        Content="Show stop machine view"
+                        Content="{x:Static lang:Resources.c_sfc_sim_show_stop_machine}"
                         Command="{Binding ShowStopMachineViewCommand}" />
 
                     <Button
                         Classes="Flat Outlined"
-                        Content="Show stop line view"
+                        Content="{x:Static lang:Resources.c_sfc_sim_show_top_line}"
                         Command="{Binding ShowStopLineViewCommand}" />
                 </StackPanel>
             </controls:GlassCard>

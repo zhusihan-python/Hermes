@@ -5,11 +5,11 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Hermes.Common.Messages;
+using Hermes.Repositories;
 using SukiUI;
 using System.Collections.Generic;
 using System.Linq;
-using Hermes.Models;
-using Hermes.Repositories;
+using Hermes.Language;
 
 namespace Hermes.Features
 {
@@ -17,6 +17,7 @@ namespace Hermes.Features
     {
         public IAvaloniaReadOnlyList<PageBase> Pages { get; }
         [ObservableProperty] private ThemeVariant? _baseTheme;
+        [ObservableProperty] private string _baseThemeText = "";
         [ObservableProperty] private bool _titleBarVisible;
         [ObservableProperty] private PageBase? _activePage;
 
@@ -44,6 +45,7 @@ namespace Hermes.Features
         private void UpdateBaseTheme()
         {
             this.BaseTheme = _theme.ActiveBaseTheme == ThemeVariant.Dark ? ThemeVariant.Light : ThemeVariant.Dark;
+            this.BaseThemeText = BaseTheme == ThemeVariant.Dark ? Resources.txt_dark_theme : Resources.txt_light_theme;
         }
 
         [RelayCommand]
@@ -51,8 +53,10 @@ namespace Hermes.Features
         {
             TitleBarVisible = !TitleBarVisible;
             Messenger.Send(new ShowToastMessage(
-                $"Title Bar {(TitleBarVisible ? "Visible" : "Hidden")}",
-                $"Window title bar has been {(TitleBarVisible ? "shown" : "hidden")}."
+                TitleBarVisible ? Resources.c_main_window_title_bar_vissible : Resources.c_main_window_title_bar_hidden,
+                TitleBarVisible
+                    ? Resources.c_main_window_title_bar_visible_msg
+                    : Resources.c_main_window_title_bar_hidden_msg
             ));
         }
 

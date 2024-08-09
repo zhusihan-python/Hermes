@@ -19,11 +19,11 @@ public partial class Session : ObservableObject
                 _uutProcessorState = value;
             }
 
-            UutProcessorStateChanged?.Invoke(this, value);
+            UutProcessorStateChanged?.Invoke(value);
         }
     }
 
-    public event EventHandler<UutProcessorState>? UutProcessorStateChanged;
+    public event Action<UutProcessorState>? UutProcessorStateChanged;
 
     private readonly object _lock = new object();
     private UutProcessorState _uutProcessorState;

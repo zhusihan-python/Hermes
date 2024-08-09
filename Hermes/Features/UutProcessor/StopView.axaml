@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:uutProcessor="clr-namespace:Hermes.Features.UutProcessor"
         xmlns:token="clr-namespace:Hermes.Features.Controls.Token"
+        xmlns:lang="clr-namespace:Hermes.Language;assembly=Hermes.Language"
         mc:Ignorable="d"
         d:Width="1920"
         d:Height="1080"
@@ -61,8 +62,10 @@
                             <TextBlock
                                 Classes="h4"
                                 Margin="0"
-                                Foreground="White"
-                                Text="Serial Number:" />
+                                Foreground="White">
+                                <Run Text="{x:Static lang:Resources.txt_serial_number}" />
+                                <Run Text=":" />
+                            </TextBlock>
 
                             <TextBlock
                                 Classes="h4"
@@ -104,9 +107,12 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
 
-                        <Label
-                            Foreground="White"
-                            Content="Actions:" />
+                        <TextBlock
+                            Classes="Caption"
+                            Foreground="White">
+                            <Run Text="{x:Static lang:Resources.txt_actions}" />
+                            <Run Text=":" />
+                        </TextBlock>
 
                         <TextBox UseFloatingWatermark="True"
                                  AcceptsReturn="True"

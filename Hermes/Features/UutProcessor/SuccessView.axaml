@@ -3,11 +3,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:uutProcessor="clr-namespace:Hermes.Features.UutProcessor"
+        xmlns:lang="clr-namespace:Hermes.Language;assembly=Hermes.Language"
         mc:Ignorable="d"
         x:Class="Hermes.Features.UutProcessor.SuccessView"
         x:DataType="uutProcessor:SuccessViewModel"
         Height="130"
-        Width="450"
+        MinWidth="450"
         CanResize="False"
         ShowInTaskbar="False"
         ExtendClientAreaToDecorationsHint="True"
@@ -32,7 +33,7 @@
         </Style>
 
         <Style Selector="TextBlock.Repair">
-            <Setter Property="Text" Value="Repair" />
+            <Setter Property="Text" Value="{x:Static lang:Resources.txt_repair}" />
         </Style>
 
         <Style Selector="Border.OkLight">
@@ -48,12 +49,12 @@
         </Style>
 
         <Style Selector="TextBlock.Ok">
-            <Setter Property="Text" Value="Ok" />
+            <Setter Property="Text" Value="{x:Static lang:Resources.txt_ok}" />
         </Style>
     </Window.Styles>
 
     <Grid
-        ColumnDefinitions="120, *"
+        ColumnDefinitions="Auto, *"
         Classes.RepairGridLight="{Binding IsRepair}"
         Classes.OkGridLight="{Binding !IsRepair}">
 
@@ -61,11 +62,13 @@
             Grid.Column="0"
             CornerRadius=" 0 10 10 0"
             BoxShadow="4 2 20 0 gray"
+            MinWidth="120"
             Classes.RepairDark="{Binding IsRepair}"
             Classes.OkDark="{Binding !IsRepair}">
 
             <TextBlock
                 Classes="h2"
+                Margin="10 0"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Foreground="White"
@@ -84,10 +87,13 @@
 
                 <TextBlock
                     TextAlignment="Center"
-                    Classes="h3"
-                    Text="Número de serie:" />
+                    Classes="h3">
+                    <Run Text="{x:Static lang:Resources.txt_serial_number}" />
+                    <Run Text=":" />
+                </TextBlock>
 
                 <TextBlock
+                    Margin="10 0"
                     TextAlignment="Center"
                     Classes="h4"
                     Text="{Binding  SerialNumber}" />

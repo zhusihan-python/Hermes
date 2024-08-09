@@ -12,8 +12,8 @@
 
     <Grid
         IsEnabled="{Binding CanUnlock}"
-        ColumnDefinitions="*, 120">
-        
+        ColumnDefinitions="*, Auto">
+
         <TextBox
             Margin="0"
             MinHeight="50"
@@ -25,6 +25,7 @@
 
         <Button
             Grid.Column="1"
+            MinWidth="120"
             x:Name="UnlockButton"
             CornerRadius="{StaticResource DefaultCornerRadius}"
             Margin="0 6"

@@ -7,7 +7,6 @@ using Avalonia;
 using ConfigFactory.Avalonia.Helpers;
 using Hermes.Common.Messages;
 using Hermes.Common;
-using Hermes.Features.SettingsConfig;
 using Hermes.Features;
 using Hermes.Repositories;
 using Hermes.Services;
@@ -49,7 +48,7 @@ namespace Hermes
                 if (mainViewModel != null) mainViewModel.IsActive = true;
                 BrowserDialog.StorageProvider = desktop.MainWindow?.StorageProvider;
             }
-
+            
             base.OnFrameworkInitializationCompleted();
         }
 

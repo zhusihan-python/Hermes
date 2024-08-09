@@ -3,11 +3,22 @@ using System.Linq;
 using System.Reflection;
 using System;
 using System.Collections.Generic;
+using Hermes.Language;
 
 namespace Hermes.Common.Extensions;
 
 public static class EnumExtensions
 {
+    public static string ToTranslatedString(this Enum value)
+    {
+        return Resources.ResourceManager.GetString(value.ToResxString()) ?? value.ToString();
+    }
+
+    private static string ToResxString(this Enum value)
+    {
+        return "enum_" + value.ToString().ToLower();
+    }
+
     public static string GetDescription(this Enum value)
     {
         var fi = value.GetType().GetField(value.ToString());

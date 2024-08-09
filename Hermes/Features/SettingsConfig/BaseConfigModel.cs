@@ -55,7 +55,7 @@ public abstract class BaseConfigModel<TConfigModel> : ObservableObject, IConfigM
             return input;
         }
 
-        return Resources.ResourceManager?.GetString(input, Resources.Culture) ?? input;
+        return Resources.ResourceManager.GetString(input) ?? input;
     }
 
     public void Reset()
