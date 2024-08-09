@@ -9,6 +9,7 @@ using SukiUI;
 using System.Collections.Generic;
 using System.Linq;
 using Hermes.Models;
+using Hermes.Repositories;
 
 namespace Hermes.Features
 {
@@ -21,13 +22,13 @@ namespace Hermes.Features
 
         private readonly SukiTheme _theme;
 
-        public MainWindowViewModel(IEnumerable<PageBase> pages, GeneralSettings generalSettings)
+        public MainWindowViewModel(IEnumerable<PageBase> pages, ISettingsRepository settingsRepository)
         {
             this.Pages = new AvaloniaList<PageBase>(pages.OrderBy(x => x.Index).ThenBy(x => x.DisplayName));
             this._theme = SukiTheme.GetInstance();
             this._theme.ChangeBaseTheme(ThemeVariant.Light);
             this.UpdateBaseTheme();
-            if (generalSettings.AutostartUutProcessor)
+            if (settingsRepository.Settings.AutostartUutProcessor)
             {
                 Messenger.Send(new StartUutProcessorMessage());
             }

@@ -1,10 +1,10 @@
-﻿using Hermes.Models;
+﻿using Hermes.Common.Extensions;
+using Hermes.Repositories;
+using Polly.Retry;
+using Polly;
 using System.IO;
 using System.Threading.Tasks;
 using System;
-using Hermes.Common.Extensions;
-using Polly;
-using Polly.Retry;
 
 namespace Hermes.Services;
 
@@ -12,12 +12,12 @@ public class FileService
 {
     private const string BackupPrefix = "_backupAt_";
 
-    private readonly GeneralSettings _generalSettings;
+    private readonly ISettingsRepository _settingsRepository;
     private readonly ResiliencePipeline _retryPipeline;
 
-    public FileService(GeneralSettings generalSettings)
+    public FileService(ISettingsRepository settingsRepository)
     {
-        this._generalSettings = generalSettings;
+        this._settingsRepository = settingsRepository;
         this._retryPipeline = new ResiliencePipelineBuilder()
             .AddRetry(new RetryStrategyOptions())
             .AddTimeout(TimeSpan.FromSeconds(10))
@@ -53,7 +53,8 @@ public class FileService
 
     public async Task<string> CopyFromBackupToInputAsync(string backupFullPath)
     {
-        var inputFullPath = Path.Combine(this._generalSettings.InputPath, GetFileNameWithoutCurrentDate(backupFullPath));
+        var inputFullPath =
+            Path.Combine(this._settingsRepository.Settings.InputPath, GetFileNameWithoutCurrentDate(backupFullPath));
         if (File.Exists(inputFullPath))
         {
             return inputFullPath;
@@ -75,7 +76,7 @@ public class FileService
     private string GetBackupFullPath(string fullPath)
     {
         var fileName = GetFileNameWithCurrentDate(fullPath);
-        return Path.Combine(this._generalSettings.BackupPath, fileName);
+        return Path.Combine(this._settingsRepository.Settings.BackupPath, fileName);
     }
 
     private static string GetFileNameWithCurrentDate(string fullPath)
@@ -127,7 +128,8 @@ public class FileService
 
     public virtual async Task WriteAllTextToInputPathAsync(string fileNameWithoutExtension, string content)
     {
-        var path = Path.Combine(this._generalSettings.InputPath, fileNameWithoutExtension + _generalSettings.InputFileExtension.GetDescription());
+        var path = Path.Combine(this._settingsRepository.Settings.InputPath,
+            fileNameWithoutExtension + _settingsRepository.Settings.InputFileExtension.GetDescription());
         await WriteAllTextAsync(path, content);
     }
 

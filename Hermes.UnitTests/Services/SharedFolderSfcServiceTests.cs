@@ -27,8 +27,8 @@ public class SharedFolderSfcServiceTests
             .FileExists(true)
             .TryReadAllTextAsync(sfcResponse.Content)
             .Build();
-        var sfcService = BuildSfcService(fileServiceMock);
-        Assert.False((await sfcService.SendAsync(UnitUnderTest.Null)).IsFail);
+        var sut = BuildSut(fileServiceMock);
+        Assert.False((await sut.SendAsync(UnitUnderTest.Null)).IsFail);
     }
 
     [Fact]
@@ -38,30 +38,31 @@ public class SharedFolderSfcServiceTests
         var fileServiceMock = this._fileServiceMockBuilder
             .FileExists(false)
             .Build();
-        var settings = new GeneralSettings()
+        var settings = new Settings()
         {
             SfcTimeoutSeconds = 0
         };
-        var sfcService = BuildSfcService(fileServiceMock, settings);
-        Assert.Equal(SfcResponseType.Timeout, (await sfcService.SendAsync(UnitUnderTest.Null)).ResponseType);
+        var sut = BuildSut(fileServiceMock, settings);
+        Assert.Equal(SfcResponseType.Timeout, (await sut.SendAsync(UnitUnderTest.Null)).ResponseType);
     }
 
-    private SharedFolderSfcService BuildSfcService(FileService fileService, GeneralSettings? settings = null)
+    private SharedFolderSfcService BuildSut(FileService fileService, Settings? settings = null)
     {
         var hermesContext = new HermesContext();
         var sfcResponseRepositoryMock = new Mock<SfcResponseRepository>(hermesContext);
         sfcResponseRepositoryMock
             .Setup(x => x.AddAndSaveAsync(It.IsAny<SfcResponse>()))
             .Returns(Task.CompletedTask);
-
         var unitUnderTestRepositoryMock = new Mock<UnitUnderTestRepository>(hermesContext);
         unitUnderTestRepositoryMock
             .Setup(x => x.AddAndSaveAsync(It.IsAny<UnitUnderTest>()))
             .Returns(Task.CompletedTask);
-
+        var settingsRepositoryMock = new Mock<ISettingsRepository>();
+        settingsRepositoryMock.Setup(x => x.Settings)
+            .Returns(settings ?? new Settings());
         var sfcService = new SharedFolderSfcService(
-            settings ?? new GeneralSettings(),
             fileService,
+            settingsRepositoryMock.Object,
             sfcResponseRepositoryMock.Object
         );
 

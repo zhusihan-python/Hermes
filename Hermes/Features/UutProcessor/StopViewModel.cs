@@ -16,7 +16,7 @@ public partial class StopViewModel : ViewModelBase
     public event EventHandler? Restored;
     public TokenViewModel StopMachineTokenViewModel { get; }
     public List<TokenViewModel> StopLineTokenViewModels { get; } = [];
-    private readonly TokenViewModel _qaTokenViewModel;
+    private readonly TokenViewModel _qaTokenViewModel = null!;
     [ObservableProperty] private bool _isMachineStop = true;
     [ObservableProperty] private Stop _stop = Stop.Null;
     [ObservableProperty] private string _dateText = string.Empty;
@@ -107,6 +107,7 @@ public partial class StopViewModel : ViewModelBase
         {
             tokenViewModel.Reset();
         }
+
         this.Actions = string.Empty;
     }
 

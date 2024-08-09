@@ -4,11 +4,11 @@ using ConfigFactory;
 
 namespace Hermes.Features.SettingsConfig;
 
-public partial class GeneralSettingsView : Window
+public partial class SettingsView : Window
 {
     public bool CanClose { get; set; }
 
-    public GeneralSettingsView()
+    public SettingsView()
     {
         InitializeComponent();
         Closing += (_, args) =>
@@ -19,11 +19,11 @@ public partial class GeneralSettingsView : Window
         };
     }
 
-    public void Append(GeneralSettingsConfigModel generalSettingsConfigModel)
+    public void Append(SettingsConfigModel settingsConfigModel)
     {
         if (ConfigPage.DataContext is ConfigPageModel model)
         {
-            model.Append(generalSettingsConfigModel);
+            model.Append(settingsConfigModel);
         }
     }
 

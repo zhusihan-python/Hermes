@@ -15,6 +15,7 @@ using ConfigFactory;
 using ConfigFactory.Avalonia;
 using ConfigFactory.Models;
 using Hermes.Features.SettingsConfig;
+using Hermes.Repositories;
 
 namespace Hermes.Services;
 
@@ -25,30 +26,30 @@ public class WindowService : ObservableRecipient
 
     public Window? MainView { get; set; }
 
-    private readonly GeneralSettings _generalSettings;
+    private readonly ISettingsRepository _settingsRepository;
     private readonly SuccessView _successView;
     private readonly SuccessViewModel _successViewModel;
     private readonly StopView _stopView;
     private readonly StopViewModel _stopViewModel;
-    private readonly GeneralSettingsView _generalSettingsView;
+    private readonly SettingsView _generalSettingsView;
     private CancellationTokenSource _cts = new();
 
     public WindowService(
-        GeneralSettings generalSettings,
+        ISettingsRepository settingsRepositoryRepository,
         SuccessView successView,
         SuccessViewModel successViewModel,
         StopView stopView,
         StopViewModel stopViewModel,
-        GeneralSettingsView generalSettingsView,
-        GeneralSettingsConfigModel generalSettingsConfigModel)
+        SettingsView generalSettingsView,
+        SettingsConfigModel settingsConfigModel)
     {
-        this._generalSettings = generalSettings;
+        this._settingsRepository = settingsRepositoryRepository;
         this._successViewModel = successViewModel;
         this._successView = successView;
         this._stopView = stopView;
         this._stopViewModel = stopViewModel;
         this._generalSettingsView = generalSettingsView;
-        this._generalSettingsView.Append(generalSettingsConfigModel);
+        this._generalSettingsView.Append(settingsConfigModel);
 
         stopViewModel.Restored += this.OnStopViewModelRestored;
     }
@@ -84,7 +85,7 @@ public class WindowService : ObservableRecipient
             this.SetBottomCenterPosition(this._successView);
             this._successView.UpdateLayout();
             this._successView.Show();
-            await Task.Delay(this._generalSettings.UutSuccessWindowTimeoutSeconds * 1000, _cts.Token);
+            await Task.Delay(this._settingsRepository.Settings.UutSuccessWindowTimeoutSeconds * 1000, _cts.Token);
             if (!_cts.Token.IsCancellationRequested)
             {
                 this._successView.Hide();

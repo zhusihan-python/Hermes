@@ -8,6 +8,7 @@ using Hermes.Types;
 using Material.Icons;
 using System.Threading.Tasks;
 using System;
+using Hermes.Repositories;
 
 namespace Hermes.Features.UutProcessor;
 
@@ -20,13 +21,20 @@ public partial class UutProcessorViewModel : PageBase
     private readonly Session _session;
     private readonly StopService _stopService;
     private readonly UutSenderService _uutSenderService;
+    private readonly ISettingsRepository _settingsRepository;
 
-    public UutProcessorViewModel(Session session, StopService stopService, UutSenderService uutSenderService)
-        : base("UUT Processor", MaterialIconKind.FolderEye, 0)
+    public UutProcessorViewModel(
+        Session session,
+        StopService stopService,
+        UutSenderService uutSenderService,
+        ISettingsRepository settingsRepository)
+        : base("UUT Processor", MaterialIconKind.FolderEye)
     {
         this._session = session;
         this._stopService = stopService;
         this._uutSenderService = uutSenderService;
+        this._settingsRepository = settingsRepository;
+        this.Path = this._settingsRepository.Settings.InputPath;
         this.IsActive = true;
     }
 
@@ -36,10 +44,10 @@ public partial class UutProcessorViewModel : PageBase
         this._uutSenderService.UnitUnderTestCreated += OnUnitUnderTestCreated;
         this._uutSenderService.SfcResponse += OnSfcResponse;
         this._uutSenderService.RunStatusChanged += OnSfcSenderRunStatusChanged;
+        this._settingsRepository.SettingsChanged += OnSettingsChanged;
         Messenger.Register<StartUutProcessorMessage>(this, this.OnStartReceive);
         Messenger.Register<UnblockMessage>(this, this.OnUnblockReceive);
         Messenger.Register<ExitMessage>(this, this.OnExitReceive);
-        Messenger.Register<GeneralSettingsUpdateMessage>(this, this.OnGeneralSettingsUpdateReceive);
         base.OnActivated();
     }
 
@@ -48,6 +56,7 @@ public partial class UutProcessorViewModel : PageBase
         this._uutSenderService.UnitUnderTestCreated -= OnUnitUnderTestCreated;
         this._uutSenderService.SfcResponse -= OnSfcResponse;
         this._uutSenderService.RunStatusChanged -= OnSfcSenderRunStatusChanged;
+        this._settingsRepository.SettingsChanged -= OnSettingsChanged;
         Messenger.UnregisterAll(this);
     }
 
@@ -91,7 +100,7 @@ public partial class UutProcessorViewModel : PageBase
 
     private void OnSfcResponse(object? sender, UnitUnderTest unitUnderTest)
     {
-        Task.Run((Func<Task?>)(async () =>
+        Task.Run(async () =>
         {
             var stop = await this._stopService.Calculate(unitUnderTest);
             if (stop.IsNull)
@@ -109,7 +118,7 @@ public partial class UutProcessorViewModel : PageBase
 
             this.SerialNumber = string.Empty;
             this._session.UutProcessorState = UutProcessorState.Idle;
-        }));
+        });
     }
 
     private async Task WaitUntilUnblocked()
@@ -150,9 +159,8 @@ public partial class UutProcessorViewModel : PageBase
         this._session.UutProcessorState = UutProcessorState.Idle;
     }
 
-    private void OnGeneralSettingsUpdateReceive(object recipient, GeneralSettingsUpdateMessage message)
+    private void OnSettingsChanged(Settings settings)
     {
-        // TODO: Cambiar path solo cuando este detenido, no cuando el path cambie. Lanzar evento al iniciar la aplicacin.
-        this.Path = message.Value.InputPath;
+        this.Path = settings.InputPath;
     }
 }

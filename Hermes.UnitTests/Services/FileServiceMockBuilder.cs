@@ -1,6 +1,9 @@
+using Hermes.Common;
 using Hermes.Models;
+using Hermes.Repositories;
 using Hermes.Services;
 using Moq;
+using NLog.Config;
 
 namespace HermesTests.Services;
 
@@ -8,7 +11,7 @@ public class FileServiceMockBuilder
 {
     private bool _fileExists = true;
     private string _tryReadAllTextAsync = String.Empty;
-    private GeneralSettings _generalSettings = new();
+    private Settings _settings = new();
 
     public FileServiceMockBuilder FileExists(bool fileExists)
     {
@@ -24,7 +27,10 @@ public class FileServiceMockBuilder
 
     public FileService Build()
     {
-        var fileServiceMock = new Mock<FileService>(this._generalSettings);
+        var settingsRepositoryMock = new Mock<SettingsRepository>(new AesEncryptor());
+        settingsRepositoryMock.Setup(x => x.Settings)
+            .Returns(new Settings());
+        var fileServiceMock = new Mock<FileService>(settingsRepositoryMock.Object);
         fileServiceMock.Setup(x => x.FileExists(It.IsAny<string>())).Returns(this._fileExists);
         fileServiceMock.Setup(x => x.TryReadAllTextAsync(It.IsAny<string>()))
             .Returns(Task.FromResult(this._tryReadAllTextAsync));

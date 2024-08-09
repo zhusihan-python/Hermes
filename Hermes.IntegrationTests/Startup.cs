@@ -13,12 +13,13 @@ public class Startup
 {
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddTransient<GeneralSettings>();
         services.AddScoped<HermesContext, TempHermesContext>();
+        services.AddTransient<AesEncryptor>();
         services.AddTransient<FileService>();
         services.AddTransient<ParserPrototype>();
-        services.AddTransient<UnitUnderTestBuilder>();
+        services.AddTransient<Settings>();
+        services.AddTransient<ISettingsRepository, SettingsRepository>();
         services.AddTransient<SfcResponseBuilder>();
-        services.AddTransient<AesEncryptor>();
+        services.AddTransient<UnitUnderTestBuilder>();
     }
 }

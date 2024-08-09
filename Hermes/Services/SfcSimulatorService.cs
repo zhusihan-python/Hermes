@@ -6,6 +6,7 @@ using Hermes.Builders;
 using Hermes.Common;
 using Hermes.Common.Extensions;
 using Hermes.Models;
+using Hermes.Repositories;
 using Hermes.Types;
 
 namespace Hermes.Services;
@@ -19,23 +20,23 @@ public class SfcSimulatorService
     private readonly FileService _fileService;
     private readonly FolderWatcherService _folderWatcherService;
     private readonly ILogger _logger;
-    private readonly GeneralSettings _generalSettings;
+    private readonly ISettingsRepository _settingsRepository;
     private readonly SfcResponseBuilder _sfcResponseBuilder;
     private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
 
 
     public SfcSimulatorService(
         ILogger logger,
-        GeneralSettings generalSettings,
         FileService fileService,
+        ISettingsRepository settingsRepository,
         UnitUnderTestBuilder unitUnderTestBuilder,
         SfcResponseBuilder sfcResponseBuilder,
         FolderWatcherService folderWatcherService
     )
     {
         this._logger = logger;
-        this._generalSettings = generalSettings;
         this._fileService = fileService;
+        this._settingsRepository = settingsRepository;
         this._unitUnderTestBuilder = unitUnderTestBuilder;
         this._sfcResponseBuilder = sfcResponseBuilder;
         this._folderWatcherService = folderWatcherService;
@@ -44,9 +45,9 @@ public class SfcSimulatorService
     public void Start()
     {
         if (_isRunning) return;
-        this._folderWatcherService.Filter = "*" + _generalSettings.InputFileExtension.GetDescription();
+        this._folderWatcherService.Filter = "*" + _settingsRepository.Settings.InputFileExtension.GetDescription();
         this._folderWatcherService.FileCreated += this.OnFileCreated;
-        this._folderWatcherService.Start(_generalSettings.SfcPath);
+        this._folderWatcherService.Start(_settingsRepository.Settings.SfcPath);
         this.OnRunStatusChanged(true);
     }
 
@@ -74,7 +75,7 @@ public class SfcSimulatorService
         }
 
         await this._fileService.WriteAllTextAsync(
-            SfcRequest.GetResponseFullpath(fullPath, this._generalSettings.SfcResponseExtension),
+            SfcRequest.GetResponseFullpath(fullPath, this._settingsRepository.Settings.SfcResponseExtension),
             await this.GetContent(fullPath)
         );
     }

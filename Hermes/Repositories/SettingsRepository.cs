@@ -1,27 +1,40 @@
 using Hermes.Common;
+using Hermes.Models;
 using System.IO;
 using System.Text.Json;
 using System;
-using Hermes.Models;
 
 namespace Hermes.Repositories;
 
-public class SettingsRepository<T>
+public class SettingsRepository : ISettingsRepository
 {
-    public string Path { get; set; }
-    public string FileName { get; init; } = "Settings.json";
+    public event Action<Settings>? SettingsChanged;
+    public string Path { get; init; }
+    public string FileName { get; init; } = "settings.json";
+
+    public virtual Settings Settings
+    {
+        get => _settings;
+        private set
+        {
+            this.SettingsChanged?.Invoke(value);
+            _settings = value;
+        }
+    }
+
     private readonly AesEncryptor _aesEncryptor;
+    private Settings _settings = new();
 
     public SettingsRepository(AesEncryptor aesEncryptor)
     {
         this._aesEncryptor = aesEncryptor;
         this.Path = System.IO.Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "Hermes",
+            System.Reflection.Assembly.GetExecutingAssembly().GetName().Name!,
             FileName);
     }
 
-    public virtual void Save(T settings)
+    public void Save(Settings settings)
     {
         Directory.CreateDirectory(System.IO.Path.GetDirectoryName(Path) ?? string.Empty);
         var jsonData = JsonSerializer.Serialize(settings);
@@ -29,19 +42,27 @@ public class SettingsRepository<T>
         using var fileStream = File.Create(Path);
         using var writer = new StreamWriter(fileStream);
         writer.Write(encryptedData);
+        this.Settings = settings;
     }
 
-    public T? Read()
+    public Settings Load()
     {
-        if (!File.Exists(Path))
+        this.Settings = this.Read();
+        return this.Settings;
+    }
+
+    public Settings Read()
+    {
+        Settings? settings = null;
+        if (File.Exists(Path))
         {
-            return default;
+            using var fileStream = File.OpenRead(Path);
+            using var reader = new StreamReader(fileStream);
+            var encryptedData = reader.ReadToEnd();
+            var jsonData = _aesEncryptor.Decrypt(encryptedData);
+            settings = JsonSerializer.Deserialize<Settings>(jsonData);
         }
 
-        using var fileStream = File.OpenRead(Path);
-        using var reader = new StreamReader(fileStream);
-        var encryptedData = reader.ReadToEnd();
-        var jsonData = _aesEncryptor.Decrypt(encryptedData);
-        return JsonSerializer.Deserialize<T>(jsonData);
+        return settings ?? new Settings();
     }
 }

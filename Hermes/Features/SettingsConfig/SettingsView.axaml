@@ -6,7 +6,7 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         Height="700"
         Width="750"
-        x:Class="Hermes.Features.SettingsConfig.GeneralSettingsView"
+        x:Class="Hermes.Features.SettingsConfig.SettingsView"
         Title="General settings"
         Background="{DynamicResource SukiBackground}"
         Icon="avares://Hermes/AppData/Assets/logo-hermes.png"

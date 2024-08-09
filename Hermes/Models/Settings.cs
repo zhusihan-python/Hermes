@@ -2,7 +2,7 @@
 
 namespace Hermes.Models;
 
-public class GeneralSettings
+public class Settings
 {
     #region General
 
@@ -21,9 +21,9 @@ public class GeneralSettings
     #region UutProcessor
 
     public bool AutostartUutProcessor { get; set; } = true;
-    public string InputPath { get; set; } = @"\Input";
-    public string BackupPath { get; set; } = @"\Backup";
-    public string SfcPath { get; set; } = @"\Sfc";
+    public string InputPath { get; set; } = @".\Input";
+    public string BackupPath { get; set; } = @".\Backup";
+    public string SfcPath { get; set; } = @".\Sfc";
     public int SfcTimeoutSeconds { get; set; } = 10;
     public int UutSuccessWindowTimeoutSeconds { get; set; } = 5;
     public int MaxSfcRetries { get; set; } = 3;
