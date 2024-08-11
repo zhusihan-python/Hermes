@@ -3,12 +3,21 @@ using Avalonia.Controls;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System;
+using Hermes.Features;
 
 namespace Hermes.Common;
 
 public class ViewLocator : IDataTemplate
 {
     private readonly Dictionary<object, Control> _controlCache = new();
+
+    public Window BuildWindow(ViewModelBase? viewModel)
+    {
+        return Build(viewModel) as Window ?? new Window()
+        {
+            Content = new TextBlock { Text = "Window not fount." }
+        };
+    }
 
     public Control Build(object? data)
     {
@@ -17,7 +26,7 @@ public class ViewLocator : IDataTemplate
         {
             return new TextBlock { Text = "Data is null or has no name." };
         }
-        
+
         var name = fullName.Replace("ViewModel", "View");
         var type = Type.GetType(name);
         if (type is null)

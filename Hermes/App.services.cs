@@ -14,12 +14,13 @@ using Hermes.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using System;
+using Hermes.Features.Login;
 
 namespace Hermes;
 
 public partial class App
 {
-    private ServiceProvider ConfigureServices()
+    private ServiceProvider GetServiceProvider()
     {
         var services = new ServiceCollection();
         ConfigureModels(services);
@@ -27,9 +28,8 @@ public partial class App
         ConfigureRepos(services);
         ConfigureCommon(services);
         ConfigureServices(services);
-        ConfigureViewModels(services);
         ConfigurePages(services);
-        ConfigureViews(services);
+        ConfigureFeatures(services);
         return services.BuildServiceProvider();
     }
 
@@ -72,7 +72,7 @@ public partial class App
 
     private static void ConfigureServices(ServiceCollection services)
     {
-        services.AddSingleton<IDataTemplate, ViewLocator>();
+        services.AddSingleton<ViewLocator>();
         services.AddSingleton<PageNavigationService>();
         services.AddTransient<FileService>();
         services.AddTransient<FolderWatcherService>();
@@ -80,12 +80,6 @@ public partial class App
         services.AddTransient<SfcSimulatorService>();
         services.AddTransient<StopService>();
         services.AddTransient<UutSenderService>();
-    }
-
-    private static void ConfigureViewModels(ServiceCollection services)
-    {
-        services.AddSingleton<MainWindowViewModel>();
-        services.AddSingleton<SfcSimulatorViewModel>();
         services.AddTransient<WindowService>();
     }
 
@@ -100,8 +94,11 @@ public partial class App
         }
     }
 
-    private static void ConfigureViews(ServiceCollection services)
+    private static void ConfigureFeatures(ServiceCollection services)
     {
+        services.AddSingleton<MainWindowViewModel>();
+        services.AddSingleton<SfcSimulatorViewModel>();
+        services.AddTransient<LoginViewModel>();
         services.AddTransient<SettingsView>();
         services.AddTransient<StopView>();
         services.AddTransient<StopViewModel>();
@@ -109,5 +106,6 @@ public partial class App
         services.AddTransient<SuccessViewModel>();
         services.AddTransient<TokenView>();
         services.AddTransient<TokenViewModel>();
+        services.AddTransient<SettingsViewModel>();
     }
 }

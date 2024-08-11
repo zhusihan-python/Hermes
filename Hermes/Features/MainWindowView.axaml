@@ -7,6 +7,7 @@
                  xmlns:lang="clr-namespace:Hermes.Language;assembly=Hermes.Language"
                  xmlns:features="clr-namespace:Hermes.Features"
                  mc:Ignorable="d"
+                 x:Name="Self"
                  x:Class="Hermes.Features.MainWindowView"
                  x:DataType="features:MainWindowViewModel"
                  Width="950"
@@ -32,7 +33,9 @@
 
     <suki:SukiWindow.MenuItems>
         <MenuItem Header="{x:Static lang:Resources.txt_file}">
-            <MenuItem Command="{Binding ExitCommand}" Header="{x:Static lang:Resources.txt_exit}">
+            <MenuItem Command="{Binding ExitCommand}"
+                      CommandParameter="{Binding $parent[suki:SukiWindow]}"
+                      Header="{x:Static lang:Resources.txt_exit}">
                 <MenuItem.Icon>
                     <avalonia:MaterialIcon Kind="CloseCircleOutline" />
                 </MenuItem.Icon>

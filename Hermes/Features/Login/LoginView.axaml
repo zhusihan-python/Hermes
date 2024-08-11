@@ -1,0 +1,58 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+        xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+        xmlns:login="clr-namespace:Hermes.Features.Login"
+        xmlns:theme="clr-namespace:SukiUI.Theme;assembly=SukiUI"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Hermes.Features.Login.LoginView"
+        x:DataType="login:LoginViewModel"
+        Title="LoginView">
+
+    <Grid Margin="15">
+
+        <suki:GlassCard Width="300"
+                        Margin="0,0,0,25">
+
+            <suki:BusyArea Name="BusySignIn"
+                           BusyText="Signing In..."
+                           IsBusy="{Binding IsLoggingIn}">
+                <StackPanel>
+                    <avalonia:MaterialIcon Width="30"
+                                           Height="30"
+                                           Margin="10"
+                                           HorizontalAlignment="Center"
+                                           Foreground="{DynamicResource SukiAccentColor}"
+                                           Kind="SquareWave" />
+                    <TextBlock Margin="0,5,0,27"
+                               HorizontalAlignment="Center"
+                               FontSize="18"
+                               FontWeight="DemiBold"
+                               Text="Sign-in to Hermes" />
+                    <TextBlock Margin="6,18,0,3"
+                               FontWeight="DemiBold"
+                               Text="Token" />
+                    <TextBox Name="PasswordTextBox"
+                             Watermark="*******"
+                             Margin="0,0,0,25"
+                             theme:TextBoxExtensions.AddDeleteButton="True"
+                             PasswordChar="*" />
+                </StackPanel>
+            </suki:BusyArea>
+        </suki:GlassCard>
+        <Button Name="ButtonSignIn"
+                Width="160"
+                Height="40"
+                Margin="0,0,0,7"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Bottom"
+                theme:ButtonExtensions.ShowProgress="{Binding IsLoggingIn}"
+                Classes="Flat Rounded Accent"
+                Command="{Binding LoginCommand}"
+                FontWeight="DemiBold">
+            Sign In
+        </Button>
+    </Grid>
+</Window>
