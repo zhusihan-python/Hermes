@@ -273,4 +273,61 @@
     <data name="txt_logout" xml:space="preserve">
         <value>Logout</value>
     </data>
+    <data name="txt_welcome" xml:space="preserve">
+        <value>Welcome</value>
+    </data>
+    <data name="txt_employee" xml:space="preserve">
+        <value>Employee</value>
+    </data>
+    <data name="txt_id" xml:space="preserve">
+        <value>Id</value>
+    </data>
+    <data name="txt_name" xml:space="preserve">
+        <value>Name</value>
+    </data>
+    <data name="txt_view_level" xml:space="preserve">
+        <value>View level</value>
+    </data>
+    <data name="txt_update_level" xml:space="preserve">
+        <value>Update level</value>
+    </data>
+    <data name="enum_level1" xml:space="preserve">
+        <value>Level 1</value>
+    </data>
+    <data name="enum_level2" xml:space="preserve">
+        <value>Level 2</value>
+    </data>
+    <data name="enum_level3" xml:space="preserve">
+        <value>Level 3</value>
+    </data>
+    <data name="enum_level4" xml:space="preserve">
+        <value>Level 4</value>
+    </data>
+    <data name="enum_level5" xml:space="preserve">
+        <value>Level 5</value>
+    </data>
+    <data name="enum_level6" xml:space="preserve">
+        <value>Level 6</value>
+    </data>
+    <data name="enum_level7" xml:space="preserve">
+        <value>Level 7</value>
+    </data>
+    <data name="enum_level8" xml:space="preserve">
+        <value>Level 8</value>
+    </data>
+    <data name="enum_level9" xml:space="preserve">
+        <value>Level 9</value>
+    </data>
+    <data name="enum_administrator" xml:space="preserve">
+        <value>Administrator</value>
+    </data>
+    <data name="txt_department" xml:space="preserve">
+        <value>Department</value>
+    </data>
+    <data name="msg_invalid_token" xml:space="preserve">
+        <value>The token is invalid</value>
+    </data>
+    <data name="txt_invalid_token" xml:space="preserve">
+        <value>Invalid token</value>
+    </data>
 </root>

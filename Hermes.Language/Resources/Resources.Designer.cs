@@ -465,6 +465,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Administrator.
+        /// </summary>
+        public static string enum_administrator {
+            get {
+                return ResourceManager.GetString("enum_administrator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Blocked.
         /// </summary>
         public static string enum_blocked {
@@ -479,6 +488,87 @@ namespace Hermes.Language {
         public static string enum_idle {
             get {
                 return ResourceManager.GetString("enum_idle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Level 1.
+        /// </summary>
+        public static string enum_level1 {
+            get {
+                return ResourceManager.GetString("enum_level1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Level 2.
+        /// </summary>
+        public static string enum_level2 {
+            get {
+                return ResourceManager.GetString("enum_level2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Level 3.
+        /// </summary>
+        public static string enum_level3 {
+            get {
+                return ResourceManager.GetString("enum_level3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Level 4.
+        /// </summary>
+        public static string enum_level4 {
+            get {
+                return ResourceManager.GetString("enum_level4", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Level 5.
+        /// </summary>
+        public static string enum_level5 {
+            get {
+                return ResourceManager.GetString("enum_level5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Level 6.
+        /// </summary>
+        public static string enum_level6 {
+            get {
+                return ResourceManager.GetString("enum_level6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Level 7.
+        /// </summary>
+        public static string enum_level7 {
+            get {
+                return ResourceManager.GetString("enum_level7", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Level 8.
+        /// </summary>
+        public static string enum_level8 {
+            get {
+                return ResourceManager.GetString("enum_level8", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Level 9.
+        /// </summary>
+        public static string enum_level9 {
+            get {
+                return ResourceManager.GetString("enum_level9", resourceCulture);
             }
         }
         
@@ -537,6 +627,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The token is invalid.
+        /// </summary>
+        public static string msg_invalid_token {
+            get {
+                return ResourceManager.GetString("msg_invalid_token", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Account.
         /// </summary>
         public static string txt_account {
@@ -569,6 +668,24 @@ namespace Hermes.Language {
         public static string txt_defect {
             get {
                 return ResourceManager.GetString("txt_defect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Department.
+        /// </summary>
+        public static string txt_department {
+            get {
+                return ResourceManager.GetString("txt_department", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Employee.
+        /// </summary>
+        public static string txt_employee {
+            get {
+                return ResourceManager.GetString("txt_employee", resourceCulture);
             }
         }
         
@@ -636,6 +753,24 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Id.
+        /// </summary>
+        public static string txt_id {
+            get {
+                return ResourceManager.GetString("txt_id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid token.
+        /// </summary>
+        public static string txt_invalid_token {
+            get {
+                return ResourceManager.GetString("txt_invalid_token", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Light theme.
         /// </summary>
         public static string txt_light_theme {
@@ -677,6 +812,15 @@ namespace Hermes.Language {
         public static string txt_logout {
             get {
                 return ResourceManager.GetString("txt_logout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string txt_name {
+            get {
+                return ResourceManager.GetString("txt_name", resourceCulture);
             }
         }
         
@@ -798,6 +942,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Update level.
+        /// </summary>
+        public static string txt_update_level {
+            get {
+                return ResourceManager.GetString("txt_update_level", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to UUT Processor.
         /// </summary>
         public static string txt_uut_processor {
@@ -816,11 +969,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to View level.
+        /// </summary>
+        public static string txt_view_level {
+            get {
+                return ResourceManager.GetString("txt_view_level", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Visible.
         /// </summary>
         public static string txt_visible {
             get {
                 return ResourceManager.GetString("txt_visible", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Welcome.
+        /// </summary>
+        public static string txt_welcome {
+            get {
+                return ResourceManager.GetString("txt_welcome", resourceCulture);
             }
         }
     }

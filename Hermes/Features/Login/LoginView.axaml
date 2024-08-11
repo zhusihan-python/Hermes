@@ -7,54 +7,144 @@
              xmlns:login="clr-namespace:Hermes.Features.Login"
              xmlns:theme="clr-namespace:SukiUI.Theme;assembly=SukiUI"
              xmlns:lang="clr-namespace:Hermes.Language;assembly=Hermes.Language"
+             xmlns:converters="clr-namespace:Hermes.Common.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Hermes.Features.Login.LoginView"
              x:DataType="login:LoginViewModel">
 
-    <Grid
-        Margin="15"
+    <ScrollViewer
         HorizontalAlignment="Center"
-        VerticalAlignment="Center">
+        VerticalScrollBarVisibility="Auto">
 
-        <suki:GlassCard Width="300"
-                        Margin="0,0,0,25">
+        <WrapPanel Margin="{StaticResource DefaultMargin}"
+                   theme:WrapPanelExtensions.AnimatedScroll="True"
+                   Orientation="Horizontal">
+            <!-- Login -->
+            <Grid Margin="15"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
+                  IsVisible="{Binding !IsLoggedIn}">
 
-            <suki:BusyArea Name="BusySignIn"
-                           BusyText="{x:Static lang:Resources.txt_logging_in}"
-                           IsBusy="{Binding IsLoggingIn}">
-                <StackPanel>
-                    <avalonia:MaterialIcon Width="30"
-                                           Height="30"
-                                           Margin="10"
-                                           HorizontalAlignment="Center"
-                                           Foreground="{DynamicResource SukiAccentColor}"
-                                           Kind="SquareWave" />
-                    <TextBlock Margin="0,5,0,27"
-                               HorizontalAlignment="Center"
-                               FontSize="18"
-                               FontWeight="DemiBold"
-                               Text="{x:Static lang:Resources.c_login_title}" />
-                    <TextBlock Margin="6,18,0,3"
-                               FontWeight="DemiBold"
-                               Text="{x:Static lang:Resources.txt_token}" />
-                    <TextBox Name="PasswordTextBox"
-                             Watermark="*******"
-                             Margin="0,0,0,25"
-                             theme:TextBoxExtensions.AddDeleteButton="True"
-                             PasswordChar="*" />
-                </StackPanel>
-            </suki:BusyArea>
-        </suki:GlassCard>
-        <Button Name="ButtonSignIn"
-                Width="160"
-                Height="40"
-                Margin="0,0,0,7"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Bottom"
-                theme:ButtonExtensions.ShowProgress="{Binding IsLoggingIn}"
-                Classes="Flat Rounded Accent"
-                Command="{Binding LoginCommand}"
-                FontWeight="DemiBold"
-                Content="{x:Static lang:Resources.txt_login}"/>
-    </Grid>
+                <suki:GlassCard Width="400"
+                                Margin="0,0,0,25">
+
+                    <suki:BusyArea BusyText="{x:Static lang:Resources.txt_logging_in}"
+                                   IsBusy="{Binding IsLoggingIn}">
+                        <StackPanel>
+                            <avalonia:MaterialIcon Width="30"
+                                                   Height="30"
+                                                   Margin="10"
+                                                   HorizontalAlignment="Center"
+                                                   Foreground="{DynamicResource SukiAccentColor}"
+                                                   Kind="SquareWave" />
+                            <TextBlock Margin="0,5,0,27"
+                                       HorizontalAlignment="Center"
+                                       FontSize="18"
+                                       FontWeight="DemiBold"
+                                       Text="{x:Static lang:Resources.c_login_title}" />
+                            <TextBlock Margin="6,18,0,3"
+                                       FontWeight="DemiBold"
+                                       Text="{x:Static lang:Resources.txt_department}" />
+                            <ComboBox
+                                Name="DepartmentComboBox"
+                                ItemsSource="{Binding Departments}"
+                                SelectedItem="{Binding Department, Mode=TwoWay}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock
+                                            Text="{Binding Converter={x:Static converters:EnumToTranslatedTextConverters.DepartmentTypeConverter}}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <TextBlock Margin="6,18,0,3"
+                                       FontWeight="DemiBold"
+                                       Text="{x:Static lang:Resources.txt_token}" />
+                            <TextBox Name="PasswordTextBox"
+                                     Text="{Binding Token, Mode=TwoWay}"
+                                     Watermark="*******"
+                                     Margin="0,0,0,25"
+                                     theme:TextBoxExtensions.AddDeleteButton="True"
+                                     PasswordChar="*" />
+                        </StackPanel>
+                    </suki:BusyArea>
+                </suki:GlassCard>
+                <Button Width="160"
+                        Height="40"
+                        Margin="0,0,0,7"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom"
+                        theme:ButtonExtensions.ShowProgress="{Binding IsLoggingIn}"
+                        Classes="Flat Rounded Accent"
+                        Command="{Binding LoginCommand}"
+                        FontWeight="DemiBold"
+                        Content="{x:Static lang:Resources.txt_login}">
+                    <Button.CommandParameter>
+                        <MultiBinding Converter="{x:Static converters:ToupleConverter.LoginToupleConverter}">
+                            <Binding Path="Text" ElementName="PasswordTextBox" />
+                            <Binding Path="SelectedItem" ElementName="DepartmentComboBox" />
+                        </MultiBinding>
+                    </Button.CommandParameter>
+                </Button>
+            </Grid>
+
+            <!-- User Info -->
+            <Grid Margin="15"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
+                  IsVisible="{Binding IsLoggedIn}">
+
+                <suki:GlassCard MinWidth="400"
+                                Margin="0,0,0,25">
+                    <StackPanel>
+                        <avalonia:MaterialIcon Width="30"
+                                               Height="30"
+                                               Margin="10"
+                                               HorizontalAlignment="Center"
+                                               Foreground="{DynamicResource SukiAccentColor}"
+                                               Kind="User" />
+                        <TextBlock Margin="0 0 0 20"
+                                   HorizontalAlignment="Center"
+                                   FontSize="18"
+                                   FontWeight="DemiBold"
+                                   Text="{x:Static lang:Resources.txt_welcome}" />
+                        <TextBlock FontWeight="DemiBold">
+                            <Run Text="{x:Static lang:Resources.txt_id}" />
+                            <Run Text=":" />
+                            <Run Text="{Binding User.Id}" />
+                        </TextBlock>
+                        <TextBlock FontWeight="DemiBold">
+                            <Run Text="{x:Static lang:Resources.txt_employee}" />
+                            <Run Text=":" />
+                            <Run Text="{Binding User.EmployeeId}" />
+                        </TextBlock>
+                        <TextBlock FontWeight="DemiBold">
+                            <Run Text="{x:Static lang:Resources.txt_name}" />
+                            <Run Text=":" />
+                            <Run Text="{Binding User.Name}" />
+                        </TextBlock>
+                        <TextBlock FontWeight="DemiBold">
+                            <Run Text="{x:Static lang:Resources.txt_view_level}" />
+                            <Run Text=":" />
+                            <Run Text="{Binding User.ViewLevelText}" />
+                        </TextBlock>
+                        <TextBlock Margin="0 0 0 30"
+                                   FontWeight="DemiBold">
+                            <Run Text="{x:Static lang:Resources.txt_update_level}" />
+                            <Run Text=":" />
+                            <Run Text="{Binding User.UpdateLevelText}" />
+                        </TextBlock>
+                    </StackPanel>
+                </suki:GlassCard>
+                <Button Width="160"
+                        Height="40"
+                        Margin="0,0,0,7"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom"
+                        Classes="Flat Rounded Accent"
+                        Command="{Binding LogoutCommand}"
+                        FontWeight="DemiBold"
+                        Content="{x:Static lang:Resources.txt_logout}" />
+            </Grid>
+        </WrapPanel>
+    </ScrollViewer>
 </UserControl>

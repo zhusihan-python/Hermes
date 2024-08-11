@@ -52,11 +52,12 @@ public partial class App
     private static void ConfigureRepos(ServiceCollection services)
     {
         services.AddSingleton<HermesContext>();
-        services.AddTransient<IDefectRepository, DefectRepository>();
         services.AddSingleton<ISettingsRepository, SettingsRepository>();
+        services.AddTransient<IDefectRepository, DefectRepository>();
         services.AddTransient<SfcResponseRepository>();
         services.AddTransient<StopRepository>();
         services.AddTransient<UnitUnderTestRepository>();
+        services.AddTransient<UserRepository>();
     }
 
     private static void ConfigureCommon(ServiceCollection services)

@@ -13,7 +13,7 @@ public partial class Session : ObservableObject
         set
         {
             _user = value;
-            this.UserChanged?.Invoke(User.Null);
+            this.UserChanged?.Invoke(value);
         }
     }
 
@@ -50,14 +50,14 @@ public partial class Session : ObservableObject
         Stop = Stop.Null;
     }
 
-    public bool CanUserView(int level)
+    public bool CanUserView(PermissionLevel permissionLevel)
     {
-        return this.User.ViewLevel >= level;
+        return this.User.CanView(permissionLevel);
     }
 
-    public bool CanUserUpdate(int level)
+    public bool CanUserUpdate(PermissionLevel permissionLevel)
     {
-        return this.User.UpdateLevel >= level;
+        return this.User.CanUpdate(permissionLevel);
     }
 
     public void UpdateUser(User user)

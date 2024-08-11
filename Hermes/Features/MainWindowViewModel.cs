@@ -13,6 +13,7 @@ using SukiUI;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Hermes.Types;
 
 namespace Hermes.Features
 {
@@ -57,13 +58,13 @@ namespace Hermes.Features
         private void ConfigureBasedOnSession()
         {
             var visiblePages = Pages
-                .Where(x => _session.CanUserView(x.RequiredViewLevel))
+                .Where(x => _session.CanUserView(x.RequiredViewPermissionLevel))
                 .OrderBy(x => x.Index)
                 .ThenBy(x => x.DisplayName)
                 .ToList();
             this.ShownPages.RemoveMany(ShownPages.Except(visiblePages));
             this.ShownPages.AddRange(visiblePages.Except(ShownPages));
-            this.AreSettingsVisible = _session.CanUserUpdate(1);
+            this.AreSettingsVisible = _session.CanUserUpdate(PermissionLevel.Level5);
             this.CanExit = _session.CanUserExit();
             this.IsLoggedIn = _session.IsLoggedIn;
         }
