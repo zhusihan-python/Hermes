@@ -81,10 +81,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <AdditionalFiles Include="Features\Splash\SplashView.axaml" />
-    </ItemGroup>
-
-    <ItemGroup>
       <ProjectReference Include="..\Hermes.Language\Hermes.Language.csproj" />
     </ItemGroup>
 </Project>

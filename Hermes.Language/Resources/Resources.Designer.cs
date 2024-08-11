@@ -60,6 +60,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Log-in to Hermes.
+        /// </summary>
+        public static string c_login_title {
+            get {
+                return ResourceManager.GetString("c_login_title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Title bar is hidden.
         /// </summary>
         public static string c_main_window_title_bar_hidden {
@@ -528,6 +537,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Account.
+        /// </summary>
+        public static string txt_account {
+            get {
+                return ResourceManager.GetString("txt_account", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Actions.
         /// </summary>
         public static string txt_actions {
@@ -636,6 +654,33 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Logging in....
+        /// </summary>
+        public static string txt_logging_in {
+            get {
+                return ResourceManager.GetString("txt_logging_in", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Login.
+        /// </summary>
+        public static string txt_login {
+            get {
+                return ResourceManager.GetString("txt_login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logout.
+        /// </summary>
+        public static string txt_logout {
+            get {
+                return ResourceManager.GetString("txt_logout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ok.
         /// </summary>
         public static string txt_ok {
@@ -740,6 +785,15 @@ namespace Hermes.Language {
         public static string txt_title_bar {
             get {
                 return ResourceManager.GetString("txt_title_bar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Token.
+        /// </summary>
+        public static string txt_token {
+            get {
+                return ResourceManager.GetString("txt_token", resourceCulture);
             }
         }
         

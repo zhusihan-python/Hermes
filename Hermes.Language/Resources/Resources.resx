@@ -255,4 +255,22 @@
     <data name="c_settings_description_success_window_timeout" xml:space="preserve">
         <value>Close success window when this time is over</value>
     </data>
+    <data name="txt_account" xml:space="preserve">
+        <value>Account</value>
+    </data>
+    <data name="txt_logging_in" xml:space="preserve">
+        <value>Logging in...</value>
+    </data>
+    <data name="c_login_title" xml:space="preserve">
+        <value>Log-in to Hermes</value>
+    </data>
+    <data name="txt_token" xml:space="preserve">
+        <value>Token</value>
+    </data>
+    <data name="txt_login" xml:space="preserve">
+        <value>Login</value>
+    </data>
+    <data name="txt_logout" xml:space="preserve">
+        <value>Logout</value>
+    </data>
 </root>

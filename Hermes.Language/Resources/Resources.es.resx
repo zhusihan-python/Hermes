@@ -248,4 +248,22 @@
     <data name="c_settings_description_success_window_timeout" xml:space="preserve">
         <value>Cerrar ventana ok o reparación cuando transcurra este tiempo</value>
     </data>
+    <data name="txt_account" xml:space="preserve">
+        <value>Cuenta</value>
+    </data>
+    <data name="txt_logging_in" xml:space="preserve">
+        <value>Ingresando...</value>
+    </data>
+    <data name="c_login_title" xml:space="preserve">
+        <value>Ingresar a Hermes</value>
+    </data>
+    <data name="txt_token" xml:space="preserve">
+        <value>Token </value>
+    </data>
+    <data name="txt_login" xml:space="preserve">
+        <value>Ingresar</value>
+    </data>
+    <data name="txt_logout" xml:space="preserve">
+        <value>Cerrar sesión</value>
+    </data>
 </root>

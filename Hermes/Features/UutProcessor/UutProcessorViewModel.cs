@@ -30,7 +30,7 @@ public partial class UutProcessorViewModel : PageBase
         StopService stopService,
         UutSenderService uutSenderService,
         ISettingsRepository settingsRepository)
-        : base(Resources.txt_uut_processor, MaterialIconKind.FolderEye)
+        : base(Resources.txt_uut_processor, MaterialIconKind.FolderEye, 1, 1)
     {
         this._session = session;
         this._stopService = stopService;

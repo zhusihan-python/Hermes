@@ -33,16 +33,32 @@
 
     <suki:SukiWindow.MenuItems>
         <MenuItem Header="{x:Static lang:Resources.txt_file}">
+            <MenuItem Command="{Binding OpenLoginCommand}"
+                      Header="{x:Static lang:Resources.txt_login}"
+                      IsVisible="{Binding !IsLoggedIn}">
+                <MenuItem.Icon>
+                    <avalonia:MaterialIcon Kind="Login" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Command="{Binding LogoutCommand}"
+                      Header="{x:Static lang:Resources.txt_logout}"
+                      IsVisible="{Binding IsLoggedIn}">
+                <MenuItem.Icon>
+                    <avalonia:MaterialIcon Kind="Logout" />
+                </MenuItem.Icon>
+            </MenuItem>
             <MenuItem Command="{Binding ExitCommand}"
                       CommandParameter="{Binding $parent[suki:SukiWindow]}"
-                      Header="{x:Static lang:Resources.txt_exit}">
+                      Header="{x:Static lang:Resources.txt_exit}"
+                      IsVisible="{Binding CanExit}">
                 <MenuItem.Icon>
                     <avalonia:MaterialIcon Kind="CloseCircleOutline" />
                 </MenuItem.Icon>
             </MenuItem>
         </MenuItem>
         <MenuItem Header="{x:Static lang:Resources.txt_view}">
-            <MenuItem Command="{Binding ToggleBaseThemeCommand}" Header="{Binding BaseThemeText}">
+            <MenuItem Command="{Binding ToggleBaseThemeCommand}"
+                      Header="{Binding BaseThemeText}">
                 <MenuItem.Icon>
                     <avalonia:MaterialIcon Kind="Lightbulb" />
                 </MenuItem.Icon>
@@ -51,7 +67,9 @@
                       PointerPressed="MakeFullScreenPressed"
                       ToolTip.Tip="{x:Static lang:Resources.c_main_window_tooltip_fullscreen}" />
         </MenuItem>
-        <MenuItem Header="{x:Static lang:Resources.txt_settings}" Command="{Binding ShowSettingsCommand}">
+        <MenuItem Header="{x:Static lang:Resources.txt_settings}"
+                  Command="{Binding ShowSettingsCommand}"
+                  IsVisible="{Binding AreSettingsVisible}">
             <MenuItem Header="{x:Static lang:Resources.txt_general_settings}">
                 <MenuItem.Icon>
                     <avalonia:MaterialIcon Kind="Settings" />
@@ -61,7 +79,7 @@
     </suki:SukiWindow.MenuItems>
 
     <suki:SukiSideMenu
-        ItemsSource="{Binding Pages}"
+        ItemsSource="{Binding ShownPages}"
         SelectedItem="{Binding ActivePage}"
         IsMenuExpanded="False">
         <suki:SukiSideMenu.Styles>

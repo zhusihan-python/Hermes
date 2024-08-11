@@ -1,23 +1,26 @@
-﻿<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
-        xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
-        xmlns:login="clr-namespace:Hermes.Features.Login"
-        xmlns:theme="clr-namespace:SukiUI.Theme;assembly=SukiUI"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="Hermes.Features.Login.LoginView"
-        x:DataType="login:LoginViewModel"
-        Title="LoginView">
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+             xmlns:login="clr-namespace:Hermes.Features.Login"
+             xmlns:theme="clr-namespace:SukiUI.Theme;assembly=SukiUI"
+             xmlns:lang="clr-namespace:Hermes.Language;assembly=Hermes.Language"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Hermes.Features.Login.LoginView"
+             x:DataType="login:LoginViewModel">
 
-    <Grid Margin="15">
+    <Grid
+        Margin="15"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center">
 
         <suki:GlassCard Width="300"
                         Margin="0,0,0,25">
 
             <suki:BusyArea Name="BusySignIn"
-                           BusyText="Signing In..."
+                           BusyText="{x:Static lang:Resources.txt_logging_in}"
                            IsBusy="{Binding IsLoggingIn}">
                 <StackPanel>
                     <avalonia:MaterialIcon Width="30"
@@ -30,10 +33,10 @@
                                HorizontalAlignment="Center"
                                FontSize="18"
                                FontWeight="DemiBold"
-                               Text="Sign-in to Hermes" />
+                               Text="{x:Static lang:Resources.c_login_title}" />
                     <TextBlock Margin="6,18,0,3"
                                FontWeight="DemiBold"
-                               Text="Token" />
+                               Text="{x:Static lang:Resources.txt_token}" />
                     <TextBox Name="PasswordTextBox"
                              Watermark="*******"
                              Margin="0,0,0,25"
@@ -51,8 +54,7 @@
                 theme:ButtonExtensions.ShowProgress="{Binding IsLoggingIn}"
                 Classes="Flat Rounded Accent"
                 Command="{Binding LoginCommand}"
-                FontWeight="DemiBold">
-            Sign In
-        </Button>
+                FontWeight="DemiBold"
+                Content="{x:Static lang:Resources.txt_login}"/>
     </Grid>
-</Window>
+</UserControl>
