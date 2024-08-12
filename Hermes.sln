@@ -8,6 +8,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hermes.IntegrationTests", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hermes.Language", "Hermes.Language\Hermes.Language.csproj", "{38F0C246-5558-4408-9F34-BA3EA38F6136}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hermes.Cipher", "Hermes.Cipher\Hermes.Cipher.csproj", "{425BF84C-EC02-4D56-BC8E-6F83CB8F2FCE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hermes.Cipher.UnitTests", "Hermes.Cipher.UnitTests\Hermes.Cipher.UnitTests.csproj", "{16BD27C2-446B-4E78-A6D5-86064A6C2C7E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +34,13 @@ Global
 		{38F0C246-5558-4408-9F34-BA3EA38F6136}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38F0C246-5558-4408-9F34-BA3EA38F6136}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38F0C246-5558-4408-9F34-BA3EA38F6136}.Release|Any CPU.Build.0 = Release|Any CPU
+		{425BF84C-EC02-4D56-BC8E-6F83CB8F2FCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{425BF84C-EC02-4D56-BC8E-6F83CB8F2FCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{425BF84C-EC02-4D56-BC8E-6F83CB8F2FCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{425BF84C-EC02-4D56-BC8E-6F83CB8F2FCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16BD27C2-446B-4E78-A6D5-86064A6C2C7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16BD27C2-446B-4E78-A6D5-86064A6C2C7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16BD27C2-446B-4E78-A6D5-86064A6C2C7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16BD27C2-446B-4E78-A6D5-86064A6C2C7E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
