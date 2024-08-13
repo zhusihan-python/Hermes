@@ -330,4 +330,16 @@
     <data name="txt_invalid_token" xml:space="preserve">
         <value>Invalid token</value>
     </data>
+    <data name="enum_ee" xml:space="preserve">
+        <value>Equipment engineering</value>
+    </data>
+    <data name="enum_mfg" xml:space="preserve">
+        <value>Manufacturing</value>
+    </data>
+    <data name="enum_qa" xml:space="preserve">
+        <value>Quality</value>
+    </data>
+    <data name="enum_aoi" xml:space="preserve">
+        <value>AOI</value>
+    </data>
 </root>

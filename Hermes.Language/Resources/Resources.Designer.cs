@@ -474,11 +474,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AOI.
+        /// </summary>
+        public static string enum_aoi {
+            get {
+                return ResourceManager.GetString("enum_aoi", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Blocked.
         /// </summary>
         public static string enum_blocked {
             get {
                 return ResourceManager.GetString("enum_blocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Equipment engineering.
+        /// </summary>
+        public static string enum_ee {
+            get {
+                return ResourceManager.GetString("enum_ee", resourceCulture);
             }
         }
         
@@ -573,6 +591,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Manufacturing.
+        /// </summary>
+        public static string enum_mfg {
+            get {
+                return ResourceManager.GetString("enum_mfg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ok.
         /// </summary>
         public static string enum_ok {
@@ -587,6 +614,15 @@ namespace Hermes.Language {
         public static string enum_processing {
             get {
                 return ResourceManager.GetString("enum_processing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quality.
+        /// </summary>
+        public static string enum_qa {
+            get {
+                return ResourceManager.GetString("enum_qa", resourceCulture);
             }
         }
         

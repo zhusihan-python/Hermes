@@ -12,6 +12,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hermes.Cipher", "Hermes.Cip
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hermes.Cipher.UnitTests", "Hermes.Cipher.UnitTests\Hermes.Cipher.UnitTests.csproj", "{16BD27C2-446B-4E78-A6D5-86064A6C2C7E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hermes.TokenGen", "Hermes.TokenGen\Hermes.TokenGen\Hermes.TokenGen.csproj", "{903FDFD2-C017-463F-AD53-09D32C74B4AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hermes.TokenGen.Android", "Hermes.TokenGen\Hermes.TokenGen.Android\Hermes.TokenGen.Android.csproj", "{313BC064-A292-46BE-B07C-46FBD1C544FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hermes.TokenGen.Desktop", "Hermes.TokenGen\Hermes.TokenGen.Desktop\Hermes.TokenGen.Desktop.csproj", "{CB3CA89B-2E5E-4753-BDA5-490BD40AEE78}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +48,17 @@ Global
 		{16BD27C2-446B-4E78-A6D5-86064A6C2C7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16BD27C2-446B-4E78-A6D5-86064A6C2C7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{16BD27C2-446B-4E78-A6D5-86064A6C2C7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{903FDFD2-C017-463F-AD53-09D32C74B4AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{903FDFD2-C017-463F-AD53-09D32C74B4AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{903FDFD2-C017-463F-AD53-09D32C74B4AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{903FDFD2-C017-463F-AD53-09D32C74B4AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{313BC064-A292-46BE-B07C-46FBD1C544FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{313BC064-A292-46BE-B07C-46FBD1C544FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{313BC064-A292-46BE-B07C-46FBD1C544FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{313BC064-A292-46BE-B07C-46FBD1C544FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB3CA89B-2E5E-4753-BDA5-490BD40AEE78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB3CA89B-2E5E-4753-BDA5-490BD40AEE78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB3CA89B-2E5E-4753-BDA5-490BD40AEE78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB3CA89B-2E5E-4753-BDA5-490BD40AEE78}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
