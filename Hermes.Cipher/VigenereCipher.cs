@@ -36,11 +36,12 @@ public class VigenereCipher
 
     private static string GenerateKey(string text, string key)
     {
-        while (key.Length < text.Length)
+        var sb = new StringBuilder();
+        for (var i = 0; i < text.Length; i++)
         {
-            key += key[key.Length % key.Length];
+            sb.Append(key[i % key.Length]);
         }
 
-        return key;
+        return sb.ToString();
     }
 }

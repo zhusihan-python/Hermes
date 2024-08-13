@@ -8,98 +8,142 @@ public class TokenGenerator
     public string Generate(int id, int departmentId, DateOnly date)
     {
         var key = GetKey(date);
-        var cipherId = VigenereCipher.Cipher($"{departmentId:00}{id:00}", key, departmentId);
-        return $"{Keywords[id % Keywords.Length]}.{cipherId}".ToUpper();
+        var department = VigenereCipher.Cipher(NumberToAlphabet($"{departmentId:00}"), key, id);
+        var alphabetId = NumberToAlphabet($"{id:00}");
+        var cipherDepartmentAndId = VigenereCipher.Cipher($"{department}{alphabetId}", key, departmentId);
+        return $"{GetKeyword(id)}.{cipherDepartmentAndId}".ToUpper();
     }
 
-    public int DecodeId(string token, int departmentId, DateOnly date)
+    public bool TryDecode(string token, int departmentId, DateOnly date, out int id)
     {
-        var parts = token.Split('.');
-        var tokenDecoded = VigenereCipher.Decode(parts[1], GetKey(date), departmentId);
-        return 1;
+        try
+        {
+            var parts = token.Split('.');
+            var key = GetKey(date);
+            var decodedDepartmentAndId = VigenereCipher.Decode(parts[1], key, departmentId);
+            id = AlphabetToInt(decodedDepartmentAndId[2..]);
+            var decodedDepartmentId = VigenereCipher.Decode(decodedDepartmentAndId[..2], key, id);
+            return departmentId == AlphabetToInt(decodedDepartmentId) && GetKeyword(id) == parts[0];
+        }
+        catch (Exception)
+        {
+            id = 0;
+            return false;
+        }
     }
 
-    private static string GetKey(DateOnly date)
+    private static string GetKeyword(int id)
     {
-        return $"{date:yyyy}{GetWeekNumber(date):00}";
+        return Keywords[id % Keywords.Length];
     }
 
-    public static string CipherId(int id, int departmentId)
+    private Tuple<DateOnly, string> _cachedKey = new(DateOnly.MinValue, "");
+
+    private string GetKey(DateOnly date)
     {
-        var key = $"{departmentId:00}{id:00}".Select(x => (char)((x * id) % 26 + 'A'));
+        if (_cachedKey.Item1 != date)
+        {
+            _cachedKey = new Tuple<DateOnly, string>(date, $"{GetWeekNumber(date):00}{date:yyyy}");
+        }
+
+        return _cachedKey.Item2;
+    }
+
+    public static string NumberToAlphabet(string number)
+    {
+        var key = number.Select(x => (char)(x - '0' + 'A'));
         return new string(key.ToArray());
     }
 
-    public static int GetWeekNumber(DateOnly date)
+    public static int AlphabetToInt(string alphabet)
     {
-        return CultureInfo.InvariantCulture.Calendar
-            .GetWeekOfYear(
-                date.ToDateTime(new TimeOnly()),
-                CalendarWeekRule.FirstFullWeek, DayOfWeek.Monday);
+        return int.TryParse(AlphabetToNumber(alphabet), out var result) ? result : 0;
+    }
+
+    public static string AlphabetToNumber(string alphabet)
+    {
+        var key = alphabet.Select(x => (char)(x + '0' - 'A'));
+        return new string(key.ToArray());
+    }
+
+    private Tuple<DateOnly, int> _cachedWeekNumber = new(DateOnly.MinValue, 0);
+
+    public int GetWeekNumber(DateOnly date)
+    {
+        if (_cachedWeekNumber.Item1 != date)
+        {
+            _cachedWeekNumber = new Tuple<DateOnly, int>(
+                date, CultureInfo.InvariantCulture.Calendar
+                    .GetWeekOfYear(
+                        date.ToDateTime(new TimeOnly()),
+                        CalendarWeekRule.FirstFullWeek, DayOfWeek.Monday));
+        }
+
+        return _cachedWeekNumber.Item2;
     }
 
     private static readonly string[] Keywords =
     [
-        "Zeus",
-        "Odin",
-        "Ra",
-        "Cuervo",
-        "Uva",
-        "Poseidon",
-        "Thor",
-        "Osiris",
-        "Lobo",
-        "Naranja",
-        "Hades",
-        "Loki",
-        "Anubis",
-        "Caballo",
-        "Platano",
-        "Hermes",
-        "Heimdal",
-        "Seth",
-        "Ardilla",
-        "Melon",
-        "Hera",
-        "Aesir",
-        "Isis",
-        "Pato",
-        "Guayaba",
-        "Hefesto",
-        "Vanir",
-        "Horus",
-        "Ballena",
-        "Pera",
-        "Dioniso",
-        "Freyja",
-        "Toth",
-        "Conejo",
-        "Manzana",
-        "Atenea",
-        "Sif",
-        "Paloma",
-        "Kiwi",
-        "Apolo",
-        "Pato",
-        "Hela",
-        "Fresa",
-        "Hyena",
-        "Mandarina",
-        "Ares",
-        "Loro",
-        "Fenrir",
-        "Urraca",
-        "Afrodita",
-        "Camello",
-        "Tyr",
-        "Cebra",
-        "Oveja",
-        "Rana",
-        "Cereza",
-        "Panda",
-        "Mula",
-        "Jirafa",
-        "Iguana",
-        "Zorro"
+        "ZEUS",
+        "ODIN",
+        "RA",
+        "CUERVO",
+        "UVA",
+        "POSEIDON",
+        "THOR",
+        "OSIRIS",
+        "LOBO",
+        "NARANJA",
+        "HADES",
+        "LOKI",
+        "ANUBIS",
+        "CABALLO",
+        "PLATANO",
+        "HERMES",
+        "HEIMDAL",
+        "SETH",
+        "ARDILLA",
+        "MELON",
+        "HERA",
+        "AESIR",
+        "ISIS",
+        "PATO",
+        "GUAYABA",
+        "HEFESTO",
+        "VANIR",
+        "HORUS",
+        "BALLENA",
+        "PERA",
+        "DIONISO",
+        "FREYJA",
+        "TOTH",
+        "CONEJO",
+        "MANZANA",
+        "ATENEA",
+        "SIF",
+        "PALOMA",
+        "KIWI",
+        "APOLO",
+        "PATO",
+        "HELA",
+        "FRESA",
+        "HYENA",
+        "MANDARINA",
+        "ARES",
+        "LORO",
+        "FENRIR",
+        "URRACA",
+        "AFRODITA",
+        "CAMELLO",
+        "TYR",
+        "CEBRA",
+        "OVEJA",
+        "RANA",
+        "CEREZA",
+        "PANDA",
+        "MULA",
+        "JIRAFA",
+        "IGUANA",
+        "ZORRO"
     ];
 }

@@ -9,7 +9,7 @@ public class EnumExtensionsTests
     [Fact]
     public void GetDescription_ValidEnum_ReturnsDescription()
     {
-        Assert.Equal("En", LanguageType.En.GetDescription());
+        Assert.Equal("en-US", LanguageType.En.GetDescription());
     }
 
     [Fact]
