@@ -1,8 +1,8 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Hermes.TokenGen.ViewModels;
-using Hermes.TokenGen.Views;
+using Hermes.TokenGen.Features;
+using MainWindow = Hermes.TokenGen.Features.MainWindow;
 
 namespace Hermes.TokenGen;
 

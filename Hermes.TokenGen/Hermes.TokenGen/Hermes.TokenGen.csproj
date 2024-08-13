@@ -24,4 +24,11 @@
       <ProjectReference Include="..\..\Hermes.Cipher\Hermes.Cipher.csproj" />
       <ProjectReference Include="..\..\Hermes\Hermes.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Features\MainWindow.axaml.cs">
+        <DependentUpon>MainWindow.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+    </ItemGroup>
 </Project>

@@ -1,12 +1,14 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
+using Avalonia.Markup.Xaml;
 
-namespace Hermes.TokenGen.Views;
+namespace Hermes.TokenGen.Features.TokenGen;
 
-public partial class MainView : UserControl
+public partial class TokenGenView : UserControl
 {
-    public MainView()
+    public TokenGenView()
     {
         InitializeComponent();
     }

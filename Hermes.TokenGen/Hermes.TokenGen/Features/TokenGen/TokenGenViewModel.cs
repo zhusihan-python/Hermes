@@ -1,13 +1,13 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Hermes.Cipher;
 using Hermes.Common.Extensions;
 using Hermes.Types;
-using System;
 
-namespace Hermes.TokenGen.ViewModels;
+namespace Hermes.TokenGen.Features.TokenGen;
 
-public partial class MainViewModel : ViewModelBase
+public partial class TokenGenViewModel : ViewModelBase
 {
     [ObservableProperty] private int _id = 112530;
     [ObservableProperty] private DepartmentType _department = DepartmentType.Ee;
@@ -16,7 +16,7 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty] private string _token = string.Empty;
     private readonly TokenGenerator _tokenGenerator;
 
-    public MainViewModel()
+    public TokenGenViewModel()
     {
         _tokenGenerator = new TokenGenerator();
         _selectedDate = DateTimeOffset.Now;
