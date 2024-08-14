@@ -2,11 +2,11 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace Hermes.TokenGen.Features;
+namespace Hermes.TokenGen.Views;
 
-public partial class MainView : UserControl
+public partial class RegisterView : UserControl
 {
-    public MainView()
+    public RegisterView()
     {
         InitializeComponent();
     }

@@ -1,7 +1,7 @@
 using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using Hermes.TokenGen.Features;
+using Hermes.TokenGen.ViewModels;
 
 namespace Hermes.TokenGen;
 

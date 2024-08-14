@@ -8,16 +8,11 @@ public class TokenGenerator
     public string Generate(int id, int departmentId, DateOnly date)
     {
         var key = GetKey(date);
-        var department = VigenereCipher.Cipher(NumberToAlphabet($"{departmentId:00}"), key, id);
+        var department = VigenereCipher.Cipher(NumberToAlphabet($"{departmentId:00}"), key);
         var alphabetId = NumberToAlphabet($"{id:00}");
         var cipherDepartmentAndId =
-            VigenereCipher.Cipher($"{department}{alphabetId}", key, GetSeed(departmentId, date));
+            VigenereCipher.Cipher($"{department}{alphabetId}", key);
         return $"{GetKeyword(id, departmentId, date)}.{cipherDepartmentAndId}".ToUpper();
-    }
-
-    private int GetSeed(int departmentId, DateOnly date)
-    {
-        return departmentId * GetWeekNumber(date) * 2;
     }
 
     public bool TryDecode(string token, int departmentId, DateOnly date, out int id)
@@ -26,9 +21,9 @@ public class TokenGenerator
         {
             var parts = token.Split('.');
             var key = GetKey(date);
-            var decodedDepartmentAndId = VigenereCipher.Decode(parts[1], key, GetSeed(departmentId, date));
+            var decodedDepartmentAndId = VigenereCipher.Decode(parts[1], key);
             id = AlphabetToInt(decodedDepartmentAndId[2..]);
-            var decodedDepartmentId = VigenereCipher.Decode(decodedDepartmentAndId[..2], key, id);
+            var decodedDepartmentId = VigenereCipher.Decode(decodedDepartmentAndId[..2], key);
             return departmentId == AlphabetToInt(decodedDepartmentId) && GetKeyword(id, departmentId, date) == parts[0];
         }
         catch (Exception)
@@ -43,6 +38,11 @@ public class TokenGenerator
         return Keywords[id * GetSeed(departmentId, date) % Keywords.Length];
     }
 
+    private int GetSeed(int departmentId, DateOnly date)
+    {
+        return departmentId + GetWeekNumber(date) + date.Month + (date.Year - 2000);
+    }
+
     private Tuple<DateOnly, string> _cachedKey = new(DateOnly.MinValue, "");
 
     private string GetKey(DateOnly date)
@@ -51,7 +51,7 @@ public class TokenGenerator
         {
             _cachedKey = new Tuple<DateOnly, string>(
                 date,
-                $"{GetWeekNumber(date):00}{date:yyyy}");
+                NumberToAlphabet($"{GetWeekNumber(date):00}{date.Month:00}{date:yyyy}"));
         }
 
         return _cachedKey.Item2;

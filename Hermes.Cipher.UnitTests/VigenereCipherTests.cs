@@ -24,7 +24,7 @@ public class VigenereCipherTests
     [Fact]
     public void Decode_ValidTextAndKeyWithSeed_ReturnsDecodedText()
     {
-        const int seed = 5;
+        const int seed = 26;
         var cipherText = VigenereCipher.Cipher(Text, Key, seed);
         var result = VigenereCipher.Decode(cipherText, Key, seed);
         Assert.Equal(Text.ToUpper(), result);

@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace Hermes.TokenGen.Features;
+namespace Hermes.TokenGen.Views;
 
 public partial class MainWindow : Window
 {
