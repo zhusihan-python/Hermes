@@ -19,16 +19,18 @@ public partial class TokenGenViewModel : ViewModelBase
     [ObservableProperty] private string _employeeNumber = "";
     [ObservableProperty] private DateTimeOffset _selectedDate;
     [ObservableProperty] private string _token = string.Empty;
-    public bool IsDesktop=> App.IsDesktop;
+    [ObservableProperty] private bool _canShowAllSubUsers;
+    public bool IsDesktop => App.IsDesktop;
 
     private readonly TokenGenerator _tokenGenerator;
 
     public TokenGenViewModel(User user)
     {
-        User = user;
-        EmployeeNumber = user.EmployeeNumber;
         _tokenGenerator = new TokenGenerator();
-        _selectedDate = DateTimeOffset.Now;
+        User = user;
+        EmployeeNumber = user.Number;
+        SelectedDate = DateTimeOffset.Now;
+        CanShowAllSubUsers = user.IsManager && IsDesktop;
         GenerateToken();
     }
 
@@ -61,16 +63,28 @@ public partial class TokenGenViewModel : ViewModelBase
     {
         try
         {
+#pragma warning disable CA1416
             var shareIntent = new Intent(Intent.ActionSend);
             shareIntent.SetType("text/plain");
             shareIntent.PutExtra(Android.Content.Intent.ExtraText,
                 $"Hermes Token: {Token}\nDate: {SelectedDate:yyyy MM dd}");
             shareIntent.PutExtra(Android.Content.Intent.ExtraSubject, "Token");
             Android.App.Application.Context.StartActivity(shareIntent);
+#pragma warning restore CA1416
         }
         catch (Exception)
         {
             // ignored
+        }
+    }
+
+
+    [RelayCommand]
+    private void ShowMultipleUsersTokenGen()
+    {
+        if (User.IsManager)
+        {
+            Messenger.Send(new OpenWindowMessage(new MultipleUserTokenGenViewModel(User)));
         }
     }
 }

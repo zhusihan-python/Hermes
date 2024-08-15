@@ -49,9 +49,11 @@ public class TokenGenerator
     {
         if (_cachedKey.Item1 != date)
         {
+            var weekNumber = GetWeekNumber(date);
             _cachedKey = new Tuple<DateOnly, string>(
                 date,
-                NumberToAlphabet($"{GetWeekNumber(date):00}{date.Month:00}{date:yyyy}"));
+                NumberToAlphabet(
+                    $"{weekNumber:00}{date.Month * +weekNumber:00}{date.Year - 2000 + date.Month + weekNumber:0000}"));
         }
 
         return _cachedKey.Item2;

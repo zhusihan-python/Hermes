@@ -36,7 +36,7 @@ public partial class RegisterViewModel : ViewModelBase
             if (user is not null)
             {
                 IsManager = user.IsManager;
-                EmployeeNumber = user.EmployeeNumber;
+                EmployeeNumber = user.Number;
                 Department = user.Department;
             }
         }
@@ -48,7 +48,7 @@ public partial class RegisterViewModel : ViewModelBase
         var user = new User()
         {
             IsManager = IsManager,
-            EmployeeNumber = EmployeeNumber,
+            Number = EmployeeNumber,
             Department = Department
         };
         await FileService.WriteJsonEncryptedAsync(App.ConfigFullpath, user);

@@ -20,7 +20,9 @@
         <PackageReference Include="Avalonia.Fonts.Inter" Version="$(AvaloniaVersion)"/>
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)"/>
+        <PackageReference Include="Avalonia.Xaml.Behaviors" Version="11.1.0" />
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+        <PackageReference Include="Material.Icons.Avalonia" Version="2.1.10" />
         <PackageReference Include="SukiUI" Version="6.0.0-beta" />
     </ItemGroup>
 
@@ -43,5 +45,9 @@
       <Reference Include="Mono.Android">
         <HintPath>..\..\..\..\..\..\Program Files\dotnet\packs\Microsoft.Android.Ref.34\34.0.113\ref\net8.0\Mono.Android.dll</HintPath>
       </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <UpToDateCheckInput Remove="Views\Components\ButtonIcon.axaml" />
     </ItemGroup>
 </Project>

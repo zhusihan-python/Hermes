@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using Hermes.Cipher.Services;
 using Hermes.TokenGen.Common.Messages;
 using Hermes.TokenGen.Models;
+using Hermes.TokenGen.Views;
 
 namespace Hermes.TokenGen.ViewModels;
 

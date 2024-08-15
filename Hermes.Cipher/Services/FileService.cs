@@ -1,4 +1,4 @@
-using System.Text.Json;
+using Newtonsoft.Json;
 
 namespace Hermes.Cipher.Services;
 
@@ -11,9 +11,9 @@ public class FileService
             using var fileStream = File.OpenRead(path);
             using var reader = new StreamReader(fileStream);
             var data = AesEncryptor.Decrypt(reader.ReadToEnd());
-            return JsonSerializer.Deserialize<T>(data);
+            return JsonConvert.DeserializeObject<T>(data);
         }
-        catch (Exception e)
+        catch (Exception e )
         {
             return default;
         }
@@ -26,9 +26,9 @@ public class FileService
             using var fileStream = File.OpenRead(path);
             using var reader = new StreamReader(fileStream);
             var data = reader.ReadToEnd();
-            return JsonSerializer.Deserialize<T>(data);
+            return JsonConvert.DeserializeObject<T>(data);
         }
-        catch (Exception e)
+        catch (Exception)
         {
             return default;
         }
@@ -38,12 +38,12 @@ public class FileService
     {
         await WriteAllTextAsync(
             path,
-            AesEncryptor.Encrypt(JsonSerializer.Serialize(content)));
+            AesEncryptor.Encrypt(JsonConvert.SerializeObject(content)));
     }
 
     public static async Task WriteJsonAsync<T>(string path, T content)
     {
-        await WriteAllTextAsync(path, JsonSerializer.Serialize(content));
+        await WriteAllTextAsync(path, JsonConvert.SerializeObject(content));
     }
 
     public static async Task WriteAllTextAsync(string path, string content)

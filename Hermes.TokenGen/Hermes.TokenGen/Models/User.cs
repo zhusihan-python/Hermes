@@ -1,10 +1,12 @@
+using CommunityToolkit.Mvvm.ComponentModel;
 using Hermes.Cipher.Types;
 
 namespace Hermes.TokenGen.Models;
 
-public class User
+public partial class User : ObservableObject
 {
-    public string EmployeeNumber { get; set; } = "0";
-    public DepartmentType Department { get; set; }
+    [ObservableProperty] private string _number = "0";
+    public string Name { get; set; } = "";
+    public virtual DepartmentType Department { get; set; }
     public bool IsManager { get; set; }
 }

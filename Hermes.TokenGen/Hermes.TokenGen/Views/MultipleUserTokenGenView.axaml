@@ -1,0 +1,120 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+        xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+        xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+        xmlns:vm="clr-namespace:Hermes.TokenGen.ViewModels"
+        xmlns:controls="clr-namespace:Hermes.TokenGen.Views.Controls"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Hermes.TokenGen.Views.MultipleUserTokenGenView"
+        x:DataType="vm:MultipleUserTokenGenViewModel"
+        x:Name="Self"
+        WindowStartupLocation="CenterOwner"
+        Width="650"
+        Height="650"
+        Icon="avares://Hermes.TokenGen/Assets/logo-hermes.png"
+        Title="Multiple User TokenGen">
+    <i:Interaction.Behaviors>
+        <ia:EventTriggerBehavior EventName="Closing" SourceObject="Self">
+            <ia:InvokeCommandAction
+                Command="{Binding ClosedCommand}" />
+        </ia:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
+
+    <Grid RowDefinitions="35, *"
+          ColumnDefinitions="*, Auto"
+          Margin="20">
+
+        <StackPanel Grid.Row="0"
+                    Grid.Column="0"
+                    Orientation="Horizontal"
+                    Spacing="10">
+
+            <Button Classes="Flat Accent"
+                    ToolTip.Tip="Add user"
+                    Padding="10"
+                    IsEnabled="True"
+                    Command="{Binding AddUserCommand}">
+                <materialIcons:MaterialIcon Kind="UserAdd"
+                                            Width="20"
+                                            Height="20" />
+            </Button>
+
+            <Button Classes="Flat Accent"
+                    ToolTip.Tip="Remove user"
+                    Padding="10"
+                    Command="{Binding RemoveUserCommand}"
+                    CommandParameter="{Binding #UsersGrid.SelectedItem}">
+                <materialIcons:MaterialIcon Kind="UserRemove"
+                                            Width="20"
+                                            Height="20" />
+            </Button>
+
+            <Button Classes="Flat Accent"
+                    ToolTip.Tip="Export table to csv"
+                    Padding="10"
+                    Command="{Binding ExportToCsvCommand}"
+                    CommandParameter="{Binding #UsersGrid.SelectedItem}">
+                <materialIcons:MaterialIcon Kind="DatabaseExport"
+                                            Width="20"
+                                            Height="20" />
+            </Button>
+
+        </StackPanel>
+
+        <StackPanel Grid.Row="0"
+                    Grid.Column="1"
+                    Orientation="Horizontal"
+                    Spacing="10">
+
+            <DatePicker HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        SelectedDate="{Binding SelectedDate, Mode=TwoWay}">
+                <DatePicker.Resources>
+                    <SolidColorBrush x:Key="SukiPrimaryColor" Color="Purple" />
+                    <SolidColorBrush x:Key="SukiPrimaryColor10" Color="{DynamicResource SukiAccentColor10}" />
+                </DatePicker.Resources>
+                <DatePicker.Styles>
+                    <Style Selector="Border.Card">
+                        <Setter Property="Background" Value="{DynamicResource SukiDialogBackground}" />
+                    </Style>
+                    <Style Selector="TextBlock">
+                        <Setter Property="Foreground" Value="White" />
+                    </Style>
+                </DatePicker.Styles>
+            </DatePicker>
+
+            <Button HorizontalAlignment="Left"
+                    Height="35"
+                    Classes="Flat Accent"
+                    Content="Generate"
+                    Command="{Binding GenerateTokensCommand}" />
+        </StackPanel>
+
+        <DataGrid x:Name="UsersGrid"
+                  Grid.Row="1"
+                  Grid.Column="0"
+                  Grid.ColumnSpan="2"
+                  Margin="0 20"
+                  ItemsSource="{Binding SubUsers}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Employee number" Binding="{Binding Number}" />
+                <DataGridTextColumn Header="Employee name" Binding="{Binding Name}" />
+                <DataGridTextColumn Header="Department" Binding="{Binding Department}" />
+                <DataGridTextColumn Header="Token"
+                                    Width="*"
+                                    Binding="{Binding Token}"
+                                    IsReadOnly="True" />
+            </DataGrid.Columns>
+            <i:Interaction.Behaviors>
+                <ia:EventTriggerBehavior EventName="RowEditEnded" SourceObject="UsersGrid">
+                    <ia:InvokeCommandAction
+                        Command="{Binding UserEditedCommand}"
+                        CommandParameter="{Binding #UsersGrid.SelectedItem}" />
+                </ia:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+        </DataGrid>
+    </Grid>
+</Window>

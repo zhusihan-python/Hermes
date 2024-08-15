@@ -1,9 +1,11 @@
 using System;
 using System.IO;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
+using Avalonia.Platform.Storage;
 using Hermes.TokenGen.ViewModels;
 using Hermes.TokenGen.Views;
 
@@ -23,6 +25,13 @@ public partial class App : Application
         "config.json"
     );
 
+    public static string SubUsersFullpath => Path.Combine(
+        AppDataPath,
+        "users.json"
+    );
+
+    public static IStorageProvider? StorageProvider { get; set; }
+
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
@@ -38,6 +47,7 @@ public partial class App : Application
                 DataContext = new MainViewModel()
             };
             IsDesktop = true;
+            StorageProvider = desktop.MainWindow.StorageProvider;
         }
         else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
         {
@@ -45,6 +55,7 @@ public partial class App : Application
             {
                 DataContext = new MainViewModel()
             };
+            StorageProvider = TopLevel.GetTopLevel(singleViewPlatform.MainView)?.StorageProvider;
         }
 
         base.OnFrameworkInitializationCompleted();
