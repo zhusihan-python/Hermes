@@ -64,6 +64,7 @@ public partial class TokenGenViewModel : ViewModelBase
         try
         {
 #pragma warning disable CA1416
+            if (IsDesktop) return;
             var shareIntent = new Intent(Intent.ActionSend);
             shareIntent.SetType("text/plain");
             shareIntent.PutExtra(Android.Content.Intent.ExtraText,

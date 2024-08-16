@@ -1,10 +1,13 @@
 using System.Globalization;
 using System.Runtime.InteropServices.JavaScript;
+using System.Text.RegularExpressions;
 
 namespace Hermes.Cipher;
 
 public class TokenGenerator
 {
+    private readonly Regex _tokenRegex = new(@"\S{2,}[\.\*]{1}\S{2,}");
+
     public string Generate(int id, int departmentId, DateOnly date)
     {
         var key = GetKey(date);
@@ -43,7 +46,7 @@ public class TokenGenerator
         return departmentId + GetWeekNumber(date) + date.Month + (date.Year - 2000);
     }
 
-    private Tuple<DateOnly, string> _cachedKey = new(DateOnly.MinValue, "");
+    private Tuple<DateOnly, string> _cachedKey = new Tuple<DateOnly, string>(DateOnly.MinValue, "");
 
     private string GetKey(DateOnly date)
     {
@@ -76,7 +79,7 @@ public class TokenGenerator
         return new string(key.ToArray());
     }
 
-    private Tuple<DateOnly, int> _cachedWeekNumber = new(DateOnly.MinValue, 0);
+    private Tuple<DateOnly, int> _cachedWeekNumber = new Tuple<DateOnly, int>(DateOnly.MinValue, 0);
 
     public int GetWeekNumber(DateOnly date)
     {
@@ -90,6 +93,11 @@ public class TokenGenerator
         }
 
         return _cachedWeekNumber.Item2;
+    }
+
+    public bool IsValid(string token)
+    {
+        return _tokenRegex.IsMatch(token);
     }
 
     private static readonly string[] Keywords =

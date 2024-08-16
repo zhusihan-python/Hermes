@@ -2,10 +2,9 @@ using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DynamicData;
-using Hermes.Cipher.Services;
 using Hermes.Cipher;
 using Hermes.TokenGen.Models;
-using System.Collections.Generic;
+using Hermes.TokenGen.Repositories;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,18 +18,16 @@ public partial class MultipleUserTokenGenViewModel : ViewModelBase
     [ObservableProperty] private DateTimeOffset _selectedDate;
     private readonly User _manager;
     private readonly TokenGenerator _tokenGenerator;
+    private readonly UserRepository _userRepository;
 
     public MultipleUserTokenGenViewModel(User manager)
     {
         _manager = manager;
         _tokenGenerator = new TokenGenerator();
+        _userRepository = new UserRepository();
         SelectedDate = DateTimeOffset.Now;
-        var subUsers = FileService.ReadJsonEncrypted<List<SubUser>>(App.SubUsersFullpath);
-        if (subUsers is not null)
-        {
-            SubUsers.AddRange(subUsers);
-        }
-
+        var subUsers = _userRepository.GetSubUsers();
+        SubUsers.AddRange(subUsers);
         GenerateTokens();
     }
 
@@ -77,7 +74,7 @@ public partial class MultipleUserTokenGenViewModel : ViewModelBase
     [RelayCommand]
     private async Task Closed()
     {
-        await FileService.WriteJsonEncryptedAsync(App.SubUsersFullpath, SubUsers.ToList());
+        await _userRepository.SaveSubUsers(SubUsers.ToList());
     }
 
     [RelayCommand]
@@ -87,12 +84,6 @@ public partial class MultipleUserTokenGenViewModel : ViewModelBase
         var options = new FolderPickerOpenOptions();
         var folder = await App.StorageProvider.OpenFolderPickerAsync(options);
         if (folder.Count <= 0) return;
-        var csv = "Employee Name, Employee Number, Department, Token\n";
-        csv += SubUsers
-            .Select(subUser => $"{subUser.Name},{subUser.Number},{subUser.Department},{subUser.Token}")
-            .Aggregate((a, b) => $"{a}\n{b}");
-        await FileService.WriteAllTextAsync(
-            folder[0].Path.AbsolutePath + @$"\hermes_users_tokens_{DateTime.Now:yyyy_MM_dd_mm_ss}.csv",
-            csv);
+        await _userRepository.SaveSubUsersToCsv(folder[0].Path.AbsolutePath, SubUsers.ToList());
     }
 }

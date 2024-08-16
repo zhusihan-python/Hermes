@@ -1,35 +1,25 @@
-using System;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using Hermes.Cipher.Services;
 using Hermes.TokenGen.Common.Messages;
-using Hermes.TokenGen.Models;
-using Hermes.TokenGen.Views;
+using Hermes.TokenGen.Repositories;
 
 namespace Hermes.TokenGen.ViewModels;
 
 public partial class HomeViewModel : ViewModelBase
 {
+    private readonly UserRepository _userRepository;
+
+    public HomeViewModel()
+    {
+        _userRepository = new UserRepository();
+    }
+
     [RelayCommand]
     private void NextPage()
     {
-        if (FileService.FileExists(App.ConfigFullpath))
-        {
-            try
-            {
-                var user = FileService.ReadJsonEncrypted<User>(App.ConfigFullpath);
-                if (user is not null)
-                {
-                    Messenger.Send(new NavigateMessage(new TokenGenViewModel(user)));
-                    return;
-                }
-            }
-            catch (Exception)
-            {
-                // ignored
-            }
-        }
-
-        Messenger.Send(new NavigateMessage(new RegisterViewModel()));
+        var user = _userRepository.GetUser();
+        Messenger.Send(user.IsNull
+            ? new NavigateMessage(new RegisterViewModel())
+            : new NavigateMessage(new TokenGenViewModel(user)));
     }
 }
