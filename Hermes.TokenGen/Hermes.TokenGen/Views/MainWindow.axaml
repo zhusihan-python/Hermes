@@ -1,16 +1,18 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:Hermes.TokenGen.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
         xmlns:views="clr-namespace:Hermes.TokenGen.Views"
-        mc:Ignorable="d" 
-        Width="500" 
+        mc:Ignorable="d"
+        Width="500"
         Height="650"
         CanResize="False"
         WindowStartupLocation="CenterScreen"
         x:Class="Hermes.TokenGen.Views.MainWindow"
         Icon="avares://Hermes.TokenGen/Assets/logo-hermes.png"
         Title="Hermes TokenGen">
+    <suki:SukiHost>
         <views:MainView />
+    </suki:SukiHost>
 </Window>

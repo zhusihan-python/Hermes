@@ -56,7 +56,7 @@ public class TokenGenerator
             _cachedKey = new Tuple<DateOnly, string>(
                 date,
                 NumberToAlphabet(
-                    $"{weekNumber:00}{date.Month * +weekNumber:00}{date.Year - 2000 + date.Month + weekNumber:0000}"));
+                    $"{date.Month * weekNumber}{date.Year - 2000 + date.Month * weekNumber}"));
         }
 
         return _cachedKey.Item2;

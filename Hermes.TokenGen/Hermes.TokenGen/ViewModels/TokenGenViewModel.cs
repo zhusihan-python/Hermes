@@ -1,15 +1,14 @@
-using System;
-using System.Threading.Tasks;
 using Android.Content;
 using Avalonia.Input;
+using Avalonia.SimpleRouter;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Hermes.Cipher;
-using Hermes.Cipher.Services;
-using Hermes.Cipher.Types;
 using Hermes.TokenGen.Common.Messages;
 using Hermes.TokenGen.Models;
+using System;
+using System.Threading.Tasks;
 
 namespace Hermes.TokenGen.ViewModels;
 
@@ -22,15 +21,21 @@ public partial class TokenGenViewModel : ViewModelBase
     [ObservableProperty] private bool _canShowAllSubUsers;
     public bool IsDesktop => App.IsDesktop;
 
+    private int _tapCount = 0;
     private readonly TokenGenerator _tokenGenerator;
+    private readonly HistoryRouter<ViewModelBase> _router;
 
-    public TokenGenViewModel(User user)
+    public TokenGenViewModel(
+        Session session,
+        TokenGenerator tokenGenerator,
+        HistoryRouter<ViewModelBase> router)
     {
-        _tokenGenerator = new TokenGenerator();
-        User = user;
-        EmployeeNumber = user.Number;
+        _tokenGenerator = tokenGenerator;
+        _router = router;
+        User = session.User;
+        EmployeeNumber = session.UserNumber;
+        CanShowAllSubUsers = session.IsUserManager && App.IsDesktop;
         SelectedDate = DateTimeOffset.Now;
-        CanShowAllSubUsers = user.IsManager && IsDesktop;
         GenerateToken();
     }
 
@@ -48,14 +53,12 @@ public partial class TokenGenViewModel : ViewModelBase
         }
     }
 
-    private int _tapCount = 0;
-
     [RelayCommand]
     private void IconTapped(TappedEventArgs _)
     {
         _tapCount += 1;
         if (_tapCount <= 15) return;
-        Messenger.Send(new NavigateMessage(new RegisterViewModel()));
+        _router.GoTo<RegisterViewModel>();
     }
 
     [RelayCommand]
@@ -64,7 +67,7 @@ public partial class TokenGenViewModel : ViewModelBase
         try
         {
 #pragma warning disable CA1416
-            if (IsDesktop) return;
+            if (App.IsDesktop) return;
             var shareIntent = new Intent(Intent.ActionSend);
             shareIntent.SetType("text/plain");
             shareIntent.PutExtra(Android.Content.Intent.ExtraText,
@@ -73,9 +76,9 @@ public partial class TokenGenViewModel : ViewModelBase
             Android.App.Application.Context.StartActivity(shareIntent);
 #pragma warning restore CA1416
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            // ignored
+            Messenger.Send(new ShowToastMessage("❌ Error: ", e.Message));
         }
     }
 
@@ -86,6 +89,16 @@ public partial class TokenGenViewModel : ViewModelBase
         if (User.IsManager)
         {
             Messenger.Send(new OpenWindowMessage(new MultipleUserTokenGenViewModel(User)));
+        }
+    }
+
+    [RelayCommand]
+    private async Task CopyTokenToClipboard()
+    {
+        if (App.Clipboard != null)
+        {
+            await App.Clipboard.SetTextAsync(Token);
+            Messenger.Send(new ShowToastMessage("Token copied to clipboard", ""));
         }
     }
 }

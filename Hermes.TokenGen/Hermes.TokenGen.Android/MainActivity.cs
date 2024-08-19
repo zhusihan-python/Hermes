@@ -7,7 +7,7 @@ using Avalonia.Android;
 namespace Hermes.TokenGen.Android;
 
 [Activity(
-    Label = "Hermes.TokenGen.Android",
+    Label = "Hermes TokenGen",
     Theme = "@style/MyTheme.NoActionBar",
     Icon = "@drawable/icon",
     MainLauncher = true,

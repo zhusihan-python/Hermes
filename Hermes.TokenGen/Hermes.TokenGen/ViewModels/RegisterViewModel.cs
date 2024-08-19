@@ -1,3 +1,4 @@
+using Avalonia.SimpleRouter;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -31,20 +32,27 @@ public partial class RegisterViewModel : ViewModelBase
 
     private readonly TokenGenerator _tokenGenerator;
     private readonly UserRepository _userRepository;
+    private readonly Session _session;
+    private readonly HistoryRouter<ViewModelBase> _router;
 
     public static DepartmentType[] Departments => EnumExtensions.GetValues<DepartmentType>();
 
-    public RegisterViewModel()
+    public RegisterViewModel(
+        Session session,
+        TokenGenerator tokenGenerator,
+        UserRepository userRepository,
+        HistoryRouter<ViewModelBase> router)
     {
-        // TODO: Move to repository and add DI
-        _tokenGenerator = new TokenGenerator();
-        _userRepository = new UserRepository();
-        var user = _userRepository.GetUser();
-        if (!user.IsNull)
+        _session = session;
+        _tokenGenerator = tokenGenerator;
+        _userRepository = userRepository;
+        _router = router;
+        IsLoggedIn = _session.IsUserLoggedIn;
+        if (IsLoggedIn)
         {
-            IsManager = user.IsManager;
-            EmployeeNumber = user.Number;
-            Department = user.Department;
+            IsManager = _session.IsUserManager;
+            EmployeeNumber = _session.UserNumber;
+            Department = _session.UserDepartment;
         }
     }
 
@@ -52,17 +60,21 @@ public partial class RegisterViewModel : ViewModelBase
     private async Task Register()
     {
 #if !DEBUG
-        if (!_tokenGenerator.TryDecode(AdminToken, (int)Department, DateOnly.FromDateTime(DateTime.Now),
-                out var _)) return;
+        if (!_tokenGenerator.TryDecode(AdminToken.ToUpper(), (int)Department, DateOnly.FromDateTime(DateTime.Now),
+                out var _))
+        {
+            Messenger.Send(new ShowToastMessage("Invalid admin token", "Please verify the admin token"));
+            return;
+        }
 #endif
-        var user = new User()
+        _session.User = new User()
         {
             IsManager = IsManager,
             Number = EmployeeNumber,
             Department = Department
         };
-        await _userRepository.SaveUser(user);
-        Messenger.Send(new NavigateMessage(new TokenGenViewModel(user)));
+        await _userRepository.SaveUser(_session.User);
+        _router.GoTo<TokenGenViewModel>();
     }
 
     [RelayCommand]
@@ -70,7 +82,7 @@ public partial class RegisterViewModel : ViewModelBase
     {
         _userRepository.DeleteUser();
         this.IsLoggedIn = false;
-        Messenger.Send(new NavigateMessage(new HomeViewModel()));
+        _router.GoTo<HomeViewModel>();
     }
 
     private bool CanRegister()

@@ -1,27 +1,24 @@
-﻿using Avalonia.Styling;
+﻿using Avalonia.SimpleRouter;
+using Avalonia.Styling;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Messaging;
-using Hermes.TokenGen.Common.Messages;
 using SukiUI;
 
 namespace Hermes.TokenGen.ViewModels;
 
-public partial class MainViewModel : ViewModelBase, IRecipient<NavigateMessage>
+public partial class MainViewModel : ViewModelBase
 {
-    [ObservableProperty] private ViewModelBase _currentPage = new HomeViewModel();
+    [ObservableProperty] private ViewModelBase? _currentPage;
 
-    public MainViewModel()
+    public MainViewModel(HistoryRouter<ViewModelBase> router)
     {
         this.IsActive = true;
+        router.CurrentViewModelChanged += viewModel => CurrentPage = viewModel;
         var theme = SukiTheme.GetInstance();
         if (theme.ActiveBaseTheme == ThemeVariant.Dark)
         {
             theme.SwitchBaseTheme();
         }
-    }
 
-    public void Receive(NavigateMessage message)
-    {
-        this.CurrentPage = message.Value;
+        router.GoTo<HomeViewModel>();
     }
 }
