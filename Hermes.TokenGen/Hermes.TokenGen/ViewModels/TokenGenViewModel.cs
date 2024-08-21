@@ -68,11 +68,13 @@ public partial class TokenGenViewModel : ViewModelBase
         {
 #pragma warning disable CA1416
             if (App.IsDesktop) return;
-            var shareIntent = new Intent(Intent.ActionSend);
-            shareIntent.SetType("text/plain");
-            shareIntent.PutExtra(Android.Content.Intent.ExtraText,
-                $"Hermes Token: {Token}\nDate: {SelectedDate:yyyy MM dd}");
-            shareIntent.PutExtra(Android.Content.Intent.ExtraSubject, "Token");
+            var sendIntent = new Intent(Intent.ActionSend);
+            sendIntent.PutExtra(Android.Content.Intent.ExtraText,
+                $"Hermes\nID: {EmployeeNumber}\nDate: {SelectedDate:yyyy MM dd}\nToken: {Token}");
+            sendIntent.SetType("text/plain");
+
+            var shareIntent = Intent.CreateChooser(sendIntent, "Share");
+            shareIntent?.AddFlags(ActivityFlags.NewTask);
             Android.App.Application.Context.StartActivity(shareIntent);
 #pragma warning restore CA1416
         }

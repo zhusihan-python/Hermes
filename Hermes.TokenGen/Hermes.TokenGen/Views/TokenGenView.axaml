@@ -3,8 +3,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
-             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
-             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
              xmlns:vm="clr-namespace:Hermes.TokenGen.ViewModels"
              xmlns:p1="clr-namespace:SukiUI.Theme;assembly=SukiUI"
              mc:Ignorable="d" d:DesignWidth="421" d:DesignHeight="823"
@@ -103,6 +101,16 @@
 
                 <Button Classes="Flat Accent"
                         Margin=" 0 5"
+                        ToolTip.Tip="Copy to clipboard"
+                        HorizontalAlignment="Left"
+                        Padding="15"
+                        Command="{Binding CopyTokenToClipboardCommand}">
+                    <materialIcons:MaterialIcon Kind="ContentCopy"
+                                                Width="20"
+                                                Height="20" />
+                </Button>
+                <Button Classes="Flat Accent"
+                        Margin=" 0 5"
                         ToolTip.Tip="Show all my department users"
                         HorizontalAlignment="Left"
                         Padding="15"
@@ -119,12 +127,6 @@
                     Background="{DynamicResource SukiAccentColor}"
                     CornerRadius="5"
                     Padding="10">
-                <i:Interaction.Behaviors>
-                    <ia:EventTriggerBehavior EventName="Tapped" SourceObject="TokenBorder">
-                        <ia:InvokeCommandAction
-                            Command="{Binding CopyTokenToClipboardCommand}" />
-                    </ia:EventTriggerBehavior>
-                </i:Interaction.Behaviors>
                 <TextBlock
                     Classes="h4"
                     Margin="0"

@@ -11,7 +11,9 @@ public class AndroidToastService : ToastService
     protected override void ShowToast(string title, string message)
     {
         var context = Android.App.Application.Context;
-        Toast.MakeText(context, title, ToastLength.Short)!.Show();
+        var separator = title.Trim().EndsWith(':') || string.IsNullOrWhiteSpace(message) ? "" : ": "; 
+        Toast.MakeText(context, $"{title}{separator}{message}", ToastLength.Short)!
+            .Show();
     }
 #pragma warning restore CA1416
 }

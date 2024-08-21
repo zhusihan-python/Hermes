@@ -60,7 +60,10 @@ public partial class RegisterViewModel : ViewModelBase
     private async Task Register()
     {
 #if !DEBUG
-        if (!_tokenGenerator.TryDecode(AdminToken.ToUpper(), (int)Department, DateOnly.FromDateTime(DateTime.Now),
+        if (!_tokenGenerator.TryDecode(
+                AdminToken.ToUpper(),
+                (int)DepartmentType.Admin,
+                DateOnly.FromDateTime(DateTime.Now),
                 out var _))
         {
             Messenger.Send(new ShowToastMessage("Invalid admin token", "Please verify the admin token"));
