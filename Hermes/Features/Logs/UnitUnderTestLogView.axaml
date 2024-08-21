@@ -27,7 +27,6 @@
                              Watermark="Número de serie:" 
                              Text="{Binding SerialNumberFilter}" />
 
-				    <!-- Corrected ComboBox without custom template -->
 				    <ComboBox Width="150" 
 						      ItemsSource="{Binding TestStatusOptions}" 
 						      SelectedItem="{Binding SelectedTestStatus}" 
@@ -38,38 +37,67 @@
 						      SelectedItem="{Binding SelectedSfcResponse}" 
 						      PlaceholderText="Sfc response:" />
 
-                    <Button Width="37" Height="37" Padding="0" Margin="0">
-                        <avalonia:MaterialIcon Kind="Search" Width="18" Height="18" />
+                    <Button Width="37" 
+                            Height="37" 
+                            Padding="0" 
+                            Margin="0">
+                        <avalonia:MaterialIcon 
+                            Kind="Search" 
+                            Width="18" 
+                            Height="18" />
                     </Button>
                 </StackPanel>
 
-                <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right">
-                    <Button Width="37" Height="37" Padding="0" Margin="20,0,3,0">
+                <StackPanel Orientation="Horizontal"  
+                            HorizontalAlignment="Right">
+                    <Button Width="37" 
+                            Height="37" 
+                            Padding="0" 
+                            Margin="20,0,3,0">
                         <StackPanel Orientation="Horizontal">
-                            <avalonia:MaterialIcon Kind="DatabaseArrowRight" Width="18" Height="18"/>
+                            <avalonia:MaterialIcon 
+                                Kind="DatabaseArrowRight" 
+                                Width="18" 
+                                Height="18"/>
                         </StackPanel>
                     </Button>
 
-                    <Button Width="37" Height="37" Padding="0" Margin="3,0,3,0">
+                    <Button Width="37" 
+                            Height="37" 
+                            Padding="0" 
+                            Margin="3,0,3,0">
                         <StackPanel Orientation="Horizontal">
-                            <avalonia:MaterialIcon Kind="FileEdit" Width="18" Height="18"/>
+                            <avalonia:MaterialIcon 
+                                Kind="FileEdit" 
+                                Width="18" 
+                                Height="18"/>
                         </StackPanel>
                     </Button>
 
-                    <Button Width="37" Height="37" Padding="0" Margin="3,0,3,0">
+                    <Button Width="37" 
+                            Height="37" 
+                            Padding="0"
+                            Margin="3,0,3,0">
                         <StackPanel Orientation="Horizontal">
-                            <avalonia:MaterialIcon Kind="FileRefresh" Width="18" Height="18"/>
+                            <avalonia:MaterialIcon 
+                                Kind="FileRefresh" 
+                                Width="18" 
+                                Height="18"/>
                         </StackPanel>
                     </Button>
                   
-                    <Button Width="37" Height="37" Padding="0" Margin="3,0,3,0">
+                    <Button Width="37" 
+                            Height="37" 
+                            Padding="0" 
+                            Margin="3,0,3,0">
                         <StackPanel Orientation="Horizontal">
-                            <avalonia:MaterialIcon Kind="Refresh" Width="18" Height="18"/>
+                            <avalonia:MaterialIcon 
+                                Kind="Refresh" 
+                                Width="18" 
+                                Height="18"/>
                         </StackPanel>
                     </Button>
-
                 </StackPanel>
-
 			</StackPanel>
 
 			<DataGrid AutoGenerateColumns="False" 

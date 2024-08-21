@@ -58,6 +58,7 @@ namespace Hermes.Features.Logs
             {
                 "Pass",
                 "Fail",
+                "Repair",
                 "All"
             };
 
