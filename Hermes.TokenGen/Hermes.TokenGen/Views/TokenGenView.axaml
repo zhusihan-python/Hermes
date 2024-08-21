@@ -86,12 +86,13 @@
         <StackPanel Grid.Row="2"
                     Margin="20">
 
-            <Grid>
-                <Button Classes="Flat Accent"
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Spacing="10">
+                <Button Classes="Accent"
                         Margin=" 0 5"
                         ToolTip.Tip="Show all my department users"
-                        HorizontalAlignment="Right"
-                        Padding="15"
+                        Padding="10"
                         Command="{Binding ShareCommand}"
                         IsVisible="{Binding !IsDesktop}">
                     <materialIcons:MaterialIcon Kind="ShareVariant"
@@ -99,20 +100,18 @@
                                                 Height="20" />
                 </Button>
 
-                <Button Classes="Flat Accent"
+                <Button Classes="Accent"
                         Margin=" 0 5"
                         ToolTip.Tip="Copy to clipboard"
-                        HorizontalAlignment="Left"
                         Padding="15"
                         Command="{Binding CopyTokenToClipboardCommand}">
                     <materialIcons:MaterialIcon Kind="ContentCopy"
                                                 Width="20"
                                                 Height="20" />
                 </Button>
-                <Button Classes="Flat Accent"
+                <Button Classes="Accent"
                         Margin=" 0 5"
                         ToolTip.Tip="Show all my department users"
-                        HorizontalAlignment="Left"
                         Padding="15"
                         Command="{Binding ShowMultipleUsersTokenGenCommand}"
                         IsVisible="{Binding CanShowAllSubUsers}">
@@ -120,7 +119,7 @@
                                                 Width="20"
                                                 Height="20" />
                 </Button>
-            </Grid>
+            </StackPanel>
 
             <Border Grid.Row="2"
                     x:Name="TokenBorder"

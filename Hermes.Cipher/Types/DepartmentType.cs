@@ -6,5 +6,8 @@ public enum DepartmentType
     Aoi,
     Mfg,
     Qa,
-    Admin
+    Auto,
+    Kitting,
+    Process,
+    Admin = 99
 }

@@ -51,6 +51,11 @@ public partial class TokenGenViewModel : ViewModelBase
                 DateOnly.FromDateTime(inTargetZone.Date));
             _tapCount = 0;
         }
+        else
+        {
+            Token = "";
+            Messenger.Send(new ShowToastMessage("❌ Invalid employee number", ""));
+        }
     }
 
     [RelayCommand]
