@@ -1,4 +1,5 @@
-﻿using Hermes.Common.Extensions;
+﻿using Hermes.Cipher.Types;
+using Hermes.Common.Extensions;
 using Hermes.Types;
 
 namespace Hermes.Models;
@@ -10,6 +11,7 @@ public class User
     public int Id { get; set; }
     public int EmployeeId { get; set; }
     public string Name { get; set; } = "";
+    public DepartmentType Department { get; set; }
     public PermissionLevel ViewLevel { get; set; } = PermissionLevel.Level1;
     public string ViewLevelText => ViewLevel.ToTranslatedString();
     public PermissionLevel UpdateLevel { get; set; } = PermissionLevel.Level1;

@@ -14,7 +14,9 @@ using Hermes.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using System;
+using Hermes.Cipher;
 using Hermes.Features.Login;
+using AesEncryptor = Hermes.Common.AesEncryptor;
 
 namespace Hermes;
 
@@ -69,6 +71,8 @@ public partial class App
         services.AddSingleton<SettingsConfigModel>();
         services.AddSingleton<SfcResponseBuilder>();
         services.AddSingleton<UnitUnderTestBuilder>();
+        services.AddSingleton<TokenGenerator>();
+
     }
 
     private static void ConfigureServices(ServiceCollection services)

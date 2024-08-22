@@ -81,6 +81,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Hermes.Cipher\Hermes.Cipher.csproj" />
       <ProjectReference Include="..\Hermes.Language\Hermes.Language.csproj" />
     </ItemGroup>
 </Project>

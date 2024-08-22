@@ -1,15 +1,15 @@
-﻿using System;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using Hermes.Cipher.Types;
+using Hermes.Common.Extensions;
+using Hermes.Common.Messages;
 using Hermes.Language;
 using Hermes.Models;
 using Hermes.Repositories;
 using Material.Icons;
 using System.Threading.Tasks;
-using CommunityToolkit.Mvvm.Messaging;
-using Hermes.Common.Extensions;
-using Hermes.Common.Messages;
-using Hermes.Types;
+
 
 namespace Hermes.Features.Login;
 
@@ -38,13 +38,13 @@ public partial class LoginViewModel : PageBase
     }
 
     [RelayCommand]
-    private async Task Login(object parameter)
+    private async Task Login()
     {
         IsLoggingIn = true;
-        var param = (Tuple<string, DepartmentType>)parameter;
-        var user = await _userRepository.GetUser(token: param.Item1, department: param.Item2);
+        var user = _userRepository.GetUser(token: this.Token, department: this.Department);
         IsLoggedIn = !user.IsNull;
         _session.UpdateUser(user);
+        await Task.Delay(1000);
         IsLoggingIn = false;
         this.Token = string.Empty;
         if (user.IsNull)
@@ -54,7 +54,7 @@ public partial class LoginViewModel : PageBase
     }
 
     [RelayCommand]
-    public void Logout()
+    private void Logout()
     {
         this._session.Logout();
     }

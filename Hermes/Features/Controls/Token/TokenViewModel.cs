@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using Hermes.Language;
 using Hermes.Types;
 using System;
+using Hermes.Cipher.Types;
 
 namespace Hermes.Features.Controls.Token;
 

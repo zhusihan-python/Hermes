@@ -1,4 +1,5 @@
 using Avalonia.Data.Converters;
+using Hermes.Cipher.Types;
 using Hermes.Common.Extensions;
 using Hermes.Types;
 using System.Globalization;
