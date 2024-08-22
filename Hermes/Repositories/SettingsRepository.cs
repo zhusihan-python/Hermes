@@ -3,6 +3,10 @@ using Hermes.Models;
 using System.IO;
 using System.Text.Json;
 using System;
+using System.Globalization;
+using System.Threading;
+using Hermes.Common.Extensions;
+using Hermes.Types;
 
 namespace Hermes.Repositories;
 
@@ -48,6 +52,7 @@ public class SettingsRepository : ISettingsRepository
     public Settings Load()
     {
         this.Settings = this.Read();
+        SetLanguage(Settings.Language);
         return this.Settings;
     }
 
@@ -64,5 +69,22 @@ public class SettingsRepository : ISettingsRepository
         }
 
         return settings ?? new Settings();
+    }
+
+    public static void SetLanguage(LanguageType language)
+    {
+        try
+        {
+            var info = new CultureInfo(language.GetDescription())
+            {
+                NumberFormat = CultureInfo.CreateSpecificCulture(language.GetDescription()).NumberFormat
+            };
+            Thread.CurrentThread.CurrentUICulture = info;
+            Thread.CurrentThread.CurrentCulture = info;
+        }
+        catch (Exception)
+        {
+            // ignored
+        }
     }
 }

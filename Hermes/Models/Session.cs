@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Hermes.Types;
 
@@ -6,6 +7,16 @@ namespace Hermes.Models;
 
 public partial class Session : ObservableObject
 {
+    private User User
+    {
+        get => _user;
+        set
+        {
+            _user = value;
+            this.UserChanged?.Invoke(value);
+        }
+    }
+
     [ObservableProperty] private string _path = string.Empty;
     public Stop Stop { get; set; } = Stop.Null;
 
@@ -19,20 +30,48 @@ public partial class Session : ObservableObject
                 _uutProcessorState = value;
             }
 
-            UutProcessorStateChanged?.Invoke(this, value);
+            UutProcessorStateChanged?.Invoke(value);
         }
     }
 
-    public event EventHandler<UutProcessorState>? UutProcessorStateChanged;
+    public event Action<User>? UserChanged;
+    public event Action<UutProcessorState>? UutProcessorStateChanged;
 
     private readonly object _lock = new object();
     private UutProcessorState _uutProcessorState;
+    private User _user = User.Null;
 
     public bool IsUutProcessorIdle => UutProcessorState == UutProcessorState.Idle;
     public bool IsUutProcessorBlocked => UutProcessorState == UutProcessorState.Blocked;
+    public bool IsLoggedIn => !_user.IsNull;
 
     public void ResetStop()
     {
         Stop = Stop.Null;
+    }
+
+    public bool CanUserView(PermissionLevel permissionLevel)
+    {
+        return this.User.CanView(permissionLevel);
+    }
+
+    public bool CanUserUpdate(PermissionLevel permissionLevel)
+    {
+        return this.User.CanUpdate(permissionLevel);
+    }
+
+    public void UpdateUser(User user)
+    {
+        this.User = user;
+    }
+
+    public bool CanUserExit()
+    {
+        return this.User.CanExit;
+    }
+
+    public void Logout()
+    {
+        this.User = User.Null;
     }
 }

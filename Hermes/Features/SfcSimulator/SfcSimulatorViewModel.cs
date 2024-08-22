@@ -11,6 +11,7 @@ using System;
 using System.Threading.Tasks;
 using Avalonia;
 using Hermes.Builders;
+using Hermes.Common.Extensions;
 using Hermes.Models;
 using Microsoft.EntityFrameworkCore.Sqlite.Migrations.Internal;
 
@@ -23,12 +24,8 @@ public partial class SfcSimulatorViewModel : PageBase
     [ObservableProperty] private ErrorFlag _defectErrorFlag = ErrorFlag.Bad;
     [ObservableProperty] private string _defectLocation = "L1";
     [ObservableProperty] private string _defectErrorCode = "EC1";
-
-    public IEnumerable<SfcResponseType> SfcErrorTypes =>
-        Enum.GetValues(typeof(SfcResponseType)).Cast<SfcResponseType>();
-
-    public IEnumerable<ErrorFlag> ErrorFlags =>
-        Enum.GetValues(typeof(ErrorFlag)).Cast<ErrorFlag>();
+    public IEnumerable<SfcResponseType> SfcErrorTypes => EnumExtensions.GetValues<SfcResponseType>();
+    public IEnumerable<ErrorFlag> ErrorFlags => EnumExtensions.GetValues<ErrorFlag>();
 
     private readonly FileService _fileService;
     private readonly SfcSimulatorService _sfcSimulatorService;
@@ -40,7 +37,7 @@ public partial class SfcSimulatorViewModel : PageBase
         FileService fileService,
         SfcSimulatorService sfcSimulatorService,
         UnitUnderTestBuilder underTestBuilder)
-        : base("Sfc Simulator", MaterialIconKind.BugPlay, 1)
+        : base("Sfc Simulator", MaterialIconKind.BugPlay, PermissionLevel.Administrator, 0)
     {
         _coreSettings = coreSettings;
         _fileService = fileService;

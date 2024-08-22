@@ -4,8 +4,10 @@
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
                  xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+                 xmlns:lang="clr-namespace:Hermes.Language;assembly=Hermes.Language"
                  xmlns:features="clr-namespace:Hermes.Features"
                  mc:Ignorable="d"
+                 x:Name="Self"
                  x:Class="Hermes.Features.MainWindowView"
                  x:DataType="features:MainWindowViewModel"
                  Width="950"
@@ -16,8 +18,8 @@
                  ClosingBehavior="OwnerAndChildWindows">
 
     <suki:SukiWindow.LogoContent>
-        <avalonia:MaterialIcon Width="20"
-                               Height="20"
+        <avalonia:MaterialIcon Width="14"
+                               Height="14"
                                VerticalAlignment="Center"
                                Foreground="{DynamicResource SukiAccentColor}"
                                Kind="SquareWave">
@@ -30,25 +32,45 @@
     </suki:SukiWindow.LogoContent>
 
     <suki:SukiWindow.MenuItems>
-        <MenuItem Header="File">
-            <MenuItem Command="{Binding ExitCommand}" Header="Exit">
+        <MenuItem Header="{x:Static lang:Resources.txt_file}">
+            <MenuItem Command="{Binding OpenLoginCommand}"
+                      Header="{x:Static lang:Resources.txt_login}"
+                      IsVisible="{Binding !IsLoggedIn}">
+                <MenuItem.Icon>
+                    <avalonia:MaterialIcon Kind="Login" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Command="{Binding LogoutCommand}"
+                      Header="{x:Static lang:Resources.txt_logout}"
+                      IsVisible="{Binding IsLoggedIn}">
+                <MenuItem.Icon>
+                    <avalonia:MaterialIcon Kind="Logout" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Command="{Binding ExitCommand}"
+                      CommandParameter="{Binding $parent[suki:SukiWindow]}"
+                      Header="{x:Static lang:Resources.txt_exit}"
+                      IsVisible="{Binding CanExit}">
                 <MenuItem.Icon>
                     <avalonia:MaterialIcon Kind="CloseCircleOutline" />
                 </MenuItem.Icon>
             </MenuItem>
         </MenuItem>
-        <MenuItem Header="View">
-            <MenuItem Command="{Binding ToggleBaseThemeCommand}" Header="{Binding BaseTheme}">
+        <MenuItem Header="{x:Static lang:Resources.txt_view}">
+            <MenuItem Command="{Binding ToggleBaseThemeCommand}"
+                      Header="{Binding BaseThemeText}">
                 <MenuItem.Icon>
                     <avalonia:MaterialIcon Kind="Lightbulb" />
                 </MenuItem.Icon>
             </MenuItem>
-            <MenuItem Header="Fullscreen"
+            <MenuItem Header="{x:Static lang:Resources.txt_fullscreen }"
                       PointerPressed="MakeFullScreenPressed"
-                      ToolTip.Tip="Makes the app fullscreen." />
+                      ToolTip.Tip="{x:Static lang:Resources.c_main_window_tooltip_fullscreen}" />
         </MenuItem>
-        <MenuItem Header="Settings" Command="{Binding ShowSettingsCommand}">
-            <MenuItem Header="General Settings">
+        <MenuItem Header="{x:Static lang:Resources.txt_settings}"
+                  Command="{Binding ShowSettingsCommand}"
+                  IsVisible="{Binding AreSettingsVisible}">
+            <MenuItem Header="{x:Static lang:Resources.txt_general_settings}">
                 <MenuItem.Icon>
                     <avalonia:MaterialIcon Kind="Settings" />
                 </MenuItem.Icon>
@@ -57,7 +79,7 @@
     </suki:SukiWindow.MenuItems>
 
     <suki:SukiSideMenu
-        ItemsSource="{Binding Pages}"
+        ItemsSource="{Binding ShownPages}"
         SelectedItem="{Binding ActivePage}"
         IsMenuExpanded="False">
         <suki:SukiSideMenu.Styles>
@@ -89,7 +111,7 @@
                    PointerPressed="InputElement_OnPointerPressed"
                    Source="avares://Hermes/AppData/Assets/logo-hermes.png"
                    ToolTip.ShowDelay="0"
-                   ToolTip.Tip="Click To Toggle Top Menu." />
+                   ToolTip.Tip="{x:Static lang:Resources.c_main_window_tooltip_toggle_top_menu}" />
         </suki:SukiSideMenu.HeaderContent>
     </suki:SukiSideMenu>
 </suki:SukiWindow>

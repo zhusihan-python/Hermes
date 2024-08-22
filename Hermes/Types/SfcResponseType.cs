@@ -4,6 +4,7 @@ namespace Hermes.Types;
 
 public enum SfcResponseType
 {
+    // TODO: Translate these
     [Description("Tarea ejecutada con exito.")]
     Ok,
 

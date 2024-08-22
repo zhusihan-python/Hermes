@@ -4,6 +4,7 @@ using Hermes.Common.Extensions;
 using Hermes.Common;
 using Hermes.Repositories;
 using Hermes.Types;
+
 #pragma warning disable CS0657 // Not a valid attribute location for this declaration
 
 namespace Hermes.Features.SettingsConfig;
@@ -17,65 +18,92 @@ public partial class SettingsConfigModel(
 
     [ObservableProperty]
     [property: DropdownConfig(RuntimeItemsSourceMethodName = "Languages")]
-    [property: Config(Header = "Language", Description = "Language Station",
-        Category = "General", Group = "Common")]
+    [property: Config(
+        Header = "c_settings_header_language",
+        Description = "c_settings_description_language",
+        Category = "c_settings_category_general",
+        Group = "c_settings_group_common")]
     private LanguageType _language = LanguageType.En;
 
     public static LanguageType[] Languages => EnumExtensions.GetValues<LanguageType>();
 
     [ObservableProperty]
     [property: NumericConfig(Minimum = 100, Maximum = 2000, Increment = 1)]
-    [property: Config(Header = "Wait Delay Ms", Description = "General delay while waiting for actions to happen",
-        Category = "General", Group = "Common")]
+    [property: Config(
+        Header = "c_settings_header_wait_delay_ms",
+        Description = "c_settings_description_wait_delay_ms",
+        Category = "c_settings_category_general",
+        Group = "c_settings_group_common")]
     private int _waitDelayMilliseconds = 100;
 
     [ObservableProperty]
     [property: DropdownConfig(RuntimeItemsSourceMethodName = "StationType")]
-    [property: Config(Header = "Station", Description = "Station type",
-        Category = "General", Group = "Station")]
+    [property: Config(
+        Header = "c_settings_header_station",
+        Description = "c_settings_header_station",
+        Category = "c_settings_category_general",
+        Group = "c_settings_group_station")]
     private StationType _station = StationType.SpiBottom;
 
     public static StationType[] StationTypes => EnumExtensions.GetValues<StationType>();
 
     [ObservableProperty]
     [property: DropdownConfig(RuntimeItemsSourceMethodName = "MachineType")]
-    [property: Config(Header = "Machine type", Description = "Machine type",
-        Category = "General", Group = "Station")]
+    [property: Config(
+        Header = "c_settings_header_machine_type",
+        Description = "c_settings_header_machine_type",
+        Category = "c_settings_category_general",
+        Group = "c_settings_group_station")]
     private MachineType _machine = MachineType.Spi;
 
     public static MachineType[] MachineTypes => EnumExtensions.GetValues<MachineType>();
 
     [ObservableProperty]
     [property: DropdownConfig(RuntimeItemsSourceMethodName = "LineType")]
-    [property: Config(Header = "Line name", Description = "Line name",
-        Category = "General", Group = "Station")]
+    [property: Config(
+        Header = "c_settings_header_line_name",
+        Description = "c_settings_header_line_name",
+        Category = "c_settings_category_general",
+        Group = "c_settings_group_station")]
     private LineType _line = LineType.Ag01;
 
     public static LineType[] LineTypes => EnumExtensions.GetValues<LineType>();
 
     [ObservableProperty]
     [property: DropdownConfig(RuntimeItemsSourceMethodName = "LogfileTypes")]
-    [property: Config(Header = "Logfile type", Description = "Logfile type",
-        Category = "General", Group = "Station")]
+    [property: Config(
+        Header = "c_settings_header_logfile_type",
+        Description = "c_settings_header_logfile_type",
+        Category = "c_settings_category_general",
+        Group = "c_settings_group_station")]
     private LogfileType _logfileType = LogfileType.TriDefault;
 
     public static LogfileType[] LogfileTypes => EnumExtensions.GetValues<LogfileType>();
 
     [ObservableProperty]
     [property: DropdownConfig(RuntimeItemsSourceMethodName = "FileExtensions")]
-    [property: Config(Header = "Sfc response extension", Description = "Sfc response extension",
-        Category = "General", Group = "Station")]
+    [property: Config(
+        Header = "c_settings_header_sfc_response_ext",
+        Description = "c_settings_header_sfc_response_ext",
+        Category = "c_settings_category_general",
+        Group = "c_settings_group_station")]
     private FileExtension _sfcResponseExtension = FileExtension.Ret;
 
     [ObservableProperty]
     [property: DropdownConfig(RuntimeItemsSourceMethodName = "FileExtensions")]
-    [property: Config(Header = "Input file extension", Description = "Input file extension",
-        Category = "General", Group = "Station")]
+    [property: Config(
+        Header = "c_settings_header_input_file_ext",
+        Description = "c_settings_header_input_file_ext",
+        Category = "c_settings_category_general",
+        Group = "c_settings_group_station")]
     private FileExtension _inputFileExtension = FileExtension.Ret;
 
     [ObservableProperty]
-    [property: Config(Header = "Send Repair File", Description = "Put Send Repair File",
-        Category = "General", Group = "Station")]
+    [property: Config(
+        Header = "c_settings_header_send_repair_file",
+        Description = "c_settings_header_send_repair_file",
+        Category = "c_settings_category_general",
+        Group = "c_settings_group_station")]
     private bool _sendRepairFile = true;
 
     #endregion
@@ -83,46 +111,67 @@ public partial class SettingsConfigModel(
     #region UutProcessor
 
     [ObservableProperty]
-    [property: Config(Header = "Autostart UUT Processor", Description = "Put Autostart",
-        Category = "Uut processor", Group = "Common")]
+    [property: Config(
+        Header = "c_settings_header_autostart_uut_processor",
+        Description = "c_settings_header_autostart_uut_processor",
+        Category = "c_settings_category_uut_processor",
+        Group = "c_settings_group_common")]
     private bool _autostartUutProcessor;
 
     [ObservableProperty]
     [property: NumericConfig(Minimum = 0, Maximum = 5, Increment = 1)]
-    [property: Config(Header = "Max retries", Description = "Max sfc send retries when failure",
-        Category = "Uut processor", Group = "Common")]
+    [property: Config(
+        Header = "c_settings_header_max_retries",
+        Description = "c_settings_description_max_retries",
+        Category = "c_settings_category_uut_processor",
+        Group = "c_settings_group_common")]
     private int _maxSfcRetries = 3;
 
     [ObservableProperty]
     [property: BrowserConfig(BrowserMode = BrowserMode.OpenFolder, Filter = "Folder:*.*")]
-    [property: Config(Header = "Input Path", Description = "Put Input Path",
-        Category = "Uut processor", Group = "Paths")]
+    [property: Config(
+        Header = "c_settings_header_input_path",
+        Description = "c_settings_header_input_path",
+        Category = "c_settings_category_uut_processor",
+        Group = "c_settings_group_paths")]
     private string _inputPath = string.Empty;
 
     [ObservableProperty]
     [property: BrowserConfig(BrowserMode = BrowserMode.OpenFolder, Filter = "Folder:*.*")]
-    [property: Config(Header = "Backup Path", Description = "Put Backup Path",
-        Category = "Uut processor", Group = "Paths")]
+    [property: Config(
+        Header = "c_settings_header_backup_path",
+        Description = "c_settings_header_backup_path",
+        Category = "c_settings_category_uut_processor",
+        Group = "c_settings_group_paths")]
     private string _backupPath = string.Empty;
 
     [ObservableProperty]
     [property: BrowserConfig(BrowserMode = BrowserMode.OpenFolder, Filter = "Folder:*.*")]
-    [property: Config(Header = "Sfc Path", Description = "Put Sfc Path",
-        Category = "Uut processor", Group = "Paths")]
+    [property: Config(
+        Header = "c_settings_header_sfc_path",
+        Description = "c_settings_header_sfc_path",
+        Category = "c_settings_category_uut_processor",
+        Group = "c_settings_group_paths")]
     private string _sfcPath = string.Empty;
 
     public static FileExtension[] FileExtensions => EnumExtensions.GetValues<FileExtension>();
 
     [ObservableProperty]
     [property: NumericConfig(Minimum = 3, Maximum = 30, Increment = 1)]
-    [property: Config(Header = "Sfc Timeout", Description = "Sfc Timeout",
-        Category = "Uut processor", Group = "Time")]
+    [property: Config(
+        Header = "c_settings_header_sfc_timeout",
+        Description = "c_settings_header_sfc_timeout",
+        Category = "c_settings_category_uut_processor",
+        Group = "c_settings_group_time")]
     private int _sfcTimeoutSeconds = 10;
 
     [ObservableProperty]
     [property: NumericConfig(Minimum = 3, Maximum = 30, Increment = 1)]
-    [property: Config(Header = "Success window timeout", Description = "Close success window whe this time is over",
-        Category = "Uut processor", Group = "Time")]
+    [property: Config(
+        Header = "c_settings_header_success_window_timeout",
+        Description = "c_settings_description_success_window_timeout",
+        Category = "c_settings_category_uut_processor",
+        Group = "c_settings_group_time")]
     private int _uutSuccessWindowTimeoutSeconds = 5;
 
     #endregion

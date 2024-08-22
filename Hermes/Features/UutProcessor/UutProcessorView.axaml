@@ -6,6 +6,7 @@
              xmlns:uutProcessor="clr-namespace:Hermes.Features.UutProcessor"
              xmlns:controls="clr-namespace:SukiUI.Controls;assembly=SukiUI"
              xmlns:converters="clr-namespace:Hermes.Common.Converters"
+             xmlns:lang="clr-namespace:Hermes.Language;assembly=Hermes.Language"
              mc:Ignorable="d"
              d:DesignWidth="800"
              d:DesignHeight="450"
@@ -49,12 +50,14 @@
                         <TextBlock
                             VerticalAlignment="Center"
                             Classes="h4"
-                            Margin="0"
-                            Text="Status: " />
+                            Margin="0">
+                            <Run Text="{x:Static lang:Resources.txt_status}" />
+                            <Run Text=":" />
+                        </TextBlock>
 
                         <TextBlock
                             VerticalAlignment="Center"
-                            Text="{Binding State}" />
+                            Text="{Binding StateText}" />
                     </StackPanel>
 
                     <StackPanel
@@ -64,8 +67,10 @@
                         <TextBlock
                             VerticalAlignment="Center"
                             Classes="h4"
-                            Margin="0"
-                            Text="Serial number: " />
+                            Margin="0">
+                            <Run Text="{x:Static lang:Resources.txt_serial_number}" />
+                            <Run Text=":" />
+                        </TextBlock>
 
                         <TextBlock
                             VerticalAlignment="Center"
@@ -76,13 +81,13 @@
 
             <Button
                 Classes="Flat"
-                Content="Start"
+                Content="{x:Static lang:Resources.txt_start}"
                 Command="{Binding StartCommand}"
                 IsVisible="{Binding !IsRunning}" />
 
             <Button
                 Classes="Flat Accent"
-                Content="Stop"
+                Content="{x:Static lang:Resources.txt_stop}"
                 Command="{Binding StopCommand}"
                 IsVisible="{Binding IsRunning}" />
 
@@ -90,7 +95,7 @@
                 VerticalAlignment="Center"
                 Classes="Caption"
                 Margin="0">
-                <Run Text="Path " />
+                <Run Text="{x:Static lang:Resources.txt_path}" />
                 <Run Text=":" />
                 <Run Text="{Binding Path}" />
             </TextBlock>

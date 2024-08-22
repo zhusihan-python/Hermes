@@ -8,6 +8,8 @@ using Hermes.Types;
 using Material.Icons;
 using System.Threading.Tasks;
 using System;
+using Hermes.Common.Extensions;
+using Hermes.Language;
 using Hermes.Repositories;
 
 namespace Hermes.Features.UutProcessor;
@@ -17,7 +19,7 @@ public partial class UutProcessorViewModel : PageBase
     [ObservableProperty] private bool _isRunning;
     [ObservableProperty] private string _path = "";
     [ObservableProperty] private string _serialNumber = string.Empty;
-    [ObservableProperty] private UutProcessorState _state = UutProcessorState.Stopped;
+    [ObservableProperty] private string _stateText = "";
     private readonly Session _session;
     private readonly StopService _stopService;
     private readonly UutSenderService _uutSenderService;
@@ -28,7 +30,7 @@ public partial class UutProcessorViewModel : PageBase
         StopService stopService,
         UutSenderService uutSenderService,
         ISettingsRepository settingsRepository)
-        : base("UUT Processor", MaterialIconKind.FolderEye)
+        : base(Resources.txt_uut_processor, MaterialIconKind.FolderEye, PermissionLevel.Level5, 1)
     {
         this._session = session;
         this._stopService = stopService;
@@ -36,6 +38,7 @@ public partial class UutProcessorViewModel : PageBase
         this._settingsRepository = settingsRepository;
         this.Path = this._settingsRepository.Settings.InputPath;
         this.IsActive = true;
+        this.OnUutProcessorStateChanged(UutProcessorState.Stopped);
     }
 
     protected override void OnActivated()
@@ -149,9 +152,9 @@ public partial class UutProcessorViewModel : PageBase
         this.Stop();
     }
 
-    private void OnUutProcessorStateChanged(object? sender, UutProcessorState uutProcessorState)
+    private void OnUutProcessorStateChanged(UutProcessorState uutProcessorState)
     {
-        this.State = uutProcessorState;
+        this.StateText = uutProcessorState.ToTranslatedString();
     }
 
 
