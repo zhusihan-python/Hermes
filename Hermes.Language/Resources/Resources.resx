@@ -342,4 +342,10 @@
     <data name="enum_aoi" xml:space="preserve">
         <value>AOI</value>
     </data>
+    <data name="msg_spi_repair" xml:space="preserve">
+        <value>Please clean the pcb and feed it back into the screen printer</value>
+    </data>
+    <data name="c_sfc_sim_show_repair_with_message" xml:space="preserve">
+        <value>Show repair view with message</value>
+    </data>
 </root>

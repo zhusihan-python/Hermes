@@ -6,4 +6,5 @@ public partial class SuccessViewModel : ViewModelBase
 {
     [ObservableProperty] private bool _isRepair;
     [ObservableProperty] private string _serialNumber = "";
+    [ObservableProperty] private string _message = "";
 }

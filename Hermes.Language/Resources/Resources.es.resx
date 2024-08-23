@@ -335,4 +335,10 @@
     <data name="enum_qa" xml:space="preserve">
         <value>Calidad</value>
     </data>
+    <data name="msg_spi_repair" xml:space="preserve">
+        <value>Por favor barra la tarjeta e ingresela de nuevo a la impresora de pasta</value>
+    </data>
+    <data name="c_sfc_sim_show_repair_with_message" xml:space="preserve">
+        <value>Mostrar ventana de reparación con mensaje</value>
+    </data>
 </root>

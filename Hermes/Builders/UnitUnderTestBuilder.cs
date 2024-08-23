@@ -20,6 +20,7 @@ public class UnitUnderTestBuilder
     private string _serialNumber = "1A62TESTSERIALNUMBER";
     private string _fileName = "fileName";
     private bool _isPass = true;
+    private string _message = "";
     private DateTime _createdAt = DateTime.Now;
 
     private readonly FileService _fileService;
@@ -95,6 +96,7 @@ public class UnitUnderTestBuilder
             SerialNumber = parser.ParseSerialNumber(content),
             Defects = parser.ParseDefects(content),
             CreatedAt = this._createdAt,
+            Message = this._message,
             SfcResponse = _sfcResponseBuilder
                 .SerialNumber(_serialNumber)
                 .Build()
@@ -190,6 +192,12 @@ public class UnitUnderTestBuilder
             this._sfcResponseBuilder.SetOkContent();
         }
 
+        return this;
+    }
+
+    public UnitUnderTestBuilder Message(string message)
+    {
+        this._message = message;
         return this;
     }
 }

@@ -420,6 +420,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show repair view with message.
+        /// </summary>
+        public static string c_sfc_sim_show_repair_with_message {
+            get {
+                return ResourceManager.GetString("c_sfc_sim_show_repair_with_message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show stop machine view.
         /// </summary>
         public static string c_sfc_sim_show_stop_machine {
@@ -668,6 +677,15 @@ namespace Hermes.Language {
         public static string msg_invalid_token {
             get {
                 return ResourceManager.GetString("msg_invalid_token", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please clean the pcb and feed it back into the screen printer.
+        /// </summary>
+        public static string msg_spi_repair {
+            get {
+                return ResourceManager.GetString("msg_spi_repair", resourceCulture);
             }
         }
         

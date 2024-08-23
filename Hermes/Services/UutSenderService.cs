@@ -7,6 +7,7 @@ using System.Threading;
 using System;
 using System.Linq;
 using Hermes.Common.Extensions;
+using Hermes.Language;
 using Hermes.Repositories;
 
 namespace Hermes.Services;
@@ -25,6 +26,7 @@ public class UutSenderService
     private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
     private readonly FolderWatcherService _folderWatcherService;
     private readonly UnitUnderTestRepository _unitUnderTestRepository;
+    private readonly SfcResponseBuilder _sfcResponseBuilder;
     private readonly ConcurrentQueue<string> _pendingFiles = new();
     private CancellationTokenSource? _cancellationTokenSource;
     private bool _isRunning;
@@ -38,16 +40,18 @@ public class UutSenderService
         ISettingsRepository settingsRepository,
         FolderWatcherService folderWatcherService,
         UnitUnderTestBuilder unitUnderTestBuilder,
-        UnitUnderTestRepository unitUnderTestRepository)
+        UnitUnderTestRepository unitUnderTestRepository,
+        SfcResponseBuilder sfcResponseBuilder)
     {
         this._session = session;
         this._logger = logger;
-        this._settingsRepository = settingsRepository;
         this._sfcService = sfcService;
         this._fileService = fileService;
+        this._settingsRepository = settingsRepository;
         this._unitUnderTestRepository = unitUnderTestRepository;
         this._folderWatcherService = folderWatcherService;
         this._unitUnderTestBuilder = unitUnderTestBuilder;
+        this._sfcResponseBuilder = sfcResponseBuilder;
         this._folderWatcherService.FileCreated += this.OnFileCreated;
     }
 
@@ -110,7 +114,16 @@ public class UutSenderService
             return UnitUnderTest.Null;
         }
 
-        unitUnderTest.SfcResponse = await this._sfcService.SendAsync(unitUnderTest);
+        if (!_settingsRepository.Settings.SendRepairFile && unitUnderTest.IsFail)
+        {
+            unitUnderTest.SfcResponse = _sfcResponseBuilder.SetOkContent().Build();
+        }
+        else
+        {
+            unitUnderTest.SfcResponse = await this._sfcService.SendAsync(unitUnderTest);
+            unitUnderTest.Message = Resources.msg_spi_repair;
+        }
+
         if (unitUnderTest.SfcResponse.IsTimeout && this._retries < this._settingsRepository.Settings.MaxSfcRetries - 1)
         {
             this._retries += 1;

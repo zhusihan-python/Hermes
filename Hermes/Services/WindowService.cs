@@ -90,6 +90,7 @@ public class WindowService : ObservableRecipient
             SuccessView.DataContext = this._successViewModel;
             this._successViewModel.SerialNumber = message.Value.SerialNumber;
             this._successViewModel.IsRepair = message.Value.IsRepair;
+            this._successViewModel.Message = message.Value.Message;
 
             SetBottomCenterPosition(SuccessView);
             SuccessView.UpdateLayout();

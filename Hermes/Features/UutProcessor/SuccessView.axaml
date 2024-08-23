@@ -83,7 +83,14 @@
 
             <StackPanel
                 VerticalAlignment="Center"
-                Spacing="5">
+                Spacing="3">
+                
+                <TextBlock
+                    TextAlignment="Center"
+                    TextWrapping="Wrap"
+                    Classes="Caption"
+                    Foreground="White"
+                    Text="{Binding  Message}" />
 
                 <TextBlock
                     TextAlignment="Center"
