@@ -9,6 +9,7 @@ using System.Linq;
 using Hermes.Common.Extensions;
 using Hermes.Language;
 using Hermes.Repositories;
+using Hermes.Types;
 
 namespace Hermes.Services;
 
@@ -117,11 +118,13 @@ public class UutSenderService
         if (!_settingsRepository.Settings.SendRepairFile && unitUnderTest.IsFail)
         {
             unitUnderTest.SfcResponse = _sfcResponseBuilder.SetOkContent().Build();
+            unitUnderTest.Message = _settingsRepository.Settings.Station is StationType.SpiBottom or StationType.SpiTop
+                ? Resources.msg_spi_repair
+                : "";
         }
         else
         {
             unitUnderTest.SfcResponse = await this._sfcService.SendAsync(unitUnderTest);
-            unitUnderTest.Message = Resources.msg_spi_repair;
         }
 
         if (unitUnderTest.SfcResponse.IsTimeout && this._retries < this._settingsRepository.Settings.MaxSfcRetries - 1)
