@@ -25,8 +25,12 @@ public class WindowService : ObservableRecipient
     {
         get
         {
-            _settingsView ??= (_viewLocator.BuildWindow(_settingsViewModel) as SettingsView)!;
-            _settingsView.Append(_settingsViewModel.Model);
+            if (_settingsView == null)
+            {
+                _settingsView = (_viewLocator.BuildWindow(_settingsViewModel) as SettingsView)!;
+                _settingsView.Append(_settingsViewModel.Model);
+            }
+
             return _settingsView;
         }
     }
