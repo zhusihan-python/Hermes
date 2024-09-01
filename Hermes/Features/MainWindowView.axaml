@@ -10,7 +10,7 @@
                  x:Name="Self"
                  x:Class="Hermes.Features.MainWindowView"
                  x:DataType="features:MainWindowViewModel"
-                 Width="950"
+                 Width="1200"
                  Height="700"
                  WindowStartupLocation="CenterScreen"
                  Icon="avares://Hermes/AppData/Assets/logo-hermes.png"
