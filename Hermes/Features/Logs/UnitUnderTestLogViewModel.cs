@@ -1,86 +1,204 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Hermes.Repositories;
 using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Windows.Input;
+using System.Threading.Tasks;
+using Hermes.Common.Extensions;
+using Hermes.Types;
+using Hermes.Services;
+using Hermes.Models;
+using System.Linq;
+using System.Diagnostics;
+using Material.Icons;
 
 namespace Hermes.Features.Logs
 {
-    public partial class UnitUnderTestLogViewModel : INotifyPropertyChanged
+    public partial class UnitUnderTestLogViewModel : ViewModelBase
     {
+
+        private readonly FileService _fileService;
+
+        private readonly UnitUnderTestRepository _unitUnderTestRepository;
+
         public ObservableCollection<LogEntry> Logs { get; set; }
         public ObservableCollection<string> TestStatusOptions { get; set; }
-        public ObservableCollection<string> SfcResponseOptions { get; set; }
+        public ObservableCollection<SfcResponseType> SfcResponseOptions { get; set; }
 
+        [ObservableProperty]
         private string _serialNumberFilter;
-        public string SerialNumberFilter
-        {
-            get => _serialNumberFilter;
-            set
-            {
-                _serialNumberFilter = value;
-                OnPropertyChanged(nameof(SerialNumberFilter));
-            }
-        }
 
+        [ObservableProperty]
         private string _selectedTestStatus;
-        public string SelectedTestStatus
-        {
-            get => _selectedTestStatus;
-            set
-            {
-                _selectedTestStatus = value;
-                OnPropertyChanged(nameof(SelectedTestStatus));
-            }
-        }
 
+        [ObservableProperty]
         private string _selectedSfcResponse;
-        public string SelectedSfcResponse
-        {
-            get => _selectedSfcResponse;
-            set
-            {
-                _selectedSfcResponse = value;
-                OnPropertyChanged(nameof(SelectedSfcResponse));
-            }
-        }
 
-        public UnitUnderTestLogViewModel()
+        [ObservableProperty]
+        private LogEntry _selectedLogEntry;
+
+        public UnitUnderTestLogViewModel(
+            UnitUnderTestRepository unitUnderTestRepository, 
+            FileService fileService)
         {
-            Logs = new ObservableCollection<LogEntry>
-            {
-                new LogEntry { SerialNumber = "1A65ASDF", Filename = "1A65.3dx", TestStatus = "Pass", SfcResponse = "Ok", CreatedAt = "21/07/2024", IconKind = "CheckCircleOutline" },
-                new LogEntry { SerialNumber = "1AR2R43", Filename = "1AR43.3DX", TestStatus = "Pass", SfcResponse = "Wrong Station", CreatedAt = "21/04/2024", IconKind = "AlertCircleOutline" },
-            };
+            SerialNumberFilter = "";
+            SelectedTestStatus = "All";
+            //SelectedTestStatus = SfcResponseType.Ok.ToTranslatedString();
+
+            _fileService = fileService;
+
+            InitializeDataAsync(unitUnderTestRepository);
+
+            _unitUnderTestRepository = unitUnderTestRepository;
+
+            Logs = new ObservableCollection<LogEntry>();
 
             TestStatusOptions = new ObservableCollection<string>
             {
                 "Pass",
                 "Fail",
-                "Repair",
                 "All"
             };
 
-            SfcResponseOptions = new ObservableCollection<string>
-            {
-                "Ok",
-                "Wrong Station",
-                "Error",
-                "All"
-            };
+            SfcResponseOptions = new ObservableCollection<SfcResponseType>(Enum.GetValues(typeof(SfcResponseType)) as SfcResponseType[]);
+
+            LoadLogsAsync().ConfigureAwait(false);
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        
 
-        protected virtual void OnPropertyChanged(string propertyName)
+        public async Task InitializeDataAsync(UnitUnderTestRepository repository)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            await repository.AddExampleDataAsync();
         }
+
+        public async Task EditFile()
+        {
+            //var fullpath = GetFullPathBySelectedFilename();
+            var FullPath = @"C:\Users\hesbon_torres\Documents\ITEMS\fail\0712230436364105.3dx";
+            //fileService.OpenWithDefaultApp(FullPath);
+            new Process
+            {
+                StartInfo = new ProcessStartInfo(FullPath)
+                {
+                    UseShellExecute = true
+                }
+            }.Start();
+        }
+
+        public string GetFullPathBySelectedFilename()
+        {
+            var Filename = SelectedLogEntry?.Filename.ToString();
+            if (Filename == null)
+            {
+                Debug.WriteLine("No se selecciono nada");
+            }
+            var fullpath = _fileService.GetBackupFullPathByName(Filename);
+            return fullpath;
+        }
+
+        private void ReSendFile()
+        {
+            var fullpath = GetFullPathBySelectedFilename();
+            if (fullpath != null)
+            {
+                Debug.WriteLine($"Selected Filename: {fullpath}");
+            }
+            //Agregar Funcion Reenviar el archivo
+
+        }
+
+        private async Task LoadLogsAsync()
+        {
+            var units = await _unitUnderTestRepository.GetAllUnits();
+
+            foreach (var unit in units)
+            {
+                Logs.Add(new LogEntry
+                {
+                    Id = unit.Id,
+                    SerialNumber = unit.SerialNumber,
+                    Filename = unit.FileName,
+                    TestStatus = unit.IsFail ? "Fail" : "Pass",
+                    SfcResponse = unit.SfcResponse?.ResponseType.ToTranslatedString(),
+                    CreatedAt = unit.CreatedAt.ToString("dd/MM/yyyy"),
+                    IconKind = unit.IsFail ? "AlertCircleOutline" : "CheckCircleOutline"
+                });
+            }
+        }
+
+        [RelayCommand]
+        private async Task Export()
+        {
+            //Falta Crear
+        }
+
+        [RelayCommand]
+        private async Task Edit()
+        {
+            //Falta Crear, solo hice un ejemplo.
+            await EditFile();
+        }
+
+        [RelayCommand]
+        private async Task ReSend()
+        {
+            //Falta Crear, solo se verifico que retornara la ruta  y name.
+            ReSendFile();
+        }
+
+        [RelayCommand]
+        private async Task Refresh()
+        {
+            Logs.Clear();
+            SerialNumberFilter = "";
+            SelectedTestStatus = "All";
+            await LoadLogsAsync();
+        }
+
+        [RelayCommand]
+        private async Task Search()
+        {
+            Logs.Clear();
+
+            var units = await _unitUnderTestRepository.GetAllUnits();
+
+            if (!string.IsNullOrWhiteSpace(SerialNumberFilter))
+            {
+                units = units.Where(u => u.SerialNumber.ToLower().Contains(SerialNumberFilter.ToLower())).ToList();
+            }
+
+            if (!string.IsNullOrWhiteSpace(SelectedTestStatus) && SelectedTestStatus != "All")
+            {
+                bool isFail = SelectedTestStatus == "Fail";
+                units = units.Where(u => u.IsFail == isFail).ToList();
+            }
+
+            if (SelectedSfcResponse != null)
+            {
+                units = units.Where(u => u.SfcResponse?.ResponseType.ToString() == SelectedSfcResponse).ToList();
+            }
+
+            foreach (var unit in units)
+            {
+                Logs.Add(new LogEntry
+                {
+                    Id = unit.Id,
+                    SerialNumber = unit.SerialNumber,
+                    Filename = unit.FileName,
+                    TestStatus = unit.IsFail ? "Fail" : "Pass",
+                    SfcResponse = unit.SfcResponse?.ResponseType.ToTranslatedString(),
+                    CreatedAt = unit.CreatedAt.ToString("dd/MM/yyyy"),
+                    IconKind = unit.IsFail ? "AlertCircleOutline" : "CheckCircleOutline"
+                });
+            }
+        }
+
     }
 
     public class LogEntry
     {
+        public int Id { get; set; }
         public string SerialNumber { get; set; }
         public string Filename { get; set; }
         public string TestStatus { get; set; }

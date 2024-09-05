@@ -6,15 +6,19 @@ using System.Threading.Tasks;
 using Hermes.Models;
 using Hermes.Repositories;
 using Hermes.Services;
+using Hermes.Types;
 using Material.Icons;
 
 namespace Hermes.Features.Logs;
 
 public partial class LogsViewModel : PageBase
 {
-    public LogsViewModel()
-        : base("UUT Processor", MaterialIconKind.Mace)
+    public UnitUnderTestLogViewModel UnitUnderTestLogViewModel { get; set; }
+
+    public LogsViewModel(UnitUnderTestLogViewModel underTestLogViewModel)
+        : base("UUT Processor", MaterialIconKind.Mace, PermissionLevel.Level5)
     {
+        this.UnitUnderTestLogViewModel = underTestLogViewModel;
     }
 }
 

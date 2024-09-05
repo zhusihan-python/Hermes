@@ -5,7 +5,8 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
 			 xmlns:theme="clr-namespace:SukiUI.Theme;assembly=SukiUI"
 			 xmlns:local="clr-namespace:Hermes.Features.Logs"
-             x:Class="Hermes.Features.Logs.LogsView">
+             x:Class="Hermes.Features.Logs.LogsView"
+             x:DataType="local:LogsViewModel">
 	<ScrollViewer
 		   HorizontalAlignment="Center"
 		   VerticalScrollBarVisibility="Auto">
@@ -13,9 +14,7 @@
 		<WrapPanel Margin="{StaticResource DefaultMargin}"
                    theme:WrapPanelExtensions.AnimatedScroll="True"
                    Orientation="Horizontal">
-		<local:UnitUnderTestLogView>
-				
-		</local:UnitUnderTestLogView>
+		<local:UnitUnderTestLogView DataContext="{Binding UnitUnderTestLogViewModel}"/>
 	</WrapPanel>
 	</ScrollViewer>
 </UserControl>

@@ -5,6 +5,7 @@ using Polly;
 using System.IO;
 using System.Threading.Tasks;
 using System;
+using System.Diagnostics;
 
 namespace Hermes.Services;
 
@@ -77,6 +78,13 @@ public class FileService
     {
         var fileName = GetFileNameWithCurrentDate(fullPath);
         return Path.Combine(this._settingsRepository.Settings.BackupPath, fileName);
+    }
+
+    public string GetBackupFullPathByName(string fileName)
+    {
+        Debug.WriteLine($"Selected Filename: {fileName}");
+        return this._settingsRepository.Settings.BackupPath + "\\" + fileName;
+        //return Path.Combine(this._settingsRepository.Settings.BackupPath, fileName);
     }
 
     private static string GetFileNameWithCurrentDate(string fullPath)

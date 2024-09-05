@@ -7,6 +7,7 @@ using Hermes.Features.Controls.Token;
 using Hermes.Features.SettingsConfig;
 using Hermes.Features.SfcSimulator;
 using Hermes.Features.UutProcessor;
+using Hermes.Features.Logs;
 using Hermes.Features;
 using Hermes.Models;
 using Hermes.Repositories;
@@ -108,5 +109,9 @@ public partial class App
         services.AddTransient<TokenView>();
         services.AddTransient<TokenViewModel>();
         services.AddTransient<SettingsViewModel>();
+        services.AddTransient<LogsView>();
+        services.AddTransient<LoginViewModel>();
+        services.AddTransient<UnitUnderTestLogView>();
+        services.AddTransient<UnitUnderTestLogViewModel>();
     }
 }
