@@ -56,6 +56,7 @@ public partial class App
         services.AddSingleton<HermesContext>();
         services.AddSingleton<ISettingsRepository, SettingsRepository>();
         services.AddTransient<IDefectRepository, DefectRepository>();
+        services.AddTransient<SfcOracleRepository>();
         services.AddTransient<SfcResponseRepository>();
         services.AddTransient<StopRepository>();
         services.AddTransient<UnitUnderTestRepository>();

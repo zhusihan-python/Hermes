@@ -16,7 +16,7 @@ namespace Hermes.Features.Login;
 public partial class LoginViewModel : PageBase
 {
     [ObservableProperty] private User _user = User.Null;
-    [ObservableProperty] private string _token;
+    [ObservableProperty] private string _token = "";
     [ObservableProperty] private bool _isLoggedIn;
     [ObservableProperty] private bool _isLoggingIn;
     [ObservableProperty] private DepartmentType _department;

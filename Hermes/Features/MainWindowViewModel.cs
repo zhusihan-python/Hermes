@@ -42,6 +42,7 @@ namespace Hermes.Features
             this._theme = SukiTheme.GetInstance();
             this._theme.ChangeBaseTheme(ThemeVariant.Light);
             this.Pages = pages.ToList();
+            this.TitleBarVisible = false;
             this.ConfigureBasedOnSession();
             this.UpdateBaseTheme();
             if (settingsRepository.Settings.AutostartUutProcessor)

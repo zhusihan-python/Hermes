@@ -13,7 +13,7 @@ public class FileService
             var data = AesEncryptor.Decrypt(reader.ReadToEnd());
             return JsonConvert.DeserializeObject<T>(data);
         }
-        catch (Exception e )
+        catch (Exception )
         {
             return default;
         }

@@ -1,54 +1,149 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using DynamicData;
+using Hermes.Common.Messages;
 using Hermes.Models;
+using Hermes.Repositories;
 using Hermes.Types;
 using Material.Icons;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
+using System;
 
 namespace Hermes.Features.PackageId;
 
-public class PackageIdViewModel : PageBase
+public partial class PackageIdViewModel : PageBase
 {
-    public ObservableCollection<Package> Packages { get; set; } = new()
-    {
-        new Package()
-        {
-            Id = "1234567890",
-            Quantity = 10,
-            QuantityUsed = 5,
-            Opened = DateTime.Now
-        }
-    };
+    [ObservableProperty] private bool _isLoadingPkgid;
+    [ObservableProperty] private double _pkgidQtyUsed;
+    [ObservableProperty] private double _pkgidPercentUsed;
 
-    public ObservableCollection<UnitUnderTest> UnitsUnderTest { get; set; } = new()
-    {
-        new UnitUnderTest()
-        {
-            Id = 1,
-            FileName = "FileName",
-            SerialNumber = "SerialNumber",
-            CreatedAt = DateTime.Now
-        }
-    };
+    [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(SearchByPkgidCommand))]
+    private string _pkgidText = "";
 
-    public PackageIdViewModel() : base("Package Id", MaterialIconKind.PackageVariant, PermissionLevel.Level1, 3)
+    [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(PkgidReloadCommand))]
+    private Package _package = Package.Null;
+
+    public ObservableCollection<UnitUnderTest> UnitsUnderTest { get; set; } = [];
+
+    [ObservableProperty] private bool _isWorkOrderLoading;
+
+    [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(SearchByWorkOrderCommand))]
+    private string _workOrderText = "";
+
+    [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(WorkOrderReloadCommand))]
+    private WorkOrder _workOrder = WorkOrder.Null;
+
+    public ObservableCollection<Package> Packages { get; set; } = [];
+
+    private readonly SfcOracleRepository _sfcOracleRepository;
+
+    public PackageIdViewModel(SfcOracleRepository sfcOracleRepository) : base("Package Id",
+        MaterialIconKind.PackageVariant, PermissionLevel.Level1, 3)
     {
-        for (int i = 0; i < 100; i++)
+        this._sfcOracleRepository = sfcOracleRepository;
+    }
+
+    [RelayCommand(CanExecute = nameof(CanExecutePkgidKeyReload))]
+    private async Task PkgidReload()
+    {
+        await this.SearchByPkgid(this.Package.Id);
+    }
+
+    private bool CanExecutePkgidKeyReload => !this.Package.IsNull;
+
+    [RelayCommand]
+    private async Task PkgidKeyDown()
+    {
+        await this.SearchByPkgid(this.PkgidText);
+    }
+
+    [RelayCommand(CanExecute = nameof(CanExecuteSearchByPkgid))]
+    private async Task SearchByPkgid(string pkgid)
+    {
+        try
         {
-            this.UnitsUnderTest.Add(new UnitUnderTest()
+            IsLoadingPkgid = true;
+            this.UnitsUnderTest.Clear();
+
+            var normalizedPkgId = Package.NormalizePkgId(pkgid);
+            this.Package = await this._sfcOracleRepository.GetPackage(normalizedPkgId);
+            if (this.Package.IsNull)
             {
-                Id = i,
-                FileName = $"FileName{i}",
-                SerialNumber = $"SerialNumber{i}",
-                CreatedAt = DateTime.Now
-            });
-            
-            this.Packages.Add(new Package()
+                //TODO language
+                Messenger.Send(new ShowToastMessage("Not found", "Package not found"));
+            }
+            else
             {
-                Id = "1234567890",
-                Quantity = 10,
-                QuantityUsed = Random.Shared.Next(10),
-                Opened = DateTime.Now
-            });
+                var uuts = await this._sfcOracleRepository.GetAllUnitsUnderTest(normalizedPkgId);
+                this.UnitsUnderTest.AddRange(uuts.ToList());
+                this.PkgidText = "";
+                this.Package.Id = pkgid;
+            }
+        }
+        catch (Exception)
+        {
+            //TODO language
+            Messenger.Send(new ShowToastMessage("Error", "An error occurred while getting the package information"));
+            this.Package = Package.Null;
+        }
+        finally
+        {
+            this.PkgidQtyUsed = this.UnitsUnderTest.Count();
+            this.PkgidPercentUsed = this.Package.Quantity > 0 ? this.PkgidQtyUsed / this.Package.Quantity * 100 : 0;
+            IsLoadingPkgid = false;
         }
     }
+
+    private bool CanExecuteSearchByPkgid => !string.IsNullOrEmpty(this.PkgidText);
+
+    [RelayCommand(CanExecute = nameof(CanExecuteWorkOrderReload))]
+    private async Task WorkOrderReload()
+    {
+        await this.SearchByWorkOrder(this.WorkOrder.Id);
+    }
+
+    private bool CanExecuteWorkOrderReload => !this.WorkOrder.IsNull;
+
+    [RelayCommand]
+    private async Task WorkOrderKeyDown()
+    {
+        await this.SearchByWorkOrder(this.WorkOrderText);
+    }
+
+    [RelayCommand(CanExecute = nameof(CanExecuteSearchByWorkOrder))]
+    private async Task SearchByWorkOrder(string workOrder)
+    {
+        try
+        {
+            IsWorkOrderLoading = true;
+            this.Packages.Clear();
+
+            var normalizedWorkOrder = Package.NormalizeWorkOrder(workOrder);
+            this.WorkOrder = await this._sfcOracleRepository.GetWorkOrder(normalizedWorkOrder);
+            if (this.WorkOrder.IsNull)
+            {
+                //TODO language
+                Messenger.Send(new ShowToastMessage("Not found", "Work order not found"));
+            }
+            else
+            {
+                var packages = await this._sfcOracleRepository.GetAllPackages(normalizedWorkOrder);
+                this.Packages.AddRange(packages.ToList());
+                this.WorkOrderText = "";
+            }
+        }
+        catch (Exception)
+        {
+            this.WorkOrder = WorkOrder.Null;
+        }
+        finally
+        {
+            IsWorkOrderLoading = false;
+        }
+    }
+
+    private bool CanExecuteSearchByWorkOrder => !string.IsNullOrEmpty(this.WorkOrderText);
 }
