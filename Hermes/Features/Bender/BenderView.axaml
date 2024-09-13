@@ -1,0 +1,248 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+             xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:local="clr-namespace:Hermes.Features.Bender"
+             xmlns:converters="clr-namespace:Hermes.Common.Converters"
+             mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="700"
+             x:Class="Hermes.Features.Bender.BenderView"
+             x:DataType="local:BenderViewModel">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid ColumnDefinitions="*,*">
+
+            <!-- Package scanner -->
+            <controls:GlassCard Margin="{StaticResource DefaultMargin}">
+                <DockPanel>
+
+                    <Grid DockPanel.Dock="Top" ColumnDefinitions="*,*">
+
+                        <TextBlock Grid.Column="0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center">
+                            <Run Text="Work order:" />
+                            <Run Text="000007045008" />
+                        </TextBlock>
+
+                        <Button Grid.Column="1" HorizontalAlignment="Right"
+                                Padding="10"
+                                VerticalAlignment="Center">
+                            <StackPanel Orientation="Horizontal">
+                                <avalonia:MaterialIcon Kind="SwapHorizontal"
+                                                       Margin="0 0 5 3"
+                                                       VerticalAlignment="Bottom" />
+                                <TextBlock Text="Change work order" />
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+
+                    <Border DockPanel.Dock="Top"
+                            Width="100"
+                            Height="100"
+                            Margin="10"
+                            Background="Gray"
+                            BorderThickness="1"
+                            CornerRadius="{StaticResource DefaultCornerRadius}">
+                    </Border>
+
+                    <WrapPanel DockPanel.Dock="Top"
+                               HorizontalAlignment="Center">
+
+                        <StackPanel>
+                            <TextBlock Margin="8 0 0 0" Text="Package 2D code" />
+                            <TextBox Width="500" />
+                        </StackPanel>
+
+                        <StackPanel>
+                            <TextBlock Margin="8 0 0 0" Text="HH PN" />
+                            <TextBox Width="250" />
+                        </StackPanel>
+
+
+                        <StackPanel>
+                            <TextBlock Margin="8 0 0 0" Text="Qty" />
+                            <TextBox Width="250" />
+                        </StackPanel>
+
+                        <StackPanel>
+                            <TextBlock Margin="8 0 0 0" Text="Supplier PN" />
+                            <TextBox Width="250" />
+                        </StackPanel>
+
+                        <StackPanel>
+                            <TextBlock Margin="8 0 0 0" Text="Date code" />
+                            <TextBox Width="250" />
+                        </StackPanel>
+
+                        <StackPanel>
+                            <TextBlock Margin="8 0 0 0" Text="Lot No" />
+                            <TextBox Width="250" />
+                        </StackPanel>
+
+                        <StackPanel>
+                            <TextBlock Margin="8 0 0 0" Text="Pkgid" />
+                            <TextBox Width="250" />
+                        </StackPanel>
+
+                        <StackPanel>
+                            <TextBlock Margin="8 0 0 0" Text="Vendor" />
+                            <TextBox Width="250" />
+                        </StackPanel>
+
+                    </WrapPanel>
+
+                    <StackPanel DockPanel.Dock="Top"
+                                Orientation="Horizontal"
+                                HorizontalAlignment="Center"
+                                Spacing="100"
+                                Margin="0 20 0 0">
+
+                        <StackPanel>
+                            <Border Background="Gray"
+                                    CornerRadius="{StaticResource DefaultCornerRadius}"
+                                    Width="50"
+                                    Height="50" />
+                            <TextBlock HorizontalAlignment="Center"
+                                       Text="Part number" />
+                            <TextBlock HorizontalAlignment="Center"
+                                       Text="1AFG-A45GF-G" />
+                        </StackPanel>
+
+                        <StackPanel>
+                            <Border Background="Gray"
+                                    CornerRadius="{StaticResource DefaultCornerRadius}"
+                                    Width="50"
+                                    Height="50" />
+                            <TextBlock HorizontalAlignment="Center"
+                                       Text="Rev" />
+                            <TextBlock HorizontalAlignment="Center"
+                                       Text="A0" />
+                        </StackPanel>
+
+                        <StackPanel>
+                            <Border Background="Gray"
+                                    CornerRadius="{StaticResource DefaultCornerRadius}"
+                                    Width="50"
+                                    Height="50" />
+                            <TextBlock HorizontalAlignment="Center"
+                                       Text="Work order" />
+                            <TextBlock HorizontalAlignment="Center"
+                                       Text="000007045008" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <Border DockPanel.Dock="Bottom"
+                            Background="Gray"
+                            CornerRadius="{StaticResource DefaultCornerRadius}"
+                            Margin="0 5 0 0">
+                        <TextBlock HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="25"
+                                   Text="Escanea el codigo 2D del paquete">
+                        </TextBlock>
+                    </Border>
+                </DockPanel>
+            </controls:GlassCard>
+
+            <controls:GlassCard Grid.Column="1" Margin="{StaticResource DefaultMargin}">
+                <StackPanel Spacing="30">
+
+                    <!-- Filter type -->
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Center"
+                                Spacing="{StaticResource DefaultSpacing}">
+
+                        <TextBlock Text="Bender" />
+
+                        <RadioButton x:Name="DateRadioButton"
+                                     GroupName="filter"
+                                     Content="Date"
+                                     IsChecked="{Binding IsDateFilter, Mode=TwoWay}" />
+
+                        <RadioButton GroupName="filter"
+                                     Content="Pkgid" />
+                    </StackPanel>
+
+                    <!-- Filter by date -->
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Center"
+                                Spacing="{StaticResource DefaultSpacing}"
+                                IsVisible="{Binding IsDateFilter}">
+
+                        <TextBlock Text="From:"
+                                   VerticalAlignment="Center" />
+
+                        <CalendarDatePicker Height="35"
+                                            DisplayDateEnd="{Binding ToDate, Mode=TwoWay}"
+                                            SelectedDate="{Binding FromDate, Mode=TwoWay}"
+                                            DisplayDate="{Binding FromDate, Mode=TwoWay}" />
+                        <TextBlock Text="To:"
+                                   VerticalAlignment="Center" />
+
+                        <CalendarDatePicker Height="35"
+                                            DisplayDateStart="{Binding FromDate, Mode=TwoWay}"
+                                            SelectedDate="{Binding ToDate, Mode=TwoWay}"
+                                            DisplayDate="{Binding ToDate, Mode=TwoWay}" />
+
+                        <Button Padding="5"
+                                Width="35"
+                                Command="{Binding FindByDateCommand}">
+                            <avalonia:MaterialIcon Kind="Search" />
+                        </Button>
+
+                    </StackPanel>
+
+                    <!-- Filter by pkgid -->
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Center"
+                                Spacing="{StaticResource DefaultSpacing}"
+                                IsVisible="{Binding !IsDateFilter}">
+
+                        <TextBlock Text="Pkgid:"
+                                   VerticalAlignment="Center" />
+
+                        <TextBox Width="200" />
+
+                        <Button Padding="5" Width="35" Height="35">
+                            <avalonia:MaterialIcon Kind="Search" />
+                        </Button>
+
+                    </StackPanel>
+
+                    <!-- Datagrid -->
+                    <DataGrid ItemsSource="{Binding  Packages}" IsReadOnly="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Pkgid" Binding="{Binding Id}" />
+                            <DataGridTextColumn Header="Sfc open"
+                                                Binding="{Binding Opened, Converter={x:Static converters:DateConverters.ToShortString}}" />
+                            <DataGridTemplateColumn Header="Loaded">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center">
+
+                                            <Button
+                                                HorizontalContentAlignment="Center"
+                                                Command="{Binding $parent[UserControl].((local:BenderViewModel)DataContext).LoadCommand}"
+                                                CommandParameter="{Binding .}"
+                                                Content="Load"
+                                                Padding="5"
+                                                IsVisible="{Binding CanLoad}" />
+
+                                            <TextBlock
+                                                Text="{Binding Loaded, Converter={x:Static converters:DateConverters.ToShortString}}"
+                                                IsVisible="{Binding !CanLoad}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="Used"
+                                                Binding="{Binding Used, Converter={x:Static converters:DateConverters.ToShortString}}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </controls:GlassCard>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

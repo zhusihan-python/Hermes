@@ -17,6 +17,10 @@
                  Title="Hermes"
                  ClosingBehavior="OwnerAndChildWindows">
 
+    <suki:SukiWindow.Hosts>
+        <suki:SukiToastHost Manager="{Binding ToastManager}"/>
+    </suki:SukiWindow.Hosts>
+    
     <suki:SukiWindow.LogoContent>
         <avalonia:MaterialIcon Width="14"
                                Height="14"

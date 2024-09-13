@@ -9,6 +9,7 @@ using Hermes.Models;
 using Hermes.Repositories;
 using Material.Icons;
 using System.Threading.Tasks;
+using Avalonia.Controls.Notifications;
 
 
 namespace Hermes.Features.Login;
@@ -49,7 +50,7 @@ public partial class LoginViewModel : PageBase
         this.Token = string.Empty;
         if (user.IsNull)
         {
-            Messenger.Send(new ShowToastMessage(Resources.txt_invalid_token, Resources.msg_invalid_token));
+            Messenger.Send(new ShowToastMessage(Resources.txt_invalid_token, Resources.msg_invalid_token, NotificationType.Error));
         }
     }
 

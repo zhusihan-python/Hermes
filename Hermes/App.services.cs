@@ -16,6 +16,7 @@ using System.Linq;
 using System;
 using Hermes.Cipher;
 using Hermes.Features.Login;
+using SukiUI.Toasts;
 using AesEncryptor = Hermes.Common.AesEncryptor;
 
 namespace Hermes;
@@ -78,8 +79,9 @@ public partial class App
 
     private static void ConfigureServices(ServiceCollection services)
     {
-        services.AddSingleton<ViewLocator>();
+        services.AddSingleton<ISukiToastManager, SukiToastManager>();
         services.AddSingleton<PageNavigationService>();
+        services.AddSingleton<ViewLocator>();
         services.AddTransient<FileService>();
         services.AddTransient<FolderWatcherService>();
         services.AddTransient<ISfcService, SharedFolderSfcService>();
@@ -87,6 +89,7 @@ public partial class App
         services.AddTransient<StopService>();
         services.AddTransient<UutSenderService>();
         services.AddTransient<WindowService>();
+
     }
 
     private static void ConfigurePages(ServiceCollection services)

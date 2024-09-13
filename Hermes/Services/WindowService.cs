@@ -13,6 +13,7 @@ using SukiUI.Controls;
 using System.Threading.Tasks;
 using System.Threading;
 using System;
+using SukiUI.Toasts;
 
 namespace Hermes.Services;
 
@@ -47,13 +48,15 @@ public class WindowService : ObservableRecipient
     private SuccessView? _successView;
     private SettingsView? _settingsView;
     private CancellationTokenSource _successViewCancellationTokenSource = new();
+    private readonly ISukiToastManager _toastManager;
 
     public WindowService(
         ViewLocator viewLocator,
         ISettingsRepository settingsRepository,
         SettingsViewModel settingsViewModel,
         StopViewModel stopViewModel,
-        SuccessViewModel successViewModel)
+        SuccessViewModel successViewModel,
+        ISukiToastManager toastManager)
     {
         this._viewLocator = viewLocator;
         this._settingsRepository = settingsRepository;
@@ -61,6 +64,7 @@ public class WindowService : ObservableRecipient
         this._stopViewModel = stopViewModel;
         this._stopViewModel.Restored += this.OnStopViewModelRestored;
         this._settingsViewModel = settingsViewModel;
+        this._toastManager = toastManager;
     }
 
     public void Start()
@@ -145,10 +149,13 @@ public class WindowService : ObservableRecipient
 
     public void ShowToast(object recipient, ShowToastMessage message)
     {
-        Dispatcher.UIThread.Invoke(() =>
-        {
-            SukiHost.ShowToast(message.Title, message.Value, duration: TimeSpan.FromSeconds(message.Duration));
-        });
+        _toastManager.CreateToast()
+            .OfType(message.Type)
+            .WithTitle(message.Title)
+            .WithContent(message.Value)
+            .Dismiss().After(TimeSpan.FromSeconds(message.Duration))
+            .Dismiss().ByClicking()
+            .Queue();
     }
 
     private void ShowSettings(object recipient, ShowSettingsMessage message)

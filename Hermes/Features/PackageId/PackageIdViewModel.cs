@@ -11,6 +11,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
+using Avalonia.Controls.Notifications;
 
 namespace Hermes.Features.PackageId;
 
@@ -73,7 +74,7 @@ public partial class PackageIdViewModel : PageBase
             if (this.Package.IsNull)
             {
                 //TODO language
-                Messenger.Send(new ShowToastMessage("Not found", "Package not found"));
+                Messenger.Send(new ShowToastMessage("Not found", "Package not found", NotificationType.Warning));
             }
             else
             {
@@ -86,7 +87,8 @@ public partial class PackageIdViewModel : PageBase
         catch (Exception)
         {
             //TODO language
-            Messenger.Send(new ShowToastMessage("Error", "An error occurred while getting the package information"));
+            Messenger.Send(new ShowToastMessage("Error", "An error occurred while getting the package information",
+                NotificationType.Error));
             this.Package = Package.Null;
         }
         finally
@@ -126,7 +128,7 @@ public partial class PackageIdViewModel : PageBase
             if (this.WorkOrder.IsNull)
             {
                 //TODO language
-                Messenger.Send(new ShowToastMessage("Not found", "Work order not found"));
+                Messenger.Send(new ShowToastMessage("Not found", "Work order not found", NotificationType.Warning));
             }
             else
             {

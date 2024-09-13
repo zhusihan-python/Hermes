@@ -14,12 +14,15 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Hermes.Types;
+using SukiUI.Toasts;
 
 namespace Hermes.Features
 {
     public partial class MainWindowViewModel : ViewModelBase, IRecipient<NavigateMessage>
     {
         public List<PageBase> Pages { get; }
+        public ISukiToastManager ToastManager { get; }
+
         public ObservableCollection<PageBase> ShownPages { get; set; } = [];
         [ObservableProperty] private ThemeVariant? _baseTheme;
         [ObservableProperty] private string _baseThemeText = "";
@@ -35,7 +38,8 @@ namespace Hermes.Features
         public MainWindowViewModel(
             Session session,
             IEnumerable<PageBase> pages,
-            ISettingsRepository settingsRepository)
+            ISettingsRepository settingsRepository,
+            ISukiToastManager toastManager)
         {
             this._session = session;
             this._session.UserChanged += this.OnUserChanged;
@@ -43,6 +47,7 @@ namespace Hermes.Features
             this._theme.ChangeBaseTheme(ThemeVariant.Light);
             this.Pages = pages.ToList();
             this.TitleBarVisible = false;
+            this.ToastManager = toastManager;
             this.ConfigureBasedOnSession();
             this.UpdateBaseTheme();
             if (settingsRepository.Settings.AutostartUutProcessor)
