@@ -97,7 +97,7 @@
                                 <DataGridTextColumn Header="PkgId" Binding="{Binding Id}" />
                                 <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" />
                                 <DataGridTextColumn Header="Used" Binding="{Binding QuantityUsed}" />
-                                <DataGridTextColumn Header="Opened At" Binding="{Binding Opened}" />
+                                <DataGridTextColumn Header="Opened At" Binding="{Binding OpenedAt}" />
                             </DataGrid.Columns>
                         </DataGrid>
                     </DockPanel>

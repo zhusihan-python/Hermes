@@ -348,4 +348,7 @@
     <data name="c_sfc_sim_show_repair_with_message" xml:space="preserve">
         <value>Show repair view with message</value>
     </data>
+    <data name="txt_loading" xml:space="preserve">
+        <value>Loading...</value>
+    </data>
 </root>

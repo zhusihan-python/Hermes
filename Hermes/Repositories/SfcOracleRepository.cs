@@ -11,7 +11,57 @@ namespace Hermes.Repositories;
 
 public class SfcOracleRepository
 {
-    private const string ConString = "Data Source=10.12.171.61:1526/GDLSFCDB;User Id=MPROGRAM;Password=GOODDFMS;";
+    private const string ConString = "Data Source=10.12.171.61:1526/GDLSFCDB;User Id=SFIS1;Password=sfis1;";
+
+    public async Task<int> SetPackageTrackingLoadedAt(string pkgid)
+    {
+        return await this.ExecuteQueryAsync($"""
+                                             UPDATE SFISM4.H_PACKAGES_TRACK
+                                             SET LOADED_AT = SYSTIMESTAMP
+                                             WHERE PKGID = :pkgid
+                                             """, new { pkgid });
+    }
+
+    public async Task<IEnumerable<Package>> GetAllPackagesTrackingByPkgid(string pkgid)
+    {
+        return await this.GetAllPackagesTracking(pkgid: pkgid);
+    }
+
+    public async Task<IEnumerable<Package>> GetAllPackagesTrackingByDate(string line, DateTime fromDate,
+        DateTime toDate)
+    {
+        return await this.GetAllPackagesTracking(line, fromDate, toDate);
+    }
+
+    private async Task<IEnumerable<Package>> GetAllPackagesTracking(
+        string? line = null,
+        DateTime? fromDate = null,
+        DateTime? toDate = null,
+        string? pkgid = null)
+    {
+        var whereClause = "pkg_track.PKGID = :pkgid";
+        if (string.IsNullOrEmpty(pkgid))
+        {
+            whereClause = "pkg_track.LINE = :line AND SFISM4.R_PKGID_BOM_T.CDATE BETWEEN :fromDate AND :toDate";
+        }
+
+        return await this.Query<Package>($"""
+                                          SELECT MAX(pkg_track.PKGID)             AS Id,
+                                                 MAX(pkg_track.LINE)              AS Line,
+                                                 MAX(SFIS1.C_PCB_PRINT_T.QTY)     AS Quantity,
+                                                 COUNT(*)                         AS QuantityUsed,
+                                                 MAX(CDATE)                       AS OpenedAt,
+                                                 MAX(pkg_track.LOADED_AT)         AS LoadedAt,
+                                                 MAX(SFIS1.C_PCB_PRINT_T.IN_TIME) AS LastUsedAt
+                                          FROM SFISM4.H_PACKAGES_TRACK pkg_track
+                                                   INNER JOIN SFISM4.R_PKGID_BOM_T ON pkg_track.PKGID = R_PKGID_BOM_T.PKG_ID
+                                                   LEFT JOIN SFIS1.C_PCB_PRINT_T ON SFIS1.C_PCB_PRINT_T.PKGID = pkg_track.PKGID
+                                          WHERE 
+                                              {whereClause}
+                                          GROUP BY pkg_track.PKGID
+                                          ORDER BY OpenedAt DESC, LoadedAt DESC
+                                          """, new { line, fromDate, toDate, pkgid });
+    }
 
     public async Task<IEnumerable<UnitUnderTest>> GetAllUnitsUnderTest(string pkgid)
     {
@@ -94,6 +144,24 @@ public class SfcOracleRepository
         catch (Exception)
         {
             return new List<T>();
+        }
+    }
+
+    private async Task<int> ExecuteQueryAsync(string sql, object? param = null)
+    {
+        await using var connection = new OracleConnection(ConString);
+        try
+        {
+            connection.Open();
+            return await connection.ExecuteAsync(sql, param);
+        }
+        catch (Exception e) when (e is OracleException)
+        {
+            throw;
+        }
+        catch (Exception)
+        {
+            return 0;
         }
     }
 

@@ -18,7 +18,7 @@ public class NumberRowConverter : IValueConverter
         {
             if (value is DataGridRow row)
             {
-                return (row.GetIndex() + 1).ToString();
+                return (row.Index + 1).ToString();
             }
             else
             {
