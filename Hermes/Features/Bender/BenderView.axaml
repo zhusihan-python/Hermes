@@ -158,85 +158,126 @@
                 <suki:BusyArea BusyText="{x:Static lang:Resources.txt_loading}"
                                IsBusy="{Binding IsDataLoading}">
 
-                    <StackPanel Spacing="20">
+                    <Grid RowDefinitions="*,Auto">
+                        <StackPanel Spacing="20">
 
-                        <!-- Filter type -->
-                        <StackPanel Orientation="Horizontal"
-                                    HorizontalAlignment="Center"
-                                    Spacing="{StaticResource DefaultSpacing}">
+                            <!-- Filter type -->
+                            <StackPanel Orientation="Horizontal"
+                                        HorizontalAlignment="Center"
+                                        Spacing="{StaticResource DefaultSpacing}">
 
-                            <TextBlock Text="Bender" />
+                                <TextBlock Text="Bender" />
 
-                            <RadioButton x:Name="DateRadioButton"
-                                         GroupName="filter"
-                                         Content="Date"
-                                         IsChecked="{Binding IsDateFilter, Mode=TwoWay}" />
+                                <RadioButton x:Name="DateRadioButton"
+                                             GroupName="filter"
+                                             Content="Date"
+                                             IsChecked="{Binding IsDateFilter, Mode=TwoWay}" />
 
-                            <RadioButton GroupName="filter"
-                                         Content="Pkgid" />
+                                <RadioButton GroupName="filter"
+                                             Content="Pkgid" />
+                            </StackPanel>
+
+                            <!-- Filter by date -->
+                            <StackPanel Orientation="Horizontal"
+                                        HorizontalAlignment="Center"
+                                        Spacing="{StaticResource DefaultSpacing}"
+                                        IsVisible="{Binding IsDateFilter}">
+
+                                <TextBlock Text="From:"
+                                           VerticalAlignment="Center" />
+
+                                <CalendarDatePicker Height="35"
+                                                    DisplayDateEnd="{Binding ToDate, Mode=TwoWay}"
+                                                    SelectedDate="{Binding FromDate, Mode=TwoWay}"
+                                                    DisplayDate="{Binding FromDate, Mode=TwoWay}" />
+                                <TextBlock Text="To:"
+                                           VerticalAlignment="Center" />
+
+                                <CalendarDatePicker Height="35"
+                                                    DisplayDateStart="{Binding FromDate, Mode=TwoWay}"
+                                                    SelectedDate="{Binding ToDate, Mode=TwoWay}"
+                                                    DisplayDate="{Binding ToDate, Mode=TwoWay}" />
+
+                                <Button Padding="5"
+                                        Width="35"
+                                        Command="{Binding FindByDateCommand}">
+                                    <avalonia:MaterialIcon Kind="Search" />
+                                </Button>
+
+                            </StackPanel>
+
+                            <!-- Filter by pkgid -->
+                            <StackPanel Orientation="Horizontal"
+                                        HorizontalAlignment="Center"
+                                        Spacing="{StaticResource DefaultSpacing}"
+                                        IsVisible="{Binding !IsDateFilter}">
+
+                                <TextBlock Text="Pkgid:"
+                                           VerticalAlignment="Center" />
+
+                                <TextBox Width="270"
+                                         Text="{Binding Pkgid, Mode=TwoWay}">
+                                    <TextBox.KeyBindings>
+                                        <KeyBinding Gesture="Enter" Command="{Binding FindByPkgidCommand}" />
+                                    </TextBox.KeyBindings>
+                                </TextBox>
+
+                                <Button Padding="5" Width="35" Height="35"
+                                        Command="{Binding FindByPkgidCommand}">
+                                    <avalonia:MaterialIcon Kind="Search" />
+                                </Button>
+
+                            </StackPanel>
+
+                            <!-- Datagrid -->
+                            <DataGrid ItemsSource="{Binding  Packages}"
+                                      IsReadOnly="True">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Pkgid" Binding="{Binding Id}" />
+                                    <DataGridTextColumn Header="Sfc Open At"
+                                                        Binding="{Binding OpenedAt, Converter={x:Static converters:DateConverters.ToShortString}}" />
+                                    <DataGridTemplateColumn Header="Loaded At">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel HorizontalAlignment="Center"
+                                                            VerticalAlignment="Center">
+
+                                                    <Button
+                                                        HorizontalContentAlignment="Center"
+                                                        Command="{Binding $parent[UserControl].((local:BenderViewModel)DataContext).LoadCommand}"
+                                                        CommandParameter="{Binding .}"
+                                                        Content="Load"
+                                                        Padding="5"
+                                                        IsVisible="{Binding CanLoad}" />
+
+                                                    <TextBlock
+                                                        Text="{Binding LoadedAt, Converter={x:Static converters:DateConverters.ToShortString}}"
+                                                        IsVisible="{Binding !CanLoad}" />
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTextColumn Header="Used At"
+                                                        Binding="{Binding UsedAt, Converter={x:Static converters:DateConverters.ToShortString}}" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+
                         </StackPanel>
 
-                        <!-- Filter by date -->
-                        <StackPanel Orientation="Horizontal"
-                                    HorizontalAlignment="Center"
-                                    Spacing="{StaticResource DefaultSpacing}"
-                                    IsVisible="{Binding IsDateFilter}">
-
-                            <TextBlock Text="From:"
-                                       VerticalAlignment="Center" />
-
-                            <CalendarDatePicker Height="35"
-                                                DisplayDateEnd="{Binding ToDate, Mode=TwoWay}"
-                                                SelectedDate="{Binding FromDate, Mode=TwoWay}"
-                                                DisplayDate="{Binding FromDate, Mode=TwoWay}" />
-                            <TextBlock Text="To:"
-                                       VerticalAlignment="Center" />
-
-                            <CalendarDatePicker Height="35"
-                                                DisplayDateStart="{Binding FromDate, Mode=TwoWay}"
-                                                SelectedDate="{Binding ToDate, Mode=TwoWay}"
-                                                DisplayDate="{Binding ToDate, Mode=TwoWay}" />
-
-                            <Button Padding="5"
-                                    Width="35"
-                                    Command="{Binding FindByDateCommand}">
-                                <avalonia:MaterialIcon Kind="Search" />
-                            </Button>
-
-                        </StackPanel>
-
-                        <!-- Filter by pkgid -->
-                        <StackPanel Orientation="Horizontal"
-                                    HorizontalAlignment="Center"
-                                    Spacing="{StaticResource DefaultSpacing}"
-                                    IsVisible="{Binding !IsDateFilter}">
-
-                            <TextBlock Text="Pkgid:"
-                                       VerticalAlignment="Center" />
-
-                            <TextBox Width="270"
-                                     Text="{Binding Pkgid, Mode=TwoWay}">
-                                <TextBox.KeyBindings>
-                                    <KeyBinding Gesture="Enter" Command="{Binding FindByPkgidCommand}" />
-                                </TextBox.KeyBindings>
-                            </TextBox>
-
-                            <Button Padding="5" Width="35" Height="35"
-                                    Command="{Binding FindByPkgidCommand}">
-                                <avalonia:MaterialIcon Kind="Search" />
-                            </Button>
-
-                        </StackPanel>
-                        
                         <!-- Reload data -->
                         <StackPanel Orientation="Horizontal"
                                     Margin="0"
-                                    HorizontalAlignment="Center">
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Bottom"
+                                    Spacing="10">
+
                             <TextBlock VerticalAlignment="Center">
-                                <Run Text="Last data loaded at: " />
-                                <Run
-                                    Text="{Binding LastDataLoadedAt, Converter={x:Static converters:DateConverters.ToShortString}}" />
+                                <Run Text="Last refresh at: " />
+                                <Run Text="{Binding LastDataLoadedAt}" />
                             </TextBlock>
+
+                            <ProgressBar Value="{Binding ElapsedRefreshPercentage}"
+                                         ShowProgressText="False" />
 
                             <Button VerticalAlignment="Center"
                                     Padding="5"
@@ -245,39 +286,7 @@
                                 <avalonia:MaterialIcon Kind="Reload" />
                             </Button>
                         </StackPanel>
-
-                        <!-- Datagrid -->
-                        <DataGrid ItemsSource="{Binding  Packages}" IsReadOnly="True">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="Pkgid" Binding="{Binding Id}" />
-                                <DataGridTextColumn Header="Sfc Open At"
-                                                    Binding="{Binding OpenedAt, Converter={x:Static converters:DateConverters.ToShortString}}" />
-                                <DataGridTemplateColumn Header="Loaded At">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <StackPanel HorizontalAlignment="Center"
-                                                        VerticalAlignment="Center">
-
-                                                <Button
-                                                    HorizontalContentAlignment="Center"
-                                                    Command="{Binding $parent[UserControl].((local:BenderViewModel)DataContext).LoadCommand}"
-                                                    CommandParameter="{Binding .}"
-                                                    Content="Load"
-                                                    Padding="5"
-                                                    IsVisible="{Binding CanLoad}" />
-
-                                                <TextBlock
-                                                    Text="{Binding LoadedAt, Converter={x:Static converters:DateConverters.ToShortString}}"
-                                                    IsVisible="{Binding !CanLoad}" />
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTextColumn Header="Used At"
-                                                    Binding="{Binding UsedAt, Converter={x:Static converters:DateConverters.ToShortString}}" />
-                            </DataGrid.Columns>
-                        </DataGrid>
-                    </StackPanel>
+                    </Grid>
                 </suki:BusyArea>
             </controls:GlassCard>
         </WrapPanel>

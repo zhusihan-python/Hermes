@@ -12,6 +12,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
+using System.Timers;
+using Avalonia.Threading;
 using Hermes.Common.Extensions;
 
 namespace Hermes.Features.Bender;
@@ -19,12 +21,16 @@ namespace Hermes.Features.Bender;
 public partial class BenderViewModel : PageBase
 {
     private const int MaxDays = 3;
+    private static readonly TimeSpan RefreshInterval = TimeSpan.FromMinutes(1);
+    private static readonly TimeSpan TickInterval = TimeSpan.FromSeconds(1);
 
     [ObservableProperty] private bool _isDateFilter = true;
     [ObservableProperty] private DateTime _fromDate = DateTime.Now.AddDays(-1);
     [ObservableProperty] private DateTime _toDate = DateTime.Now;
     [ObservableProperty] private DateTime _lastDataLoadedAt = DateTime.Now;
     [ObservableProperty] private bool _isDataLoading;
+    [ObservableProperty] private double _elapsedRefreshTime;
+    [ObservableProperty] private double _elapsedRefreshPercentage;
 
     [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(FindByPkgidCommand))]
     private string _pkgid = "";
@@ -32,6 +38,8 @@ public partial class BenderViewModel : PageBase
     private readonly SfcOracleRepository _sfcOracleRepository;
 
     private readonly ISettingsRepository _settingsRepository;
+    private readonly Timer _timer;
+    private readonly Timer _timerTick;
 
     public ObservableCollection<Package> Packages { get; set; } = [];
 
@@ -41,12 +49,34 @@ public partial class BenderViewModel : PageBase
     {
         this._sfcOracleRepository = sfcOracleRepository;
         this._settingsRepository = settingsRepository;
+        this._timer = new Timer(RefreshInterval.TotalMilliseconds);
+        this._timer.Elapsed += TimerOnElapsed;
+        this._timerTick = new Timer(TickInterval.TotalMilliseconds);
+        this._timerTick.Elapsed += TimerTickOnElapsed;
+    }
+
+    private void TimerTickOnElapsed(object? sender, ElapsedEventArgs e)
+    {
+        Dispatcher.UIThread.InvokeAsync(() =>
+        {
+            this.ElapsedRefreshTime++;
+            this.ElapsedRefreshPercentage = (this.ElapsedRefreshTime / RefreshInterval.TotalSeconds) * 100;
+        });
+    }
+
+    private async void TimerOnElapsed(object? sender, ElapsedEventArgs e)
+    {
+        if (!IsDataLoading)
+        {
+            await Dispatcher.UIThread.InvokeAsync(async () => { await this.FindByDate(); });
+        }
     }
 
     [RelayCommand(CanExecute = nameof(CanExecuteFindByPkgid))]
     private async Task FindByPkgid()
     {
         IsDataLoading = true;
+        this.StopTimers();
         try
         {
             var normalizedPkgId = Package.NormalizePkgId(this.Pkgid);
@@ -65,7 +95,22 @@ public partial class BenderViewModel : PageBase
         finally
         {
             IsDataLoading = false;
+            this.StartTimers();
         }
+    }
+
+    private void StartTimers()
+    {
+        this._timer.Start();
+        this._timerTick.Start();
+    }
+
+    private void StopTimers()
+    {
+        this._timer.Stop();
+        this._timerTick.Stop();
+        this.ElapsedRefreshTime = 0;
+        this.ElapsedRefreshPercentage = 0;
     }
 
     private bool CanExecuteFindByPkgid => !string.IsNullOrEmpty(this.Pkgid);
@@ -81,7 +126,6 @@ public partial class BenderViewModel : PageBase
     [RelayCommand]
     private async Task FindByDate()
     {
-        IsDataLoading = true;
         if (this.ToDate - this.FromDate > TimeSpan.FromDays(MaxDays))
         {
             Messenger.Send(new ShowToastMessage("Error", $"Date range is too big, max is {MaxDays} days",
@@ -89,14 +133,28 @@ public partial class BenderViewModel : PageBase
             return;
         }
 
-        var packages = await this._sfcOracleRepository.GetAllPackagesTrackingByDate(
-            this._settingsRepository.Settings.Line.ToUpperString(),
-            new DateTime(this.FromDate.Year, this.FromDate.Month, this.FromDate.Day, 0, 0, 0),
-            new DateTime(this.ToDate.Year, this.ToDate.Month, this.ToDate.Day, 23, 59, 59));
-        this.Packages.Clear();
-        this.Packages.AddRange(packages.ToList());
-        this.IsDataLoading = false;
-        this.LastDataLoadedAt = DateTime.Now;
+        IsDataLoading = true;
+        this.StopTimers();
+        try
+        {
+            var packages = await this._sfcOracleRepository.GetAllPackagesTrackingByDate(
+                this._settingsRepository.Settings.Line.ToUpperString(),
+                this.FromDate.ToStartOfDay(),
+                this.ToDate.ToEndOfDay());
+            this.Packages.Clear();
+            this.Packages.AddRange(packages.ToList());
+            this.LastDataLoadedAt = DateTime.Now;
+        }
+        catch (Exception e)
+        {
+            Messenger.Send(new ShowToastMessage("Error", $"Error loading packages: {e.Message}",
+                NotificationType.Error));
+        }
+        finally
+        {
+            this.IsDataLoading = false;
+            this.StartTimers();
+        }
     }
 
     [RelayCommand]

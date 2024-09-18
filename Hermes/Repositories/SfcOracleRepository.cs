@@ -42,7 +42,7 @@ public class SfcOracleRepository
         var whereClause = "pkg_track.PKGID = :pkgid";
         if (string.IsNullOrEmpty(pkgid))
         {
-            whereClause = "pkg_track.LINE = :line AND SFISM4.R_PKGID_BOM_T.CDATE BETWEEN :fromDate AND :toDate";
+            whereClause = "pkg_track.LINE = :line AND pkg_track.SCANNED_AT BETWEEN :fromDate AND :toDate";
         }
 
         return await this.Query<Package>($"""
@@ -54,8 +54,8 @@ public class SfcOracleRepository
                                                  MAX(pkg_track.LOADED_AT)         AS LoadedAt,
                                                  MAX(SFIS1.C_PCB_PRINT_T.IN_TIME) AS LastUsedAt
                                           FROM SFISM4.H_PACKAGES_TRACK pkg_track
-                                                   INNER JOIN SFISM4.R_PKGID_BOM_T ON pkg_track.PKGID = R_PKGID_BOM_T.PKG_ID
-                                                   LEFT JOIN SFIS1.C_PCB_PRINT_T ON SFIS1.C_PCB_PRINT_T.PKGID = pkg_track.PKGID
+                                                   LEFT JOIN SFISM4.R_PKGID_BOM_T ON pkg_track.PKGID = R_PKGID_BOM_T.PKG_ID
+                                                   LEFT JOIN SFIS1.C_PCB_PRINT_T ON pkg_track.PKGID = SFIS1.C_PCB_PRINT_T.PKGID
                                           WHERE 
                                               {whereClause}
                                           GROUP BY pkg_track.PKGID
