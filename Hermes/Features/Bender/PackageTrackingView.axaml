@@ -94,6 +94,8 @@
                               IsReadOnly="True">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Pkgid" Binding="{Binding Id}" />
+                            <DataGridTextColumn Header="Scanned At"
+                                                Binding="{Binding ScannedAt, Converter={x:Static converters:DateConverters.ToShortString}}" />
                             <DataGridTextColumn Header="Sfc Open At"
                                                 Binding="{Binding OpenedAt, Converter={x:Static converters:DateConverters.ToShortString}}" />
                             <DataGridTemplateColumn Header="Loaded At">

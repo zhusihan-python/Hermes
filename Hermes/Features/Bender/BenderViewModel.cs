@@ -15,5 +15,6 @@ public partial class BenderViewModel : PageBase
     {
         this.PackageTrackingViewModel = packageTrackingViewModel;
         this.PackageScannerViewModel = packageScannerViewModel;
+        this.PackageScannerViewModel.PackageScanned += async (_) => await this.PackageTrackingViewModel.DataReload();
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using Avalonia.Media.Imaging;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -5,6 +6,10 @@ using Hermes.Common.Parsers;
 using Hermes.Common;
 using Hermes.Models;
 using System.Threading.Tasks;
+using Avalonia.Controls.Notifications;
+using CommunityToolkit.Mvvm.Messaging;
+using Hermes.Common.Extensions;
+using Hermes.Common.Messages;
 using Hermes.Repositories;
 using SukiUI.Dialogs;
 
@@ -12,6 +17,8 @@ namespace Hermes.Features.Bender;
 
 public partial class PackageScannerViewModel : ViewModelBase
 {
+    public event Action<Package>? PackageScanned;
+
     [ObservableProperty] private Bitmap? _cover;
     [ObservableProperty] private Package _package = Package.Null;
     [ObservableProperty] private string _scannedCode = "";
@@ -25,17 +32,20 @@ public partial class PackageScannerViewModel : ViewModelBase
     private readonly QrGenerator _qrGenerator;
     private readonly ISukiDialogManager _dialogManager;
     private readonly SfcOracleRepository _sfcOracleRepository;
+    private readonly ISettingsRepository _settingsRepository;
 
     public PackageScannerViewModel(
         PackageParser packageParser,
         QrGenerator qrGenerator,
         ISukiDialogManager dialogManager,
-        SfcOracleRepository oracleRepository)
+        SfcOracleRepository oracleRepository,
+        ISettingsRepository settingsRepository)
     {
         this._packageParser = packageParser;
         this._qrGenerator = qrGenerator;
         this._dialogManager = dialogManager;
         this._sfcOracleRepository = oracleRepository;
+        this._settingsRepository = settingsRepository;
     }
 
 
@@ -60,6 +70,27 @@ public partial class PackageScannerViewModel : ViewModelBase
         this.Cover = await this._qrGenerator.GenerateAvaloniaBitmap(
             this.Package.ToString(), 150);
         this.IsCodeGenerated = true;
+        await this.AddPackageToSfc();
+    }
+
+    private async Task AddPackageToSfc()
+    {
+        try
+        {
+            var package = await _sfcOracleRepository.FindPackageTracking(this.Package.NormalizedId);
+            if (package.IsNull)
+            {
+                Package.Line = _settingsRepository.Settings.Line.ToUpperString();
+                await _sfcOracleRepository.AddPackageTrack(Package);
+            }
+
+            Messenger.Send(new ShowToastMessage("Success", "Package added to SFC", NotificationType.Success));
+            PackageScanned?.Invoke(Package);
+        }
+        catch (Exception e)
+        {
+            Messenger.Send(new ShowToastMessage("Error", e.Message, NotificationType.Error));
+        }
     }
 
     [RelayCommand]

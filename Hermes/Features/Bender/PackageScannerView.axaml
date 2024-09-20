@@ -6,9 +6,15 @@
              xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
              xmlns:local="clr-namespace:Hermes.Features.Bender"
              xmlns:converters="clr-namespace:Hermes.Common.Converters"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="700"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="900"
              x:Class="Hermes.Features.Bender.PackageScannerView"
              x:DataType="local:PackageScannerViewModel">
+
+    <UserControl.Styles>
+        <Style Selector="WrapPanel.WithoutValidWorkOrder">
+            <Setter Property="Opacity" Value="0.5" />
+        </Style>
+    </UserControl.Styles>
 
     <controls:GlassCard Margin="{StaticResource DefaultMargin}"
                         Width="515">
@@ -42,7 +48,7 @@
                     Width="100"
                     Height="100"
                     Margin="10"
-                    Background="Gray"
+                    Background="LightGray"
                     BorderThickness="1"
                     CornerRadius="{StaticResource DefaultCornerRadius}"
                     IsVisible="{Binding Cover, Converter={x:Static converters:GenericConverters.NotNullToIsVisibleConverter}}">
@@ -58,7 +64,9 @@
             </StackPanel>
 
             <WrapPanel DockPanel.Dock="Top"
-                       HorizontalAlignment="Center">
+                       HorizontalAlignment="Center"
+                       IsEnabled="{Binding !WorkOrder.IsNull}"
+                       Classes.WithoutValidWorkOrder="{Binding WorkOrder.IsNull}">
 
                 <StackPanel>
                     <TextBlock Margin="8 0 0 0" Text="Package 2D code" />
@@ -139,13 +147,23 @@
                         Orientation="Horizontal"
                         HorizontalAlignment="Center"
                         Spacing="100"
-                        Margin="0 20 0 0">
+                        Margin="0 10 0 0">
 
                 <StackPanel>
-                    <Border Background="Gray"
-                            CornerRadius="{StaticResource DefaultCornerRadius}"
-                            Width="50"
-                            Height="50" />
+                    <StackPanel>
+
+                        <Border Background="LightGray"
+                                CornerRadius="{StaticResource DefaultCornerRadius}"
+                                Width="50"
+                                Height="50"
+                                IsVisible="{Binding WorkOrder.IsNull}" />
+
+                        <Image Width="50"
+                               Height="50"
+                               Source="{Binding PartNumberImage}"
+                               IsVisible="{Binding !WorkOrder.IsNull}">
+                        </Image>
+                    </StackPanel>
                     <TextBlock HorizontalAlignment="Center"
                                Text="Part number" />
                     <TextBlock HorizontalAlignment="Center"
@@ -153,10 +171,21 @@
                 </StackPanel>
 
                 <StackPanel>
-                    <Border Background="Gray"
-                            CornerRadius="{StaticResource DefaultCornerRadius}"
-                            Width="50"
-                            Height="50" />
+                    <StackPanel>
+
+                        <Border Background="LightGray"
+                                CornerRadius="{StaticResource DefaultCornerRadius}"
+                                Width="50"
+                                Height="50"
+                                IsVisible="{Binding WorkOrder.IsNull}" />
+
+                        <Image Width="50"
+                               Height="50"
+                               Source="{Binding RevisionImage}"
+                               IsVisible="{Binding !WorkOrder.IsNull}">
+                        </Image>
+                    </StackPanel>
+
                     <TextBlock HorizontalAlignment="Center"
                                Text="Rev" />
                     <TextBlock HorizontalAlignment="Center"
@@ -164,10 +193,20 @@
                 </StackPanel>
 
                 <StackPanel>
-                    <Border Background="Gray"
-                            CornerRadius="{StaticResource DefaultCornerRadius}"
-                            Width="50"
-                            Height="50" />
+                    <StackPanel>
+
+                        <Border Background="LightGray"
+                                CornerRadius="{StaticResource DefaultCornerRadius}"
+                                Width="50"
+                                Height="50"
+                                IsVisible="{Binding WorkOrder.IsNull}" />
+
+                        <Image Width="50"
+                               Height="50"
+                               Source="{Binding WorkOrderImage}"
+                               IsVisible="{Binding !WorkOrder.IsNull}">
+                        </Image>
+                    </StackPanel>
                     <TextBlock HorizontalAlignment="Center"
                                Text="Work order" />
                     <TextBlock HorizontalAlignment="Center"

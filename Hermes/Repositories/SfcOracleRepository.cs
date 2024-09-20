@@ -22,6 +22,11 @@ public class SfcOracleRepository
                                              """, new { pkgid });
     }
 
+    public async Task<Package> FindPackageTracking(string pkgid)
+    {
+        return (await this.FindAllPackagesTrackingByPkgid(pkgid)).FirstOrDefault(Package.Null);
+    }
+
     public async Task<IEnumerable<Package>> FindAllPackagesTrackingByPkgid(string pkgid)
     {
         return await this.FindAllPackagesTracking(pkgid: pkgid);
@@ -133,6 +138,15 @@ public class SfcOracleRepository
                                           GROUP BY PKGID
                                           ORDER BY Opened DESC
                                           """, new { workOrder });
+    }
+
+    public async Task<int> AddPackageTrack(Package package)
+    {
+        return await this.ExecuteQueryAsync($"""
+                                             INSERT INTO SFISM4.H_PACKAGES_TRACK
+                                             VALUES(:pkgid, :line, NULL, SYSTIMESTAMP)
+
+                                             """, new { pkgid = package.NormalizedId, line = package.Line });
     }
 
     private async Task<IEnumerable<T>> Query<T>(string sql, object? param = null)

@@ -28,11 +28,14 @@ public partial class Package : ObservableObject
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(CanLoad))]
     private DateTime? _loadedAt;
 
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(CanLoad))]
+    private DateTime? _scannedAt;
+
     public DateTime? LastUsedAt { get; set; }
     public DateTime? UsedAt => QuantityUsed >= Quantity ? LastUsedAt : null;
 
     public bool IsNull => this == Null;
-    public bool CanLoad => OpenedAt != null && LoadedAt == null;
+    public bool CanLoad => ScannedAt != null && OpenedAt != null && LoadedAt == null;
 
     public static string NormalizePkgId(string pkgid)
     {
@@ -50,6 +53,8 @@ public partial class Package : ObservableObject
                            && !string.IsNullOrWhiteSpace(DateCode)
                            && !string.IsNullOrWhiteSpace(Lot)
                            && !string.IsNullOrWhiteSpace(Vendor);
+
+    public string NormalizedId => NormalizePkgId(Id);
 
     public override string ToString()
     {

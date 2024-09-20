@@ -114,7 +114,7 @@ public partial class PackageTrackingViewModel : ViewModelBase
     private bool CanExecuteFindByPkgid => !string.IsNullOrEmpty(this.Pkgid);
 
     [RelayCommand]
-    private async Task DataReload()
+    public async Task DataReload()
     {
         this.ToDate = DateTime.Now;
         this.FromDate = this.ToDate.AddDays(-1);
