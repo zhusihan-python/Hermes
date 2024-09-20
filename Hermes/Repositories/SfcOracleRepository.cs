@@ -13,7 +13,7 @@ public class SfcOracleRepository
 {
     private const string ConString = "Data Source=10.12.171.61:1526/GDLSFCDB;User Id=SFIS1;Password=sfis1;";
 
-    public async Task<int> SetPackageTrackingLoadedAt(string pkgid)
+    public async Task<int> UpdatePackageTrackingLoadedAt(string pkgid)
     {
         return await this.ExecuteQueryAsync($"""
                                              UPDATE SFISM4.H_PACKAGES_TRACK
@@ -22,18 +22,18 @@ public class SfcOracleRepository
                                              """, new { pkgid });
     }
 
-    public async Task<IEnumerable<Package>> GetAllPackagesTrackingByPkgid(string pkgid)
+    public async Task<IEnumerable<Package>> FindAllPackagesTrackingByPkgid(string pkgid)
     {
-        return await this.GetAllPackagesTracking(pkgid: pkgid);
+        return await this.FindAllPackagesTracking(pkgid: pkgid);
     }
 
-    public async Task<IEnumerable<Package>> GetAllPackagesTrackingByDate(string line, DateTime fromDate,
+    public async Task<IEnumerable<Package>> FindAllPackagesTrackingByDate(string line, DateTime fromDate,
         DateTime toDate)
     {
-        return await this.GetAllPackagesTracking(line, fromDate, toDate);
+        return await this.FindAllPackagesTracking(line, fromDate, toDate);
     }
 
-    private async Task<IEnumerable<Package>> GetAllPackagesTracking(
+    private async Task<IEnumerable<Package>> FindAllPackagesTracking(
         string? line = null,
         DateTime? fromDate = null,
         DateTime? toDate = null,
@@ -52,18 +52,19 @@ public class SfcOracleRepository
                                                  COUNT(*)                         AS QuantityUsed,
                                                  MAX(CDATE)                       AS OpenedAt,
                                                  MAX(pkg_track.LOADED_AT)         AS LoadedAt,
-                                                 MAX(SFIS1.C_PCB_PRINT_T.IN_TIME) AS LastUsedAt
+                                                 MAX(SFIS1.C_PCB_PRINT_T.IN_TIME) AS LastUsedAt,
+                                                 MAX(pkg_track.SCANNED_AT)        AS ScannedAt
                                           FROM SFISM4.H_PACKAGES_TRACK pkg_track
                                                    LEFT JOIN SFISM4.R_PKGID_BOM_T ON pkg_track.PKGID = R_PKGID_BOM_T.PKG_ID
                                                    LEFT JOIN SFIS1.C_PCB_PRINT_T ON pkg_track.PKGID = SFIS1.C_PCB_PRINT_T.PKGID
                                           WHERE 
                                               {whereClause}
                                           GROUP BY pkg_track.PKGID
-                                          ORDER BY OpenedAt DESC, LoadedAt DESC
+                                          ORDER BY ScannedAt DESC, OpenedAt DESC
                                           """, new { line, fromDate, toDate, pkgid });
     }
 
-    public async Task<IEnumerable<UnitUnderTest>> GetAllUnitsUnderTest(string pkgid)
+    public async Task<IEnumerable<UnitUnderTest>> FindAllUnitsUnderTest(string pkgid)
     {
         return await this.Query<UnitUnderTest>($"""
                                                 SELECT
@@ -81,7 +82,7 @@ public class SfcOracleRepository
                                                 """, new { pkgid });
     }
 
-    public async Task<Package> GetPackage(string pkgid)
+    public async Task<Package> FindPackage(string pkgid)
     {
         var result = await this.Query<Package>($"""
                                                 SELECT PKG_ID      AS Id,
@@ -98,20 +99,25 @@ public class SfcOracleRepository
         return result.FirstOrDefault(Package.Null);
     }
 
-    public async Task<WorkOrder> GetWorkOrder(string workOrder)
+    public async Task<WorkOrder> FindWorkOrder(string workOrder)
     {
         var result = await this.Query<WorkOrder>($"""
-                                                  SELECT 
+                                                  SELECT
                                                       WORK_ORDER AS Id,
                                                       PART_NO As PartNumber,
-                                                      PART_VERSION AS Revision
-                                                  FROM SFISM4.WIP_D_WO_MASTER
+                                                      PART_VERSION AS Revision,
+                                                      MODEL_SERIAL As ModelName
+                                                  FROM 
+                                                      SFISM4.WIP_D_WO_MASTER
+                                                      LEFT JOIN C_MODEL_DESC_T 
+                                                          ON C_MODEL_DESC_T.MODEL_NAME = WIP_D_WO_MASTER.PART_NO AND 
+                                                             C_MODEL_DESC_T.REV = WIP_D_WO_MASTER.PART_VERSION
                                                   WHERE WORK_ORDER = :workOrder
                                                   """, new { workOrder });
         return result.FirstOrDefault(WorkOrder.Null);
     }
 
-    public async Task<IEnumerable<Package>> GetAllPackages(string workOrder)
+    public async Task<IEnumerable<Package>> FindAllPackages(string workOrder)
     {
         return await this.Query<Package>($"""
                                           SELECT 

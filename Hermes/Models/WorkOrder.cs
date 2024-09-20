@@ -7,6 +7,7 @@ public class WorkOrder
     public string Id { get; set; } = "";
     public string PartNumber { get; set; } = "";
     public string Revision { get; set; } = "";
+    public string ModelName { get; set; } = "";
     public bool IsNull => this == Null;
 }
 

@@ -8,14 +8,19 @@ public partial class Package : ObservableObject
 {
     public static readonly Package Null = new NullPackage();
 
-    public string Id { get; set; } = "-";
+    public string Id { get; set; } = "";
     public string Line { get; set; } = "";
     public int Quantity { get; set; }
     public int QuantityUsed { get; set; }
-    public string DateCode { get; set; } = "-";
-    public string Lot { get; set; } = "-";
-    public string Vendor { get; set; } = "-";
-    public string WorkOrder { get; set; } = "-";
+    public string HhPartNumber { get; set; } = "";
+    public string SupplierPartNumber { get; set; } = "";
+    public string DateCode { get; set; } = "";
+    public string Lot { get; set; } = "";
+
+    [ObservableProperty] [NotifyPropertyChangedFor(nameof(IsValid))]
+    private string _vendor = "";
+
+    public string WorkOrder { get; set; } = "";
 
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(CanLoad))]
     private DateTime? _openedAt;
@@ -37,6 +42,18 @@ public partial class Package : ObservableObject
     public static string NormalizeWorkOrder(string workOrder)
     {
         return workOrder.PadLeft(12, '0');
+    }
+
+    public bool IsValid => !string.IsNullOrWhiteSpace(Id)
+                           && !string.IsNullOrWhiteSpace(HhPartNumber)
+                           && !string.IsNullOrWhiteSpace(SupplierPartNumber)
+                           && !string.IsNullOrWhiteSpace(DateCode)
+                           && !string.IsNullOrWhiteSpace(Lot)
+                           && !string.IsNullOrWhiteSpace(Vendor);
+
+    public override string ToString()
+    {
+        return $"P{HhPartNumber},Q{Quantity},M{SupplierPartNumber},D{DateCode},L{Lot},S{Id},{Vendor}";
     }
 }
 

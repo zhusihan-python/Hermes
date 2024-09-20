@@ -70,7 +70,7 @@ public partial class PackageIdViewModel : PageBase
             this.UnitsUnderTest.Clear();
 
             var normalizedPkgId = Package.NormalizePkgId(pkgid);
-            this.Package = await this._sfcOracleRepository.GetPackage(normalizedPkgId);
+            this.Package = await this._sfcOracleRepository.FindPackage(normalizedPkgId);
             if (this.Package.IsNull)
             {
                 //TODO language
@@ -78,7 +78,7 @@ public partial class PackageIdViewModel : PageBase
             }
             else
             {
-                var uuts = await this._sfcOracleRepository.GetAllUnitsUnderTest(normalizedPkgId);
+                var uuts = await this._sfcOracleRepository.FindAllUnitsUnderTest(normalizedPkgId);
                 this.UnitsUnderTest.AddRange(uuts.ToList());
                 this.PkgidText = "";
                 this.Package.Id = pkgid;
@@ -124,7 +124,7 @@ public partial class PackageIdViewModel : PageBase
             this.Packages.Clear();
 
             var normalizedWorkOrder = Package.NormalizeWorkOrder(workOrder);
-            this.WorkOrder = await this._sfcOracleRepository.GetWorkOrder(normalizedWorkOrder);
+            this.WorkOrder = await this._sfcOracleRepository.FindWorkOrder(normalizedWorkOrder);
             if (this.WorkOrder.IsNull)
             {
                 //TODO language
@@ -132,7 +132,7 @@ public partial class PackageIdViewModel : PageBase
             }
             else
             {
-                var packages = await this._sfcOracleRepository.GetAllPackages(normalizedWorkOrder);
+                var packages = await this._sfcOracleRepository.FindAllPackages(normalizedWorkOrder);
                 this.Packages.AddRange(packages.ToList());
                 this.WorkOrderText = "";
             }

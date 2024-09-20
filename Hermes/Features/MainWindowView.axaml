@@ -10,7 +10,7 @@
                  x:Name="Self"
                  x:Class="Hermes.Features.MainWindowView"
                  x:DataType="features:MainWindowViewModel"
-                 Width="1250"
+                 Width="1260"
                  Height="650"
                  WindowStartupLocation="CenterScreen"
                  Icon="avares://Hermes/AppData/Assets/logo-hermes.png"
@@ -18,9 +18,10 @@
                  ClosingBehavior="OwnerAndChildWindows">
 
     <suki:SukiWindow.Hosts>
-        <suki:SukiToastHost Manager="{Binding ToastManager}"/>
+        <suki:SukiToastHost Manager="{Binding ToastManager}" />
+        <suki:SukiDialogHost Manager="{Binding DialogManager}" />
     </suki:SukiWindow.Hosts>
-    
+
     <suki:SukiWindow.LogoContent>
         <avalonia:MaterialIcon Width="14"
                                Height="14"
