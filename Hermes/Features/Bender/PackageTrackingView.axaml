@@ -91,13 +91,41 @@
 
                     <!-- Datagrid -->
                     <DataGrid ItemsSource="{Binding  Packages}"
-                              IsReadOnly="True">
+                              IsReadOnly="True"
+                              CanUserResizeColumns="True">
+
                         <DataGrid.Columns>
+                            <DataGridTemplateColumn Header="In Use">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal"
+                                                    HorizontalAlignment="Center"
+                                                    Spacing="5">
+
+                                            <avalonia:MaterialIcon Kind="CheckCircle"
+                                                                   IsVisible="{Binding IsInUse}"
+                                                                   Width="30"
+                                                                   Foreground="Green" />
+
+                                            <avalonia:MaterialIcon Kind="Alert"
+                                                                   IsVisible="{Binding !HasSfcOpen}"
+                                                                   Width="30"
+                                                                   Foreground="Goldenrod" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
                             <DataGridTextColumn Header="Pkgid" Binding="{Binding Id}" />
+
                             <DataGridTextColumn Header="Scanned At"
+                                                Width="130"
                                                 Binding="{Binding ScannedAt, Converter={x:Static converters:DateConverters.ToShortString}}" />
+
                             <DataGridTextColumn Header="Sfc Open At"
+                                                Width="130"
                                                 Binding="{Binding OpenedAt, Converter={x:Static converters:DateConverters.ToShortString}}" />
+
                             <DataGridTemplateColumn Header="Loaded At">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
@@ -120,6 +148,7 @@
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
                             <DataGridTextColumn Header="Used At"
+                                                Width="130"
                                                 Binding="{Binding UsedAt, Converter={x:Static converters:DateConverters.ToShortString}}" />
                         </DataGrid.Columns>
                     </DataGrid>

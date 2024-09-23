@@ -42,7 +42,8 @@ public class SfcOracleRepository
         string? line = null,
         DateTime? fromDate = null,
         DateTime? toDate = null,
-        string? pkgid = null)
+        string? pkgid = null,
+        int limit = 100)
     {
         var whereClause = "pkg_track.PKGID = :pkgid";
         if (string.IsNullOrEmpty(pkgid))
@@ -51,22 +52,26 @@ public class SfcOracleRepository
         }
 
         return await this.Query<Package>($"""
-                                          SELECT MAX(pkg_track.PKGID)             AS Id,
-                                                 MAX(pkg_track.LINE)              AS Line,
-                                                 MAX(SFIS1.C_PCB_PRINT_T.QTY)     AS Quantity,
-                                                 COUNT(*)                         AS QuantityUsed,
-                                                 MAX(CDATE)                       AS OpenedAt,
-                                                 MAX(pkg_track.LOADED_AT)         AS LoadedAt,
-                                                 MAX(SFIS1.C_PCB_PRINT_T.IN_TIME) AS LastUsedAt,
-                                                 MAX(pkg_track.SCANNED_AT)        AS ScannedAt
-                                          FROM SFISM4.H_PACKAGES_TRACK pkg_track
-                                                   LEFT JOIN SFISM4.R_PKGID_BOM_T ON pkg_track.PKGID = R_PKGID_BOM_T.PKG_ID
-                                                   LEFT JOIN SFIS1.C_PCB_PRINT_T ON pkg_track.PKGID = SFIS1.C_PCB_PRINT_T.PKGID
-                                          WHERE 
-                                              {whereClause}
-                                          GROUP BY pkg_track.PKGID
-                                          ORDER BY ScannedAt DESC, OpenedAt DESC
-                                          """, new { line, fromDate, toDate, pkgid });
+                                          SELECT *
+                                          FROM (
+                                              SELECT MAX(pkg_track.PKGID)             AS Id,
+                                                     MAX(pkg_track.LINE)              AS Line,
+                                                     MAX(SFIS1.C_PCB_PRINT_T.QTY)     AS Quantity,
+                                                     COUNT(*)                         AS QuantityUsed,
+                                                     MAX(CDATE)                       AS OpenedAt,
+                                                     MAX(pkg_track.LOADED_AT)         AS LoadedAt,
+                                                     MAX(SFIS1.C_PCB_PRINT_T.IN_TIME) AS LastUsedAt,
+                                                     MAX(pkg_track.SCANNED_AT)        AS ScannedAt,
+                                                     MAX(pkg_track.IS_IN_USE)        AS IsInUse
+                                              FROM SFISM4.H_PACKAGES_TRACK pkg_track
+                                                       LEFT JOIN SFISM4.R_PKGID_BOM_T ON pkg_track.PKGID = R_PKGID_BOM_T.PKG_ID
+                                                       LEFT JOIN SFIS1.C_PCB_PRINT_T ON pkg_track.PKGID = SFIS1.C_PCB_PRINT_T.PKGID
+                                              WHERE 
+                                                  {whereClause}
+                                              GROUP BY pkg_track.PKGID
+                                              ORDER BY ScannedAt DESC, OpenedAt DESC)
+                                          WHERE ROWNUM <= :limit
+                                          """, new { line, fromDate, toDate, pkgid, limit });
     }
 
     public async Task<IEnumerable<UnitUnderTest>> FindAllUnitsUnderTest(string pkgid)
@@ -144,7 +149,7 @@ public class SfcOracleRepository
     {
         return await this.ExecuteQueryAsync($"""
                                              INSERT INTO SFISM4.H_PACKAGES_TRACK
-                                             VALUES(:pkgid, :line, NULL, SYSTIMESTAMP)
+                                             VALUES(:pkgid, :line, NULL, SYSTIMESTAMP, 0)
 
                                              """, new { pkgid = package.NormalizedId, line = package.Line });
     }

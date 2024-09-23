@@ -140,7 +140,7 @@ public partial class PackageTrackingViewModel : ViewModelBase
                 this.FromDate.ToStartOfDay(),
                 this.ToDate.ToEndOfDay());
             this.Packages.Clear();
-            this.Packages.AddRange(packages.Reverse().ToList());
+            this.Packages.AddRange(packages.ToList());
             this.LastDataLoadedAt = DateTime.Now;
         }
         catch (Exception e)

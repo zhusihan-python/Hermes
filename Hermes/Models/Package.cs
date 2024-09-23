@@ -36,6 +36,7 @@ public partial class Package : ObservableObject
 
     public bool IsNull => this == Null;
     public bool CanLoad => ScannedAt != null && OpenedAt != null && LoadedAt == null;
+    public bool HasSfcOpen => ScannedAt != null && OpenedAt != null;
 
     public static string NormalizePkgId(string pkgid)
     {
@@ -55,6 +56,7 @@ public partial class Package : ObservableObject
                            && !string.IsNullOrWhiteSpace(Vendor);
 
     public string NormalizedId => NormalizePkgId(Id);
+    public bool IsInUse { get; set; }
 
     public override string ToString()
     {
