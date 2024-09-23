@@ -519,6 +519,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to In use.
+        /// </summary>
+        public static string enum_inuse {
+            get {
+                return ResourceManager.GetString("enum_inuse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Level 1.
         /// </summary>
         public static string enum_level1 {
@@ -600,6 +609,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loaded.
+        /// </summary>
+        public static string enum_loaded {
+            get {
+                return ResourceManager.GetString("enum_loaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Manufacturing.
         /// </summary>
         public static string enum_mfg {
@@ -618,6 +636,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open.
+        /// </summary>
+        public static string enum_open {
+            get {
+                return ResourceManager.GetString("enum_open", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Processing.
         /// </summary>
         public static string enum_processing {
@@ -632,6 +659,15 @@ namespace Hermes.Language {
         public static string enum_qa {
             get {
                 return ResourceManager.GetString("enum_qa", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scanned.
+        /// </summary>
+        public static string enum_scanned {
+            get {
+                return ResourceManager.GetString("enum_scanned", resourceCulture);
             }
         }
         
@@ -663,6 +699,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Used.
+        /// </summary>
+        public static string enum_used {
+            get {
+                return ResourceManager.GetString("enum_used", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Wrong station.
         /// </summary>
         public static string enum_wrongstation {
@@ -672,11 +717,38 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select the work order.
+        /// </summary>
+        public static string msg_change_wo {
+            get {
+                return ResourceManager.GetString("msg_change_wo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The token is invalid.
         /// </summary>
         public static string msg_invalid_token {
             get {
                 return ResourceManager.GetString("msg_invalid_token", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scan the package&apos;s 2D code.
+        /// </summary>
+        public static string msg_scan_2d_package {
+            get {
+                return ResourceManager.GetString("msg_scan_2d_package", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scan the vendor.
+        /// </summary>
+        public static string msg_scan_vendor {
+            get {
+                return ResourceManager.GetString("msg_scan_vendor", resourceCulture);
             }
         }
         
@@ -708,11 +780,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add package.
+        /// </summary>
+        public static string txt_add_package {
+            get {
+                return ResourceManager.GetString("txt_add_package", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dark theme.
         /// </summary>
         public static string txt_dark_theme {
             get {
                 return ResourceManager.GetString("txt_dark_theme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date.
+        /// </summary>
+        public static string txt_date {
+            get {
+                return ResourceManager.GetString("txt_date", resourceCulture);
             }
         }
         
@@ -780,6 +870,24 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Filter.
+        /// </summary>
+        public static string txt_filter {
+            get {
+                return ResourceManager.GetString("txt_filter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to From.
+        /// </summary>
+        public static string txt_from {
+            get {
+                return ResourceManager.GetString("txt_from", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fullscreen.
         /// </summary>
         public static string txt_fullscreen {
@@ -816,6 +924,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to In use.
+        /// </summary>
+        public static string txt_in_use {
+            get {
+                return ResourceManager.GetString("txt_in_use", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid token.
         /// </summary>
         public static string txt_invalid_token {
@@ -825,11 +942,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Last refresh.
+        /// </summary>
+        public static string txt_last_refresh {
+            get {
+                return ResourceManager.GetString("txt_last_refresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Light theme.
         /// </summary>
         public static string txt_light_theme {
             get {
                 return ResourceManager.GetString("txt_light_theme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loaded.
+        /// </summary>
+        public static string txt_loaded {
+            get {
+                return ResourceManager.GetString("txt_loaded", resourceCulture);
             }
         }
         
@@ -906,6 +1041,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PkgId.
+        /// </summary>
+        public static string txt_pkgid {
+            get {
+                return ResourceManager.GetString("txt_pkgid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Repair.
         /// </summary>
         public static string txt_repair {
@@ -924,6 +1068,24 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Scanned.
+        /// </summary>
+        public static string txt_scanned {
+            get {
+                return ResourceManager.GetString("txt_scanned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select work order.
+        /// </summary>
+        public static string txt_select_work_order {
+            get {
+                return ResourceManager.GetString("txt_select_work_order", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Serial number.
         /// </summary>
         public static string txt_serial_number {
@@ -938,6 +1100,15 @@ namespace Hermes.Language {
         public static string txt_settings {
             get {
                 return ResourceManager.GetString("txt_settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SFC open.
+        /// </summary>
+        public static string txt_sfc_open {
+            get {
+                return ResourceManager.GetString("txt_sfc_open", resourceCulture);
             }
         }
         
@@ -996,6 +1167,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to To.
+        /// </summary>
+        public static string txt_to {
+            get {
+                return ResourceManager.GetString("txt_to", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Token.
         /// </summary>
         public static string txt_token {
@@ -1010,6 +1190,15 @@ namespace Hermes.Language {
         public static string txt_update_level {
             get {
                 return ResourceManager.GetString("txt_update_level", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Used.
+        /// </summary>
+        public static string txt_used {
+            get {
+                return ResourceManager.GetString("txt_used", resourceCulture);
             }
         }
         
@@ -1055,6 +1244,15 @@ namespace Hermes.Language {
         public static string txt_welcome {
             get {
                 return ResourceManager.GetString("txt_welcome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Work order.
+        /// </summary>
+        public static string txt_work_order {
+            get {
+                return ResourceManager.GetString("txt_work_order", resourceCulture);
             }
         }
     }

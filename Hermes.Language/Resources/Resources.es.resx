@@ -344,4 +344,70 @@
     <data name="txt_loading" xml:space="preserve">
         <value>Cargando...</value>
     </data>
+    <data name="msg_change_wo" xml:space="preserve">
+        <value>Selecciona la work order</value>
+    </data>
+    <data name="msg_scan_2d_package" xml:space="preserve">
+        <value>Escanea el código 2D del paquete</value>
+    </data>
+    <data name="msg_scan_vendor" xml:space="preserve">
+        <value>Escanea el "vendor"</value>
+    </data>
+    <data name="txt_select_work_order" xml:space="preserve">
+        <value>Seleccionar work order</value>
+    </data>
+    <data name="txt_work_order" xml:space="preserve">
+        <value>Work order </value>
+    </data>
+    <data name="txt_add_package" xml:space="preserve">
+        <value>Agregar paquete</value>
+    </data>
+    <data name="txt_date" xml:space="preserve">
+        <value>Fecha</value>
+    </data>
+    <data name="txt_filter" xml:space="preserve">
+        <value>Filtro</value>
+    </data>
+    <data name="txt_from" xml:space="preserve">
+        <value>Desde</value>
+    </data>
+    <data name="txt_pkgid" xml:space="preserve">
+        <value>Pkgid</value>
+    </data>
+    <data name="txt_to" xml:space="preserve">
+        <value>Hasta</value>
+    </data>
+    <data name="txt_in_use" xml:space="preserve">
+        <value>En uso</value>
+    </data>
+    <data name="txt_loaded" xml:space="preserve">
+        <value>Cargado</value>
+    </data>
+    <data name="txt_scanned" xml:space="preserve">
+        <value>Escaneado</value>
+    </data>
+    <data name="txt_sfc_open" xml:space="preserve">
+        <value>SFC abierto </value>
+    </data>
+    <data name="txt_used" xml:space="preserve">
+        <value>Usado</value>
+    </data>
+    <data name="txt_last_refresh" xml:space="preserve">
+        <value>Última recarga</value>
+    </data>
+    <data name="enum_inuse" xml:space="preserve">
+        <value>En uso</value>
+    </data>
+    <data name="enum_open" xml:space="preserve">
+        <value>Abierto</value>
+    </data>
+    <data name="enum_scanned" xml:space="preserve">
+        <value>Escaneado</value>
+    </data>
+    <data name="enum_used" xml:space="preserve">
+        <value>Consumido</value>
+    </data>
+    <data name="enum_loaded" xml:space="preserve">
+        <value>Cargado</value>
+    </data>
 </root>

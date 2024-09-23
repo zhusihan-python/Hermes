@@ -22,6 +22,15 @@ public class SfcOracleRepository
                                              """, new { pkgid });
     }
 
+    public async Task<int> UpdatePackageTrackingLine(string pkgid, string line)
+    {
+        return await this.ExecuteQueryAsync($"""
+                                             UPDATE SFISM4.H_PACKAGES_TRACK
+                                             SET LINE = :line
+                                             WHERE PKGID = :pkgid
+                                             """, new { pkgid, line });
+    }
+
     public async Task<Package> FindPackageTracking(string pkgid)
     {
         return (await this.FindAllPackagesTrackingByPkgid(pkgid)).FirstOrDefault(Package.Null);
@@ -57,7 +66,7 @@ public class SfcOracleRepository
                                               SELECT MAX(pkg_track.PKGID)             AS Id,
                                                      MAX(pkg_track.LINE)              AS Line,
                                                      MAX(SFIS1.C_PCB_PRINT_T.QTY)     AS Quantity,
-                                                     COUNT(*)                         AS QuantityUsed,
+                                                     (CASE WHEN MAX(SFIS1.C_PCB_PRINT_T.SERIAL_NUMBER) IS NULL THEN 0 ELSE  COUNT(*) END ) AS QuantityUsed,
                                                      MAX(CDATE)                       AS OpenedAt,
                                                      MAX(pkg_track.LOADED_AT)         AS LoadedAt,
                                                      MAX(SFIS1.C_PCB_PRINT_T.IN_TIME) AS LastUsedAt,

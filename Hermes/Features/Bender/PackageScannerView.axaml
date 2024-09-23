@@ -6,6 +6,7 @@
              xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
              xmlns:local="clr-namespace:Hermes.Features.Bender"
              xmlns:converters="clr-namespace:Hermes.Common.Converters"
+             xmlns:lang="clr-namespace:Hermes.Language;assembly=Hermes.Language"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="900"
              x:Class="Hermes.Features.Bender.PackageScannerView"
              x:DataType="local:PackageScannerViewModel">
@@ -25,7 +26,8 @@
                 <TextBlock Grid.Column="0"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Center">
-                    <Run Text="Work order:" />
+                    <Run Text="{x:Static lang:Resources.txt_work_order}" />
+                    <Run Text=":" />
                     <Run Text="{Binding WorkOrder.Id}" />
                 </TextBlock>
 
@@ -37,7 +39,7 @@
                         <avalonia:MaterialIcon Kind="SwapHorizontal"
                                                Margin="0 0 5 3"
                                                VerticalAlignment="Bottom" />
-                        <TextBlock Text="Change work order" />
+                        <TextBlock Text="{x:Static lang:Resources.txt_select_work_order}" />
                     </StackPanel>
                 </Button>
             </Grid>
@@ -70,7 +72,8 @@
 
                 <StackPanel>
                     <TextBlock Margin="8 0 0 0" Text="Package 2D code" />
-                    <TextBox Width="470"
+                    <TextBox x:Name="PackageCodeTextBox"
+                             Width="470"
                              Text="{Binding ScannedCode, Mode=TwoWay}">
                         <TextBox.KeyBindings>
                             <KeyBinding Gesture="Enter" Command="{Binding ParsePackageCommand}" />
@@ -123,7 +126,8 @@
 
                 <StackPanel>
                     <TextBlock Margin="8 0 0 0" Text="Vendor" />
-                    <TextBox Width="235"
+                    <TextBox x:Name="VendorTextBox"
+                             Width="235"
                              Text="{Binding Package.Vendor, Mode=TwoWay}"
                              IsReadOnly="{Binding IsCodeGenerated}">
                         <TextBox.KeyBindings>
@@ -139,7 +143,7 @@
                         IsEnabled="{Binding Package.IsValid}"
                         Command="{Binding GenerateCodeCommand}"
                         Margin="8 0 0 6"
-                        Content="Generate code" />
+                        Content="{x:Static lang:Resources.txt_add_package}" />
 
             </WrapPanel>
 
@@ -221,8 +225,7 @@
                 <TextBlock HorizontalAlignment="Center"
                            VerticalAlignment="Center"
                            FontSize="25"
-                           Text="Escanea el codigo 2D del paquete">
-                </TextBlock>
+                           Text="{Binding Instructions}" />
             </Border>
         </DockPanel>
     </controls:GlassCard>

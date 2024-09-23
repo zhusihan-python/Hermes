@@ -12,10 +12,10 @@
   &lt;Assembly Path="C:\Users\Foxconn\.nuget\packages\sukiui\6.0.0-beta\lib\netstandard2.0\SukiUI.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String>
 	<s:String x:Key="/Default/Environment/Hierarchy/Build/SolBuilderDuo/CustomGlobalProperties/=JavaSdkDirectory/@EntryIndexedValue">C:\Program Files\Microsoft\jdk-17.0.12.7-hotspot</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=529e6f9c_002D6d21_002D4c72_002D83e2_002D30d3ef6b10f8/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from Solution" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=529e6f9c_002D6d21_002D4c72_002D83e2_002D30d3ef6b10f8/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from Solution" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;Solution /&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=6c301100_002Dd312_002D4dab_002D8aa0_002D92f8f5d0a6ca/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Parse_ValidCode_ParsesPackage" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=6c301100_002Dd312_002D4dab_002D8aa0_002D92f8f5d0a6ca/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Parse_ValidCode_ParsesPackage" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;xUnit::31B57559-0391-445A-8BCF-8ECC4E617EE6::net8.0::HermesTests.Common.Parsers.PackageParserTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;

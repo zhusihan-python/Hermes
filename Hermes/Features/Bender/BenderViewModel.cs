@@ -11,7 +11,7 @@ public partial class BenderViewModel : PageBase
     public BenderViewModel(PackageTrackingViewModel packageTrackingViewModel,
         PackageScannerViewModel packageScannerViewModel) : base(
         "Bender", MaterialIconKind.Qrcode,
-        PermissionLevel.Level1, 4)
+        PermissionLevel.Level1, 3)
     {
         this.PackageTrackingViewModel = packageTrackingViewModel;
         this.PackageScannerViewModel = packageScannerViewModel;

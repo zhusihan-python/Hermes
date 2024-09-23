@@ -1,6 +1,7 @@
 ﻿using System;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Hermes.Common.Extensions;
+using Hermes.Types;
 
 namespace Hermes.Models;
 
@@ -35,8 +36,37 @@ public partial class Package : ObservableObject
     public DateTime? UsedAt => QuantityUsed >= Quantity ? LastUsedAt : null;
 
     public bool IsNull => this == Null;
-    public bool CanLoad => ScannedAt != null && OpenedAt != null && LoadedAt == null;
+    public bool CanLoad => ScannedAt != null && OpenedAt != null && LoadedAt == null && UsedAt == null;
     public bool HasSfcOpen => ScannedAt != null && OpenedAt != null;
+    public string QuantityUsedString => OpenedAt != null ? $"{QuantityUsed}/{Quantity}" : "";
+
+    public PackageStatusType Status
+    {
+        get
+        {
+            if (UsedAt != null)
+            {
+                return PackageStatusType.Used;
+            }
+
+            if (IsInUse)
+            {
+                return PackageStatusType.InUse;
+            }
+
+            if (LoadedAt != null)
+            {
+                return PackageStatusType.Loaded;
+            }
+
+            if (OpenedAt != null)
+            {
+                return PackageStatusType.Open;
+            }
+
+            return PackageStatusType.Scanned;
+        }
+    }
 
     public static string NormalizePkgId(string pkgid)
     {

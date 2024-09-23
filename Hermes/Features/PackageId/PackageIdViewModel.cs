@@ -42,7 +42,7 @@ public partial class PackageIdViewModel : PageBase
     private readonly SfcOracleRepository _sfcOracleRepository;
 
     public PackageIdViewModel(SfcOracleRepository sfcOracleRepository) : base("Package Id",
-        MaterialIconKind.PackageVariant, PermissionLevel.Level1, 3)
+        MaterialIconKind.PackageVariant, PermissionLevel.Level1, 4)
     {
         this._sfcOracleRepository = sfcOracleRepository;
     }

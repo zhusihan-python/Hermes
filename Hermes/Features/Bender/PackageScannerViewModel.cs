@@ -7,9 +7,11 @@ using Hermes.Common;
 using Hermes.Models;
 using System.Threading.Tasks;
 using Avalonia.Controls.Notifications;
+using Avalonia.Threading;
 using CommunityToolkit.Mvvm.Messaging;
 using Hermes.Common.Extensions;
 using Hermes.Common.Messages;
+using Hermes.Language;
 using Hermes.Repositories;
 using SukiUI.Dialogs;
 
@@ -18,11 +20,13 @@ namespace Hermes.Features.Bender;
 public partial class PackageScannerViewModel : ViewModelBase
 {
     public event Action<Package>? PackageScanned;
+    public event Action<string>? InstructionsChanged;
 
     [ObservableProperty] private Bitmap? _cover;
     [ObservableProperty] private Package _package = Package.Null;
     [ObservableProperty] private string _scannedCode = "";
     [ObservableProperty] private bool _isCodeGenerated;
+    [ObservableProperty] private string _instructions = Resources.msg_change_wo;
     [ObservableProperty] private WorkOrder _workOrder = WorkOrder.Null;
     [ObservableProperty] private Bitmap? _partNumberImage;
     [ObservableProperty] private Bitmap? _revisionImage;
@@ -64,6 +68,7 @@ public partial class PackageScannerViewModel : ViewModelBase
         {
             this.Cover = null;
             this.IsCodeGenerated = false;
+            this.Instructions = Resources.msg_scan_vendor;
             return;
         }
 
@@ -71,6 +76,7 @@ public partial class PackageScannerViewModel : ViewModelBase
             this.Package.ToString(), 150);
         this.IsCodeGenerated = true;
         await this.AddPackageToSfc();
+        this.Instructions = Resources.msg_scan_2d_package;
     }
 
     private async Task AddPackageToSfc()
@@ -83,8 +89,14 @@ public partial class PackageScannerViewModel : ViewModelBase
                 Package.Line = _settingsRepository.Settings.Line.ToUpperString();
                 await _sfcOracleRepository.AddPackageTrack(Package);
             }
+            else if (package.Line != _settingsRepository.Settings.Line.ToUpperString())
+            {
+                await _sfcOracleRepository.UpdatePackageTrackingLine(
+                    package.NormalizedId,
+                    _settingsRepository.Settings.Line.ToUpperString());
+            }
 
-            Messenger.Send(new ShowToastMessage("Success", "Package added to SFC", NotificationType.Success));
+            Messenger.Send(new ShowToastMessage("Success", "Package added to Hermes", NotificationType.Success));
             PackageScanned?.Invoke(Package);
         }
         catch (Exception e)
@@ -117,5 +129,11 @@ public partial class PackageScannerViewModel : ViewModelBase
         this.PartNumberImage = await this._qrGenerator.GenerateAvaloniaBitmap((this.WorkOrder.PartNumber), 50);
         this.RevisionImage = await this._qrGenerator.GenerateAvaloniaBitmap((this.WorkOrder.Revision), 50);
         this.WorkOrderImage = await this._qrGenerator.GenerateAvaloniaBitmap((this.WorkOrder.Id), 50);
+        this.Instructions = Resources.msg_scan_2d_package;
+    }
+
+    partial void OnInstructionsChanged(string value)
+    {
+        Dispatcher.UIThread.Invoke(() => { this.InstructionsChanged?.Invoke(value); });
     }
 }

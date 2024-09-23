@@ -26,15 +26,15 @@
                                 HorizontalAlignment="Center"
                                 Spacing="{StaticResource DefaultSpacing}">
 
-                        <TextBlock Text="Bender" />
+                        <TextBlock Text="{x:Static lang:Resources.txt_filter}" />
 
                         <RadioButton x:Name="DateRadioButton"
                                      GroupName="filter"
-                                     Content="Date"
+                                     Content="{x:Static lang:Resources.txt_date}"
                                      IsChecked="{Binding IsDateFilter, Mode=TwoWay}" />
 
                         <RadioButton GroupName="filter"
-                                     Content="Pkgid" />
+                                     Content="{x:Static lang:Resources.txt_pkgid}" />
                     </StackPanel>
 
                     <!-- Filter by date -->
@@ -43,15 +43,20 @@
                                 Spacing="{StaticResource DefaultSpacing}"
                                 IsVisible="{Binding IsDateFilter}">
 
-                        <TextBlock Text="From:"
-                                   VerticalAlignment="Center" />
+                        <TextBlock VerticalAlignment="Center">
+                            <Run Text="{x:Static lang:Resources.txt_from}" />
+                            <Run Text=":" />
+                        </TextBlock>
 
                         <CalendarDatePicker Height="35"
                                             DisplayDateEnd="{Binding ToDate, Mode=TwoWay}"
                                             SelectedDate="{Binding FromDate, Mode=TwoWay}"
                                             DisplayDate="{Binding FromDate, Mode=TwoWay}" />
-                        <TextBlock Text="To:"
-                                   VerticalAlignment="Center" />
+
+                        <TextBlock VerticalAlignment="Center">
+                            <Run Text="{x:Static lang:Resources.txt_to}" />
+                            <Run Text=":" />
+                        </TextBlock>
 
                         <CalendarDatePicker Height="35"
                                             DisplayDateStart="{Binding FromDate, Mode=TwoWay}"
@@ -72,8 +77,10 @@
                                 Spacing="{StaticResource DefaultSpacing}"
                                 IsVisible="{Binding !IsDateFilter}">
 
-                        <TextBlock Text="Pkgid:"
-                                   VerticalAlignment="Center" />
+                        <TextBlock VerticalAlignment="Center">
+                            <Run Text="{x:Static lang:Resources.txt_pkgid}" />
+                            <Run Text=":" />
+                        </TextBlock>
 
                         <TextBox Width="270"
                                  Text="{Binding Pkgid, Mode=TwoWay}">
@@ -92,41 +99,22 @@
                     <!-- Datagrid -->
                     <DataGrid ItemsSource="{Binding  Packages}"
                               IsReadOnly="True"
-                              CanUserResizeColumns="True">
+                              CanUserResizeColumns="True"
+                              MinHeight="450">
 
                         <DataGrid.Columns>
-                            <DataGridTemplateColumn Header="In Use">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal"
-                                                    HorizontalAlignment="Center"
-                                                    Spacing="5">
 
-                                            <avalonia:MaterialIcon Kind="CheckCircle"
-                                                                   IsVisible="{Binding IsInUse}"
-                                                                   Width="30"
-                                                                   Foreground="Green" />
+                            <DataGridTextColumn Header="{x:Static lang:Resources.txt_pkgid}" Binding="{Binding Id}" />
 
-                                            <avalonia:MaterialIcon Kind="Alert"
-                                                                   IsVisible="{Binding !HasSfcOpen}"
-                                                                   Width="30"
-                                                                   Foreground="Goldenrod" />
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-
-                            <DataGridTextColumn Header="Pkgid" Binding="{Binding Id}" />
-
-                            <DataGridTextColumn Header="Scanned At"
+                            <DataGridTextColumn Header="{x:Static lang:Resources.txt_scanned}"
                                                 Width="130"
                                                 Binding="{Binding ScannedAt, Converter={x:Static converters:DateConverters.ToShortString}}" />
 
-                            <DataGridTextColumn Header="Sfc Open At"
+                            <DataGridTextColumn Header="{x:Static lang:Resources.txt_sfc_open}"
                                                 Width="130"
                                                 Binding="{Binding OpenedAt, Converter={x:Static converters:DateConverters.ToShortString}}" />
 
-                            <DataGridTemplateColumn Header="Loaded At">
+                            <DataGridTemplateColumn Header="{x:Static lang:Resources.txt_loaded}">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel HorizontalAlignment="Center"
@@ -147,12 +135,42 @@
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-                            <DataGridTextColumn Header="Used At"
+
+                            <DataGridTextColumn Header="{x:Static lang:Resources.txt_used}"
                                                 Width="130"
-                                                Binding="{Binding UsedAt, Converter={x:Static converters:DateConverters.ToShortString}}" />
+                                                Binding="{Binding QuantityUsedString}" />
+
+                            <DataGridTemplateColumn Header="{x:Static lang:Resources.txt_status}"
+                                                    MinWidth="130">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal"
+                                                    HorizontalAlignment="Left"
+                                                    Spacing="3">
+
+                                            <StackPanel.Styles>
+                                                <Style Selector="avalonia|MaterialIcon.InUse">
+                                                    <Setter Property="Foreground" Value="Green" />
+                                                </Style>
+                                                <Style Selector="avalonia|MaterialIcon.NotInUse">
+                                                    <Setter Property="Foreground" Value="Gray" />
+                                                </Style>
+                                            </StackPanel.Styles>
+
+                                            <avalonia:MaterialIcon
+                                                Kind="{Binding Status, Converter={x:Static converters:PackageStatusToIconConverters.Instance}}"
+                                                Width="30"
+                                                Classes.InUse="{Binding IsInUse}"
+                                                Classes.NotInUse="{Binding !IsInUse}" />
+
+                                            <TextBlock
+                                                Text="{Binding Status, Converter={x:Static converters:EnumToTranslatedTextConverters.PackageStatusTypeConverter}}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
-
                 </StackPanel>
 
                 <!-- Reload data -->
@@ -163,7 +181,8 @@
                             Spacing="10">
 
                     <TextBlock VerticalAlignment="Center">
-                        <Run Text="Last refresh at: " />
+                        <Run Text="{x:Static lang:Resources.txt_last_refresh}" />
+                        <Run Text=": " />
                         <Run Text="{Binding LastDataLoadedAt}" />
                     </TextBlock>
 

@@ -43,6 +43,14 @@
                     FontSize="12"
                     HorizontalAlignment="Center"
                     Text="Authors: David Ascencio, Hesbon Torres." />
+
+                <TextBlock
+                    Classes="Caption"
+                    FontSize="12"
+                    HorizontalAlignment="Center">
+                    <Run Text="Version: " />
+                    <Run Text="{Binding Version}" />
+                </TextBlock>
             </StackPanel>
         </Border>
     </controls:GlassCard>

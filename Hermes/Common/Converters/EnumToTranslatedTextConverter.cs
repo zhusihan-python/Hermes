@@ -11,6 +11,7 @@ public static class EnumToTranslatedTextConverters
 {
     public static readonly EnumToTranslatedTextConverter<SfcResponseType> SfcResponseTypeConverter = new();
     public static readonly EnumToTranslatedTextConverter<DepartmentType> DepartmentTypeConverter = new();
+    public static readonly EnumToTranslatedTextConverter<PackageStatusType> PackageStatusTypeConverter = new();
 }
 
 public class EnumToTranslatedTextConverter<T>() : IValueConverter where T : Enum
