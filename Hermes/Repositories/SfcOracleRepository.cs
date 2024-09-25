@@ -198,7 +198,8 @@ public class SfcOracleRepository : ISfcRepository
                                                  EMPLOYEE_ID EmployeeId,
                                                  NAME Name,
                                                  DEPARTMENT Department,
-                                                 USER_LEVEL "Level"
+                                                 USER_LEVEL "Level",
+                                                 PASSWORD Password
                                              FROM 
                                                  SFISM4.H_USERS
                                              WHERE 

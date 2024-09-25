@@ -3,10 +3,11 @@ namespace Hermes.Types;
 public enum FeatureType
 {
     FreeAccess,
+    Exit,
     Bender,
     SettingsConfig,
     SfcSimulator,
     UutProcessor,
-    Exit,
-    Admin
+    UserAdmin,
+    Admin= 99
 }

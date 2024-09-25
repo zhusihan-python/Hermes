@@ -12,6 +12,7 @@ public class User
 
     public int EmployeeId { get; set; }
     public string Name { get; set; } = "";
+    public string Password { get; set; } = "";
     public DepartmentType Department { get; set; }
     public PermissionLevel Level { get; set; }
     public string LevelText => Level.ToTranslatedString();
