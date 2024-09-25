@@ -1,37 +1,40 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using Avalonia.Controls.Notifications;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Hermes.Cipher.Types;
-using Hermes.Common.Extensions;
 using Hermes.Common.Messages;
 using Hermes.Language;
 using Hermes.Models;
 using Hermes.Repositories;
 using Material.Icons;
 using System.Threading.Tasks;
-using Avalonia.Controls.Notifications;
-
+using Hermes.Types;
 
 namespace Hermes.Features.Login;
 
 public partial class LoginViewModel : PageBase
 {
     [ObservableProperty] private User _user = User.Null;
-    [ObservableProperty] private string _token = "";
+    [ObservableProperty] private string _userName = "";
+    [ObservableProperty] private string _password = "";
     [ObservableProperty] private bool _isLoggedIn;
     [ObservableProperty] private bool _isLoggingIn;
     [ObservableProperty] private DepartmentType _department;
     private readonly Session _session;
-    private readonly UserRepository _userRepository;
-    public static DepartmentType[] Departments => EnumExtensions.GetValues<DepartmentType>();
+    private readonly ISfcRepository _sfcRepository;
 
     public LoginViewModel(
         Session session,
-        UserRepository userRepository) :
-        base(Resources.txt_account, MaterialIconKind.Account, 0, 0)
+        ISfcRepository sfcRepository) :
+        base(
+            Resources.txt_account,
+            MaterialIconKind.Account,
+            FeatureType.FreeAccess,
+            0)
     {
         this._session = session;
-        this._userRepository = userRepository;
+        this._sfcRepository = sfcRepository;
         session.UserChanged += OnSessionUserChanged;
 #if DEBUG
         LoginDebugUser();
@@ -42,16 +45,21 @@ public partial class LoginViewModel : PageBase
     private async Task Login()
     {
         IsLoggingIn = true;
-        var user = _userRepository.GetUser(token: this.Token, department: this.Department);
+        var user = await _sfcRepository.FindUser(this.UserName, this.Password);
         IsLoggedIn = !user.IsNull;
         _session.UpdateUser(user);
-        await Task.Delay(1000);
-        IsLoggingIn = false;
-        this.Token = string.Empty;
-        if (user.IsNull)
+        if (!IsLoggedIn)
         {
-            Messenger.Send(new ShowToastMessage(Resources.txt_invalid_token, Resources.msg_invalid_token, NotificationType.Error));
+            Messenger.Send(new ShowToastMessage(Resources.txt_error, Resources.msg_invalid_user_password,
+                NotificationType.Error));
         }
+        else
+        {
+            this.UserName = string.Empty;
+            this.Password = string.Empty;
+        }
+
+        IsLoggingIn = false;
     }
 
     [RelayCommand]
@@ -76,6 +84,6 @@ public partial class LoginViewModel : PageBase
 
     private void LoginDebugUser()
     {
-        _session.UpdateUser(_userRepository.GetDebugUser());
+        _session.UpdateUser(new DebugUser());
     }
 }

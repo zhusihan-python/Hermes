@@ -2,11 +2,12 @@ namespace Hermes.Cipher.Types;
 
 public enum DepartmentType
 {
+    All = 0,
     Ee,
     Aoi,
     Mfg,
     Qa,
-    Auto,
+    Automation,
     Kitting,
     Process,
     Admin = 99

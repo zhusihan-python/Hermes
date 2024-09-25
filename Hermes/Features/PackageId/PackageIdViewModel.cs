@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System;
 using Avalonia.Controls.Notifications;
+using Hermes.Language;
 
 namespace Hermes.Features.PackageId;
 
@@ -41,8 +42,13 @@ public partial class PackageIdViewModel : PageBase
 
     private readonly ISfcRepository _sfcRepository;
 
-    public PackageIdViewModel(ISfcRepository sfcRepository) : base("Package Id",
-        MaterialIconKind.PackageVariant, PermissionLevel.Level1, 4)
+    public PackageIdViewModel(ISfcRepository sfcRepository)
+        : base(
+            Resources.txt_search_pkgid,
+            MaterialIconKind.PackageVariant,
+            FeatureType.FreeAccess,
+            4,
+            [StationType.Labeling, StationType.LabelingMachine])
     {
         this._sfcRepository = sfcRepository;
     }

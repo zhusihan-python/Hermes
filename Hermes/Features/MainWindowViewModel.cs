@@ -13,6 +13,7 @@ using SukiUI;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Hermes.Cipher.Types;
 using Hermes.Types;
 using SukiUI.Dialogs;
 using SukiUI.Toasts;
@@ -28,14 +29,17 @@ namespace Hermes.Features
         public ObservableCollection<PageBase> ShownPages { get; set; } = [];
         [ObservableProperty] private ThemeVariant? _baseTheme;
         [ObservableProperty] private string _baseThemeText = "";
+        [ObservableProperty] private string _title;
         [ObservableProperty] private bool _titleBarVisible;
         [ObservableProperty] private PageBase? _activePage;
         [ObservableProperty] private bool _areSettingsVisible;
         [ObservableProperty] private bool _canExit;
         [ObservableProperty] private bool _isLoggedIn;
+        private readonly string _baseTitle;
 
         private readonly SukiTheme _theme;
         private readonly Session _session;
+        private readonly ISettingsRepository _settingsRepository;
 
         public MainWindowViewModel(
             Session session,
@@ -48,12 +52,16 @@ namespace Hermes.Features
             this._session.UserChanged += this.OnUserChanged;
             this._theme = SukiTheme.GetInstance();
             this._theme.ChangeBaseTheme(ThemeVariant.Light);
+            this._settingsRepository = settingsRepository;
             this.Pages = pages.ToList();
             this.TitleBarVisible = false;
             this.ToastManager = toastManager;
             this.DialogManager = dialogManager;
             this.ConfigureBasedOnSession();
             this.UpdateBaseTheme();
+            this._baseTitle =
+                $"{Resources.txt_hermes} - {_settingsRepository.Settings.Station} - {_settingsRepository.Settings.Line}";
+            Title = this._baseTitle;
             if (settingsRepository.Settings.AutostartUutProcessor)
             {
                 Messenger.Send(new StartUutProcessorMessage());
@@ -63,18 +71,32 @@ namespace Hermes.Features
         private void OnUserChanged(User user)
         {
             this.ConfigureBasedOnSession();
+            if (!user.IsNull)
+            {
+                Title = $"{this._baseTitle}     (👤{user.Name})";
+            }
+            else
+            {
+                Title = this._baseTitle;
+            }
         }
 
         private void ConfigureBasedOnSession()
         {
             var visiblePages = Pages
-                .Where(x => _session.CanUserView(x.RequiredViewPermissionLevel))
+                .Where(x =>
+                    x.FeatureType == FeatureType.FreeAccess ||
+                    _session.HasUserPermission(x.FeatureType))
+                .Where(x =>
+                    _session.UserDepartment == DepartmentType.Admin ||
+                    x.StationFilter == null ||
+                    x.StationFilter.Contains(_settingsRepository.Settings.Station))
                 .OrderBy(x => x.Index)
                 .ThenBy(x => x.DisplayName)
                 .ToList();
-            this.ShownPages.RemoveMany(ShownPages.Except(visiblePages));
-            this.ShownPages.AddRange(visiblePages.Except(ShownPages));
-            this.AreSettingsVisible = _session.CanUserUpdate(PermissionLevel.Level5);
+            this.ShownPages.Clear();
+            this.ShownPages.AddRange(visiblePages);
+            this.AreSettingsVisible = _session.HasUserPermission(FeatureType.SettingsConfig);
             this.CanExit = _session.CanUserExit();
             this.IsLoggedIn = _session.IsLoggedIn;
         }

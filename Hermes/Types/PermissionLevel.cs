@@ -2,6 +2,7 @@
 
 public enum PermissionLevel
 {
+    Level0,
     Level1,
     Level2,
     Level3,
@@ -12,5 +13,5 @@ public enum PermissionLevel
     Level8,
     Level9,
     Level10,
-    Administrator
+    Administrator = 99
 }

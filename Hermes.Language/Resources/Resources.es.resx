@@ -416,4 +416,31 @@
     <data name="msg_remove_package_load" xml:space="preserve">
         <value>Remover paquete de cargadora</value>
     </data>
+    <data name="msg_invalid_user_password" xml:space="preserve">
+        <value>Usuario/contraseña inválidos</value>
+    </data>
+    <data name="txt_error" xml:space="preserve">
+        <value>Error </value>
+    </data>
+    <data name="txt_level" xml:space="preserve">
+        <value>Nivel</value>
+    </data>
+    <data name="txt_password" xml:space="preserve">
+        <value>Contraseña</value>
+    </data>
+    <data name="txt_user" xml:space="preserve">
+        <value>Usuario</value>
+    </data>
+    <data name="txt_hermes" xml:space="preserve">
+        <value>Hermes </value>
+    </data>
+    <data name="txt_search_pkgid" xml:space="preserve">
+        <value>Buscar Pkgid</value>
+    </data>
+    <data name="txt_about" xml:space="preserve">
+        <value>Acerca de</value>
+    </data>
+    <data name="txt_sfc_simulator" xml:space="preserve">
+        <value>Simulador Sfc</value>
+    </data>
 </root>

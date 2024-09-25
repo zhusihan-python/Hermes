@@ -11,6 +11,7 @@ using Hermes.Types;
 using Material.Icons;
 using System.Threading.Tasks;
 using System;
+using System.Linq;
 
 namespace Hermes.Features.UutProcessor;
 
@@ -30,7 +31,11 @@ public partial class UutProcessorViewModel : PageBase
         StopService stopService,
         UutSenderService uutSenderService,
         ISettingsRepository settingsRepository)
-        : base(Resources.txt_uut_processor, MaterialIconKind.FolderEye, PermissionLevel.Level5, 1)
+        : base(
+            Resources.txt_uut_processor,
+            MaterialIconKind.FolderEye,
+            FeatureType.UutProcessor,
+            1)
     {
         this._session = session;
         this._stopService = stopService;
@@ -39,6 +44,9 @@ public partial class UutProcessorViewModel : PageBase
         this.Path = this._settingsRepository.Settings.InputPath;
         this.IsActive = true;
         this.OnUutProcessorStateChanged(UutProcessorState.Stopped);
+        this.StationFilter = EnumExtensions.GetValues<StationType>()
+            .Where(x => x != StationType.Labeling && x != StationType.None)
+            .ToList();
     }
 
     protected override void OnActivated()

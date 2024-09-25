@@ -14,7 +14,7 @@
                  Height="650"
                  WindowStartupLocation="CenterScreen"
                  Icon="avares://Hermes/AppData/Assets/logo-hermes.png"
-                 Title="Hermes"
+                 Title="{Binding Title}"
                  ClosingBehavior="OwnerAndChildWindows">
 
     <suki:SukiWindow.Hosts>

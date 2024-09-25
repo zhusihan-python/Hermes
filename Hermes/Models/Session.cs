@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.CompilerServices;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Hermes.Cipher.Types;
 using Hermes.Types;
 
 namespace Hermes.Models;
@@ -44,20 +45,16 @@ public partial class Session : ObservableObject
     public bool IsUutProcessorIdle => UutProcessorState == UutProcessorState.Idle;
     public bool IsUutProcessorBlocked => UutProcessorState == UutProcessorState.Blocked;
     public bool IsLoggedIn => !_user.IsNull;
+    public DepartmentType UserDepartment => _user.Department;
 
     public void ResetStop()
     {
         Stop = Stop.Null;
     }
 
-    public bool CanUserView(PermissionLevel permissionLevel)
+    public bool HasUserPermission(FeatureType featureType)
     {
-        return this.User.CanView(permissionLevel);
-    }
-
-    public bool CanUserUpdate(PermissionLevel permissionLevel)
-    {
-        return this.User.CanUpdate(permissionLevel);
+        return this.User.HasPermission(featureType);
     }
 
     public void UpdateUser(User user)
@@ -67,7 +64,7 @@ public partial class Session : ObservableObject
 
     public bool CanUserExit()
     {
-        return this.User.CanExit;
+        return this.HasUserPermission(FeatureType.Exit);
     }
 
     public void Logout()

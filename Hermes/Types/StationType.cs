@@ -12,4 +12,5 @@ public enum StationType
     Aoi4,
     Axi,
     Pth,
+    None = 99
 }

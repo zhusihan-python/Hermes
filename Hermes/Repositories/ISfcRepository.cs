@@ -24,4 +24,5 @@ public interface ISfcRepository
     Task<Package> FindNextCanUsePackage(string line);
     Task<int> ResetPackageTrackingLoadedAt(string packageId);
     Task<int> DeletePackageTracking(string pkgid);
+    Task<User> FindUser(string userName, string password);
 }

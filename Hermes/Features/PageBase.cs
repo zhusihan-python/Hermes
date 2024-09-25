@@ -1,14 +1,22 @@
+using System.Collections.Generic;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Hermes.Cipher.Types;
 using Hermes.Types;
 using Material.Icons;
 
 namespace Hermes.Features;
 
-public abstract partial class PageBase(string displayName, MaterialIconKind icon, PermissionLevel requiredViewPermissionLevel, int index = 0)
+public abstract partial class PageBase(
+    string displayName,
+    MaterialIconKind icon,
+    FeatureType featureType,
+    int index = 0,
+    List<StationType>? stationFilter = null)
     : ObservableRecipient
 {
     [ObservableProperty] private string _displayName = displayName;
     [ObservableProperty] private MaterialIconKind _icon = icon;
     [ObservableProperty] private int _index = index;
-    [ObservableProperty] private PermissionLevel _requiredViewPermissionLevel = requiredViewPermissionLevel;
+    [ObservableProperty] private FeatureType _featureType = featureType;
+    public List<StationType>? StationFilter { get; set; } = stationFilter;
 }

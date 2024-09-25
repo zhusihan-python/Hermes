@@ -744,6 +744,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid user/password.
+        /// </summary>
+        public static string msg_invalid_user_password {
+            get {
+                return ResourceManager.GetString("msg_invalid_user_password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove package from loadder.
         /// </summary>
         public static string msg_remove_package_load {
@@ -776,6 +785,15 @@ namespace Hermes.Language {
         public static string msg_spi_repair {
             get {
                 return ResourceManager.GetString("msg_spi_repair", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to About.
+        /// </summary>
+        public static string txt_about {
+            get {
+                return ResourceManager.GetString("txt_about", resourceCulture);
             }
         }
         
@@ -852,6 +870,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        public static string txt_error {
+            get {
+                return ResourceManager.GetString("txt_error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error code.
         /// </summary>
         public static string txt_error_code {
@@ -924,6 +951,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hermes.
+        /// </summary>
+        public static string txt_hermes {
+            get {
+                return ResourceManager.GetString("txt_hermes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hidden.
         /// </summary>
         public static string txt_hidden {
@@ -965,6 +1001,15 @@ namespace Hermes.Language {
         public static string txt_last_refresh {
             get {
                 return ResourceManager.GetString("txt_last_refresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Level.
+        /// </summary>
+        public static string txt_level {
+            get {
+                return ResourceManager.GetString("txt_level", resourceCulture);
             }
         }
         
@@ -1050,6 +1095,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        public static string txt_password {
+            get {
+                return ResourceManager.GetString("txt_password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Path.
         /// </summary>
         public static string txt_path {
@@ -1095,6 +1149,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Search PackageId.
+        /// </summary>
+        public static string txt_search_pkgid {
+            get {
+                return ResourceManager.GetString("txt_search_pkgid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select work order.
         /// </summary>
         public static string txt_select_work_order {
@@ -1127,6 +1190,15 @@ namespace Hermes.Language {
         public static string txt_sfc_open {
             get {
                 return ResourceManager.GetString("txt_sfc_open", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sfc Simulator.
+        /// </summary>
+        public static string txt_sfc_simulator {
+            get {
+                return ResourceManager.GetString("txt_sfc_simulator", resourceCulture);
             }
         }
         
@@ -1217,6 +1289,15 @@ namespace Hermes.Language {
         public static string txt_used {
             get {
                 return ResourceManager.GetString("txt_used", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User.
+        /// </summary>
+        public static string txt_user {
+            get {
+                return ResourceManager.GetString("txt_user", resourceCulture);
             }
         }
         

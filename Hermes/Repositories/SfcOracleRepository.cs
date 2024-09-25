@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
+using Hermes.Cipher.Types;
 
 namespace Hermes.Repositories;
 
@@ -188,6 +189,42 @@ public class SfcOracleRepository : ISfcRepository
                                              VALUES(:pkgid, :line, NULL, SYSTIMESTAMP)
 
                                              """, new { pkgid = package.NormalizedId, line = package.Line });
+    }
+
+    public async Task<User> FindUser(string employeeId, string password)
+    {
+        var result = await this.Query<User>($"""
+                                             SELECT 
+                                                 EMPLOYEE_ID EmployeeId,
+                                                 NAME Name,
+                                                 DEPARTMENT Department,
+                                                 USER_LEVEL "Level"
+                                             FROM 
+                                                 SFISM4.H_USERS
+                                             WHERE 
+                                                 EMPLOYEE_ID = :employeeId AND
+                                                 PASSWORD = :password
+                                             """, new { employeeId, password });
+        var user = result.FirstOrDefault(User.Null);
+        if (user.IsNull)
+        {
+            return User.Null;
+        }
+
+        user.Permissions = (await this.FindAllFeaturePermissions(user.Department)).ToList();
+        return user;
+    }
+
+    public async Task<IEnumerable<FeaturePermission>> FindAllFeaturePermissions(DepartmentType department)
+    {
+        return await this.Query<FeaturePermission>($"""
+                                                    SELECT FEATURE         Feature,
+                                                           DEPARTMENT      Department,
+                                                           PERMISSIONLEVEL "Level"
+                                                    FROM SFISM4.H_FEATURE_PERMISSIONS
+                                                    WHERE DEPARTMENT = 0 -- All departments
+                                                          OR DEPARTMENT = :department
+                                                    """, new { department = (int)department });
     }
 
     private async Task<IEnumerable<T>> Query<T>(string sql, object? param = null)
