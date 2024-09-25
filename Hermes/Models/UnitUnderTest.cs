@@ -24,6 +24,7 @@ public class UnitUnderTest
     [NotMapped] public bool IsRepair => this.IsFail && this.SfcResponse?.IsFail == false;
     [NotMapped] public bool IsSfcTimeout => this.SfcResponse?.IsTimeout == true;
     [NotMapped] public bool IsSfcFail => this.SfcResponse?.IsFail == true;
+    [NotMapped] public string Message { get; set; } = "";
 
     public UnitUnderTest(string fileName, string content)
     {

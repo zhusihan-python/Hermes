@@ -20,7 +20,9 @@ public partial class MainWindowView : SukiWindow
     public MainWindowView()
     {
         InitializeComponent();
+#if DEBUG
         this.IsMenuVisible = true;
+#endif
         IsTitleBarVisible = false;
     }
 

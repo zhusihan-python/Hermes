@@ -1,0 +1,21 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:Hermes.Features.Bender"
+             xmlns:theme="clr-namespace:SukiUI.Theme;assembly=SukiUI"
+             mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="700"
+             x:Class="Hermes.Features.Bender.BenderView"
+             x:DataType="local:BenderViewModel">
+    
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <WrapPanel Margin="{StaticResource DefaultMargin}"
+                   theme:WrapPanelExtensions.AnimatedScroll="True"
+                   Orientation="Horizontal">
+
+            <local:PackageScannerView DataContext="{Binding PackageScannerViewModel}" />
+
+            <local:PackageTrackingView DataContext="{Binding PackageTrackingViewModel}" />
+        </WrapPanel>
+    </ScrollViewer>
+</UserControl>

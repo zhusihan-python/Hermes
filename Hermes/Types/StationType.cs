@@ -2,6 +2,8 @@ namespace Hermes.Types;
 
 public enum StationType
 {
+    Labeling,
+    LabelingMachine,
     SpiBottom,
     SpiTop,
     Aoi1,
@@ -10,5 +12,4 @@ public enum StationType
     Aoi4,
     Axi,
     Pth,
-    Labeling
 }

@@ -15,7 +15,12 @@ using Hermes.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System.Linq;
 using System;
+using Hermes.Cipher;
+using Hermes.Features.Bender;
 using Hermes.Features.Login;
+using SukiUI.Dialogs;
+using SukiUI.Toasts;
+using AesEncryptor = Hermes.Common.AesEncryptor;
 
 namespace Hermes;
 
@@ -55,6 +60,7 @@ public partial class App
         services.AddSingleton<HermesContext>();
         services.AddSingleton<ISettingsRepository, SettingsRepository>();
         services.AddTransient<IDefectRepository, DefectRepository>();
+        services.AddTransient<ISfcRepository, SfcOracleRepository>();
         services.AddTransient<SfcResponseRepository>();
         services.AddTransient<StopRepository>();
         services.AddTransient<UnitUnderTestRepository>();
@@ -65,17 +71,23 @@ public partial class App
     {
         services.AddSingleton<AesEncryptor>();
         services.AddSingleton<ILogger, HermesLogger>();
+        services.AddSingleton<LabelingMachineUnitUnderTestParser>();
+        services.AddSingleton<PackageParser>();
         services.AddSingleton<PageNavigationService>();
         services.AddSingleton<ParserPrototype>();
+        services.AddSingleton<QrGenerator>();
         services.AddSingleton<SettingsConfigModel>();
         services.AddSingleton<SfcResponseBuilder>();
+        services.AddSingleton<TokenGenerator>();
         services.AddSingleton<UnitUnderTestBuilder>();
     }
 
     private static void ConfigureServices(ServiceCollection services)
     {
-        services.AddSingleton<ViewLocator>();
+        services.AddSingleton<ISukiToastManager, SukiToastManager>();
+        services.AddSingleton<ISukiDialogManager, SukiDialogManager>();
         services.AddSingleton<PageNavigationService>();
+        services.AddSingleton<ViewLocator>();
         services.AddTransient<FileService>();
         services.AddTransient<FolderWatcherService>();
         services.AddTransient<ISfcService, SharedFolderSfcService>();
@@ -101,17 +113,15 @@ public partial class App
         services.AddSingleton<MainWindowViewModel>();
         services.AddSingleton<SfcSimulatorViewModel>();
         services.AddTransient<LoginViewModel>();
+        services.AddTransient<PackageScannerViewModel>();
+        services.AddTransient<PackageTrackingViewModel>();
         services.AddTransient<SettingsView>();
+        services.AddTransient<SettingsViewModel>();
         services.AddTransient<StopView>();
         services.AddTransient<StopViewModel>();
         services.AddTransient<SuccessView>();
         services.AddTransient<SuccessViewModel>();
         services.AddTransient<TokenView>();
         services.AddTransient<TokenViewModel>();
-        services.AddTransient<SettingsViewModel>();
-        services.AddTransient<LogsView>();
-        services.AddTransient<LoginViewModel>();
-        services.AddTransient<UnitUnderTestLogView>();
-        services.AddTransient<UnitUnderTestLogViewModel>();
     }
 }

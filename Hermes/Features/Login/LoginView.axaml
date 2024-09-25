@@ -7,6 +7,8 @@
              xmlns:login="clr-namespace:Hermes.Features.Login"
              xmlns:theme="clr-namespace:SukiUI.Theme;assembly=SukiUI"
              xmlns:lang="clr-namespace:Hermes.Language;assembly=Hermes.Language"
+             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
              xmlns:converters="clr-namespace:Hermes.Common.Converters"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Hermes.Features.Login.LoginView"
@@ -42,9 +44,11 @@
                                        FontSize="18"
                                        FontWeight="DemiBold"
                                        Text="{x:Static lang:Resources.c_login_title}" />
-                            <TextBlock Margin="6,18,0,3"
+                            <TextBlock x:Name="TokenTextBlock"
+                                       Margin="6,18,0,3"
                                        FontWeight="DemiBold"
-                                       Text="{x:Static lang:Resources.txt_department}" />
+                                       Text="{x:Static lang:Resources.txt_department}">
+                            </TextBlock>
                             <ComboBox
                                 Name="DepartmentComboBox"
                                 ItemsSource="{Binding Departments}"
@@ -60,11 +64,9 @@
                                        FontWeight="DemiBold"
                                        Text="{x:Static lang:Resources.txt_token}" />
                             <TextBox Name="PasswordTextBox"
-                                     Text="{Binding Token, Mode=TwoWay}"
                                      Watermark="*******"
-                                     Margin="0,0,0,25"
-                                     theme:TextBoxExtensions.AddDeleteButton="True"
-                                     PasswordChar="*" />
+                                     Text="{Binding Token, Mode=TwoWay}"
+                                     Margin="0,0,0,25" />
                         </StackPanel>
                     </suki:BusyArea>
                 </suki:GlassCard>
@@ -73,13 +75,14 @@
                         Margin="0,0,0,7"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Bottom"
+                        IsDefault="True"
                         theme:ButtonExtensions.ShowProgress="{Binding IsLoggingIn}"
                         Classes="Flat Rounded Accent"
                         Command="{Binding LoginCommand}"
                         FontWeight="DemiBold"
                         Content="{x:Static lang:Resources.txt_login}">
                     <Button.CommandParameter>
-                        <MultiBinding Converter="{x:Static converters:ToupleConverter.LoginToupleConverter}">
+                        <MultiBinding Converter="{x:Static converters:TupleConverter.LoginTupleConverter}">
                             <Binding Path="Text" ElementName="PasswordTextBox" />
                             <Binding Path="SelectedItem" ElementName="DepartmentComboBox" />
                         </MultiBinding>
@@ -113,14 +116,9 @@
                             <Run Text="{Binding User.Id}" />
                         </TextBlock>
                         <TextBlock FontWeight="DemiBold">
-                            <Run Text="{x:Static lang:Resources.txt_employee}" />
+                            <Run Text="{x:Static lang:Resources.txt_department}" />
                             <Run Text=":" />
-                            <Run Text="{Binding User.EmployeeId}" />
-                        </TextBlock>
-                        <TextBlock FontWeight="DemiBold">
-                            <Run Text="{x:Static lang:Resources.txt_name}" />
-                            <Run Text=":" />
-                            <Run Text="{Binding User.Name}" />
+                            <Run Text="{Binding User.Department}" />
                         </TextBlock>
                         <TextBlock FontWeight="DemiBold">
                             <Run Text="{x:Static lang:Resources.txt_view_level}" />

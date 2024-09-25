@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Runtime.InteropServices.JavaScript;
 using System.Text.RegularExpressions;
+using Hermes.Cipher.Types;
 
 namespace Hermes.Cipher;
 
@@ -16,6 +17,11 @@ public class TokenGenerator
         var cipherDepartmentAndId =
             VigenereCipher.Cipher($"{department}{alphabetId}", key);
         return $"{GetKeyword(id, departmentId, date)}.{cipherDepartmentAndId}".ToUpper();
+    }
+
+    public bool TryDecode(string token, DepartmentType departmentId, DateOnly date, out int id)
+    {
+        return TryDecode(token, (int)departmentId, date, out id);
     }
 
     public bool TryDecode(string token, int departmentId, DateOnly date, out int id)

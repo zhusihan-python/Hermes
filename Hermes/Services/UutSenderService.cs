@@ -1,13 +1,14 @@
 using Hermes.Builders;
+using Hermes.Common.Extensions;
 using Hermes.Common;
+using Hermes.Language;
 using Hermes.Models;
+using Hermes.Repositories;
+using Hermes.Types;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using System.Threading;
 using System;
-using System.Linq;
-using Hermes.Common.Extensions;
-using Hermes.Repositories;
 
 namespace Hermes.Services;
 
@@ -25,6 +26,7 @@ public class UutSenderService
     private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
     private readonly FolderWatcherService _folderWatcherService;
     private readonly UnitUnderTestRepository _unitUnderTestRepository;
+    private readonly SfcResponseBuilder _sfcResponseBuilder;
     private readonly ConcurrentQueue<string> _pendingFiles = new();
     private CancellationTokenSource? _cancellationTokenSource;
     private bool _isRunning;
@@ -38,16 +40,18 @@ public class UutSenderService
         ISettingsRepository settingsRepository,
         FolderWatcherService folderWatcherService,
         UnitUnderTestBuilder unitUnderTestBuilder,
-        UnitUnderTestRepository unitUnderTestRepository)
+        UnitUnderTestRepository unitUnderTestRepository,
+        SfcResponseBuilder sfcResponseBuilder)
     {
         this._session = session;
         this._logger = logger;
-        this._settingsRepository = settingsRepository;
         this._sfcService = sfcService;
         this._fileService = fileService;
+        this._settingsRepository = settingsRepository;
         this._unitUnderTestRepository = unitUnderTestRepository;
         this._folderWatcherService = folderWatcherService;
         this._unitUnderTestBuilder = unitUnderTestBuilder;
+        this._sfcResponseBuilder = sfcResponseBuilder;
         this._folderWatcherService.FileCreated += this.OnFileCreated;
     }
 
@@ -103,14 +107,25 @@ public class UutSenderService
 
     private async Task<UnitUnderTest> SendFileAsync(string fullPath)
     {
-        var backupFullPath = await this._fileService.MoveToBackupAsync(fullPath);
+        var backupFullPath = await this._fileService.MoveToBackupAndAppendDateToNameAsync(fullPath);
         var unitUnderTest = await this.BuildUnitUnderTest(backupFullPath);
         if (unitUnderTest.IsNull)
         {
             return UnitUnderTest.Null;
         }
 
-        unitUnderTest.SfcResponse = await this._sfcService.SendAsync(unitUnderTest);
+        if (!_settingsRepository.Settings.SendRepairFile && unitUnderTest.IsFail)
+        {
+            unitUnderTest.SfcResponse = _sfcResponseBuilder.SetOkContent().Build();
+            unitUnderTest.Message = _settingsRepository.Settings.Station is StationType.SpiBottom or StationType.SpiTop
+                ? Resources.msg_spi_repair
+                : "";
+        }
+        else
+        {
+            unitUnderTest.SfcResponse = await this._sfcService.SendAsync(unitUnderTest);
+        }
+
         if (unitUnderTest.SfcResponse.IsTimeout && this._retries < this._settingsRepository.Settings.MaxSfcRetries - 1)
         {
             this._retries += 1;
@@ -132,7 +147,7 @@ public class UutSenderService
         if (unitUnderTest.IsNull)
         {
             this._logger.Error($"Invalid file: {fullPath}");
-            await this._fileService.MoveToBackupAsync(fullPath);
+            await this._fileService.MoveToBackupAndAppendDateToNameAsync(fullPath);
         }
         else
         {

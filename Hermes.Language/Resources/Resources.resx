@@ -342,4 +342,85 @@
     <data name="enum_aoi" xml:space="preserve">
         <value>AOI</value>
     </data>
+    <data name="msg_spi_repair" xml:space="preserve">
+        <value>Please clean the pcb and feed it back into the screen printer</value>
+    </data>
+    <data name="c_sfc_sim_show_repair_with_message" xml:space="preserve">
+        <value>Show repair view with message</value>
+    </data>
+    <data name="txt_loading" xml:space="preserve">
+        <value>Loading...</value>
+    </data>
+    <data name="msg_change_wo" xml:space="preserve">
+        <value>Select the work order</value>
+    </data>
+    <data name="msg_scan_2d_package" xml:space="preserve">
+        <value>Scan the package's 2D code</value>
+    </data>
+    <data name="msg_scan_vendor" xml:space="preserve">
+        <value>Scan the vendor</value>
+    </data>
+    <data name="txt_select_work_order" xml:space="preserve">
+        <value>Select work order</value>
+    </data>
+    <data name="txt_work_order" xml:space="preserve">
+        <value>Work order</value>
+    </data>
+    <data name="txt_add_package" xml:space="preserve">
+        <value>Add package</value>
+    </data>
+    <data name="txt_date" xml:space="preserve">
+        <value>Date</value>
+    </data>
+    <data name="txt_filter" xml:space="preserve">
+        <value>Filter</value>
+    </data>
+    <data name="txt_pkgid" xml:space="preserve">
+        <value>PkgId</value>
+    </data>
+    <data name="txt_from" xml:space="preserve">
+        <value>From</value>
+    </data>
+    <data name="txt_to" xml:space="preserve">
+        <value>To</value>
+    </data>
+    <data name="txt_scanned" xml:space="preserve">
+        <value>Scanned</value>
+    </data>
+    <data name="txt_sfc_open" xml:space="preserve">
+        <value>SFC open</value>
+    </data>
+    <data name="txt_loaded" xml:space="preserve">
+        <value>Loaded</value>
+    </data>
+    <data name="txt_used" xml:space="preserve">
+        <value>Used</value>
+    </data>
+    <data name="txt_in_use" xml:space="preserve">
+        <value>In use</value>
+    </data>
+    <data name="txt_last_refresh" xml:space="preserve">
+        <value>Last refresh</value>
+    </data>
+    <data name="enum_scanned" xml:space="preserve">
+        <value>Scanned</value>
+    </data>
+    <data name="enum_open" xml:space="preserve">
+        <value>Open</value>
+    </data>
+    <data name="enum_inuse" xml:space="preserve">
+        <value>In use</value>
+    </data>
+    <data name="enum_used" xml:space="preserve">
+        <value>Used</value>
+    </data>
+    <data name="enum_loaded" xml:space="preserve">
+        <value>Loaded</value>
+    </data>
+    <data name="msg_remove_package_load" xml:space="preserve">
+        <value>Remove package from loadder</value>
+    </data>
+    <data name="msg_delete_package_from_hermes" xml:space="preserve">
+        <value>Delete package from Hermes</value>
+    </data>
 </root>

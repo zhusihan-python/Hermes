@@ -5,5 +5,6 @@ public enum LogfileType
     Default,
     TriDefault,
     VitroxDefault,
-    MagicDefault
+    MagicDefault,
+    LabelingMachineDefault
 }

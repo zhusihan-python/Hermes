@@ -6,5 +6,6 @@ public enum MachineType
     Aoi,
     Axi,
     Magic,
-    Labeling
+    Labeling,
+    None
 }

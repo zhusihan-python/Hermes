@@ -2,25 +2,28 @@ using Hermes.Builders;
 using Hermes.Common.Extensions;
 using Hermes.Types;
 
-namespace HermesTests.Common.Parsers;
+namespace HermesTests.Builders;
 
-public class UnitUnderTestParserTests
+public class UnderTestBuilderTests
 {
     private UnitUnderTestBuilder _unitUnderTestBuilder;
+    private const FileExtension FileExtension = Hermes.Types.FileExtension.Log;
+    private const LogfileType LogfileType = Hermes.Types.LogfileType.TriDefault;
 
-    public UnitUnderTestParserTests(UnitUnderTestBuilder unitUnderTestBuilder)
+    public UnderTestBuilderTests(UnitUnderTestBuilder unitUnderTestBuilder)
     {
-        this._unitUnderTestBuilder = unitUnderTestBuilder;
+        this._unitUnderTestBuilder = unitUnderTestBuilder
+            .InputFileExtension(FileExtension)
+            .LogfileType(LogfileType);
     }
 
     [Fact]
     public void SetFilename_GivenFileName_FileNameIsSet()
     {
-        const FileExtension fileExtension = FileExtension.Log;
-        string fileName = $"MyFileName.{fileExtension.GetDescription()}";
+        string fileNameWithoutExtension = $"MyFileName";
+        string fileName = $"{fileNameWithoutExtension}{FileExtension.GetDescription()}";
         var uut = this._unitUnderTestBuilder
-            .InputFileExtension(fileExtension)
-            .FileName(fileName)
+            .FileNameWithoutExtension(fileNameWithoutExtension)
             .Build();
         Assert.Equal(fileName, uut.FileName);
     }
@@ -72,12 +75,5 @@ public class UnitUnderTestParserTests
             .IsPass(false)
             .Build();
         Assert.True(uut.IsFail);
-    }
-
-    [Fact]
-    public void GetSfcFormatedContent_FailLogfile_ReturnsTrue()
-    {
-        var uut = this._unitUnderTestBuilder.Build();
-        Assert.Equal(this._unitUnderTestBuilder.Content, uut.Content);
     }
 }

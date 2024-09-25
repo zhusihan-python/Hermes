@@ -93,8 +93,8 @@ namespace Hermes.Features.Logs
             {
                 Debug.WriteLine("No se selecciono nada");
             }
-            var fullpath = _fileService.GetBackupFullPathByName(Filename);
-            return fullpath;
+            //var fullpath = _fileService.GetBackupFullPathByName(Filename);
+            return "";
         }
 
         private void ReSendFile()

@@ -13,6 +13,7 @@ using SukiUI.Controls;
 using System.Threading.Tasks;
 using System.Threading;
 using System;
+using SukiUI.Toasts;
 
 namespace Hermes.Services;
 
@@ -25,8 +26,12 @@ public class WindowService : ObservableRecipient
     {
         get
         {
-            _settingsView ??= (_viewLocator.BuildWindow(_settingsViewModel) as SettingsView)!;
-            _settingsView.Append(_settingsViewModel.Model);
+            if (_settingsView == null)
+            {
+                _settingsView = (_viewLocator.BuildWindow(_settingsViewModel) as SettingsView)!;
+                _settingsView.Append(_settingsViewModel.Model);
+            }
+
             return _settingsView;
         }
     }
@@ -43,13 +48,15 @@ public class WindowService : ObservableRecipient
     private SuccessView? _successView;
     private SettingsView? _settingsView;
     private CancellationTokenSource _successViewCancellationTokenSource = new();
+    private readonly ISukiToastManager _toastManager;
 
     public WindowService(
         ViewLocator viewLocator,
         ISettingsRepository settingsRepository,
         SettingsViewModel settingsViewModel,
         StopViewModel stopViewModel,
-        SuccessViewModel successViewModel)
+        SuccessViewModel successViewModel,
+        ISukiToastManager toastManager)
     {
         this._viewLocator = viewLocator;
         this._settingsRepository = settingsRepository;
@@ -57,6 +64,7 @@ public class WindowService : ObservableRecipient
         this._stopViewModel = stopViewModel;
         this._stopViewModel.Restored += this.OnStopViewModelRestored;
         this._settingsViewModel = settingsViewModel;
+        this._toastManager = toastManager;
     }
 
     public void Start()
@@ -90,6 +98,7 @@ public class WindowService : ObservableRecipient
             SuccessView.DataContext = this._successViewModel;
             this._successViewModel.SerialNumber = message.Value.SerialNumber;
             this._successViewModel.IsRepair = message.Value.IsRepair;
+            this._successViewModel.Message = message.Value.Message;
 
             SetBottomCenterPosition(SuccessView);
             SuccessView.UpdateLayout();
@@ -142,7 +151,13 @@ public class WindowService : ObservableRecipient
     {
         Dispatcher.UIThread.Invoke(() =>
         {
-            SukiHost.ShowToast(message.Title, message.Value, duration: TimeSpan.FromSeconds(message.Duration));
+            _toastManager.CreateToast()
+                .OfType(message.Type)
+                .WithTitle(message.Title)
+                .WithContent(message.Value)
+                .Dismiss().After(TimeSpan.FromSeconds(message.Duration))
+                .Dismiss().ByClicking()
+                .Queue();
         });
     }
 

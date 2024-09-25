@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Avalonia;
 using Hermes.Builders;
 using Hermes.Common.Extensions;
+using Hermes.Language;
 using Hermes.Models;
 using Microsoft.EntityFrameworkCore.Sqlite.Migrations.Internal;
 
@@ -37,7 +38,7 @@ public partial class SfcSimulatorViewModel : PageBase
         FileService fileService,
         SfcSimulatorService sfcSimulatorService,
         UnitUnderTestBuilder underTestBuilder)
-        : base("Sfc Simulator", MaterialIconKind.BugPlay, PermissionLevel.Administrator, 0)
+        : base("Sfc Simulator", MaterialIconKind.BugPlay, PermissionLevel.Administrator, 100)
     {
         _coreSettings = coreSettings;
         _fileService = fileService;
@@ -140,10 +141,17 @@ public partial class SfcSimulatorViewModel : PageBase
         ShowSuccessView(isPass: false);
     }
 
-    private void ShowSuccessView(bool isPass)
+    [RelayCommand]
+    private void ShowRepairViewWithMessage()
+    {
+        ShowSuccessView(isPass: false, Resources.msg_spi_repair);
+    }
+
+    private void ShowSuccessView(bool isPass, string message = "")
     {
         var uut = this._unitUnderTestBuilder.Clone()
             .IsPass(isPass)
+            .Message(message)
             .Build();
         Messenger.Send(new ShowSuccessMessage(uut));
     }
@@ -177,7 +185,7 @@ public partial class SfcSimulatorViewModel : PageBase
         var uuid = Guid.NewGuid().ToString()[..5];
         var content = builder
             .SerialNumber($"1A62TEST{uuid}".ToUpper())
-            .GetContent();
+            .GetTestContent();
         await this._fileService.WriteAllTextToInputPathAsync($"{fileNameWithoutExtension}_{uuid}".ToUpper(), content);
     }
 

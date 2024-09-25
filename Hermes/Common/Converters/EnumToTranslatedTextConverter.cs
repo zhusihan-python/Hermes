@@ -1,4 +1,5 @@
 using Avalonia.Data.Converters;
+using Hermes.Cipher.Types;
 using Hermes.Common.Extensions;
 using Hermes.Types;
 using System.Globalization;
@@ -10,6 +11,7 @@ public static class EnumToTranslatedTextConverters
 {
     public static readonly EnumToTranslatedTextConverter<SfcResponseType> SfcResponseTypeConverter = new();
     public static readonly EnumToTranslatedTextConverter<DepartmentType> DepartmentTypeConverter = new();
+    public static readonly EnumToTranslatedTextConverter<PackageStatusType> PackageStatusTypeConverter = new();
 }
 
 public class EnumToTranslatedTextConverter<T>() : IValueConverter where T : Enum

@@ -37,6 +37,17 @@ public partial class SettingsConfigModel(
     private int _waitDelayMilliseconds = 100;
 
     [ObservableProperty]
+    [property: DropdownConfig(RuntimeItemsSourceMethodName = "LineType")]
+    [property: Config(
+        Header = "c_settings_header_line_name",
+        Description = "c_settings_header_line_name",
+        Category = "c_settings_category_general",
+        Group = "c_settings_group_station")]
+    private LineType _line = LineType.Ag01;
+
+    public static LineType[] LineTypes => EnumExtensions.GetValues<LineType>();
+
+    [ObservableProperty]
     [property: DropdownConfig(RuntimeItemsSourceMethodName = "StationType")]
     [property: Config(
         Header = "c_settings_header_station",
@@ -57,17 +68,6 @@ public partial class SettingsConfigModel(
     private MachineType _machine = MachineType.Spi;
 
     public static MachineType[] MachineTypes => EnumExtensions.GetValues<MachineType>();
-
-    [ObservableProperty]
-    [property: DropdownConfig(RuntimeItemsSourceMethodName = "LineType")]
-    [property: Config(
-        Header = "c_settings_header_line_name",
-        Description = "c_settings_header_line_name",
-        Category = "c_settings_category_general",
-        Group = "c_settings_group_station")]
-    private LineType _line = LineType.Ag01;
-
-    public static LineType[] LineTypes => EnumExtensions.GetValues<LineType>();
 
     [ObservableProperty]
     [property: DropdownConfig(RuntimeItemsSourceMethodName = "LogfileTypes")]
@@ -205,15 +205,15 @@ public partial class SettingsConfigModel(
                 SendRepairFile = true;
                 break;
             case MachineType.Labeling:
-                LogfileType = LogfileType.Default;
+                LogfileType = LogfileType.LabelingMachineDefault;
                 SfcResponseExtension = FileExtension.Log;
                 InputFileExtension = FileExtension.Res;
                 SendRepairFile = true;
                 break;
             default:
                 LogfileType = LogfileType.Default;
-                SfcResponseExtension = FileExtension.Log;
-                InputFileExtension = FileExtension._3dx;
+                SfcResponseExtension = FileExtension.Res;
+                InputFileExtension = FileExtension.Txt;
                 SendRepairFile = true;
                 break;
         }
@@ -224,22 +224,31 @@ public partial class SettingsConfigModel(
     {
         switch (value)
         {
+            case StationType.Labeling:
+                Machine = MachineType.None;
+                SendRepairFile = false;
+                AutostartUutProcessor = false;
+                break;
+            case StationType.LabelingMachine:
+                Machine = MachineType.Labeling;
+                SendRepairFile = false;
+                AutostartUutProcessor = true;
+                break;
             case StationType.SpiBottom:
             case StationType.SpiTop:
                 Machine = MachineType.Spi;
                 SendRepairFile = false;
+                AutostartUutProcessor = true;
                 break;
             case StationType.Axi:
                 Machine = MachineType.Axi;
                 SendRepairFile = true;
+                AutostartUutProcessor = true;
                 break;
             case StationType.Pth:
                 Machine = MachineType.Magic;
                 SendRepairFile = true;
-                break;
-            case StationType.Labeling:
-                Machine = MachineType.Labeling;
-                SendRepairFile = true;
+                AutostartUutProcessor = true;
                 break;
             case StationType.Aoi1:
             case StationType.Aoi2:
@@ -248,6 +257,7 @@ public partial class SettingsConfigModel(
             default:
                 Machine = MachineType.Aoi;
                 SendRepairFile = true;
+                AutostartUutProcessor = true;
                 break;
         }
     }

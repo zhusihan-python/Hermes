@@ -12,6 +12,7 @@ namespace Hermes.Services;
 public class FileService
 {
     private const string BackupPrefix = "_backupAt_";
+    private const string ResponseSufix = "_response";
 
     private readonly ISettingsRepository _settingsRepository;
     private readonly ResiliencePipeline _retryPipeline;
@@ -41,9 +42,23 @@ public class FileService
         });
     }
 
-    public virtual async Task<string> MoveToBackupAsync(string fullPath)
+    public virtual async Task<string> MoveToBackupAndAppendResponseAsync(string fullPath)
     {
-        var backupFullPath = this.GetBackupFullPath(fullPath);
+        return await MoveToBackupAsync(
+            fullPath,
+            $"{Path.GetFileNameWithoutExtension(fullPath)}{ResponseSufix}{Path.GetExtension(fullPath)}");
+    }
+
+    public virtual async Task<string> MoveToBackupAndAppendDateToNameAsync(string fullPath)
+    {
+        return await MoveToBackupAsync(
+            fullPath,
+            $"{Path.GetFileNameWithoutExtension(fullPath)}{BackupPrefix}{DateTime.Now:dd_MM_HHmmss}{Path.GetExtension(fullPath)}");
+    }
+
+    private async Task<string> MoveToBackupAsync(string fullPath, string fileName)
+    {
+        var backupFullPath = Path.Combine(this._settingsRepository.Settings.BackupPath, fileName);
         if (File.Exists(backupFullPath))
         {
             File.Delete(backupFullPath);
@@ -72,25 +87,6 @@ public class FileService
         if (index != -1)
             fileName = string.Concat(fileName.AsSpan(0, index), Path.GetExtension(fullPath));
         return fileName;
-    }
-
-    private string GetBackupFullPath(string fullPath)
-    {
-        var fileName = GetFileNameWithCurrentDate(fullPath);
-        return Path.Combine(this._settingsRepository.Settings.BackupPath, fileName);
-    }
-
-    public string GetBackupFullPathByName(string fileName)
-    {
-        Debug.WriteLine($"Selected Filename: {fileName}");
-        return this._settingsRepository.Settings.BackupPath + "\\" + fileName;
-        //return Path.Combine(this._settingsRepository.Settings.BackupPath, fileName);
-    }
-
-    private static string GetFileNameWithCurrentDate(string fullPath)
-    {
-        return
-            $"{Path.GetFileNameWithoutExtension(fullPath)}{BackupPrefix}{DateTime.Now:dd_MM_HHmmss}{Path.GetExtension(fullPath)}";
     }
 
     private async Task<string> TryCopy(string source, string dest)

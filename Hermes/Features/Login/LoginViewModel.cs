@@ -1,22 +1,23 @@
-﻿using System;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using Hermes.Cipher.Types;
+using Hermes.Common.Extensions;
+using Hermes.Common.Messages;
 using Hermes.Language;
 using Hermes.Models;
 using Hermes.Repositories;
 using Material.Icons;
 using System.Threading.Tasks;
-using CommunityToolkit.Mvvm.Messaging;
-using Hermes.Common.Extensions;
-using Hermes.Common.Messages;
-using Hermes.Types;
+using Avalonia.Controls.Notifications;
+
 
 namespace Hermes.Features.Login;
 
 public partial class LoginViewModel : PageBase
 {
     [ObservableProperty] private User _user = User.Null;
-    [ObservableProperty] private string _token;
+    [ObservableProperty] private string _token = "";
     [ObservableProperty] private bool _isLoggedIn;
     [ObservableProperty] private bool _isLoggingIn;
     [ObservableProperty] private DepartmentType _department;
@@ -38,23 +39,23 @@ public partial class LoginViewModel : PageBase
     }
 
     [RelayCommand]
-    private async Task Login(object parameter)
+    private async Task Login()
     {
         IsLoggingIn = true;
-        var param = (Tuple<string, DepartmentType>)parameter;
-        var user = await _userRepository.GetUser(token: param.Item1, department: param.Item2);
+        var user = _userRepository.GetUser(token: this.Token, department: this.Department);
         IsLoggedIn = !user.IsNull;
         _session.UpdateUser(user);
+        await Task.Delay(1000);
         IsLoggingIn = false;
         this.Token = string.Empty;
         if (user.IsNull)
         {
-            Messenger.Send(new ShowToastMessage(Resources.txt_invalid_token, Resources.msg_invalid_token));
+            Messenger.Send(new ShowToastMessage(Resources.txt_invalid_token, Resources.msg_invalid_token, NotificationType.Error));
         }
     }
 
     [RelayCommand]
-    public void Logout()
+    private void Logout()
     {
         this._session.Logout();
     }

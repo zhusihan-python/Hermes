@@ -1,0 +1,231 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:controls="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+             xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:local="clr-namespace:Hermes.Features.Bender"
+             xmlns:converters="clr-namespace:Hermes.Common.Converters"
+             xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+             xmlns:lang="clr-namespace:Hermes.Language;assembly=Hermes.Language"
+             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+             x:Class="Hermes.Features.Bender.PackageTrackingView"
+             x:DataType="local:PackageTrackingViewModel">
+
+    <controls:GlassCard Margin="{StaticResource DefaultMargin}"
+                        Width="610">
+
+        <suki:BusyArea BusyText="{x:Static lang:Resources.txt_loading}"
+                       IsBusy="{Binding IsDataLoading}">
+
+            <Grid RowDefinitions="*,Auto">
+                <StackPanel Grid.Row="0" Spacing="20">
+
+                    <!-- Filter type -->
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Center"
+                                Spacing="{StaticResource DefaultSpacing}">
+
+                        <RadioButton x:Name="DateRadioButton"
+                                     GroupName="filter"
+                                     Content="{x:Static lang:Resources.txt_date}"
+                                     IsChecked="{Binding IsDateFilter, Mode=TwoWay}" />
+
+                        <RadioButton GroupName="filter"
+                                     Content="{x:Static lang:Resources.txt_pkgid}" />
+                    </StackPanel>
+
+                    <!-- Filter by date -->
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Center"
+                                Spacing="{StaticResource DefaultSpacing}"
+                                IsVisible="{Binding IsDateFilter}">
+
+                        <TextBlock VerticalAlignment="Center">
+                            <Run Text="{x:Static lang:Resources.txt_from}" />
+                            <Run Text=":" />
+                        </TextBlock>
+
+                        <CalendarDatePicker Height="35"
+                                            DisplayDateEnd="{Binding ToDate, Mode=TwoWay}"
+                                            SelectedDate="{Binding FromDate, Mode=TwoWay}"
+                                            DisplayDate="{Binding FromDate, Mode=TwoWay}" />
+
+                        <TextBlock VerticalAlignment="Center">
+                            <Run Text="{x:Static lang:Resources.txt_to}" />
+                            <Run Text=":" />
+                        </TextBlock>
+
+                        <CalendarDatePicker Height="35"
+                                            DisplayDateStart="{Binding FromDate, Mode=TwoWay}"
+                                            SelectedDate="{Binding ToDate, Mode=TwoWay}"
+                                            DisplayDate="{Binding ToDate, Mode=TwoWay}" />
+
+                        <Button Padding="5"
+                                Width="35"
+                                Command="{Binding FindByDateCommand}">
+                            <avalonia:MaterialIcon Kind="Search" />
+                        </Button>
+
+                    </StackPanel>
+
+                    <!-- Filter by pkgid -->
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Center"
+                                Spacing="{StaticResource DefaultSpacing}"
+                                IsVisible="{Binding !IsDateFilter}">
+
+                        <TextBlock VerticalAlignment="Center">
+                            <Run Text="{x:Static lang:Resources.txt_pkgid}" />
+                            <Run Text=":" />
+                        </TextBlock>
+
+                        <TextBox Width="270"
+                                 Text="{Binding Pkgid, Mode=TwoWay}">
+                            <TextBox.KeyBindings>
+                                <KeyBinding Gesture="Enter" Command="{Binding FindByPkgidCommand}" />
+                            </TextBox.KeyBindings>
+                        </TextBox>
+
+                        <Button Padding="5" Width="35" Height="35"
+                                Command="{Binding FindByPkgidCommand}">
+                            <avalonia:MaterialIcon Kind="Search" />
+                        </Button>
+
+                    </StackPanel>
+
+                    <!-- Packages Datagrid -->
+                    <DataGrid x:Name="PackagesGrid"
+                              ItemsSource="{Binding  Packages}"
+                              IsReadOnly="True"
+                              CanUserResizeColumns="True"
+                              MinHeight="450">
+
+                        <DataGrid.ContextMenu>
+                            <ContextMenu IsEnabled="{Binding IsRowSelected}">
+
+                                <MenuItem Header="{x:Static lang:Resources.msg_remove_package_load}"
+                                          Command="{Binding RemovePackageFromLoadedCommand}">
+                                    <MenuItem.Icon>
+                                        <avalonia:MaterialIcon Kind="PackageDown" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+
+                                <MenuItem Header="{x:Static lang:Resources.msg_delete_package_from_hermes}"
+                                          Command="{Binding DeletePackageTrackingCommand}">
+                                    <MenuItem.Icon>
+                                        <avalonia:MaterialIcon Kind="TrashCan" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+
+                        <i:Interaction.Behaviors>
+                            <ia:EventTriggerBehavior EventName="SelectionChanged" SourceObject="PackagesGrid">
+                                <ia:InvokeCommandAction
+                                    Command="{Binding PackageSelectedCommand}"
+                                    CommandParameter="{Binding #PackagesGrid.SelectedItem}" />
+                            </ia:EventTriggerBehavior>
+                        </i:Interaction.Behaviors>
+
+                        <DataGrid.Columns>
+
+                            <DataGridTextColumn Header="{x:Static lang:Resources.txt_pkgid}" Binding="{Binding Id}" />
+
+                            <DataGridTextColumn Header="{x:Static lang:Resources.txt_scanned}"
+                                                Width="130"
+                                                Binding="{Binding ScannedAt, Converter={x:Static converters:DateConverters.ToShortString}}" />
+
+                            <DataGridTextColumn Header="{x:Static lang:Resources.txt_sfc_open}"
+                                                Width="130"
+                                                Binding="{Binding OpenedAt, Converter={x:Static converters:DateConverters.ToShortString}}" />
+
+                            <DataGridTemplateColumn Header="{x:Static lang:Resources.txt_loaded}">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center">
+
+                                            <Button
+                                                HorizontalContentAlignment="Center"
+                                                Command="{Binding $parent[UserControl].((local:PackageTrackingViewModel)DataContext).LoadCommand}"
+                                                CommandParameter="{Binding .}"
+                                                Content="Load"
+                                                Padding="5"
+                                                IsVisible="{Binding CanLoad}" />
+
+                                            <TextBlock
+                                                Text="{Binding LoadedAt, Converter={x:Static converters:DateConverters.ToShortString}}"
+                                                IsVisible="{Binding !CanLoad}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTextColumn Header="{x:Static lang:Resources.txt_used}"
+                                                Width="100"
+                                                Binding="{Binding QuantityUsedString}" />
+
+                            <DataGridTemplateColumn Header="{x:Static lang:Resources.txt_status}"
+                                                    MinWidth="130">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal"
+                                                    HorizontalAlignment="Left"
+                                                    Spacing="3">
+
+                                            <StackPanel.Styles>
+                                                <Style Selector="avalonia|MaterialIcon.InUse">
+                                                    <Setter Property="Foreground" Value="Green" />
+                                                </Style>
+                                                <Style Selector="avalonia|MaterialIcon.NotInUse">
+                                                    <Setter Property="Foreground" Value="Gray" />
+                                                </Style>
+                                            </StackPanel.Styles>
+
+                                            <avalonia:MaterialIcon
+                                                Kind="{Binding Status, Converter={x:Static converters:PackageStatusToIconConverters.Instance}}"
+                                                Width="30"
+                                                Classes.InUse="{Binding IsInUse}"
+                                                Classes.NotInUse="{Binding !IsInUse}" />
+
+                                            <TextBlock
+                                                Text="{Binding Status, Converter={x:Static converters:EnumToTranslatedTextConverters.PackageStatusTypeConverter}}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+
+                <!-- Reload data -->
+                <StackPanel Grid.Row="1" Orientation="Horizontal"
+                            Margin="0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Spacing="10">
+
+                    <TextBlock VerticalAlignment="Center">
+                        <Run Text="{x:Static lang:Resources.txt_last_refresh}" />
+                        <Run Text=": " />
+                        <Run Text="{Binding LastDataLoadedAt}" />
+                    </TextBlock>
+
+                    <ProgressBar Value="{Binding ElapsedRefreshPercentage}"
+                                 ShowProgressText="False" />
+
+                    <Button VerticalAlignment="Center"
+                            Padding="5"
+                            Margin="10 0 0 0"
+                            Command="{Binding DataReloadCommand }">
+                        <avalonia:MaterialIcon Kind="Reload" />
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </suki:BusyArea>
+    </controls:GlassCard>
+
+</UserControl>

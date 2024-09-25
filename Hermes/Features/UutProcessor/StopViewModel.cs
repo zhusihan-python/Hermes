@@ -1,9 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using Hermes.Cipher.Types;
 using Hermes.Common;
 using Hermes.Features.Controls.Token;
 using Hermes.Models;
 using Hermes.Repositories;
-using Hermes.Types;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

@@ -9,6 +9,11 @@ namespace Hermes.Common.Extensions;
 
 public static class EnumExtensions
 {
+    public static string ToUpperString(this Enum value)
+    {
+        return value.ToString().ToUpper();
+    }
+
     public static string ToTranslatedString(this Enum value)
     {
         return Resources.ResourceManager.GetString(value.ToResxString()) ?? value.ToString();

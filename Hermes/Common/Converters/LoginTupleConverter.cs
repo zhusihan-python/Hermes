@@ -1,17 +1,17 @@
-﻿using System;
+﻿using Avalonia.Data.Converters;
+using Hermes.Cipher.Types;
 using System.Collections.Generic;
 using System.Globalization;
-using Avalonia.Data.Converters;
-using Hermes.Types;
+using System;
 
 namespace Hermes.Common.Converters;
 
-public static class ToupleConverter
+public static class TupleConverter
 {
-    public static readonly LoginToupleConverter LoginToupleConverter = new();
+    public static readonly LoginTupleConverter LoginTupleConverter = new();
 }
 
-public class LoginToupleConverter : IMultiValueConverter
+public class LoginTupleConverter : IMultiValueConverter
 {
     public object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
     {

@@ -1,0 +1,115 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:Hermes.Features.Bender"
+             xmlns:suki="https://github.com/kikipoulet/SukiUI"
+             xmlns:lang="clr-namespace:Hermes.Language;assembly=Hermes.Language"
+             xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="550"
+             x:Class="Hermes.Features.Bender.WorkOrderDialogView"
+             x:DataType="local:WorkOrderDialogViewModel">
+
+    <suki:GroupBox Header="Change Work Order" MaxWidth="500" Padding="10">
+
+        <suki:BusyArea BusyText="{x:Static lang:Resources.txt_logging_in}"
+                       IsBusy="{Binding IsWorkOrderLoading}">
+
+
+            <Grid RowDefinitions="*, 70"
+                  Margin="{StaticResource DefaultMargin}"
+                  HorizontalAlignment="Center">
+
+                <StackPanel Grid.Row="0"
+                            Classes="HeaderContent"
+                            Spacing="10"
+                            HorizontalAlignment="Center">
+
+                    <StackPanel HorizontalAlignment="Center">
+
+                        <TextBlock Text="Work order:" Margin="10 0 0 0" />
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox Watermark="Work order"
+                                     Width="250"
+                                     Focusable="True"
+                                     Text="{Binding WorkOrderText, Mode=TwoWay}">
+                                <TextBox.KeyBindings>
+                                    <KeyBinding Gesture="Enter" Command="{Binding FindWorkOrderCommand}" />
+                                </TextBox.KeyBindings>
+                            </TextBox>
+
+                            <Button Padding="5"
+                                    Width="34"
+                                    Height="34"
+                                    Command="{Binding FindWorkOrderCommand}">
+                                <avalonia:MaterialIcon Kind="Search" />
+                            </Button>
+
+                        </StackPanel>
+                    </StackPanel>
+
+                    <avalonia:MaterialIcon Kind="SuccessCircle"
+                                           Width="100"
+                                           Height="100"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           Foreground="YellowGreen"
+                                           IsVisible="{Binding !WorkOrder.IsNull}" />
+
+                    <avalonia:MaterialIcon Kind="WarningCircle"
+                                           Width="100"
+                                           Height="100"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           Foreground="Goldenrod"
+                                           IsVisible="{Binding !IsWorkOrderFound}" />
+
+                    <TextBlock Text="Work order not found"
+                               Margin="10"
+                               Foreground="Goldenrod"
+                               HorizontalAlignment="Center"
+                               IsVisible="{Binding !IsWorkOrderFound}" />
+
+                    <StackPanel IsVisible="{Binding !WorkOrder.IsNull}"
+                                HorizontalAlignment="Center"
+                                Spacing="{StaticResource DefaultSpacing}">
+                        <TextBlock TextAlignment="Center">
+                            <Run Text="Work order:" />
+                            <Run Text="{Binding WorkOrder.Id}" />
+                        </TextBlock>
+                        <TextBlock TextAlignment="Center">
+                            <Run Text="Model name:" />
+                            <Run Text="{Binding WorkOrder.ModelName}" />
+                        </TextBlock>
+                        <TextBlock TextAlignment="Center">
+                            <Run Text="Part number:" />
+                            <Run Text="{Binding WorkOrder.PartNumber}" />
+                        </TextBlock>
+                        <TextBlock TextAlignment="Center">
+                            <Run Text="Revision:" />
+                            <Run Text="{Binding WorkOrder.Revision}" />
+                        </TextBlock>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Grid.Row="1" Orientation="Horizontal"
+                            VerticalAlignment="Bottom"
+                            HorizontalAlignment="Center"
+                            Spacing="{StaticResource DefaultSpacing}">
+
+                    <Button HorizontalContentAlignment="Center"
+                            Classes="Outlined"
+                            Command="{Binding AcceptCommand}"
+                            Content="Accept" />
+
+                    <Button HorizontalContentAlignment="Center"
+                            Classes="Outlined Accent"
+                            Command="{Binding CloseDialogCommand}"
+                            Content="Cancel" />
+                </StackPanel>
+            </Grid>
+
+        </suki:BusyArea>
+    </suki:GroupBox>
+</UserControl>

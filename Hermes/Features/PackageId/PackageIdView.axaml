@@ -1,0 +1,233 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:theme="clr-namespace:SukiUI.Theme;assembly=SukiUI"
+             xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+             xmlns:controls="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+             xmlns:local="clr-namespace:Hermes.Features.PackageId"
+             xmlns:lang="clr-namespace:Hermes.Language;assembly=Hermes.Language"
+             xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:converters="clr-namespace:Hermes.Common.Converters"
+             mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="450"
+             x:Class="Hermes.Features.PackageId.PackageIdView"
+             x:DataType="local:PackageIdViewModel">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+
+        <WrapPanel Margin="{StaticResource DefaultMargin}"
+                   theme:WrapPanelExtensions.AnimatedScroll="True"
+                   Orientation="Horizontal">
+
+            <!-- Work order pkgid search -->
+            <controls:GlassCard Margin="{StaticResource DefaultMargin}"
+                                Width="550"
+                                Height="500">
+
+                <suki:BusyArea BusyText="{x:Static lang:Resources.txt_logging_in}"
+                               IsBusy="{Binding IsWorkOrderLoading}">
+
+                    <DockPanel>
+
+                        <StackPanel DockPanel.Dock="Top"
+                                    Orientation="Horizontal"
+                                    Margin="0 0 0 20"
+                                    HorizontalAlignment="Center">
+                            <avalonia:MaterialIcon Kind="Search"
+                                                   Margin="0 0 0 3"
+                                                   VerticalAlignment="Bottom" />
+                            <Label
+                                Margin="0"
+                                Content="Search packages linked to the work order"
+                                VerticalAlignment="Bottom" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal"
+                                    DockPanel.Dock="Top"
+                                    HorizontalAlignment="Center"
+                                    Spacing="{StaticResource DefaultSpacing}">
+
+                            <TextBlock VerticalAlignment="Center"
+                                       Text="Work order" />
+
+                            <TextBox x:Name="WorkOrderTextBox"
+                                     Text="{Binding WorkOrderText, Mode=TwoWay}"
+                                     MinWidth="250">
+                                <TextBox.KeyBindings>
+                                    <KeyBinding Gesture="Enter" Command="{Binding WorkOrderKeyDownCommand}" />
+                                </TextBox.KeyBindings>
+                            </TextBox>
+
+                            <Button VerticalAlignment="Center"
+                                    Content="Search"
+                                    Command="{Binding SearchByWorkOrderCommand}"
+                                    CommandParameter="{Binding #WorkOrderTextBox.Text}" />
+
+                            <Button VerticalAlignment="Center"
+                                    Command="{Binding WorkOrderReloadCommand }">
+                                <avalonia:MaterialIcon Kind="Reload" />
+                            </Button>
+                        </StackPanel>
+
+                        <WrapPanel Orientation="Horizontal"
+                                   DockPanel.Dock="Top"
+                                   Margin="0 10"
+                                   Background="LightGray">
+                            <TextBlock VerticalAlignment="Center"
+                                       Margin="5">
+                                <Run Text="Work order:" />
+                                <Run Text="{Binding WorkOrder.Id}" />
+                            </TextBlock>
+
+                            <TextBlock VerticalAlignment="Center"
+                                       Margin="5">
+                                <Run Text="Part number:" />
+                                <Run Text="{Binding WorkOrder.PartNumber}" />
+                            </TextBlock>
+                        </WrapPanel>
+
+                        <DataGrid x:Name="UsersGrid"
+                                  DockPanel.Dock="Top"
+                                  MaxHeight="330"
+                                  IsReadOnly="False"
+                                  ItemsSource="{Binding Packages}">
+
+                            <DataGrid.Columns>
+
+                                <DataGridTextColumn Header="PkgId" Binding="{Binding Id}" />
+                                <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" />
+                                <DataGridTextColumn Header="Used" Binding="{Binding QuantityUsed}" />
+                                <DataGridTextColumn Header="Opened At" Binding="{Binding OpenedAt}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+                </suki:BusyArea>
+            </controls:GlassCard>
+
+            <!-- Pkgid search -->
+            <controls:GlassCard Margin="{StaticResource DefaultMargin}"
+                                Width="550"
+                                Height="500">
+
+                <suki:BusyArea BusyText="{x:Static lang:Resources.txt_logging_in}"
+                               IsBusy="{Binding IsLoadingPkgid}">
+                    <DockPanel>
+
+                        <StackPanel DockPanel.Dock="Top"
+                                    Orientation="Horizontal"
+                                    Margin="0 0 0 20"
+                                    HorizontalAlignment="Center">
+                            <avalonia:MaterialIcon Kind="Search"
+                                                   Margin="0 0 0 3"
+                                                   VerticalAlignment="Bottom" />
+                            <Label
+                                Margin="0"
+                                Content="Search package id"
+                                VerticalAlignment="Bottom" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Center"
+                                    DockPanel.Dock="Top"
+                                    Spacing="{StaticResource DefaultSpacing}">
+
+                            <TextBlock VerticalAlignment="Center"
+                                       Text="PkgId" />
+
+                            <TextBox x:Name="PkgidTextBox"
+                                     Text="{Binding PkgidText, Mode=TwoWay}"
+                                     MinWidth="250">
+                                <TextBox.KeyBindings>
+                                    <KeyBinding Gesture="Enter" Command="{Binding PkgidKeyDownCommand}" />
+                                </TextBox.KeyBindings>
+                            </TextBox>
+
+                            <Button VerticalAlignment="Center"
+                                    Content="Search"
+                                    Command="{Binding SearchByPkgidCommand }"
+                                    CommandParameter="{Binding #PkgidTextBox.Text }" />
+
+                            <Button VerticalAlignment="Center"
+                                    Command="{Binding PkgidReloadCommand }">
+                                <avalonia:MaterialIcon Kind="Reload" />
+                            </Button>
+                        </StackPanel>
+
+                        <Grid DockPanel.Dock="Top"
+                              ColumnDefinitions="2*,*"
+                              Margin="0 10">
+                            <Border Background="LightGray"
+                                    CornerRadius="{StaticResource DefaultCornerRadius}">
+                                <WrapPanel Orientation="Horizontal"
+                                           Margin="0 10">
+                                    <TextBlock VerticalAlignment="Center"
+                                               Margin="5">
+                                        <Run Text="PkgId:" />
+                                        <Run Text="{Binding Package.Id}" />
+                                    </TextBlock>
+
+                                    <TextBlock VerticalAlignment="Center"
+                                               Margin="5">
+                                        <Run Text="Quantity:" />
+                                        <Run Text="{Binding Package.Quantity}" />
+                                    </TextBlock>
+
+                                    <TextBlock VerticalAlignment="Center"
+                                               Margin="5">
+                                        <Run Text="Used:" />
+                                        <Run Text="{Binding PkgidQtyUsed}" />
+                                    </TextBlock>
+
+                                    <TextBlock VerticalAlignment="Center"
+                                               Margin="5">
+                                        <Run Text="Date code:" />
+                                        <Run Text="{Binding Package.DateCode}" />
+                                    </TextBlock>
+
+                                    <TextBlock VerticalAlignment="Center"
+                                               Margin="5">
+                                        <Run Text="Lot:" />
+                                        <Run Text="{Binding Package.Lot}" />
+                                    </TextBlock>
+
+                                    <TextBlock VerticalAlignment="Center"
+                                               Margin="5">
+                                        <Run Text="Vendor:" />
+                                        <Run Text="{Binding Package.Vendor}" />
+                                    </TextBlock>
+
+                                    <TextBlock VerticalAlignment="Center"
+                                               Margin="5">
+                                        <Run Text="WO:" />
+                                        <Run Text="{Binding Package.WorkOrder}" />
+                                    </TextBlock>
+                                </WrapPanel>
+                            </Border>
+                            <Viewbox Grid.Column="1" Width="80"
+                                     Height="80"
+                                     Margin="0,0,0,5"
+                                     HorizontalAlignment="Center"
+                                     VerticalAlignment="Center"
+                                     DockPanel.Dock="Right">
+                                <suki:WaveProgress Value="{Binding PkgidPercentUsed}" />
+                            </Viewbox>
+                        </Grid>
+
+                        <DataGrid x:Name="PkgIdGrid"
+                                  DockPanel.Dock="Top"
+                                  MaxHeight="330"
+                                  IsReadOnly="False"
+                                  ItemsSource="{Binding UnitsUnderTest}">
+
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="No" Binding="{Binding Id}" />
+                                <DataGridTextColumn Header="Serial number" Binding="{Binding SerialNumber}" />
+                                <DataGridTextColumn Header="Opened At" Binding="{Binding CreatedAt}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+                </suki:BusyArea>
+            </controls:GlassCard>
+        </WrapPanel>
+    </ScrollViewer>
+</UserControl>

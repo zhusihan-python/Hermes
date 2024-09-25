@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Hermes.Builders;
 using Hermes.Common;
 using Hermes.Common.Extensions;
+using Hermes.Common.Parsers;
 using Hermes.Models;
 using Hermes.Repositories;
 using Hermes.Types;
@@ -22,14 +23,15 @@ public class SfcSimulatorService
     private readonly ILogger _logger;
     private readonly ISettingsRepository _settingsRepository;
     private readonly SfcResponseBuilder _sfcResponseBuilder;
-    private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
+    private readonly ParserPrototype _parserPrototype;
+    private string _lastProcessedFile = "";
 
 
     public SfcSimulatorService(
         ILogger logger,
         FileService fileService,
         ISettingsRepository settingsRepository,
-        UnitUnderTestBuilder unitUnderTestBuilder,
+        ParserPrototype parserPrototype,
         SfcResponseBuilder sfcResponseBuilder,
         FolderWatcherService folderWatcherService
     )
@@ -37,7 +39,7 @@ public class SfcSimulatorService
         this._logger = logger;
         this._fileService = fileService;
         this._settingsRepository = settingsRepository;
-        this._unitUnderTestBuilder = unitUnderTestBuilder;
+        this._parserPrototype = parserPrototype;
         this._sfcResponseBuilder = sfcResponseBuilder;
         this._folderWatcherService = folderWatcherService;
     }
@@ -67,7 +69,10 @@ public class SfcSimulatorService
 
     private async Task Process(string fullPath)
     {
+        if (_lastProcessedFile == fullPath) return;
+        _lastProcessedFile = fullPath;
         _logger.Info($"SfcSimulator Process: {fullPath} | Mode: {this.Mode}");
+        var content = await this.GetContent(fullPath);
         await this._fileService.DeleteFileIfExists(fullPath);
         if (this.Mode == SfcResponseType.Timeout)
         {
@@ -76,7 +81,7 @@ public class SfcSimulatorService
 
         await this._fileService.WriteAllTextAsync(
             SfcRequest.GetResponseFullpath(fullPath, this._settingsRepository.Settings.SfcResponseExtension),
-            await this.GetContent(fullPath)
+            content
         );
     }
 
@@ -89,10 +94,19 @@ public class SfcSimulatorService
         else
             this._sfcResponseBuilder.SetOkContent();
 
+
         this._sfcResponseBuilder.SerialNumber(
-            (await this._unitUnderTestBuilder.BuildAsync(fullPath)).SerialNumber);
+            (await this.GetSerialNumber(fullPath))
+            .ToUpper());
 
         return this._sfcResponseBuilder.GetContent();
+    }
+
+    private async Task<string> GetSerialNumber(string fullPath)
+    {
+        var content = await this._fileService.TryReadAllTextAsync(fullPath);
+        var parser = _parserPrototype.GetUnitUnderTestParser(_settingsRepository.Settings.LogfileType);
+        return parser == null ? "" : parser.ParseSerialNumber(content);
     }
 
     protected virtual void OnRunStatusChanged(bool isRunning)
