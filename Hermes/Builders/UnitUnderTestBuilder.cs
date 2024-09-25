@@ -1,14 +1,13 @@
+using Hermes.Common.Extensions;
 using Hermes.Common.Parsers;
 using Hermes.Models;
+using Hermes.Repositories;
 using Hermes.Services;
 using Hermes.Types;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System;
-using Hermes.Common.Extensions;
-using Hermes.Repositories;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace Hermes.Builders;
 
@@ -18,7 +17,7 @@ public class UnitUnderTestBuilder
     public List<Defect> Defects { get; } = [];
 
     private string _serialNumber = "1A62TESTSERIALNUMBER";
-    private string _fileName = "fileName";
+    private string _fileNameWithoutExtension = "fileName";
     private bool _isPass = true;
     private string _message = "";
     private DateTime _createdAt = DateTime.Now;
@@ -29,7 +28,6 @@ public class UnitUnderTestBuilder
     private readonly ParserPrototype _parserPrototype;
     private readonly SfcResponseBuilder _sfcResponseBuilder;
 
-
     public UnitUnderTestBuilder(
         FileService fileService,
         ParserPrototype parserPrototype,
@@ -38,7 +36,6 @@ public class UnitUnderTestBuilder
     {
         this._fileService = fileService;
         this._settingsRepository = settingsRepositoryRepository;
-        this._fileName += _settingsRepository.Settings.InputFileExtension.GetDescription();
         this._parserPrototype = parserPrototype;
         this._sfcResponseBuilder = sfcResponseBuilder;
         sfcResponseBuilder.SetOkContent();
@@ -48,42 +45,37 @@ public class UnitUnderTestBuilder
     {
         var fileName = this._fileService.FileName(fileFullPath);
         var content = await this._fileService.TryReadAllTextAsync(fileFullPath);
+        var parser = _parserPrototype.GetUnitUnderTestParser(_settingsRepository.Settings.LogfileType);
+        if (parser != null)
+        {
+            content = await parser.GetContentAsync(content);
+        }
+
         return Build(fileName, content);
     }
 
     public UnitUnderTest Build()
     {
-        this.Content = this.GetContent();
-        return Build(this._fileName, this.Content);
+        this.Content = this.GetTestContent();
+        return Build(
+            this._fileNameWithoutExtension + _settingsRepository.Settings.InputFileExtension.GetDescription()
+            , this.Content);
     }
 
-    public string GetContent()
+    public string GetTestContent()
     {
-        var content = $"""
-                       {this._serialNumber}
-                       1105
-                       110733
-                       1A62FMM00-600-G+30-TOP
-                       {(this._isPass ? "PASS" : "FAIL")}
-                       210323220021
-                       220323002539
-                       NA
-                       9
-                       0
-                       Error flag,Recipe name,Paste ID,CAD link Gerber,Error code,Multi Number 
-                       """;
-        foreach (var defect in this.Defects)
+        var parser = _parserPrototype.GetUnitUnderTestParser(_settingsRepository.Settings.LogfileType);
+        if (parser == null)
         {
-            content +=
-                $"\n{(defect.ErrorFlag.ToString().ToUpper())};1A626AY00-600-G+A0-TOP;NA;{defect.Location};{defect.ErrorCode};1";
+            return "";
         }
 
-        return content;
+        return parser.GetTestContent(this._serialNumber, this._isPass, this.Defects);
     }
 
     private UnitUnderTest Build(string fileName, string content)
     {
-        var parser = _parserPrototype.GetUnderTestParser(_settingsRepository.Settings.LogfileType);
+        var parser = _parserPrototype.GetUnitUnderTestParser(_settingsRepository.Settings.LogfileType);
         if (!HasValidExtension(fileName) || parser == null)
         {
             return UnitUnderTest.Null;
@@ -109,9 +101,9 @@ public class UnitUnderTestBuilder
                    .Contains(Path.GetExtension(fileName), StringComparison.OrdinalIgnoreCase);
     }
 
-    public UnitUnderTestBuilder FileName(string fileName)
+    public UnitUnderTestBuilder FileNameWithoutExtension(string fileName)
     {
-        this._fileName = fileName;
+        this._fileNameWithoutExtension = fileName;
         return this;
     }
 
@@ -130,6 +122,12 @@ public class UnitUnderTestBuilder
     public UnitUnderTestBuilder InputFileExtension(FileExtension value)
     {
         this._settingsRepository.Settings.InputFileExtension = value;
+        return this;
+    }
+
+    public UnitUnderTestBuilder LogfileType(LogfileType value)
+    {
+        this._settingsRepository.Settings.LogfileType = value;
         return this;
     }
 

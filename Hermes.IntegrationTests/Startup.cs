@@ -16,9 +16,11 @@ public class Startup
         services.AddScoped<HermesContext, TempHermesContext>();
         services.AddTransient<AesEncryptor>();
         services.AddTransient<FileService>();
+        services.AddTransient<ISettingsRepository, SettingsRepository>();
+        services.AddTransient<ISfcRepository, SfcOracleRepository>();
+        services.AddTransient<LabelingMachineUnitUnderTestParser>();
         services.AddTransient<ParserPrototype>();
         services.AddTransient<Settings>();
-        services.AddTransient<ISettingsRepository, SettingsRepository>();
         services.AddTransient<SfcResponseBuilder>();
         services.AddTransient<UnitUnderTestBuilder>();
     }

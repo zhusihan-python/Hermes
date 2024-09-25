@@ -185,7 +185,7 @@ public partial class SfcSimulatorViewModel : PageBase
         var uuid = Guid.NewGuid().ToString()[..5];
         var content = builder
             .SerialNumber($"1A62TEST{uuid}".ToUpper())
-            .GetContent();
+            .GetTestContent();
         await this._fileService.WriteAllTextToInputPathAsync($"{fileNameWithoutExtension}_{uuid}".ToUpper(), content);
     }
 

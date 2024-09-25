@@ -9,15 +9,28 @@ using System;
 
 namespace Hermes.Repositories;
 
-public class SfcOracleRepository
+public class SfcOracleRepository : ISfcRepository
 {
     private const string ConString = "Data Source=10.12.171.61:1526/GDLSFCDB;User Id=SFIS1;Password=sfis1;";
 
-    public async Task<int> UpdatePackageTrackingLoadedAt(string pkgid)
+    public async Task<int> DeletePackageTracking(string pkgid)
+    {
+        return await this.ExecuteQueryAsync($"""
+                                             DELETE FROM SFISM4.H_PACKAGES_TRACK
+                                             WHERE PKGID = :pkgid
+                                             """, new { pkgid });
+    }
+
+    public async Task<int> ResetPackageTrackingLoadedAt(string pkgid)
+    {
+        return await this.UpdatePackageTrackingLoadedAt(pkgid, "NULL");
+    }
+
+    public async Task<int> UpdatePackageTrackingLoadedAt(string pkgid, string loadedAt = "SYSTIMESTAMP")
     {
         return await this.ExecuteQueryAsync($"""
                                              UPDATE SFISM4.H_PACKAGES_TRACK
-                                             SET LOADED_AT = SYSTIMESTAMP
+                                             SET LOADED_AT = {loadedAt}
                                              WHERE PKGID = :pkgid
                                              """, new { pkgid });
     }
@@ -26,7 +39,8 @@ public class SfcOracleRepository
     {
         return await this.ExecuteQueryAsync($"""
                                              UPDATE SFISM4.H_PACKAGES_TRACK
-                                             SET LINE = :line
+                                                SET LINE = :line, 
+                                                SCANNED_AT = SYSTIMESTAMP
                                              WHERE PKGID = :pkgid
                                              """, new { pkgid, line });
     }
@@ -47,11 +61,24 @@ public class SfcOracleRepository
         return await this.FindAllPackagesTracking(line, fromDate, toDate);
     }
 
+    public async Task<Package> FindNextCanUsePackage(string line)
+    {
+        var packages = await this.FindAllPackagesTracking(
+            line,
+            fromDate: DateTime.Now.AddDays(-1),
+            toDate: DateTime.Now,
+            onlyWithAvailableQty: true);
+        return packages
+            .OrderBy(p => p.LoadedAt)
+            .FirstOrDefault(Package.Null);
+    }
+
     private async Task<IEnumerable<Package>> FindAllPackagesTracking(
         string? line = null,
         DateTime? fromDate = null,
         DateTime? toDate = null,
         string? pkgid = null,
+        bool onlyWithAvailableQty = false,
         int limit = 100)
     {
         var whereClause = "pkg_track.PKGID = :pkgid";
@@ -70,16 +97,16 @@ public class SfcOracleRepository
                                                      MAX(CDATE)                       AS OpenedAt,
                                                      MAX(pkg_track.LOADED_AT)         AS LoadedAt,
                                                      MAX(SFIS1.C_PCB_PRINT_T.IN_TIME) AS LastUsedAt,
-                                                     MAX(pkg_track.SCANNED_AT)        AS ScannedAt,
-                                                     MAX(pkg_track.IS_IN_USE)        AS IsInUse
+                                                     MAX(pkg_track.SCANNED_AT)        AS ScannedAt
                                               FROM SFISM4.H_PACKAGES_TRACK pkg_track
                                                        LEFT JOIN SFISM4.R_PKGID_BOM_T ON pkg_track.PKGID = R_PKGID_BOM_T.PKG_ID
                                                        LEFT JOIN SFIS1.C_PCB_PRINT_T ON pkg_track.PKGID = SFIS1.C_PCB_PRINT_T.PKGID
-                                              WHERE 
+                                              WHERE
                                                   {whereClause}
                                               GROUP BY pkg_track.PKGID
                                               ORDER BY ScannedAt DESC, OpenedAt DESC)
                                           WHERE ROWNUM <= :limit
+                                           {(onlyWithAvailableQty ? "AND QuantityUsed < Quantity AND LoadedAt IS NOT NULL" : "")}
                                           """, new { line, fromDate, toDate, pkgid, limit });
     }
 
@@ -158,7 +185,7 @@ public class SfcOracleRepository
     {
         return await this.ExecuteQueryAsync($"""
                                              INSERT INTO SFISM4.H_PACKAGES_TRACK
-                                             VALUES(:pkgid, :line, NULL, SYSTIMESTAMP, 0)
+                                             VALUES(:pkgid, :line, NULL, SYSTIMESTAMP)
 
                                              """, new { pkgid = package.NormalizedId, line = package.Line });
     }

@@ -1,15 +1,14 @@
 using Hermes.Builders;
+using Hermes.Common.Extensions;
 using Hermes.Common;
+using Hermes.Language;
 using Hermes.Models;
+using Hermes.Repositories;
+using Hermes.Types;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using System.Threading;
 using System;
-using System.Linq;
-using Hermes.Common.Extensions;
-using Hermes.Language;
-using Hermes.Repositories;
-using Hermes.Types;
 
 namespace Hermes.Services;
 
@@ -108,7 +107,7 @@ public class UutSenderService
 
     private async Task<UnitUnderTest> SendFileAsync(string fullPath)
     {
-        var backupFullPath = await this._fileService.MoveToBackupAsync(fullPath);
+        var backupFullPath = await this._fileService.MoveToBackupAndAppendDateToNameAsync(fullPath);
         var unitUnderTest = await this.BuildUnitUnderTest(backupFullPath);
         if (unitUnderTest.IsNull)
         {
@@ -148,7 +147,7 @@ public class UutSenderService
         if (unitUnderTest.IsNull)
         {
             this._logger.Error($"Invalid file: {fullPath}");
-            await this._fileService.MoveToBackupAsync(fullPath);
+            await this._fileService.MoveToBackupAndAppendDateToNameAsync(fullPath);
         }
         else
         {

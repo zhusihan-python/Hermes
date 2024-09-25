@@ -25,12 +25,12 @@ public partial class WorkOrderDialogViewModel : ViewModelBase
     [ObservableProperty] private bool _isWorkOrderLoading;
 
     private readonly ISukiDialog _dialog;
-    private readonly SfcOracleRepository _sfcOracleRepository;
+    private readonly ISfcRepository _sfcRepository;
 
-    public WorkOrderDialogViewModel(ISukiDialog dialog, SfcOracleRepository oracleRepository)
+    public WorkOrderDialogViewModel(ISukiDialog dialog, ISfcRepository sfcRepository)
     {
         this._dialog = dialog;
-        this._sfcOracleRepository = oracleRepository;
+        this._sfcRepository = sfcRepository;
     }
 
     [RelayCommand(CanExecute = nameof(CanFindWorkOrder))]
@@ -40,7 +40,7 @@ public partial class WorkOrderDialogViewModel : ViewModelBase
         {
             IsWorkOrderLoading = true;
             var normalizedWorkOrder = Package.NormalizeWorkOrder(this.WorkOrderText);
-            this.WorkOrder = await _sfcOracleRepository.FindWorkOrder(normalizedWorkOrder);
+            this.WorkOrder = await _sfcRepository.FindWorkOrder(normalizedWorkOrder);
         }
         catch (Exception)
         {

@@ -417,4 +417,10 @@
     <data name="enum_loaded" xml:space="preserve">
         <value>Loaded</value>
     </data>
+    <data name="msg_remove_package_load" xml:space="preserve">
+        <value>Remove package from loadder</value>
+    </data>
+    <data name="msg_delete_package_from_hermes" xml:space="preserve">
+        <value>Delete package from Hermes</value>
+    </data>
 </root>

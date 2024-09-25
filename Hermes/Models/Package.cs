@@ -26,25 +26,28 @@ public partial class Package : ObservableObject
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(CanLoad))]
     private DateTime? _openedAt;
 
-    [ObservableProperty] [NotifyPropertyChangedFor(nameof(CanLoad))]
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(CanLoad))]
+    [NotifyPropertyChangedFor(nameof(Status))]
+    [NotifyPropertyChangedFor(nameof(IsInUse))]
     private DateTime? _loadedAt;
 
     [ObservableProperty] [NotifyPropertyChangedFor(nameof(CanLoad))]
     private DateTime? _scannedAt;
 
     public DateTime? LastUsedAt { get; set; }
+    
     public DateTime? UsedAt => QuantityUsed >= Quantity ? LastUsedAt : null;
 
     public bool IsNull => this == Null;
     public bool CanLoad => ScannedAt != null && OpenedAt != null && LoadedAt == null && UsedAt == null;
-    public bool HasSfcOpen => ScannedAt != null && OpenedAt != null;
     public string QuantityUsedString => OpenedAt != null ? $"{QuantityUsed}/{Quantity}" : "";
 
     public PackageStatusType Status
     {
         get
         {
-            if (UsedAt != null)
+            if (IsUsed)
             {
                 return PackageStatusType.Used;
             }
@@ -86,7 +89,9 @@ public partial class Package : ObservableObject
                            && !string.IsNullOrWhiteSpace(Vendor);
 
     public string NormalizedId => NormalizePkgId(Id);
-    public bool IsInUse { get; set; }
+    public bool IsInUse => LoadedAt != null && UsedAt == null;
+    public bool IsUsed => UsedAt != null;
+    public bool IsLoaded => LoadedAt != null;
 
     public override string ToString()
     {

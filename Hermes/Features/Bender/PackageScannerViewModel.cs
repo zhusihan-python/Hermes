@@ -1,19 +1,19 @@
-using System;
+using Avalonia.Controls.Notifications;
 using Avalonia.Media.Imaging;
+using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Hermes.Common.Parsers;
-using Hermes.Common;
-using Hermes.Models;
-using System.Threading.Tasks;
-using Avalonia.Controls.Notifications;
-using Avalonia.Threading;
 using CommunityToolkit.Mvvm.Messaging;
 using Hermes.Common.Extensions;
 using Hermes.Common.Messages;
+using Hermes.Common.Parsers;
+using Hermes.Common;
 using Hermes.Language;
+using Hermes.Models;
 using Hermes.Repositories;
 using SukiUI.Dialogs;
+using System.Threading.Tasks;
+using System;
 
 namespace Hermes.Features.Bender;
 
@@ -35,21 +35,24 @@ public partial class PackageScannerViewModel : ViewModelBase
     private readonly PackageParser _packageParser;
     private readonly QrGenerator _qrGenerator;
     private readonly ISukiDialogManager _dialogManager;
-    private readonly SfcOracleRepository _sfcOracleRepository;
+    private readonly ISfcRepository _sfcRepository;
     private readonly ISettingsRepository _settingsRepository;
+    private readonly ILogger _logger;
 
     public PackageScannerViewModel(
         PackageParser packageParser,
         QrGenerator qrGenerator,
         ISukiDialogManager dialogManager,
-        SfcOracleRepository oracleRepository,
-        ISettingsRepository settingsRepository)
+        ISfcRepository sfcRepository,
+        ISettingsRepository settingsRepository,
+        ILogger logger)
     {
         this._packageParser = packageParser;
         this._qrGenerator = qrGenerator;
         this._dialogManager = dialogManager;
-        this._sfcOracleRepository = oracleRepository;
+        this._sfcRepository = sfcRepository;
         this._settingsRepository = settingsRepository;
+        this._logger = logger;
     }
 
 
@@ -83,15 +86,15 @@ public partial class PackageScannerViewModel : ViewModelBase
     {
         try
         {
-            var package = await _sfcOracleRepository.FindPackageTracking(this.Package.NormalizedId);
+            var package = await _sfcRepository.FindPackageTracking(this.Package.NormalizedId);
             if (package.IsNull)
             {
                 Package.Line = _settingsRepository.Settings.Line.ToUpperString();
-                await _sfcOracleRepository.AddPackageTrack(Package);
+                await _sfcRepository.AddPackageTrack(Package);
             }
-            else if (package.Line != _settingsRepository.Settings.Line.ToUpperString())
+            else
             {
-                await _sfcOracleRepository.UpdatePackageTrackingLine(
+                await _sfcRepository.UpdatePackageTrackingLine(
                     package.NormalizedId,
                     _settingsRepository.Settings.Line.ToUpperString());
             }
@@ -102,6 +105,7 @@ public partial class PackageScannerViewModel : ViewModelBase
         catch (Exception e)
         {
             Messenger.Send(new ShowToastMessage("Error", e.Message, NotificationType.Error));
+            _logger.Error(e.Message);
         }
     }
 
@@ -111,7 +115,7 @@ public partial class PackageScannerViewModel : ViewModelBase
         _dialogManager.CreateDialog()
             .WithViewModel(dialog =>
             {
-                var vm = new WorkOrderDialogViewModel(dialog, _sfcOracleRepository);
+                var vm = new WorkOrderDialogViewModel(dialog, _sfcRepository);
                 vm.WorkOrderSelected += (workOrder) => Task.Run(() => this.SetWorkOrder(workOrder));
                 return vm;
             })

@@ -9,6 +9,8 @@
              xmlns:converters="clr-namespace:Hermes.Common.Converters"
              xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
              xmlns:lang="clr-namespace:Hermes.Language;assembly=Hermes.Language"
+             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
              x:Class="Hermes.Features.Bender.PackageTrackingView"
              x:DataType="local:PackageTrackingViewModel">
 
@@ -25,8 +27,6 @@
                     <StackPanel Orientation="Horizontal"
                                 HorizontalAlignment="Center"
                                 Spacing="{StaticResource DefaultSpacing}">
-
-                        <TextBlock Text="{x:Static lang:Resources.txt_filter}" />
 
                         <RadioButton x:Name="DateRadioButton"
                                      GroupName="filter"
@@ -96,11 +96,39 @@
 
                     </StackPanel>
 
-                    <!-- Datagrid -->
-                    <DataGrid ItemsSource="{Binding  Packages}"
+                    <!-- Packages Datagrid -->
+                    <DataGrid x:Name="PackagesGrid"
+                              ItemsSource="{Binding  Packages}"
                               IsReadOnly="True"
                               CanUserResizeColumns="True"
                               MinHeight="450">
+
+                        <DataGrid.ContextMenu>
+                            <ContextMenu IsEnabled="{Binding IsRowSelected}">
+
+                                <MenuItem Header="{x:Static lang:Resources.msg_remove_package_load}"
+                                          Command="{Binding RemovePackageFromLoadedCommand}">
+                                    <MenuItem.Icon>
+                                        <avalonia:MaterialIcon Kind="PackageDown" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+
+                                <MenuItem Header="{x:Static lang:Resources.msg_delete_package_from_hermes}"
+                                          Command="{Binding DeletePackageTrackingCommand}">
+                                    <MenuItem.Icon>
+                                        <avalonia:MaterialIcon Kind="TrashCan" />
+                                    </MenuItem.Icon>
+                                </MenuItem>
+                            </ContextMenu>
+                        </DataGrid.ContextMenu>
+
+                        <i:Interaction.Behaviors>
+                            <ia:EventTriggerBehavior EventName="SelectionChanged" SourceObject="PackagesGrid">
+                                <ia:InvokeCommandAction
+                                    Command="{Binding PackageSelectedCommand}"
+                                    CommandParameter="{Binding #PackagesGrid.SelectedItem}" />
+                            </ia:EventTriggerBehavior>
+                        </i:Interaction.Behaviors>
 
                         <DataGrid.Columns>
 
@@ -137,7 +165,7 @@
                             </DataGridTemplateColumn>
 
                             <DataGridTextColumn Header="{x:Static lang:Resources.txt_used}"
-                                                Width="130"
+                                                Width="100"
                                                 Binding="{Binding QuantityUsedString}" />
 
                             <DataGridTemplateColumn Header="{x:Static lang:Resources.txt_status}"

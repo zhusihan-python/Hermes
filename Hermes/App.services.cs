@@ -59,7 +59,7 @@ public partial class App
         services.AddSingleton<HermesContext>();
         services.AddSingleton<ISettingsRepository, SettingsRepository>();
         services.AddTransient<IDefectRepository, DefectRepository>();
-        services.AddTransient<SfcOracleRepository>();
+        services.AddTransient<ISfcRepository, SfcOracleRepository>();
         services.AddTransient<SfcResponseRepository>();
         services.AddTransient<StopRepository>();
         services.AddTransient<UnitUnderTestRepository>();
@@ -70,6 +70,7 @@ public partial class App
     {
         services.AddSingleton<AesEncryptor>();
         services.AddSingleton<ILogger, HermesLogger>();
+        services.AddSingleton<LabelingMachineUnitUnderTestParser>();
         services.AddSingleton<PackageParser>();
         services.AddSingleton<PageNavigationService>();
         services.AddSingleton<ParserPrototype>();

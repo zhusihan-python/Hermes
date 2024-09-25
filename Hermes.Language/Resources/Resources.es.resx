@@ -410,4 +410,10 @@
     <data name="enum_loaded" xml:space="preserve">
         <value>Cargado</value>
     </data>
+    <data name="msg_delete_package_from_hermes" xml:space="preserve">
+        <value>Eliminar paquete de Hermes</value>
+    </data>
+    <data name="msg_remove_package_load" xml:space="preserve">
+        <value>Remover paquete de cargadora</value>
+    </data>
 </root>

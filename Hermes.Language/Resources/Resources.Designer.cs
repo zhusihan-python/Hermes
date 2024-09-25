@@ -726,11 +726,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete package from Hermes.
+        /// </summary>
+        public static string msg_delete_package_from_hermes {
+            get {
+                return ResourceManager.GetString("msg_delete_package_from_hermes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The token is invalid.
         /// </summary>
         public static string msg_invalid_token {
             get {
                 return ResourceManager.GetString("msg_invalid_token", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove package from loadder.
+        /// </summary>
+        public static string msg_remove_package_load {
+            get {
+                return ResourceManager.GetString("msg_remove_package_load", resourceCulture);
             }
         }
         

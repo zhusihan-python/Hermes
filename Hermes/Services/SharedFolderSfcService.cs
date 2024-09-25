@@ -37,7 +37,7 @@ public class SharedFolderSfcService : ISfcService
             sfcResponse = new SfcResponse(
                 content: await this._fileService.TryReadAllTextAsync(sfcRequest.ResponseFullPath)
             );
-            await _fileService.MoveToBackupAsync(sfcRequest.ResponseFullPath);
+            await _fileService.MoveToBackupAndAppendResponseAsync(sfcRequest.ResponseFullPath);
         }
 
         await this._sfcResponseRepository.AddAndSaveAsync(sfcResponse);

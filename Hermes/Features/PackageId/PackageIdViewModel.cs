@@ -39,12 +39,12 @@ public partial class PackageIdViewModel : PageBase
 
     public ObservableCollection<Package> Packages { get; set; } = [];
 
-    private readonly SfcOracleRepository _sfcOracleRepository;
+    private readonly ISfcRepository _sfcRepository;
 
-    public PackageIdViewModel(SfcOracleRepository sfcOracleRepository) : base("Package Id",
+    public PackageIdViewModel(ISfcRepository sfcRepository) : base("Package Id",
         MaterialIconKind.PackageVariant, PermissionLevel.Level1, 4)
     {
-        this._sfcOracleRepository = sfcOracleRepository;
+        this._sfcRepository = sfcRepository;
     }
 
     [RelayCommand(CanExecute = nameof(CanExecutePkgidKeyReload))]
@@ -70,7 +70,7 @@ public partial class PackageIdViewModel : PageBase
             this.UnitsUnderTest.Clear();
 
             var normalizedPkgId = Package.NormalizePkgId(pkgid);
-            this.Package = await this._sfcOracleRepository.FindPackage(normalizedPkgId);
+            this.Package = await this._sfcRepository.FindPackage(normalizedPkgId);
             if (this.Package.IsNull)
             {
                 //TODO language
@@ -78,7 +78,7 @@ public partial class PackageIdViewModel : PageBase
             }
             else
             {
-                var uuts = await this._sfcOracleRepository.FindAllUnitsUnderTest(normalizedPkgId);
+                var uuts = await this._sfcRepository.FindAllUnitsUnderTest(normalizedPkgId);
                 this.UnitsUnderTest.AddRange(uuts.ToList());
                 this.PkgidText = "";
                 this.Package.Id = pkgid;
@@ -124,7 +124,7 @@ public partial class PackageIdViewModel : PageBase
             this.Packages.Clear();
 
             var normalizedWorkOrder = Package.NormalizeWorkOrder(workOrder);
-            this.WorkOrder = await this._sfcOracleRepository.FindWorkOrder(normalizedWorkOrder);
+            this.WorkOrder = await this._sfcRepository.FindWorkOrder(normalizedWorkOrder);
             if (this.WorkOrder.IsNull)
             {
                 //TODO language
@@ -132,7 +132,7 @@ public partial class PackageIdViewModel : PageBase
             }
             else
             {
-                var packages = await this._sfcOracleRepository.FindAllPackages(normalizedWorkOrder);
+                var packages = await this._sfcRepository.FindAllPackages(normalizedWorkOrder);
                 this.Packages.AddRange(packages.ToList());
                 this.WorkOrderText = "";
             }

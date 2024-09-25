@@ -1,20 +1,19 @@
 using Avalonia.Controls.Notifications;
+using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using DynamicData;
+using Hermes.Common.Extensions;
 using Hermes.Common.Messages;
+using Hermes.Common;
 using Hermes.Models;
 using Hermes.Repositories;
-using Hermes.Types;
-using Material.Icons;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using System;
 using System.Timers;
-using Avalonia.Threading;
-using Hermes.Common.Extensions;
+using System;
 
 namespace Hermes.Features.Bender;
 
@@ -24,6 +23,9 @@ public partial class PackageTrackingViewModel : ViewModelBase
     private static readonly TimeSpan RefreshInterval = TimeSpan.FromMinutes(1);
     private static readonly TimeSpan TickInterval = TimeSpan.FromSeconds(1);
 
+    public ObservableCollection<Package> Packages { get; set; } = [];
+    public bool IsRowSelected => this.SelectedPackage != null;
+
     [ObservableProperty] private bool _isDateFilter = true;
     [ObservableProperty] private DateTime _fromDate = DateTime.Now.AddDays(-1);
     [ObservableProperty] private DateTime _toDate = DateTime.Now;
@@ -32,21 +34,27 @@ public partial class PackageTrackingViewModel : ViewModelBase
     [ObservableProperty] private double _elapsedRefreshTime;
     [ObservableProperty] private double _elapsedRefreshPercentage;
 
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsRowSelected))]
+    [NotifyCanExecuteChangedFor(nameof(RemovePackageFromLoadedCommand))]
+    private Package? _selectedPackage;
+
     [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(FindByPkgidCommand))]
     private string _pkgid = "";
 
-    private readonly SfcOracleRepository _sfcOracleRepository;
+    private readonly ISfcRepository _sfcRepository;
 
     private readonly ISettingsRepository _settingsRepository;
     private readonly Timer _timer;
     private readonly Timer _timerTick;
+    private readonly ILogger _logger;
 
-    public ObservableCollection<Package> Packages { get; set; } = [];
-
-    public PackageTrackingViewModel(SfcOracleRepository sfcOracleRepository, ISettingsRepository settingsRepository)
+    public PackageTrackingViewModel(ISfcRepository sfcRepository, ISettingsRepository settingsRepository,
+        ILogger logger)
     {
-        this._sfcOracleRepository = sfcOracleRepository;
+        this._sfcRepository = sfcRepository;
         this._settingsRepository = settingsRepository;
+        this._logger = logger;
         this._timer = new Timer(RefreshInterval.TotalMilliseconds);
         this._timer.Elapsed += TimerOnElapsed;
         this._timerTick = new Timer(TickInterval.TotalMilliseconds);
@@ -78,7 +86,7 @@ public partial class PackageTrackingViewModel : ViewModelBase
         try
         {
             var normalizedPkgId = Package.NormalizePkgId(this.Pkgid);
-            var packages = await this._sfcOracleRepository.FindAllPackagesTrackingByPkgid(normalizedPkgId);
+            var packages = await this._sfcRepository.FindAllPackagesTrackingByPkgid(normalizedPkgId);
             this.Packages.Clear();
             this.Packages.AddRange(packages.ToList());
             if (this.Packages.Count <= 0)
@@ -86,9 +94,10 @@ public partial class PackageTrackingViewModel : ViewModelBase
                 Messenger.Send(new ShowToastMessage("Not found", "Package not found", NotificationType.Warning));
             }
         }
-        catch (Exception)
+        catch (Exception e)
         {
             Messenger.Send(new ShowToastMessage("Error", "Error finding package", NotificationType.Error));
+            _logger.Error(e.Message);
         }
         finally
         {
@@ -135,7 +144,7 @@ public partial class PackageTrackingViewModel : ViewModelBase
         this.StopTimers();
         try
         {
-            var packages = await this._sfcOracleRepository.FindAllPackagesTrackingByDate(
+            var packages = await this._sfcRepository.FindAllPackagesTrackingByDate(
                 this._settingsRepository.Settings.Line.ToUpperString(),
                 this.FromDate.ToStartOfDay(),
                 this.ToDate.ToEndOfDay());
@@ -147,6 +156,7 @@ public partial class PackageTrackingViewModel : ViewModelBase
         {
             Messenger.Send(new ShowToastMessage("Error", $"Error loading packages: {e.Message}",
                 NotificationType.Error));
+            _logger.Error(e.Message);
         }
         finally
         {
@@ -161,19 +171,63 @@ public partial class PackageTrackingViewModel : ViewModelBase
         IsDataLoading = true;
         try
         {
-            var result = await this._sfcOracleRepository.UpdatePackageTrackingLoadedAt(package.Id);
+            var result = await this._sfcRepository.UpdatePackageTrackingLoadedAt(package.Id);
             if (result > 0)
             {
                 package.LoadedAt = DateTime.Now;
             }
         }
-        catch (Exception)
+        catch (Exception e)
         {
             Messenger.Send(new ShowToastMessage("Error", "Error loading package", NotificationType.Error));
+            _logger.Error(e.Message);
         }
         finally
         {
             IsDataLoading = false;
+        }
+    }
+
+    [RelayCommand]
+    private void PackageSelected(Package? package)
+    {
+        if (package == null) return;
+        this.SelectedPackage = package.IsUsed ? null : package;
+    }
+
+    [RelayCommand(CanExecute = nameof(CanRemovePackageFromLoaded))]
+    private void RemovePackageFromLoaded()
+    {
+        try
+        {
+            if (SelectedPackage == null) return;
+            this._sfcRepository.ResetPackageTrackingLoadedAt(SelectedPackage.Id);
+            SelectedPackage.LoadedAt = null;
+            Messenger.Send(new ShowToastMessage("Success", "Package removed from loaded", NotificationType.Success));
+        }
+        catch (Exception e)
+        {
+            Messenger.Send(new ShowToastMessage("Error", "Error removing package from loaded", NotificationType.Error));
+            _logger.Error(e.Message);
+        }
+    }
+
+    private bool CanRemovePackageFromLoaded => SelectedPackage is { IsLoaded: true };
+
+    [RelayCommand]
+    private async Task DeletePackageTracking()
+    {
+        try
+        {
+            if (SelectedPackage == null) return;
+            await this._sfcRepository.DeletePackageTracking(SelectedPackage.Id);
+            await this.DataReload();
+            Messenger.Send(new ShowToastMessage("Success", "Package removed", NotificationType.Success));
+        }
+        catch (Exception e)
+        {
+            Messenger.Send(new ShowToastMessage("Error", "Error removing package", NotificationType.Error));
+            _logger.Error(e.Message);
         }
     }
 }

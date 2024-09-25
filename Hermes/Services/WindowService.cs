@@ -149,13 +149,16 @@ public class WindowService : ObservableRecipient
 
     public void ShowToast(object recipient, ShowToastMessage message)
     {
-        _toastManager.CreateToast()
-            .OfType(message.Type)
-            .WithTitle(message.Title)
-            .WithContent(message.Value)
-            .Dismiss().After(TimeSpan.FromSeconds(message.Duration))
-            .Dismiss().ByClicking()
-            .Queue();
+        Dispatcher.UIThread.Invoke(() =>
+        {
+            _toastManager.CreateToast()
+                .OfType(message.Type)
+                .WithTitle(message.Title)
+                .WithContent(message.Value)
+                .Dismiss().After(TimeSpan.FromSeconds(message.Duration))
+                .Dismiss().ByClicking()
+                .Queue();
+        });
     }
 
     private void ShowSettings(object recipient, ShowSettingsMessage message)
