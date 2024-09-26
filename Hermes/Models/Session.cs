@@ -45,7 +45,8 @@ public partial class Session : ObservableObject
     public bool IsUutProcessorIdle => UutProcessorState == UutProcessorState.Idle;
     public bool IsUutProcessorBlocked => UutProcessorState == UutProcessorState.Blocked;
     public bool IsLoggedIn => !_user.IsNull;
-    public DepartmentType UserDepartment => _user.Department;
+    public DepartmentType UserDepartmentType => _user.Department;
+    public UserLevel UserLevel => _user.Level;
 
     public void ResetStop()
     {

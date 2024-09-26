@@ -6,11 +6,11 @@
              xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
              xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
              xmlns:vm="clr-namespace:Hermes.Features.UserAdmin"
+             xmlns:lang="clr-namespace:Hermes.Language;assembly=Hermes.Language"
+             xmlns:suki="https://github.com/kikipoulet/SukiUI"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Hermes.Features.UserAdmin.UserAdminView"
-             x:DataType="vm:UserAdminViewModel"
-             Width="650"
-             Height="650">
+             x:DataType="vm:UserAdminViewModel">
 
     <Grid RowDefinitions="35, *"
           ColumnDefinitions="*, Auto"
@@ -22,9 +22,19 @@
                     Spacing="10">
 
             <Button Classes="Flat Accent"
-                    ToolTip.Tip="Add user"
+                    ToolTip.Tip="{x:Static lang:Resources.txt_edit_user}"
                     Padding="10"
-                    IsEnabled="True"
+                    IsEnabled="{Binding !SelectedUser.IsNull}"
+                    Command="{Binding EditUserCommand}">
+                <materialIcons:MaterialIcon Kind="UserEdit"
+                                            Width="20"
+                                            Height="20" />
+            </Button>
+
+            <Button Classes="Flat Accent"
+                    ToolTip.Tip="{x:Static lang:Resources.txt_add_user}"
+                    Padding="10"
+                    IsEnabled="{Binding !SelectedUser.IsNull}"
                     Command="{Binding AddUserCommand}">
                 <materialIcons:MaterialIcon Kind="UserAdd"
                                             Width="20"
@@ -32,8 +42,9 @@
             </Button>
 
             <Button Classes="Flat Accent"
-                    ToolTip.Tip="Remove user"
+                    ToolTip.Tip="{x:Static lang:Resources.txt_remove_user}"
                     Padding="10"
+                    IsEnabled="{Binding !SelectedUser.IsNull}"
                     Command="{Binding RemoveUserCommand}"
                     CommandParameter="{Binding #UsersGrid.SelectedItem}">
                 <materialIcons:MaterialIcon Kind="UserRemove"
@@ -42,8 +53,9 @@
             </Button>
 
             <Button Classes="Flat Accent"
-                    ToolTip.Tip="Export table to csv"
+                    ToolTip.Tip="{x:Static lang:Resources.txt_export_table_to_csv}"
                     Padding="10"
+                    IsEnabled="{Binding CanExportToCsv}"
                     Command="{Binding ExportToCsvCommand}"
                     CommandParameter="{Binding #UsersGrid.SelectedItem}">
                 <materialIcons:MaterialIcon Kind="DatabaseExport"
@@ -51,6 +63,26 @@
                                             Height="20" />
             </Button>
 
+            <ToggleButton x:Name="ShowPass"
+                          ToolTip.Tip="{x:Static lang:Resources.txt_show_password}"
+                          IsEnabled="{Binding CanExportToCsv}"
+                          IsChecked="False"
+                          Margin="0"
+                          Padding="10 0"
+                          Classes="Flat Accent">
+
+                <StackPanel>
+                    <materialIcons:MaterialIcon Kind="Eye"
+                                                IsVisible="{Binding #ShowPass.IsChecked}"
+                                                Width="20"
+                                                Height="20" />
+
+                    <materialIcons:MaterialIcon Kind="EyeOff"
+                                                IsVisible="{Binding !#ShowPass.IsChecked}"
+                                                Width="20"
+                                                Height="20" />
+                </StackPanel>
+            </ToggleButton>
         </StackPanel>
 
         <StackPanel Grid.Row="0"
@@ -58,36 +90,68 @@
                     Orientation="Horizontal"
                     Spacing="10">
 
+            <TextBlock VerticalAlignment="Center">
+                <Run Text="{x:Static lang:Resources.txt_employee}" />
+                <Run Text=":" />
+            </TextBlock>
+
+            <TextBox Width="150"
+                     Watermark="{x:Static lang:Resources.txt_all}"
+                     Text="{Binding SearchEmployeeId, Mode=TwoWay}">
+                <TextBox.KeyBindings>
+                    <KeyBinding Gesture="Enter" Command="{Binding FindUsersCommand}" />
+                </TextBox.KeyBindings>
+            </TextBox>
+
             <Button HorizontalAlignment="Left"
                     Height="35"
                     Classes="Flat Accent"
-                    Content="Generate"
-                    Command="{Binding FindAllUsersCommand}" />
+                    Content="{x:Static lang:Resources.txt_search}"
+                    Command="{Binding FindUsersCommand}" />
         </StackPanel>
 
-        <DataGrid x:Name="UsersGrid"
-                  Grid.Row="1"
-                  Grid.Column="0"
-                  Grid.ColumnSpan="2"
-                  Margin="0 20"
-                  ItemsSource="{Binding Users}">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Employee" Binding="{Binding EmployeeId}" />
-                <DataGridTextColumn Header="Name" Binding="{Binding Name}" />
-                <DataGridTextColumn Header="Department" Binding="{Binding Department}" />
-                <DataGridTextColumn Header="Password"
-                                    Width="*"
-                                    Binding="{Binding Password}"
-                                    IsReadOnly="True" />
-            </DataGrid.Columns>
+        <suki:BusyArea BusyText="{x:Static lang:Resources.txt_loading}"
+                       IsBusy="{Binding IsDataLoading}"
+                       Grid.Row="1"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="2">
 
-            <i:Interaction.Behaviors>
-                <ia:EventTriggerBehavior EventName="RowEditEnded" SourceObject="UsersGrid">
-                    <ia:InvokeCommandAction
-                        Command="{Binding UserEditedCommand}"
-                        CommandParameter="{Binding #UsersGrid.SelectedItem}" />
-                </ia:EventTriggerBehavior>
-            </i:Interaction.Behaviors>
-        </DataGrid>
+
+            <DataGrid x:Name="UsersGrid"
+                      
+                      Margin="0 20"
+                      ItemsSource="{Binding Users}"
+                      IsReadOnly="True">
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="{x:Static lang:Resources.txt_employee}" Binding="{Binding EmployeeId}" MinWidth="150" />
+                    <DataGridTextColumn Header="{x:Static lang:Resources.txt_name}" Binding="{Binding Name}" MinWidth="150" />
+                    <DataGridTextColumn Header="{x:Static lang:Resources.txt_department}" Binding="{Binding Department}" MinWidth="150" />
+                    <DataGridTemplateColumn Header="{x:Static lang:Resources.txt_password}" MinWidth="150">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel HorizontalAlignment="Left"
+                                            VerticalAlignment="Center">
+
+                                    <TextBlock Text="********"
+                                               IsVisible="{Binding !#ShowPass.IsChecked}" />
+
+                                    <TextBlock Text="{Binding Password}"
+                                               IsVisible="{Binding #ShowPass.IsChecked}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+
+                <i:Interaction.Behaviors>
+                    <ia:EventTriggerBehavior EventName="SelectionChanged" SourceObject="UsersGrid">
+                        <ia:InvokeCommandAction
+                            Command="{Binding UserSelectedCommand}"
+                            CommandParameter="{Binding #UsersGrid.SelectedItem}" />
+                    </ia:EventTriggerBehavior>
+                </i:Interaction.Behaviors>
+            </DataGrid>
+        </suki:BusyArea>
     </Grid>
 </UserControl>

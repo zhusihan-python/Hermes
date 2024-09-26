@@ -16,7 +16,7 @@ public class PackageStatusToIconConverter : IValueConverter
 {
     public object Convert(object? value, Type TargetType, object? parameter, CultureInfo culture)
     {
-        var icon = (PackageStatusType)value switch
+        var icon = (PackageStatusType)value! switch
         {
             PackageStatusType.Scanned => MaterialIconKind.QrcodeScan,
             PackageStatusType.Open => MaterialIconKind.PackageVariant,

@@ -450,4 +450,28 @@
     <data name="txt_sfc_simulator" xml:space="preserve">
         <value>Sfc Simulator</value>
     </data>
+    <data name="txt_search" xml:space="preserve">
+        <value>Search</value>
+    </data>
+    <data name="txt_all" xml:space="preserve">
+        <value>All</value>
+    </data>
+    <data name="msg_no_users_found" xml:space="preserve">
+        <value>No users found</value>
+    </data>
+    <data name="txt_edit_user" xml:space="preserve">
+        <value>Edit user</value>
+    </data>
+    <data name="txt_add_user" xml:space="preserve">
+        <value>Add user</value>
+    </data>
+    <data name="txt_remove_user" xml:space="preserve">
+        <value>Remove user</value>
+    </data>
+    <data name="txt_export_table_to_csv" xml:space="preserve">
+        <value>Export table to csv</value>
+    </data>
+    <data name="txt_show_password" xml:space="preserve">
+        <value>Show password</value>
+    </data>
 </root>

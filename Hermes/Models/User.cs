@@ -14,7 +14,7 @@ public class User
     public string Name { get; set; } = "";
     public string Password { get; set; } = "";
     public DepartmentType Department { get; set; }
-    public PermissionLevel Level { get; set; }
+    public UserLevel Level { get; set; }
     public string LevelText => Level.ToTranslatedString();
     public List<FeaturePermission> Permissions { get; set; } = [];
 
@@ -39,7 +39,7 @@ public class DebugUser : User
         EmployeeId = 0;
         Name = "Debug";
         Department = DepartmentType.Admin;
-        Level = PermissionLevel.Administrator;
+        Level = UserLevel.Administrator;
     }
 
     public override bool HasPermission(FeatureType featureType) => true;

@@ -753,6 +753,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No users found.
+        /// </summary>
+        public static string msg_no_users_found {
+            get {
+                return ResourceManager.GetString("msg_no_users_found", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove package from loadder.
         /// </summary>
         public static string msg_remove_package_load {
@@ -825,6 +834,24 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add user.
+        /// </summary>
+        public static string txt_add_user {
+            get {
+                return ResourceManager.GetString("txt_add_user", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        public static string txt_all {
+            get {
+                return ResourceManager.GetString("txt_all", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dark theme.
         /// </summary>
         public static string txt_dark_theme {
@@ -857,6 +884,15 @@ namespace Hermes.Language {
         public static string txt_department {
             get {
                 return ResourceManager.GetString("txt_department", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit user.
+        /// </summary>
+        public static string txt_edit_user {
+            get {
+                return ResourceManager.GetString("txt_edit_user", resourceCulture);
             }
         }
         
@@ -902,6 +938,15 @@ namespace Hermes.Language {
         public static string txt_exit {
             get {
                 return ResourceManager.GetString("txt_exit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export table to csv.
+        /// </summary>
+        public static string txt_export_table_to_csv {
+            get {
+                return ResourceManager.GetString("txt_export_table_to_csv", resourceCulture);
             }
         }
         
@@ -1122,6 +1167,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Remove user.
+        /// </summary>
+        public static string txt_remove_user {
+            get {
+                return ResourceManager.GetString("txt_remove_user", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Repair.
         /// </summary>
         public static string txt_repair {
@@ -1145,6 +1199,15 @@ namespace Hermes.Language {
         public static string txt_scanned {
             get {
                 return ResourceManager.GetString("txt_scanned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        public static string txt_search {
+            get {
+                return ResourceManager.GetString("txt_search", resourceCulture);
             }
         }
         
@@ -1199,6 +1262,15 @@ namespace Hermes.Language {
         public static string txt_sfc_simulator {
             get {
                 return ResourceManager.GetString("txt_sfc_simulator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show password.
+        /// </summary>
+        public static string txt_show_password {
+            get {
+                return ResourceManager.GetString("txt_show_password", resourceCulture);
             }
         }
         

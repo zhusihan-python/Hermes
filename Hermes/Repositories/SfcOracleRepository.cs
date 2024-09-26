@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System;
 using Hermes.Cipher.Types;
+using Hermes.Types;
 
 namespace Hermes.Repositories;
 
@@ -193,19 +194,10 @@ public class SfcOracleRepository : ISfcRepository
 
     public async Task<User> FindUser(string employeeId, string password)
     {
-        var result = await this.Query<User>($"""
-                                             SELECT 
-                                                 EMPLOYEE_ID EmployeeId,
-                                                 NAME Name,
-                                                 DEPARTMENT Department,
-                                                 USER_LEVEL "Level",
-                                                 PASSWORD Password
-                                             FROM 
-                                                 SFISM4.H_USERS
-                                             WHERE 
-                                                 EMPLOYEE_ID = :employeeId AND
-                                                 PASSWORD = :password
-                                             """, new { employeeId, password });
+        var result = await FindAllUsers(
+            whereClause: "EMPLOYEE_ID = :employeeId AND PASSWORD = :password",
+            new { employeeId, password });
+
         var user = result.FirstOrDefault(User.Null);
         if (user.IsNull)
         {
@@ -216,12 +208,44 @@ public class SfcOracleRepository : ISfcRepository
         return user;
     }
 
+    public async Task<IEnumerable<User>> FindAllUsers(DepartmentType department, UserLevel userLevel)
+    {
+        return await FindAllUsers(
+            whereClause: "(:department = 99) OR (DEPARTMENT = :department AND USER_LEVEL < :userLevel)",
+            new { department = (int)department, userLevel = (int)userLevel });
+    }
+
+    public async Task<IEnumerable<User>> FindUserById(string searchEmployeeId, DepartmentType department,
+        UserLevel userLevel)
+    {
+        return await FindAllUsers(
+            whereClause:
+            "EMPLOYEE_ID = :employeeId AND (:department = 99 OR DEPARTMENT = :department AND USER_LEVEL < :userLevel)",
+            new { employeeId = searchEmployeeId, department = (int)department, userLevel = (int)userLevel });
+    }
+
+    private async Task<IEnumerable<User>> FindAllUsers(string whereClause, object param)
+    {
+        return await this.Query<User>($"""
+                                       SELECT 
+                                           EMPLOYEE_ID EmployeeId,
+                                           NAME Name,
+                                           DEPARTMENT Department,
+                                           USER_LEVEL "Level",
+                                           PASSWORD Password
+                                       FROM 
+                                           SFISM4.H_USERS
+                                       WHERE 
+                                           {whereClause}
+                                       """, param);
+    }
+
     public async Task<IEnumerable<FeaturePermission>> FindAllFeaturePermissions(DepartmentType department)
     {
         return await this.Query<FeaturePermission>($"""
                                                     SELECT FEATURE         Feature,
                                                            DEPARTMENT      Department,
-                                                           PERMISSIONLEVEL "Level"
+                                                           USER_LEVEL "Level"
                                                     FROM SFISM4.H_FEATURE_PERMISSIONS
                                                     WHERE DEPARTMENT = 0 -- All departments
                                                           OR DEPARTMENT = :department

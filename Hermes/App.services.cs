@@ -63,7 +63,6 @@ public partial class App
         services.AddTransient<SfcResponseRepository>();
         services.AddTransient<StopRepository>();
         services.AddTransient<UnitUnderTestRepository>();
-        services.AddTransient<UserRepository>();
     }
 
     private static void ConfigureCommon(ServiceCollection services)

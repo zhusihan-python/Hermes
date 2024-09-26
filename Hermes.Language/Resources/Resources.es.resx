@@ -443,4 +443,28 @@
     <data name="txt_sfc_simulator" xml:space="preserve">
         <value>Simulador Sfc</value>
     </data>
+    <data name="txt_search" xml:space="preserve">
+        <value>Buscar</value>
+    </data>
+    <data name="txt_all" xml:space="preserve">
+        <value>Todos</value>
+    </data>
+    <data name="msg_no_users_found" xml:space="preserve">
+        <value>No se encontraron usuarios</value>
+    </data>
+    <data name="txt_edit_user" xml:space="preserve">
+        <value>Editar usuario</value>
+    </data>
+    <data name="txt_add_user" xml:space="preserve">
+        <value>Agregar usuario</value>
+    </data>
+    <data name="txt_export_table_to_csv" xml:space="preserve">
+        <value>Exportar tabla a csv</value>
+    </data>
+    <data name="txt_remove_user" xml:space="preserve">
+        <value>Remover usuario</value>
+    </data>
+    <data name="txt_show_password" xml:space="preserve">
+        <value>Mostrar contraseña</value>
+    </data>
 </root>

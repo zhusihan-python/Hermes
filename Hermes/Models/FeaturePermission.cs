@@ -7,10 +7,10 @@ public class FeaturePermission
 {
     public FeatureType Feature { get; set; }
     public DepartmentType Department { get; set; }
-    public PermissionLevel Level { get; set; }
+    public UserLevel Level { get; set; }
 
-    public bool HasPermission(PermissionLevel permissionLevel)
+    public bool HasPermission(UserLevel userLevel)
     {
-        return Level <= permissionLevel;
+        return Level <= userLevel;
     }
 }

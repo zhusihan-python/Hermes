@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Hermes.Cipher.Types;
 using Hermes.Models;
+using Hermes.Types;
 
 namespace Hermes.Repositories;
 
@@ -25,4 +27,8 @@ public interface ISfcRepository
     Task<int> ResetPackageTrackingLoadedAt(string packageId);
     Task<int> DeletePackageTracking(string pkgid);
     Task<User> FindUser(string userName, string password);
+    Task<IEnumerable<User>> FindAllUsers(DepartmentType department, UserLevel userLevel);
+
+    Task<IEnumerable<User>> FindUserById(string searchEmployeeId, DepartmentType department,
+        UserLevel userLevel);
 }
