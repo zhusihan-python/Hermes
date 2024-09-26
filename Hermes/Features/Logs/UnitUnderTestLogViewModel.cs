@@ -10,7 +10,14 @@ using Hermes.Services;
 using Hermes.Models;
 using System.Linq;
 using System.Diagnostics;
+using System.IO;
+using Avalonia.Controls;
 using Material.Icons;
+using ReactiveUI;
+using Avalonia.Controls.Notifications;
+using Hermes.Common.Messages;
+using Hermes.Language;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace Hermes.Features.Logs
 {
@@ -20,6 +27,8 @@ namespace Hermes.Features.Logs
         private readonly FileService _fileService;
 
         private readonly UnitUnderTestRepository _unitUnderTestRepository;
+
+        private readonly UnitUnderTestLogView _view;
 
         public ObservableCollection<LogEntry> Logs { get; set; }
         public ObservableCollection<string> TestStatusOptions { get; set; }
@@ -39,29 +48,23 @@ namespace Hermes.Features.Logs
 
         public UnitUnderTestLogViewModel(
             UnitUnderTestRepository unitUnderTestRepository, 
-            FileService fileService)
+            FileService fileService,
+            UnitUnderTestLogView view)
         {
+            _view = view;
             SerialNumberFilter = "";
             SelectedTestStatus = "All";
-            //SelectedTestStatus = SfcResponseType.Ok.ToTranslatedString();
-
             _fileService = fileService;
-
             InitializeDataAsync(unitUnderTestRepository);
-
             _unitUnderTestRepository = unitUnderTestRepository;
-
             Logs = new ObservableCollection<LogEntry>();
-
             TestStatusOptions = new ObservableCollection<string>
             {
                 "Pass",
                 "Fail",
                 "All"
             };
-
             SfcResponseOptions = new ObservableCollection<SfcResponseType>(Enum.GetValues(typeof(SfcResponseType)) as SfcResponseType[]);
-
             LoadLogsAsync().ConfigureAwait(false);
         }
 
@@ -74,44 +77,49 @@ namespace Hermes.Features.Logs
 
         public async Task EditFile()
         {
-            //var fullpath = GetFullPathBySelectedFilename();
-            var FullPath = @"C:\Users\hesbon_torres\Documents\ITEMS\fail\0712230436364105.3dx";
-            //fileService.OpenWithDefaultApp(FullPath);
-            new Process
+            var fullpath = GetFullPathBySelectedFilename();
+            if (fullpath != null)
             {
-                StartInfo = new ProcessStartInfo(FullPath)
+                new Process
                 {
-                    UseShellExecute = true
-                }
-            }.Start();
+                    StartInfo = new ProcessStartInfo(fullpath)
+                    {
+                        UseShellExecute = true
+                    }
+                }.Start();
+            }
         }
 
         public string GetFullPathBySelectedFilename()
         {
             var Filename = SelectedLogEntry?.Filename.ToString();
-            if (Filename == null)
+            if (Filename != null)
+            {
+                var fullpath = _fileService.GetBackupFullPathByName(Filename);
+                return fullpath;
+
+            }
+            else
             {
                 Debug.WriteLine("No se selecciono nada");
             }
-            //var fullpath = _fileService.GetBackupFullPathByName(Filename);
-            return "";
+            return null;
         }
 
-        private void ReSendFile()
+        private async Task ReSendFile()
         {
             var fullpath = GetFullPathBySelectedFilename();
             if (fullpath != null)
             {
                 Debug.WriteLine($"Selected Filename: {fullpath}");
+                Debug.WriteLine("Try copy");
+                await _fileService.CopyFromBackupToInputAsync(fullpath);
             }
-            //Agregar Funcion Reenviar el archivo
-
         }
 
         private async Task LoadLogsAsync()
         {
             var units = await _unitUnderTestRepository.GetAllUnits();
-
             foreach (var unit in units)
             {
                 Logs.Add(new LogEntry
@@ -130,21 +138,34 @@ namespace Hermes.Features.Logs
         [RelayCommand]
         private async Task Export()
         {
-            //Falta Crear
+            string date = DateTime.Now.ToString("yyyy-MM-dd-HH-mm");
+            string name = $"{date} Report-List";
+            var path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            var subFolderPath = Path.Combine(path, "Exports");
+            Directory.CreateDirectory(subFolderPath);
+            var filePath = Path.Combine(subFolderPath, $"{name}.csv");
+            using (var writer = new StreamWriter(filePath))
+            {
+                await writer.WriteLineAsync("Id,SerialNumber,Filename,TestStatus,SfcResponse,CreatedAt");
+
+                foreach (var log in Logs)
+                {
+                    await writer.WriteLineAsync($"{log.Id},{log.SerialNumber},{log.Filename},{log.TestStatus},{log.SfcResponse},{log.CreatedAt}");
+                }
+            }
+            Messenger.Send(new ShowToastMessage("Success", "Export Success: " + filePath, NotificationType.Success));
         }
 
         [RelayCommand]
         private async Task Edit()
         {
-            //Falta Crear, solo hice un ejemplo.
             await EditFile();
         }
 
         [RelayCommand]
         private async Task ReSend()
         {
-            //Falta Crear, solo se verifico que retornara la ruta  y name.
-            ReSendFile();
+            await ReSendFile();
         }
 
         [RelayCommand]
@@ -160,25 +181,20 @@ namespace Hermes.Features.Logs
         private async Task Search()
         {
             Logs.Clear();
-
             var units = await _unitUnderTestRepository.GetAllUnits();
-
             if (!string.IsNullOrWhiteSpace(SerialNumberFilter))
             {
                 units = units.Where(u => u.SerialNumber.ToLower().Contains(SerialNumberFilter.ToLower())).ToList();
             }
-
             if (!string.IsNullOrWhiteSpace(SelectedTestStatus) && SelectedTestStatus != "All")
             {
                 bool isFail = SelectedTestStatus == "Fail";
                 units = units.Where(u => u.IsFail == isFail).ToList();
             }
-
             if (SelectedSfcResponse != null)
             {
                 units = units.Where(u => u.SfcResponse?.ResponseType.ToString() == SelectedSfcResponse).ToList();
             }
-
             foreach (var unit in units)
             {
                 Logs.Add(new LogEntry

@@ -123,5 +123,10 @@ public partial class App
         services.AddTransient<SuccessViewModel>();
         services.AddTransient<TokenView>();
         services.AddTransient<TokenViewModel>();
+        services.AddTransient<SettingsViewModel>();
+        services.AddTransient<LogsView>();
+        services.AddTransient<LoginViewModel>();
+        services.AddTransient<UnitUnderTestLogView>();
+        services.AddTransient<UnitUnderTestLogViewModel>();
     }
 }
