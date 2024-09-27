@@ -1,0 +1,117 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:Hermes.Features.UserAdmin"
+             xmlns:suki="https://github.com/kikipoulet/SukiUI"
+             xmlns:lang="clr-namespace:Hermes.Language;assembly=Hermes.Language"
+             xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="700"
+             x:Class="Hermes.Features.UserAdmin.ManageUserDialogView"
+             x:DataType="local:ManageUserDialogViewModel">
+
+    <suki:GroupBox Header="User management" MaxWidth="400" Padding="10">
+
+        <suki:BusyArea BusyText="{x:Static lang:Resources.txt_logging_in}"
+                       IsBusy="{Binding IsLoading}">
+
+            <StackPanel Margin="{StaticResource DefaultMargin}"
+                        Spacing="{StaticResource DefaultSpacing}">
+
+                <TextBlock>
+                    <Run Text="{x:Static lang:Resources.txt_employee}" />
+                    <Run Text=":" />
+                </TextBlock>
+
+                <TextBox Margin="-10 0 0 0"
+                         IsEnabled="{Binding IsAddUser}"
+                         Text="{Binding User.EmployeeId, Mode=TwoWay}">
+                </TextBox>
+
+
+                <TextBlock>
+                    <Run Text="{x:Static lang:Resources.txt_department}" />
+                    <Run Text=":" />
+                </TextBlock>
+
+                <ComboBox Margin="-10 0 0 0"
+                          IsEnabled="{Binding IsSessionUserAdmin}"
+                          ItemsSource="{Binding Departments}"
+                          SelectedItem="{Binding User.Department, Mode=TwoWay}" />
+
+                <TextBlock>
+                    <Run Text="{x:Static lang:Resources.txt_name}" />
+                    <Run Text=":" />
+                </TextBlock>
+
+                <TextBox Margin="-10 0 0 0"
+                         Text="{Binding User.Name, Mode=TwoWay}" />
+
+                <TextBlock>
+                    <Run Text="{x:Static lang:Resources.txt_level}" />
+                    <Run Text=":" />
+                </TextBlock>
+
+                <ComboBox Margin="-10 0 0 0"
+                          ItemsSource="{Binding Levels}"
+                          SelectedItem="{Binding User.Level, Mode=TwoWay}" />
+
+                <TextBlock>
+                    <Run Text="{x:Static lang:Resources.txt_password}" />
+                    <Run Text=":" />
+                </TextBlock>
+
+                <Grid ColumnDefinitions="*,Auto">
+
+                    <TextBox Grid.Column="0"
+                             Margin="-10 0 0 0"
+                             IsVisible="{Binding #ShowPass.IsChecked}"
+                             Text="{Binding User.Password, Mode=TwoWay}" />
+
+                    <TextBox Grid.Column="0"
+                             Margin="-10 0 0 0"
+                             IsVisible="{Binding !#ShowPass.IsChecked}"
+                             PasswordChar="*"
+                             Text="{Binding User.Password, Mode=TwoWay}" />
+
+                    <ToggleButton Grid.Column="1"
+                                  x:Name="ShowPass"
+                                  ToolTip.Tip="{x:Static lang:Resources.txt_show_password}"
+                                  IsChecked="False"
+                                  Height="35"
+                                  Margin="0"
+                                  Padding="10 0"
+                                  Classes="Flat Accent">
+
+                        <StackPanel>
+                            <avalonia:MaterialIcon Kind="Eye"
+                                                   IsVisible="{Binding #ShowPass.IsChecked}"
+                                                   Width="15"
+                                                   Height="15" />
+
+                            <avalonia:MaterialIcon Kind="EyeOff"
+                                                   IsVisible="{Binding !#ShowPass.IsChecked}"
+                                                   Width="15"
+                                                   Height="15" />
+                        </StackPanel>
+                    </ToggleButton>
+                </Grid>
+
+
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            Spacing="{StaticResource DefaultSpacing}">
+                    <Button HorizontalContentAlignment="Center"
+                            Classes="Outlined"
+                            Command="{Binding AcceptCommand}"
+                            Content="Accept" />
+
+                    <Button HorizontalContentAlignment="Center"
+                            Classes="Outlined Accent"
+                            Command="{Binding CloseDialogCommand}"
+                            Content="Cancel" />
+                </StackPanel>
+            </StackPanel>
+        </suki:BusyArea>
+    </suki:GroupBox>
+</UserControl>

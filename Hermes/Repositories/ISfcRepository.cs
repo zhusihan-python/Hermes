@@ -31,4 +31,8 @@ public interface ISfcRepository
 
     Task<IEnumerable<User>> FindUserById(string searchEmployeeId, DepartmentType department,
         UserLevel userLevel);
+
+    Task<int> UpdateUser(User user);
+    Task<int> AddUser(User user);
+    Task<int> DeleteUser(User user);
 }

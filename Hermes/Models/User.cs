@@ -10,7 +10,7 @@ public class User
 {
     public static readonly User Null = new NullUser();
 
-    public int EmployeeId { get; set; }
+    public string EmployeeId { get; set; } = "";
     public string Name { get; set; } = "";
     public string Password { get; set; } = "";
     public DepartmentType Department { get; set; }
@@ -19,6 +19,10 @@ public class User
     public List<FeaturePermission> Permissions { get; set; } = [];
 
     public bool IsNull => this == Null;
+    public bool IsValid => !string.IsNullOrWhiteSpace(Name) && 
+                           !string.IsNullOrWhiteSpace(Password) && 
+                           !string.IsNullOrWhiteSpace(LevelText) && 
+                           !string.IsNullOrWhiteSpace(EmployeeId);
 
     public virtual bool HasPermission(FeatureType featureType)
     {
@@ -36,10 +40,10 @@ public class DebugUser : User
 {
     public DebugUser()
     {
-        EmployeeId = 0;
+        EmployeeId = "Debug";
         Name = "Debug";
         Department = DepartmentType.Admin;
-        Level = UserLevel.Administrator;
+        Level = UserLevel.Manager;
     }
 
     public override bool HasPermission(FeatureType featureType) => true;

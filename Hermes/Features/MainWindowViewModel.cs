@@ -85,11 +85,11 @@ namespace Hermes.Features
         {
             var visiblePages = Pages
                 .Where(x =>
-                    _session.UserDepartmentType == DepartmentType.Admin ||
+                    _session.UserDepartment == DepartmentType.Admin ||
                     x.FeatureType == FeatureType.FreeAccess ||
                     _session.HasUserPermission(x.FeatureType))
                 .Where(x =>
-                    _session.UserDepartmentType == DepartmentType.Admin ||
+                    _session.UserDepartment == DepartmentType.Admin ||
                     x.StationFilter == null ||
                     x.StationFilter.Contains(_settingsRepository.Settings.Station))
                 .OrderBy(x => x.Index)

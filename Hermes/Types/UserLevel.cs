@@ -8,5 +8,5 @@ public enum UserLevel
     Technician,
     Engineer,
     EngineerLeader,
-    Administrator = 99
+    Manager = 99
 }

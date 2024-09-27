@@ -32,22 +32,21 @@
             </Button>
 
             <Button Classes="Flat Accent"
-                    ToolTip.Tip="{x:Static lang:Resources.txt_add_user}"
-                    Padding="10"
-                    IsEnabled="{Binding !SelectedUser.IsNull}"
-                    Command="{Binding AddUserCommand}">
-                <materialIcons:MaterialIcon Kind="UserAdd"
-                                            Width="20"
-                                            Height="20" />
-            </Button>
-
-            <Button Classes="Flat Accent"
                     ToolTip.Tip="{x:Static lang:Resources.txt_remove_user}"
                     Padding="10"
                     IsEnabled="{Binding !SelectedUser.IsNull}"
                     Command="{Binding RemoveUserCommand}"
                     CommandParameter="{Binding #UsersGrid.SelectedItem}">
                 <materialIcons:MaterialIcon Kind="UserRemove"
+                                            Width="20"
+                                            Height="20" />
+            </Button>
+
+            <Button Classes="Flat Accent"
+                    ToolTip.Tip="{x:Static lang:Resources.txt_add_user}"
+                    Padding="10"
+                    Command="{Binding AddUserCommand}">
+                <materialIcons:MaterialIcon Kind="UserAdd"
                                             Width="20"
                                             Height="20" />
             </Button>
@@ -118,15 +117,43 @@
 
 
             <DataGrid x:Name="UsersGrid"
-                      
                       Margin="0 20"
                       ItemsSource="{Binding Users}"
                       IsReadOnly="True">
 
+                <DataGrid.ContextMenu>
+                    <ContextMenu IsEnabled="{Binding !SelectedUser.IsNull}">
+
+                        <MenuItem Header="{x:Static lang:Resources.txt_edit_user}"
+                                  Command="{Binding EditUserCommand}">
+                            <MenuItem.Icon>
+                                <materialIcons:MaterialIcon Kind="UserEdit" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+
+                        <MenuItem Header="{x:Static lang:Resources.txt_remove_user}"
+                                  Command="{Binding RemoveUserCommand}">
+                            <MenuItem.Icon>
+                                <materialIcons:MaterialIcon Kind="UserRemove" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+
+                        <MenuItem Header="{x:Static lang:Resources.txt_add_user}"
+                                  Command="{Binding AddUserCommand}">
+                            <MenuItem.Icon>
+                                <materialIcons:MaterialIcon Kind="UserAdd" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
+
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="{x:Static lang:Resources.txt_employee}" Binding="{Binding EmployeeId}" MinWidth="150" />
-                    <DataGridTextColumn Header="{x:Static lang:Resources.txt_name}" Binding="{Binding Name}" MinWidth="150" />
-                    <DataGridTextColumn Header="{x:Static lang:Resources.txt_department}" Binding="{Binding Department}" MinWidth="150" />
+                    <DataGridTextColumn Header="{x:Static lang:Resources.txt_employee}" Binding="{Binding EmployeeId}"
+                                        MinWidth="150" />
+                    <DataGridTextColumn Header="{x:Static lang:Resources.txt_name}" Binding="{Binding Name}"
+                                        MinWidth="150" />
+                    <DataGridTextColumn Header="{x:Static lang:Resources.txt_department}"
+                                        Binding="{Binding Department}" MinWidth="150" />
                     <DataGridTemplateColumn Header="{x:Static lang:Resources.txt_password}" MinWidth="150">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>

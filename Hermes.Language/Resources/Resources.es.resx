@@ -467,4 +467,31 @@
     <data name="txt_show_password" xml:space="preserve">
         <value>Mostrar contraseña</value>
     </data>
+    <data name="msg_user_added" xml:space="preserve">
+        <value>Usuario agregado</value>
+    </data>
+    <data name="msg_user_deleted" xml:space="preserve">
+        <value>Usuario borrado</value>
+    </data>
+    <data name="msg_user_not_found" xml:space="preserve">
+        <value>Usuario no encontrado</value>
+    </data>
+    <data name="msg_user_updated" xml:space="preserve">
+        <value>Usuario actualizado</value>
+    </data>
+    <data name="txt_success" xml:space="preserve">
+        <value>Éxito</value>
+    </data>
+    <data name="msg_user_already_exists" xml:space="preserve">
+        <value>El usuario ya se encuentra registrado</value>
+    </data>
+    <data name="msg_remove_user" xml:space="preserve">
+        <value>¿Realmente desea eliminar al usuario?</value>
+    </data>
+    <data name="txt_yes" xml:space="preserve">
+        <value>Sí</value>
+    </data>
+    <data name="txt_no" xml:space="preserve">
+        <value>No </value>
+    </data>
 </root>

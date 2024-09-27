@@ -771,6 +771,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to remove this user?.
+        /// </summary>
+        public static string msg_remove_user {
+            get {
+                return ResourceManager.GetString("msg_remove_user", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Scan the package&apos;s 2D code.
         /// </summary>
         public static string msg_scan_2d_package {
@@ -794,6 +803,51 @@ namespace Hermes.Language {
         public static string msg_spi_repair {
             get {
                 return ResourceManager.GetString("msg_spi_repair", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User added.
+        /// </summary>
+        public static string msg_user_added {
+            get {
+                return ResourceManager.GetString("msg_user_added", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User already exists.
+        /// </summary>
+        public static string msg_user_already_exists {
+            get {
+                return ResourceManager.GetString("msg_user_already_exists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User deleted.
+        /// </summary>
+        public static string msg_user_deleted {
+            get {
+                return ResourceManager.GetString("msg_user_deleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User not found.
+        /// </summary>
+        public static string msg_user_not_found {
+            get {
+                return ResourceManager.GetString("msg_user_not_found", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User updated.
+        /// </summary>
+        public static string msg_user_updated {
+            get {
+                return ResourceManager.GetString("msg_user_updated", resourceCulture);
             }
         }
         
@@ -1131,6 +1185,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        public static string txt_no {
+            get {
+                return ResourceManager.GetString("txt_no", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ok.
         /// </summary>
         public static string txt_ok {
@@ -1320,6 +1383,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Success.
+        /// </summary>
+        public static string txt_success {
+            get {
+                return ResourceManager.GetString("txt_success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Title bar.
         /// </summary>
         public static string txt_title_bar {
@@ -1424,6 +1496,15 @@ namespace Hermes.Language {
         public static string txt_work_order {
             get {
                 return ResourceManager.GetString("txt_work_order", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        public static string txt_yes {
+            get {
+                return ResourceManager.GetString("txt_yes", resourceCulture);
             }
         }
     }

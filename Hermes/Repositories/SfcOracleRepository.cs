@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System;
 using Hermes.Cipher.Types;
+using Hermes.Language;
 using Hermes.Types;
 
 namespace Hermes.Repositories;
@@ -250,6 +251,63 @@ public class SfcOracleRepository : ISfcRepository
                                                     WHERE DEPARTMENT = 0 -- All departments
                                                           OR DEPARTMENT = :department
                                                     """, new { department = (int)department });
+    }
+
+    public async Task<int> UpdateUser(User user)
+    {
+        var param = UserToParam(user);
+        return await this.ExecuteQueryAsync($"""
+                                             UPDATE SFISM4.H_USERS SET 
+                                                    NAME = :name, 
+                                                    DEPARTMENT = :department, 
+                                                    USER_LEVEL = :userLevel, 
+                                                    PASSWORD = :password
+                                             WHERE EMPLOYEE_ID = :employeeId
+                                             """, param);
+    }
+
+    public async Task<int> AddUser(User user)
+    {
+        if (await this.UserExists(user.EmployeeId))
+        {
+            throw new Exception(Resources.msg_user_already_exists);
+        }
+
+        var param = UserToParam(user);
+        return await this.ExecuteQueryAsync($"""
+                                             INSERT INTO SFISM4.H_USERS 
+                                                 VALUES  (:employeeId, :name, :department, :userLevel, :password)
+                                             """, param);
+    }
+
+    private async Task<bool> UserExists(string userEmployeeId)
+    {
+        var result = await this.Query<User>($"""
+                                             SELECT EMPLOYEE_ID as EmployeeId
+                                             FROM SFISM4.H_USERS
+                                             WHERE EMPLOYEE_ID = :employeeId
+                                             """, new { employeeId = userEmployeeId });
+        return result.Any();
+    }
+
+    public async Task<int> DeleteUser(User user)
+    {
+        return await this.ExecuteQueryAsync($"""
+                                             Delete FROM SFISM4.H_USERS 
+                                             WHERE EMPLOYEE_ID = :employeeId
+                                             """, new { employeeId = user.EmployeeId });
+    }
+
+    private static object UserToParam(User user)
+    {
+        return new
+        {
+            name = user.Name,
+            department = (int)user.Department,
+            userLevel = (int)user.Level,
+            password = user.Password,
+            employeeId = user.EmployeeId
+        };
     }
 
     private async Task<IEnumerable<T>> Query<T>(string sql, object? param = null)

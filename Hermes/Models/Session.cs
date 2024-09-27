@@ -1,6 +1,8 @@
 using System;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Hermes.Cipher.Extensions;
 using Hermes.Cipher.Types;
 using Hermes.Types;
 
@@ -45,7 +47,7 @@ public partial class Session : ObservableObject
     public bool IsUutProcessorIdle => UutProcessorState == UutProcessorState.Idle;
     public bool IsUutProcessorBlocked => UutProcessorState == UutProcessorState.Blocked;
     public bool IsLoggedIn => !_user.IsNull;
-    public DepartmentType UserDepartmentType => _user.Department;
+    public DepartmentType UserDepartment => _user.Department;
     public UserLevel UserLevel => _user.Level;
 
     public void ResetStop()
@@ -71,5 +73,12 @@ public partial class Session : ObservableObject
     public void Logout()
     {
         this.User = User.Null;
+    }
+
+    public UserLevel[] GetLevelsBelowLoggedUser()
+    {
+        return EnumExtensions.GetValues<UserLevel>()
+            .Where(x => x < UserLevel)
+            .ToArray();
     }
 }
