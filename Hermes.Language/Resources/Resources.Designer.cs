@@ -735,6 +735,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The user belongs to a different department.
+        /// </summary>
+        public static string msg_invalid_department {
+            get {
+                return ResourceManager.GetString("msg_invalid_department", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The token is invalid.
         /// </summary>
         public static string msg_invalid_token {

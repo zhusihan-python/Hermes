@@ -1,22 +1,27 @@
-<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:uutProcessor="clr-namespace:Hermes.Features.UutProcessor"
-        xmlns:token="clr-namespace:Hermes.Features.Controls.Token"
-        xmlns:lang="clr-namespace:Hermes.Language;assembly=Hermes.Language"
-        mc:Ignorable="d"
-        d:Width="1920"
-        d:Height="1080"
-        x:Class="Hermes.Features.UutProcessor.StopView"
-        x:DataType="uutProcessor:StopViewModel"
-        CanResize="False"
-        Topmost="True"
-        WindowStartupLocation="CenterOwner"
-        WindowState="FullScreen"
-        ExtendClientAreaChromeHints="NoChrome"
-        Background="{DynamicResource LightRedColor }"
-        Icon="avares://Hermes/AppData/Assets/logo-hermes.png">
+<suki:SukiWindow xmlns="https://github.com/avaloniaui"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:uutProcessor="clr-namespace:Hermes.Features.UutProcessor"
+                 xmlns:token="clr-namespace:Hermes.Features.Controls.Token"
+                 xmlns:lang="clr-namespace:Hermes.Language;assembly=Hermes.Language"
+                 xmlns:suki="https://github.com/kikipoulet/SukiUI"
+                 mc:Ignorable="d"
+                 d:Width="1920"
+                 d:Height="1080"
+                 x:Class="Hermes.Features.UutProcessor.StopView"
+                 x:DataType="uutProcessor:StopViewModel"
+                 CanResize="False"
+                 Topmost="True"
+                 WindowStartupLocation="CenterOwner"
+                 WindowState="FullScreen"
+                 ExtendClientAreaChromeHints="NoChrome"
+                 Background="{DynamicResource LightRedColor }"
+                 Icon="avares://Hermes/AppData/Assets/logo-hermes.png">
+
+    <suki:SukiWindow.Hosts>
+        <suki:SukiToastHost Manager="{Binding ToastManager}" />
+    </suki:SukiWindow.Hosts>
 
     <Grid
         MaxWidth="{StaticResource StopWindowMaxWidth }"
@@ -24,17 +29,18 @@
         ColumnDefinitions="1*, 100*, 1*"
         RowDefinitions="*, Auto">
 
-        <StackPanel
+        <Grid
             Grid.Row="0"
             Grid.Column="1"
             VerticalAlignment="Center"
-            Spacing="{StaticResource DefaultSpacing}">
+            RowDefinitions="*,*">
 
-            <Border
-                MinHeight="500"
-                CornerRadius="{StaticResource DefaultCornerRadius}"
-                Background="{StaticResource DarkRedColor}"
-                Padding="20">
+            <!-- Stop info -->
+            <Border Grid.Row="0"
+                    MinHeight="300"
+                    CornerRadius="{StaticResource DefaultCornerRadius}"
+                    Background="{StaticResource DarkRedColor}"
+                    Padding="20">
 
                 <Grid
                     RowDefinitions="*, Auto">
@@ -85,7 +91,8 @@
                 </Grid>
             </Border>
 
-            <ScrollViewer>
+            <!-- Tokens -->
+            <ScrollViewer Grid.Row="1">
                 <StackPanel>
                     <token:TokenView
                         IsVisible="{Binding ElementName=StopLineTokens, Path=!IsVisible}"
@@ -130,8 +137,9 @@
                     </StackPanel>
                 </StackPanel>
             </ScrollViewer>
-        </StackPanel>
+        </Grid>
 
+        <!-- Current date -->
         <TextBlock
             Grid.Row="1"
             Grid.Column="1"
@@ -140,4 +148,4 @@
             Foreground="White"
             Text="{Binding DateText}" />
     </Grid>
-</Window>
+</suki:SukiWindow>

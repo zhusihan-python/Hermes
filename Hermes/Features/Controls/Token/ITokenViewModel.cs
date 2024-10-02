@@ -7,5 +7,7 @@ public interface ITokenViewModel
     public bool CanUnlock { get; set; }
     public bool IsUnlocked { get; set; }
     public string Watermark { get; set; }
-    public IRelayCommand UnlockCommand { get; }
+    public string UserName { get; set; }
+    public string Password { get; set; }
+    public IAsyncRelayCommand UnlockCommand { get; }
 }

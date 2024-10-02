@@ -501,4 +501,7 @@
     <data name="txt_no" xml:space="preserve">
         <value>No</value>
     </data>
+    <data name="msg_invalid_department" xml:space="preserve">
+        <value>The user belongs to a different department</value>
+    </data>
 </root>

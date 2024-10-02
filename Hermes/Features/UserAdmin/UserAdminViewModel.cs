@@ -186,7 +186,7 @@ public partial class UserAdminViewModel : PageBase
     }
 
     [RelayCommand]
-    private async Task RemoveUser()
+    private void RemoveUser()
     {
         _dialogManager.CreateDialog()
             .WithTitle(Resources.txt_remove_user)

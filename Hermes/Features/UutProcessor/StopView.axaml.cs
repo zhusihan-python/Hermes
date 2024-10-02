@@ -1,8 +1,9 @@
 using Avalonia.Controls;
+using SukiUI.Controls;
 
 namespace Hermes.Features.UutProcessor;
 
-public partial class StopView : Window
+public partial class StopView : SukiWindow
 {
     public bool CanClose { get; set; }
 

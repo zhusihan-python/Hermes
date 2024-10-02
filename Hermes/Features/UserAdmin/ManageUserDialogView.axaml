@@ -97,7 +97,6 @@
                     </ToggleButton>
                 </Grid>
 
-
                 <StackPanel Orientation="Horizontal"
                             HorizontalAlignment="Center"
                             Spacing="{StaticResource DefaultSpacing}">

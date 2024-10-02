@@ -8,11 +8,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
+using SukiUI.Toasts;
 
 namespace Hermes.Features.UutProcessor;
 
 public partial class StopViewModel : ViewModelBase
 {
+    public ISukiToastManager ToastManager { get; }
+
     public event EventHandler? Restored;
     public TokenViewModel StopMachineTokenViewModel { get; }
     public List<TokenViewModel> StopLineTokenViewModels { get; } = [];
@@ -42,9 +45,12 @@ public partial class StopViewModel : ViewModelBase
     {
         this._logger = logger;
         this._stopRepository = stopRepository;
+        this.ToastManager = new SukiToastManager();
+        tokenViewModel.ToastManager = this.ToastManager;
 
-        var departments = Enum.GetValues<DepartmentType>();
-        foreach (var department in departments)
+        DepartmentType[] departmentsToUnlockStop =
+            [DepartmentType.Ee, DepartmentType.Mfg, DepartmentType.Aoi, DepartmentType.Qa];
+        foreach (var department in departmentsToUnlockStop)
         {
             var cloneTokenViewModel = tokenViewModel.Clone();
             cloneTokenViewModel.Department = department;
