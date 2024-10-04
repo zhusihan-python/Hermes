@@ -56,6 +56,14 @@ public partial class SettingsConfigModel(
         Group = "c_settings_group_station")]
     private StationType _station = StationType.SpiBottom;
 
+    [ObservableProperty]
+    [property: Config(
+        Header = "c_settings_header_station_id",
+        Description = "c_settings_header_station_id",
+        Category = "c_settings_category_general",
+        Group = "c_settings_group_station")]
+    private string _stationId = "";
+
     public static StationType[] StationTypes => EnumExtensions.GetValues<StationType>();
 
     [ObservableProperty]
@@ -210,6 +218,12 @@ public partial class SettingsConfigModel(
                 InputFileExtension = FileExtension.Res;
                 SendRepairFile = true;
                 break;
+            case MachineType.ScreenPrinter:
+                LogfileType = LogfileType.GkgDefault;
+                SfcResponseExtension = FileExtension.Log;
+                InputFileExtension = FileExtension._3dx;
+                SendRepairFile = false;
+                break;
             default:
                 LogfileType = LogfileType.Default;
                 SfcResponseExtension = FileExtension.Res;
@@ -218,7 +232,6 @@ public partial class SettingsConfigModel(
                 break;
         }
     }
-
 
     partial void OnStationChanged(StationType value)
     {
@@ -250,6 +263,12 @@ public partial class SettingsConfigModel(
                 SendRepairFile = true;
                 AutostartUutProcessor = true;
                 break;
+            case StationType.ScreenPrinterBottom:
+            case StationType.ScreenPrinterTop:
+                Machine = MachineType.ScreenPrinter;
+                SendRepairFile = false;
+                AutostartUutProcessor = true;
+                break;
             case StationType.Aoi1:
             case StationType.Aoi2:
             case StationType.Aoi3:
@@ -260,5 +279,18 @@ public partial class SettingsConfigModel(
                 AutostartUutProcessor = true;
                 break;
         }
+
+        this.CalcStationId();
+    }
+
+    partial void OnLineChanged(LineType value)
+    {
+        this.CalcStationId();
+    }
+
+    private void CalcStationId()
+    {
+        var id = Station.GetDescription();
+        StationId = !string.IsNullOrEmpty(id) ? $"{(int)Line + 1}1{id}" : string.Empty;
     }
 }

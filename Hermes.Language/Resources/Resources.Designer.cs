@@ -339,6 +339,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Station Id.
+        /// </summary>
+        public static string c_settings_header_station_id {
+            get {
+                return ResourceManager.GetString("c_settings_header_station_id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Success window timeout.
         /// </summary>
         public static string c_settings_header_success_window_timeout {

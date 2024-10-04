@@ -9,6 +9,7 @@ public class ParserPrototype
     private readonly Dictionary<LogfileType, IUnitUnderTestParser> _parsersDictionary = new()
     {
         { LogfileType.TriDefault, new TriUnitUnderTestParser() },
+        { LogfileType.GkgDefault, new GkgUnitUnderTestParser() },
     };
 
     public ParserPrototype(LabelingMachineUnitUnderTestParser labelingMachineUnitUnderTestParser)

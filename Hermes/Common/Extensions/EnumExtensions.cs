@@ -30,7 +30,7 @@ public static class EnumExtensions
         var attributes =
             fi?.GetCustomAttributes(typeof(DescriptionAttribute), false) as DescriptionAttribute[] ??
             [];
-        return attributes.Length != 0 ? attributes.First().Description : value.ToString();
+        return attributes.Length != 0 ? attributes.First().Description : "";
     }
 
     public static List<string> GetEnumValues<T>() where T : Enum

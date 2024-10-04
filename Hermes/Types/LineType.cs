@@ -11,5 +11,4 @@ public enum LineType
     Ag07,
     Ag08,
     Ag09,
-    Ag010,
 }

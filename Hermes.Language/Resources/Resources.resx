@@ -504,4 +504,7 @@
     <data name="msg_invalid_department" xml:space="preserve">
         <value>The user belongs to a different department</value>
     </data>
+    <data name="c_settings_header_station_id" xml:space="preserve">
+        <value>Station Id</value>
+    </data>
 </root>

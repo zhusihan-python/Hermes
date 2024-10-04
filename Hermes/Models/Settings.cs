@@ -10,6 +10,7 @@ public class Settings
     public int WaitDelayMilliseconds { get; set; } = 100;
     public StationType Station { get; set; } = StationType.SpiBottom;
     public MachineType Machine { get; set; } = MachineType.Spi;
+    public string StationId { get; set; } = "";
     public LineType Line { get; set; } = LineType.Ag01;
     public LogfileType LogfileType { get; set; } = LogfileType.TriDefault;
     public FileExtension SfcResponseExtension { get; set; } = FileExtension.Ret;

@@ -51,7 +51,7 @@ public partial class TokenViewModel : ViewModelBase, ITokenViewModel
     [RelayCommand(CanExecute = nameof(CanExecuteUnlock))]
     private async Task Unlock()
     {
-#if DEBUG
+#if !DEBUG
         var user = await this._sfcRepository.FindUser(this.UserName, this.Password);
         var validation = this.Validate(user);
         if (validation != null)

@@ -4,6 +4,7 @@ public enum LogfileType
 {
     Default,
     TriDefault,
+    GkgDefault,
     VitroxDefault,
     MagicDefault,
     LabelingMachineDefault

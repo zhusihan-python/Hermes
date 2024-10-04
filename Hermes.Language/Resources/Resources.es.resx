@@ -494,4 +494,10 @@
     <data name="txt_no" xml:space="preserve">
         <value>No </value>
     </data>
+    <data name="msg_invalid_department" xml:space="preserve">
+        <value>El usuario pertenece a un departamento diferente</value>
+    </data>
+    <data name="c_settings_header_station_id" xml:space="preserve">
+        <value>Id de la estación</value>
+    </data>
 </root>
