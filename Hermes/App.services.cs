@@ -1,9 +1,12 @@
-﻿using Avalonia.Controls.Templates;
+﻿using AesEncryptor = Hermes.Common.AesEncryptor;
 using Hermes.Builders;
+using Hermes.Cipher;
 using Hermes.Common.Parsers;
 using Hermes.Common.Validators;
 using Hermes.Common;
+using Hermes.Features.Bender;
 using Hermes.Features.Controls.Token;
+using Hermes.Features.Login;
 using Hermes.Features.SettingsConfig;
 using Hermes.Features.SfcSimulator;
 using Hermes.Features.UutProcessor;
@@ -12,14 +15,12 @@ using Hermes.Models;
 using Hermes.Repositories;
 using Hermes.Services;
 using Microsoft.Extensions.DependencyInjection;
-using System.Linq;
-using System;
-using Hermes.Cipher;
-using Hermes.Features.Bender;
-using Hermes.Features.Login;
 using SukiUI.Dialogs;
 using SukiUI.Toasts;
-using AesEncryptor = Hermes.Common.AesEncryptor;
+using System.Linq;
+using System;
+using System.Reflection;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hermes;
 
@@ -56,7 +57,12 @@ public partial class App
 
     private static void ConfigureRepos(ServiceCollection services)
     {
-        services.AddSingleton<HermesContext>();
+        services.AddDbContextFactory<HermesRemoteContext>();
+        services.AddTransient<HermesLocalContext>();
+        services.AddTransient<HermesRemoteContext>();
+        services.AddSingleton<UserRemoteRepository>();
+        services.AddSingleton<FeaturePermissionRemoteRepository>();
+        services.AddSingleton<UserProxy>();
         services.AddSingleton<ISettingsRepository, SettingsRepository>();
         services.AddTransient<IDefectRepository, DefectRepository>();
         services.AddTransient<ISfcRepository, SfcOracleRepository>();

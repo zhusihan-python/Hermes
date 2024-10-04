@@ -22,11 +22,11 @@ public partial class LoginViewModel : PageBase
     [ObservableProperty] private bool _isLoggingIn;
     [ObservableProperty] private DepartmentType _department;
     private readonly Session _session;
-    private readonly ISfcRepository _sfcRepository;
+    private readonly UserProxy _userProxy;
 
     public LoginViewModel(
         Session session,
-        ISfcRepository sfcRepository) :
+        UserProxy userProxy) :
         base(
             Resources.txt_account,
             MaterialIconKind.Account,
@@ -34,7 +34,7 @@ public partial class LoginViewModel : PageBase
             0)
     {
         this._session = session;
-        this._sfcRepository = sfcRepository;
+        this._userProxy = userProxy;
         session.UserChanged += OnSessionUserChanged;
 #if DEBUG
         LoginDebugUser();
@@ -45,7 +45,7 @@ public partial class LoginViewModel : PageBase
     private async Task Login()
     {
         IsLoggingIn = true;
-        var user = await _sfcRepository.FindUser(this.UserName, this.Password);
+        var user = await _userProxy.FindUser(this.UserName, this.Password);
         IsLoggedIn = !user.IsNull;
         _session.UpdateUser(user);
         if (!IsLoggedIn)

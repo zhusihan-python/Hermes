@@ -53,6 +53,7 @@
         <PackageReference Include="NLog" Version="5.3.3"/>
         <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="23.5.1"/>
         <PackageReference Include="Polly.Core" Version="8.4.1"/>
+        <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2" />
         <PackageReference Include="QRCoder.Core" Version="1.0.3" />
         <PackageReference Include="SukiUI" Version="6.0.0-beta8" />
     </ItemGroup>
@@ -95,5 +96,9 @@
     <ItemGroup>
         <ProjectReference Include="..\Hermes.Cipher\Hermes.Cipher.csproj"/>
         <ProjectReference Include="..\Hermes.Language\Hermes.Language.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="AppData\Migrations\" />
     </ItemGroup>
 </Project>

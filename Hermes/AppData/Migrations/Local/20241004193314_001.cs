@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Hermes.AppData.Migrations
+namespace Hermes.AppData.Migrations.Local
 {
     /// <inheritdoc />
     public partial class _001 : Migration

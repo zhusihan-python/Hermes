@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Hermes.Repositories;
 
-public class UnitUnderTestRepository(HermesContext db) : BaseRepository<UnitUnderTest>(db)
+public class UnitUnderTestRepository(HermesLocalContext db) : BaseRepository<UnitUnderTest, HermesLocalContext>(db)
 {
     public async Task<List<UnitUnderTest>> GetLastUnitsUnderTest(int qty)
     {
@@ -26,5 +26,4 @@ public class UnitUnderTestRepository(HermesContext db) : BaseRepository<UnitUnde
             .Where(x => x.SerialNumber == sn && x.Content == msg)
             .ToListAsync();
     }
-
 }

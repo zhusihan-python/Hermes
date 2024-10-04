@@ -13,7 +13,7 @@ public class Startup
 {
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddScoped<HermesContext, TempHermesContext>();
+        services.AddScoped<HermesLocalContext, TempHermesLocalContext>();
         services.AddTransient<AesEncryptor>();
         services.AddTransient<FileService>();
         services.AddTransient<ISettingsRepository, SettingsRepository>();

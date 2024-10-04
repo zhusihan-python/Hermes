@@ -8,22 +8,22 @@ namespace HermesIntegrationTests.Repositories;
 public class StopRepositoryTests
 {
     private readonly StopRepository _sut;
-    private readonly HermesContext _context;
+    private readonly HermesLocalContext _localContext;
     private readonly SfcResponseBuilder _sfcResponseBuilder;
 
-    public StopRepositoryTests(SfcResponseBuilder sfcResponseBuilder, HermesContext hermesContext)
+    public StopRepositoryTests(SfcResponseBuilder sfcResponseBuilder, HermesLocalContext hermesLocalContext)
     {
         this._sfcResponseBuilder = sfcResponseBuilder;
-        this._context = hermesContext;
-        this._sut = new StopRepository(_context);
+        this._localContext = hermesLocalContext;
+        this._sut = new StopRepository(_localContext);
     }
 
     [Fact]
     public async Task GetConsecutiveSameDefects_WithConsecutiveDefects_ReturnsDefect()
     {
         var sfcResponse = _sfcResponseBuilder.Build();
-        await _context.SfcResponses.AddAsync(sfcResponse);
-        await _context.SaveChangesAsync();
+        await _localContext.SfcResponses.AddAsync(sfcResponse);
+        await _localContext.SaveChangesAsync();
         var stop = new Stop(StopType.Machine);
         await this._sut.AddAndSaveAsync(stop);
         await this._sut.RestoreAsync(stop);

@@ -8,6 +8,7 @@ public class Settings
 
     public LanguageType Language { get; set; } = LanguageType.En;
     public int WaitDelayMilliseconds { get; set; } = 100;
+    public string DatabaseServer { get; set; } = "localhost";
     public StationType Station { get; set; } = StationType.SpiBottom;
     public MachineType Machine { get; set; } = MachineType.Spi;
     public string StationId { get; set; } = "";

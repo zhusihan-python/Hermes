@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace Hermes.Repositories;
 
-public class HermesContext : DbContext
+public class HermesLocalContext : DbContext
 {
     protected string ConnectionString { get; init; } = "Filename=dbSqlite.db";
 

@@ -8,16 +8,16 @@ namespace HermesIntegrationTests.Repositories;
 public class DefectRepositoryTests
 {
     private readonly DefectRepository _sut;
-    private readonly HermesContext _context;
+    private readonly HermesLocalContext _localContext;
     private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
 
-    public DefectRepositoryTests(UnitUnderTestBuilder unitUnderTestBuilder, HermesContext hermesContext)
+    public DefectRepositoryTests(UnitUnderTestBuilder unitUnderTestBuilder, HermesLocalContext hermesLocalContext)
     {
         this._unitUnderTestBuilder = unitUnderTestBuilder;
-        this._context = hermesContext;
-        this._context.Database.EnsureDeleted();
-        this._context.Database.EnsureCreated();
-        this._sut = new DefectRepository(_context);
+        this._localContext = hermesLocalContext;
+        this._localContext.Database.EnsureDeleted();
+        this._localContext.Database.EnsureCreated();
+        this._sut = new DefectRepository(_localContext);
     }
 
     [Fact]
@@ -28,18 +28,18 @@ public class DefectRepositoryTests
             .AddRandomDefect(isBad: true);
         for (var i = 0; i < qty; i++)
         {
-            _context.UnitsUnderTest.Add(uutBuilder.Build());
+            _localContext.UnitsUnderTest.Add(uutBuilder.Build());
         }
 
-        await _context.SaveChangesAsync();
+        await _localContext.SaveChangesAsync();
 
-        _context.Stops.Add(new Stop()
+        _localContext.Stops.Add(new Stop()
         {
-            Defects = _context.Defects.ToList(),
+            Defects = _localContext.Defects.ToList(),
             IsRestored = false
         });
 
-        await _context.SaveChangesAsync();
+        await _localContext.SaveChangesAsync();
 
         var result = await _sut.GetAnyNotRestoredDefectsWithin1Hour(qty);
         Assert.Empty(result);
@@ -53,18 +53,18 @@ public class DefectRepositoryTests
             .AddRandomDefect(isBad: true);
         for (var i = 0; i < qty; i++)
         {
-            _context.UnitsUnderTest.Add(uutBuilder.Build());
+            _localContext.UnitsUnderTest.Add(uutBuilder.Build());
         }
 
-        await _context.SaveChangesAsync();
+        await _localContext.SaveChangesAsync();
 
-        _context.Stops.Add(new Stop()
+        _localContext.Stops.Add(new Stop()
         {
-            Defects = _context.Defects.ToList(),
+            Defects = _localContext.Defects.ToList(),
             IsRestored = false
         });
 
-        await _context.SaveChangesAsync();
+        await _localContext.SaveChangesAsync();
 
         var result = await _sut.GetNotRestoredSameDefectsWithin1Hour(qty);
         Assert.Empty(result);
@@ -78,18 +78,18 @@ public class DefectRepositoryTests
             .AddRandomDefect(isBad: true);
         for (var i = 0; i < qty; i++)
         {
-            _context.UnitsUnderTest.Add(uutBuilder.Build());
+            _localContext.UnitsUnderTest.Add(uutBuilder.Build());
         }
 
-        await _context.SaveChangesAsync();
+        await _localContext.SaveChangesAsync();
 
-        _context.Stops.Add(new Stop()
+        _localContext.Stops.Add(new Stop()
         {
-            Defects = _context.Defects.ToList(),
+            Defects = _localContext.Defects.ToList(),
             IsRestored = false
         });
 
-        await _context.SaveChangesAsync();
+        await _localContext.SaveChangesAsync();
 
         var result = await _sut.GetNotRestoredConsecutiveSameDefects(qty);
         Assert.Empty(result);
@@ -103,10 +103,10 @@ public class DefectRepositoryTests
             .AddRandomDefect(isBad: true);
         for (var i = 0; i < qty; i++)
         {
-            _context.UnitsUnderTest.Add(uutBuilder.Build());
+            _localContext.UnitsUnderTest.Add(uutBuilder.Build());
         }
 
-        await _context.SaveChangesAsync();
+        await _localContext.SaveChangesAsync();
 
         var result = await _sut.GetNotRestoredConsecutiveSameDefects(qty);
         Assert.Equal(qty, result.Count);
@@ -118,10 +118,10 @@ public class DefectRepositoryTests
         var uutBuilder = _unitUnderTestBuilder;
         var uutBuilderWithDefect = _unitUnderTestBuilder.Clone()
             .AddRandomDefect(isBad: true);
-        _context.UnitsUnderTest.Add(uutBuilderWithDefect.Build());
-        _context.UnitsUnderTest.Add(uutBuilderWithDefect.Build());
-        _context.UnitsUnderTest.Add(uutBuilder.Build());
-        await _context.SaveChangesAsync();
+        _localContext.UnitsUnderTest.Add(uutBuilderWithDefect.Build());
+        _localContext.UnitsUnderTest.Add(uutBuilderWithDefect.Build());
+        _localContext.UnitsUnderTest.Add(uutBuilder.Build());
+        await _localContext.SaveChangesAsync();
 
         var result = await _sut.GetNotRestoredConsecutiveSameDefects(3);
         Assert.Empty(result);
@@ -141,12 +141,12 @@ public class DefectRepositoryTests
         {
             uutBuilder.CreatedAt(DateTime.Now - timeLapse);
             uutBuilderWithDefects.CreatedAt(DateTime.Now - timeLapse);
-            _context.UnitsUnderTest.Add(uutBuilder.Build());
-            _context.UnitsUnderTest.Add(uutBuilderWithDefects.Build());
+            _localContext.UnitsUnderTest.Add(uutBuilder.Build());
+            _localContext.UnitsUnderTest.Add(uutBuilderWithDefects.Build());
             timeLapse -= step;
         }
 
-        await _context.SaveChangesAsync();
+        await _localContext.SaveChangesAsync();
 
         var result = await _sut.GetNotRestoredSameDefectsWithin1Hour(qty);
         Assert.Equal(qty, result.Count);
@@ -160,7 +160,7 @@ public class DefectRepositoryTests
         var step = TimeSpan.FromMinutes(Math.Round(60.0 / qty));
         while (timeLapse.TotalMinutes > 0)
         {
-            _context.UnitsUnderTest.Add(_unitUnderTestBuilder
+            _localContext.UnitsUnderTest.Add(_unitUnderTestBuilder
                 .Clone()
                 .AddRandomDefect(isBad: true)
                 .CreatedAt(DateTime.Now - timeLapse)
@@ -168,7 +168,7 @@ public class DefectRepositoryTests
             timeLapse -= step;
         }
 
-        await _context.SaveChangesAsync();
+        await _localContext.SaveChangesAsync();
 
         var result = await _sut.GetNotRestoredSameDefectsWithin1Hour(qty);
         Assert.Empty(result);
@@ -180,14 +180,14 @@ public class DefectRepositoryTests
         const int qty = 10;
         for (var i = 0; i < qty; i++)
         {
-            _context.UnitsUnderTest.Add(_unitUnderTestBuilder
+            _localContext.UnitsUnderTest.Add(_unitUnderTestBuilder
                 .Clone()
                 .AddRandomDefect(isBad: true)
                 .CreatedAt(DateTime.Now)
                 .Build());
         }
 
-        await _context.SaveChangesAsync();
+        await _localContext.SaveChangesAsync();
 
         var result = await _sut.GetAnyNotRestoredDefectsWithin1Hour(qty);
         Assert.True(result.Count >= qty);
@@ -196,17 +196,17 @@ public class DefectRepositoryTests
     [Fact]
     public async Task GetDefectsWithin1Hour_NoDefectsWithin1Hour_ReturnsEmptyList()
     {
-        _context.Defects.RemoveRange(_context.Defects);
-        await _context.SaveChangesAsync();
+        _localContext.Defects.RemoveRange(_localContext.Defects);
+        await _localContext.SaveChangesAsync();
         const int qty = 10;
         for (var i = 0; i <= qty; i++)
         {
-            _context.UnitsUnderTest.Add(_unitUnderTestBuilder
+            _localContext.UnitsUnderTest.Add(_unitUnderTestBuilder
                 .CreatedAt(DateTime.Now)
                 .Build());
         }
 
-        await _context.SaveChangesAsync();
+        await _localContext.SaveChangesAsync();
 
         var result = await _sut.GetAnyNotRestoredDefectsWithin1Hour(qty);
         Assert.Empty(result);

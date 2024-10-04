@@ -3,22 +3,19 @@ using System;
 using Hermes.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Hermes.AppData.Migrations
+namespace Hermes.AppData.Migrations.Local
 {
-    [DbContext(typeof(HermesContext))]
-    [Migration("20240804033024_001")]
-    partial class _001
+    [DbContext(typeof(HermesLocalContext))]
+    partial class HermesLocalContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "8.0.7");
+            modelBuilder.HasAnnotation("ProductVersion", "8.0.8");
 
             modelBuilder.Entity("Hermes.Models.Defect", b =>
                 {

@@ -8,14 +8,14 @@ namespace HermesIntegrationTests.Repositories;
 public class UnitUnderTestRepositoryTests
 {
     private readonly UnitUnderTestRepository _sut;
-    private readonly HermesContext _context;
+    private readonly HermesLocalContext _localContext;
     private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
 
-    public UnitUnderTestRepositoryTests(UnitUnderTestBuilder unitUnderTestBuilder, HermesContext hermesContext)
+    public UnitUnderTestRepositoryTests(UnitUnderTestBuilder unitUnderTestBuilder, HermesLocalContext hermesLocalContext)
     {
         this._unitUnderTestBuilder = unitUnderTestBuilder;
-        this._context = hermesContext;
-        this._sut = new UnitUnderTestRepository(_context);
+        this._localContext = hermesLocalContext;
+        this._sut = new UnitUnderTestRepository(_localContext);
     }
 
     [Fact]
@@ -44,7 +44,7 @@ public class UnitUnderTestRepositoryTests
     {
         var uut = _unitUnderTestBuilder.Build();
         _sut.Edit(uut);
-        Assert.Equal(EntityState.Modified, _context.Entry(uut).State);
+        Assert.Equal(EntityState.Modified, _localContext.Entry(uut).State);
     }
 
     [Fact]

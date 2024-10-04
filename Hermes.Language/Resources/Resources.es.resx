@@ -500,4 +500,7 @@
     <data name="c_settings_header_station_id" xml:space="preserve">
         <value>Id de la estación</value>
     </data>
+    <data name="c_settings_header_database_server" xml:space="preserve">
+        <value>Servidor de la base de datos</value>
+    </data>
 </root>

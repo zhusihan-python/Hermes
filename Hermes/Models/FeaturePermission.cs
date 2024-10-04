@@ -1,8 +1,10 @@
 using Hermes.Cipher.Types;
 using Hermes.Types;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hermes.Models;
 
+[PrimaryKey(nameof(Feature), nameof(Department), nameof(Level))]
 public class FeaturePermission
 {
     public FeatureType Feature { get; set; }

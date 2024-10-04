@@ -8,7 +8,8 @@ using System;
 
 namespace Hermes.Repositories;
 
-public sealed class DefectRepository(HermesContext db) : BaseRepository<Defect>(db), IDefectRepository
+public sealed class DefectRepository(HermesLocalContext db)
+    : BaseRepository<Defect, HermesLocalContext>(db), IDefectRepository
 {
     public Task<List<Defect>> GetAnyNotRestoredDefectsWithin1Hour(int qty)
     {

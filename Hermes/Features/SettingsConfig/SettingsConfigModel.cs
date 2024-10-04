@@ -37,6 +37,14 @@ public partial class SettingsConfigModel(
     private int _waitDelayMilliseconds = 100;
 
     [ObservableProperty]
+    [property: Config(
+        Header = "c_settings_header_database_server",
+        Description = "c_settings_header_database_server",
+        Category = "c_settings_category_general",
+        Group = "c_settings_group_common")]
+    private string _databaseServer = "localhost";
+
+    [ObservableProperty]
     [property: DropdownConfig(RuntimeItemsSourceMethodName = "LineType")]
     [property: Config(
         Header = "c_settings_header_line_name",

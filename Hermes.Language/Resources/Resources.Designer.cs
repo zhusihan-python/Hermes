@@ -231,6 +231,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Database server.
+        /// </summary>
+        public static string c_settings_header_database_server {
+            get {
+                return ResourceManager.GetString("c_settings_header_database_server", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Input file extension.
         /// </summary>
         public static string c_settings_header_input_file_ext {

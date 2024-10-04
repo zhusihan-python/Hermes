@@ -29,7 +29,7 @@ namespace Hermes.Features.UserAdmin;
 public partial class UserAdminViewModel : PageBase
 {
     public ObservableCollection<User> Users { get; set; } = [];
-    private readonly ISfcRepository _sfcRepository;
+    private readonly UserProxy _userProxy;
     private readonly Session _session;
     [ObservableProperty] private bool _canExportToCsv;
     [ObservableProperty] private bool _isDataLoading;
@@ -41,10 +41,10 @@ public partial class UserAdminViewModel : PageBase
     private readonly FileService _fileService;
 
     public UserAdminViewModel(
-        ISfcRepository sfcRepository,
         Session session,
         ISukiDialogManager dialogManager,
         FileService fileService,
+        UserProxy userProxy,
         ILogger logger)
         : base(
             "User Admin",
@@ -54,7 +54,7 @@ public partial class UserAdminViewModel : PageBase
             [StationType.Labeling]
         )
     {
-        _sfcRepository = sfcRepository;
+        _userProxy = userProxy;
         _session = session;
         _session.UserChanged += UserChanged;
         this._dialogManager = dialogManager;
@@ -103,10 +103,10 @@ public partial class UserAdminViewModel : PageBase
     {
         if (string.IsNullOrEmpty(SearchEmployeeId))
         {
-            return await _sfcRepository.FindAllUsers(department, _session.UserLevel);
+            return await _userProxy.FindAll(department, _session.UserLevel);
         }
 
-        return await _sfcRepository.FindUserById(SearchEmployeeId, department, _session.UserLevel);
+        return await _userProxy.FindById(SearchEmployeeId, department, _session.UserLevel);
     }
 
 
@@ -129,7 +129,7 @@ public partial class UserAdminViewModel : PageBase
         try
         {
             this._manageUserDialogViewModel.IsLoading = true;
-            var affectedRows = await _sfcRepository.UpdateUser(user);
+            var affectedRows = await _userProxy.UpdateUser(user);
             if (affectedRows == 0)
             {
                 throw new Exception(Resources.msg_user_not_found);
@@ -169,7 +169,7 @@ public partial class UserAdminViewModel : PageBase
         try
         {
             this._manageUserDialogViewModel.IsLoading = true;
-            await _sfcRepository.AddUser(user);
+            await _userProxy.Add(user);
             Messenger.Send(new ShowToastMessage(Resources.txt_success, Resources.msg_user_added,
                 NotificationType.Success));
             this._manageUserDialogViewModel.CloseDialog();
@@ -201,7 +201,7 @@ public partial class UserAdminViewModel : PageBase
     {
         try
         {
-            await _sfcRepository.DeleteUser(user);
+            _userProxy.Delete(user);
             Messenger.Send(new ShowToastMessage(Resources.txt_success, Resources.msg_user_deleted,
                 NotificationType.Success));
             await this.FindAllUsers();

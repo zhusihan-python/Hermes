@@ -48,7 +48,7 @@ public class SharedFolderSfcServiceTests
 
     private SharedFolderSfcService BuildSut(FileService fileService, Settings? settings = null)
     {
-        var hermesContext = new HermesContext();
+        var hermesContext = new HermesLocalContext();
         var sfcResponseRepositoryMock = new Mock<SfcResponseRepository>(hermesContext);
         sfcResponseRepositoryMock
             .Setup(x => x.AddAndSaveAsync(It.IsAny<SfcResponse>()))

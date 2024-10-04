@@ -5,14 +5,11 @@ using System.Threading.Tasks;
 
 namespace Hermes.Repositories;
 
-public class BaseRepository<T> : IRepository<T> where T : class
+public class BaseRepository<T, TDbContext>(TDbContext db) : IRepository<T>
+    where T : class
+    where TDbContext : DbContext
 {
-    protected readonly HermesContext Db;
-
-    public BaseRepository(HermesContext db)
-    {
-        this.Db = db;
-    }
+    protected readonly TDbContext Db = db;
 
     public virtual async Task AddAndSaveAsync(T entity)
     {

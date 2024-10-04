@@ -2,9 +2,9 @@ using Hermes.Repositories;
 
 namespace HermesIntegrationTests.Repositories;
 
-public sealed class TempHermesContext : HermesContext
+public sealed class TempHermesLocalContext : HermesLocalContext
 {
-    public TempHermesContext()
+    public TempHermesLocalContext()
     {
         this.ConnectionString = "DataSource=file::memory:?cache=shared";
         try
