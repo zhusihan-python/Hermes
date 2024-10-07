@@ -49,7 +49,7 @@ public partial class UserAdminViewModel : PageBase
         : base(
             "User Admin",
             MaterialIconKind.Users,
-            FeatureType.UserAdmin,
+            PermissionType.OpenUserAdmin,
             1,
             [StationType.Labeling]
         )

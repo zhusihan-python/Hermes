@@ -86,8 +86,8 @@ namespace Hermes.Features
             var visiblePages = Pages
                 .Where(x =>
                     _session.UserDepartment == DepartmentType.Admin ||
-                    x.FeatureType == FeatureType.FreeAccess ||
-                    _session.HasUserPermission(x.FeatureType))
+                    x.PermissionType == PermissionType.FreeAccess ||
+                    _session.HasUserPermission(x.PermissionType))
                 .Where(x =>
                     _session.UserDepartment == DepartmentType.Admin ||
                     x.StationFilter == null ||
@@ -97,7 +97,7 @@ namespace Hermes.Features
                 .ToList();
             this.ShownPages.Clear();
             this.ShownPages.AddRange(visiblePages);
-            this.AreSettingsVisible = _session.HasUserPermission(FeatureType.SettingsConfig);
+            this.AreSettingsVisible = _session.HasUserPermission(PermissionType.OpenSettingsConfig);
             this.CanExit = _session.CanUserExit();
             this.IsLoggedIn = _session.IsLoggedIn;
         }

@@ -9,7 +9,7 @@ namespace Hermes.Features;
 public abstract partial class PageBase(
     string displayName,
     MaterialIconKind icon,
-    FeatureType featureType,
+    PermissionType permissionType,
     int index = 0,
     List<StationType>? stationFilter = null)
     : ObservableRecipient
@@ -17,6 +17,6 @@ public abstract partial class PageBase(
     [ObservableProperty] private string _displayName = displayName;
     [ObservableProperty] private MaterialIconKind _icon = icon;
     [ObservableProperty] private int _index = index;
-    [ObservableProperty] private FeatureType _featureType = featureType;
+    [ObservableProperty] private PermissionType _permissionType = permissionType;
     public List<StationType>? StationFilter { get; set; } = stationFilter;
 }

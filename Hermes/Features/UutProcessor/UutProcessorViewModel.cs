@@ -34,7 +34,7 @@ public partial class UutProcessorViewModel : PageBase
         : base(
             Resources.txt_uut_processor,
             MaterialIconKind.FolderEye,
-            FeatureType.UutProcessor,
+            PermissionType.OpenUutProcessor,
             1)
     {
         this._session = session;

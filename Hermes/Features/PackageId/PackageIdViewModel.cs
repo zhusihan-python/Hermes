@@ -46,7 +46,7 @@ public partial class PackageIdViewModel : PageBase
         : base(
             Resources.txt_search_pkgid,
             MaterialIconKind.PackageVariant,
-            FeatureType.FreeAccess,
+            PermissionType.FreeAccess,
             4,
             [StationType.Labeling, StationType.LabelingMachine])
     {

@@ -55,9 +55,9 @@ public partial class Session : ObservableObject
         Stop = Stop.Null;
     }
 
-    public bool HasUserPermission(FeatureType featureType)
+    public bool HasUserPermission(PermissionType permissionType)
     {
-        return this.User.HasPermission(featureType);
+        return this.User.HasPermission(permissionType);
     }
 
     public void UpdateUser(User user)
@@ -67,7 +67,7 @@ public partial class Session : ObservableObject
 
     public bool CanUserExit()
     {
-        return this.HasUserPermission(FeatureType.Exit);
+        return this.HasUserPermission(PermissionType.Exit);
     }
 
     public void Logout()

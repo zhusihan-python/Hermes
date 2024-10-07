@@ -879,6 +879,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User without permission to excecute the action..
+        /// </summary>
+        public static string msg_user_without_permission {
+            get {
+                return ResourceManager.GetString("msg_user_without_permission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to About.
         /// </summary>
         public static string txt_about {

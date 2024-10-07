@@ -13,6 +13,7 @@
                  x:DataType="uutProcessor:StopViewModel"
                  CanResize="False"
                  Topmost="True"
+                 IsTitleBarVisible="False"
                  WindowStartupLocation="CenterOwner"
                  WindowState="FullScreen"
                  ExtendClientAreaChromeHints="NoChrome"
@@ -23,129 +24,131 @@
         <suki:SukiToastHost Manager="{Binding ToastManager}" />
     </suki:SukiWindow.Hosts>
 
-    <Grid
-        MaxWidth="{StaticResource StopWindowMaxWidth }"
-        Margin="{StaticResource DefaultMargin}"
-        ColumnDefinitions="1*, 100*, 1*"
-        RowDefinitions="*, Auto">
-
+    <Grid Background="{DynamicResource LightRedColor }" Margin="0">
         <Grid
-            Grid.Row="0"
-            Grid.Column="1"
             VerticalAlignment="Center"
-            RowDefinitions="*,*">
+            MaxWidth="{StaticResource StopWindowMaxWidth }"
+            ColumnDefinitions="1*, 100*, 1*"
+            RowDefinitions="*, Auto">
 
-            <!-- Stop info -->
-            <Border Grid.Row="0"
-                    MinHeight="300"
-                    CornerRadius="{StaticResource DefaultCornerRadius}"
-                    Background="{StaticResource DarkRedColor}"
-                    Padding="20">
+            <Grid
+                Grid.Row="0"
+                Grid.Column="1"
+                VerticalAlignment="Center"
+                RowDefinitions="*,*">
 
-                <Grid
-                    RowDefinitions="*, Auto">
+                <!-- Stop info -->
+                <Border Grid.Row="0"
+                        MinHeight="300"
+                        CornerRadius="{StaticResource DefaultCornerRadius}"
+                        Background="{StaticResource DarkRedColor}"
+                        Padding="20">
 
-                    <TextBlock
-                        TextWrapping="Wrap"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Center"
-                        Classes="h1"
-                        Foreground="White"
-                        Text="{Binding Stop.Message}" />
-
-                    <StackPanel
-                        Grid.Row="1"
-                        HorizontalAlignment="Center"
-                        Margin="0"
-                        Spacing="{StaticResource DefaultSpacing}">
-
-                        <StackPanel
-                            VerticalAlignment="Center"
-                            Orientation="Horizontal"
-                            Margin="0"
-                            Spacing="{StaticResource DefaultSpacing}">
-
-                            <TextBlock
-                                Classes="h4"
-                                Margin="0"
-                                Foreground="White">
-                                <Run Text="{x:Static lang:Resources.txt_serial_number}" />
-                                <Run Text=":" />
-                            </TextBlock>
-
-                            <TextBlock
-                                Classes="h4"
-                                Margin="0"
-                                Foreground="White"
-                                Text="{Binding Stop.SerialNumber}" />
-                        </StackPanel>
+                    <Grid
+                        RowDefinitions="*, Auto">
 
                         <TextBlock
                             TextWrapping="Wrap"
-                            TextAlignment="Center"
-                            Classes="h4"
-                            Margin="0"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Center"
+                            Classes="h1"
                             Foreground="White"
-                            Text="{Binding Stop.Details}" />
-                    </StackPanel>
-                </Grid>
-            </Border>
+                            Text="{Binding Stop.Message}" />
 
-            <!-- Tokens -->
-            <ScrollViewer Grid.Row="1">
-                <StackPanel>
-                    <token:TokenView
-                        IsVisible="{Binding ElementName=StopLineTokens, Path=!IsVisible}"
-                        DataContext="{Binding StopMachineTokenViewModel}" />
-
-                    <StackPanel
-                        x:Name="StopLineTokens"
-                        IsVisible="{Binding !IsMachineStop}"
-                        Spacing="{StaticResource DefaultSpacing}">
-
-                        <ItemsControl
+                        <StackPanel
+                            Grid.Row="1"
+                            HorizontalAlignment="Center"
                             Margin="0"
-                            ItemsSource="{Binding StopLineTokenViewModels}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <token:TokenView
-                                        DataContext="{Binding }" />
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
+                            Spacing="{StaticResource DefaultSpacing}">
 
-                        <TextBlock
-                            Classes="Caption"
-                            Foreground="White">
-                            <Run Text="{x:Static lang:Resources.txt_actions}" />
-                            <Run Text=":" />
-                        </TextBlock>
+                            <StackPanel
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal"
+                                Margin="0"
+                                Spacing="{StaticResource DefaultSpacing}">
 
-                        <TextBox UseFloatingWatermark="True"
-                                 AcceptsReturn="True"
-                                 TextWrapping="Wrap"
-                                 Background="White"
-                                 Foreground="DarkGray"
-                                 VerticalContentAlignment="Top"
-                                 ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                                 Padding="{StaticResource DefaultPadding}"
-                                 CornerRadius="{StaticResource DefaultCornerRadius}"
-                                 Text="{Binding Actions, Mode=TwoWay}"
-                                 MaxLines="20"
-                                 Height="200">
-                        </TextBox>
+                                <TextBlock
+                                    Classes="h4"
+                                    Margin="0"
+                                    Foreground="White">
+                                    <Run Text="{x:Static lang:Resources.txt_serial_number}" />
+                                    <Run Text=":" />
+                                </TextBlock>
+
+                                <TextBlock
+                                    Classes="h4"
+                                    Margin="0"
+                                    Foreground="White"
+                                    Text="{Binding Stop.SerialNumber}" />
+                            </StackPanel>
+
+                            <TextBlock
+                                TextWrapping="Wrap"
+                                TextAlignment="Center"
+                                Classes="h4"
+                                Margin="0"
+                                Foreground="White"
+                                Text="{Binding Stop.Details}" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- Tokens -->
+                <ScrollViewer Grid.Row="1">
+                    <StackPanel>
+                        <token:TokenView
+                            IsVisible="{Binding ElementName=StopLineTokens, Path=!IsVisible}"
+                            DataContext="{Binding StopMachineTokenViewModel}" />
+
+                        <StackPanel
+                            x:Name="StopLineTokens"
+                            IsVisible="{Binding !IsMachineStop}"
+                            Spacing="{StaticResource DefaultSpacing}">
+
+                            <ItemsControl
+                                Margin="0"
+                                ItemsSource="{Binding StopLineTokenViewModels}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <token:TokenView
+                                            DataContext="{Binding }" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                            <TextBlock
+                                Classes="Caption"
+                                Foreground="White">
+                                <Run Text="{x:Static lang:Resources.txt_actions}" />
+                                <Run Text=":" />
+                            </TextBlock>
+
+                            <TextBox UseFloatingWatermark="True"
+                                     AcceptsReturn="True"
+                                     TextWrapping="Wrap"
+                                     Background="White"
+                                     Foreground="DarkGray"
+                                     VerticalContentAlignment="Top"
+                                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                     Padding="{StaticResource DefaultPadding}"
+                                     CornerRadius="{StaticResource DefaultCornerRadius}"
+                                     Text="{Binding Actions, Mode=TwoWay}"
+                                     MaxLines="20"
+                                     Height="200">
+                            </TextBox>
+                        </StackPanel>
                     </StackPanel>
-                </StackPanel>
-            </ScrollViewer>
-        </Grid>
+                </ScrollViewer>
+            </Grid>
 
-        <!-- Current date -->
-        <TextBlock
-            Grid.Row="1"
-            Grid.Column="1"
-            HorizontalAlignment="Center"
-            Classes="h4"
-            Foreground="White"
-            Text="{Binding DateText}" />
+            <!-- Current date -->
+            <TextBlock
+                Grid.Row="1"
+                Grid.Column="1"
+                HorizontalAlignment="Center"
+                Classes="h4"
+                Foreground="White"
+                Text="{Binding DateText}" />
+        </Grid>
     </Grid>
 </suki:SukiWindow>

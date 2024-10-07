@@ -510,4 +510,7 @@
     <data name="c_settings_header_database_server" xml:space="preserve">
         <value>Database server</value>
     </data>
+    <data name="msg_user_without_permission" xml:space="preserve">
+        <value>User without permission to excecute the action.</value>
+    </data>
 </root>

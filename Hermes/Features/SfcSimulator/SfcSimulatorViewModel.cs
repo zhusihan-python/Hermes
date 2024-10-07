@@ -41,7 +41,7 @@ public partial class SfcSimulatorViewModel : PageBase
         : base(
             Resources.txt_sfc_simulator,
             MaterialIconKind.BugPlay,
-            FeatureType.SfcSimulator,
+            PermissionType.OpenSfcSimulator,
             100)
     {
         _coreSettings = coreSettings;

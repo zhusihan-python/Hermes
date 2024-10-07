@@ -30,10 +30,10 @@ public partial class User : ObservableValidator
                            !string.IsNullOrWhiteSpace(LevelText) &&
                            !string.IsNullOrWhiteSpace(EmployeeId);
 
-    public virtual bool HasPermission(FeatureType featureType)
+    public virtual bool HasPermission(PermissionType permissionType)
     {
         return Permissions
-            .FirstOrDefault(p => p.Feature == featureType)
+            .FirstOrDefault(p => p.Permission == permissionType)
             ?.HasPermission(Level) ?? false;
     }
 }
@@ -52,5 +52,5 @@ public class DebugUser : User
         Level = UserLevel.Manager;
     }
 
-    public override bool HasPermission(FeatureType featureType) => true;
+    public override bool HasPermission(PermissionType permissionType) => true;
 }

@@ -53,7 +53,8 @@ public partial class StopViewModel : ViewModelBase
         foreach (var department in departmentsToUnlockStop)
         {
             var cloneTokenViewModel = tokenViewModel.Clone();
-            cloneTokenViewModel.Department = department;
+            cloneTokenViewModel.ClearDepartments();
+            cloneTokenViewModel.Add(department);
             cloneTokenViewModel.Unlocked += this.OnTokenUnlocked;
             this.StopLineTokenViewModels.Add(cloneTokenViewModel);
             if (department == DepartmentType.Qa)

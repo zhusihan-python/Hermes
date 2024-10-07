@@ -30,7 +30,7 @@ public partial class LoginViewModel : PageBase
         base(
             Resources.txt_account,
             MaterialIconKind.Account,
-            FeatureType.FreeAccess,
+            PermissionType.FreeAccess,
             0)
     {
         this._session = session;

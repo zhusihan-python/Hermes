@@ -13,7 +13,7 @@ public partial class BenderViewModel : PageBase
         PackageScannerViewModel packageScannerViewModel) : base(
         "Bender",
         MaterialIconKind.Qrcode,
-        FeatureType.Bender,
+        PermissionType.OpenBender,
         3,
         [StationType.Labeling, StationType.LabelingMachine])
     {

@@ -503,4 +503,7 @@
     <data name="c_settings_header_database_server" xml:space="preserve">
         <value>Servidor de la base de datos</value>
     </data>
+    <data name="msg_user_without_permission" xml:space="preserve">
+        <value>El usuario no cuenta con permisos para realizar la acción.</value>
+    </data>
 </root>

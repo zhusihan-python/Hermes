@@ -12,7 +12,7 @@
 
     <Grid
         IsEnabled="{Binding CanUnlock}"
-        ColumnDefinitions="*, 280, 120">
+        ColumnDefinitions="*, 280, 170">
 
         <TextBox
             Margin="0"
@@ -23,7 +23,9 @@
             Text="{Binding UserName, Mode=TwoWay}"
             IsEnabled="{Binding !IsUnlocked}" />
 
-        <Grid Grid.Column="1" ColumnDefinitions="*,Auto">
+        <Grid Grid.Column="1"
+              ColumnDefinitions="*,Auto"
+              IsEnabled="{Binding !IsUnlocked}">
 
             <TextBox Grid.Column="0"
                      Watermark="{x:Static lang:Resources.txt_password}"
@@ -66,7 +68,7 @@
             Margin="5 6"
             MinHeight="40"
             Classes="Flat"
-            
+
             Command="{Binding UnlockCommand}"
             IsVisible="{Binding !IsUnlocked}">
             <Button.Styles>

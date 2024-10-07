@@ -12,7 +12,7 @@ public partial class AboutViewModel()
     : PageBase(
         Resources.txt_about,
         MaterialIconKind.InfoOutline,
-        FeatureType.FreeAccess,
+        PermissionType.FreeAccess,
         100)
 {
     public string Version { get; set; } = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "0.0.0";
