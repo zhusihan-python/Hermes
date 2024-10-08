@@ -163,6 +163,10 @@ public class WindowService : ObservableRecipient
 
     private void ShowSettings(object recipient, ShowSettingsMessage message)
     {
-        Dispatcher.UIThread.Invoke(() => { this.SettingsView.Show(); });
+        Dispatcher.UIThread.Invoke(() =>
+        {
+            this._settingsViewModel.Refresh();
+            this.SettingsView.Show();
+        });
     }
 }

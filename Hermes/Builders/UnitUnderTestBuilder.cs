@@ -17,8 +17,10 @@ public class UnitUnderTestBuilder
     public List<Defect> Defects { get; } = [];
 
     private string _serialNumber = "1A62TESTSERIALNUMBER";
+    private string _responseFailMessage = "";
     private string _fileNameWithoutExtension = "fileName";
     private bool _isPass = true;
+    private bool _isScanError = true;
     private string _message = "";
     private DateTime _createdAt = DateTime.Now;
 
@@ -58,7 +60,8 @@ public class UnitUnderTestBuilder
     {
         this.Content = this.GetTestContent();
         return Build(
-            this._fileNameWithoutExtension + _settingsRepository.Settings.InputFileExtension.GetDescription()
+            this._fileNameWithoutExtension +
+            _settingsRepository.Settings.InputFileExtension.GetDescription()
             , this.Content);
     }
 
@@ -81,6 +84,7 @@ public class UnitUnderTestBuilder
             return UnitUnderTest.Null;
         }
 
+
         return new UnitUnderTest(fileName, content)
         {
             IsFail = parser.ParseIsFail(content),
@@ -88,10 +92,23 @@ public class UnitUnderTestBuilder
             Defects = parser.ParseDefects(content),
             CreatedAt = this._createdAt,
             Message = this._message,
-            SfcResponse = _sfcResponseBuilder
-                .SerialNumber(_serialNumber)
-                .Build()
+            SfcResponse = GetSfcResponse()
         };
+    }
+
+    private SfcResponse GetSfcResponse()
+    {
+        var sfcResponseBuilder = _sfcResponseBuilder
+            .Clone()
+            .SerialNumber(_serialNumber)
+            .SetFailContent(_responseFailMessage);
+
+        if (_isScanError)
+        {
+            sfcResponseBuilder.ScanError();
+        }
+
+        return sfcResponseBuilder.Build();
     }
 
     private bool HasValidExtension(string fileName)
@@ -110,6 +127,12 @@ public class UnitUnderTestBuilder
     public UnitUnderTestBuilder SerialNumber(string serialNumber)
     {
         this._serialNumber = serialNumber;
+        return this;
+    }
+
+    public UnitUnderTestBuilder ResponseFailMessage(string message)
+    {
+        this._responseFailMessage = message;
         return this;
     }
 
@@ -164,17 +187,14 @@ public class UnitUnderTestBuilder
         return this;
     }
 
+    public UnitUnderTestBuilder ScanError(bool scanError)
+    {
+        this._isScanError = scanError;
+        return this;
+    }
+
     public UnitUnderTestBuilder IsSfcFail(bool isFail)
     {
-        if (isFail)
-        {
-            this._sfcResponseBuilder.SetFailContent();
-        }
-        else
-        {
-            this._sfcResponseBuilder.SetOkContent();
-        }
-
         return this;
     }
 

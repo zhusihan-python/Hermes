@@ -506,4 +506,25 @@
     <data name="msg_user_without_permission" xml:space="preserve">
         <value>El usuario no cuenta con permisos para realizar la acción.</value>
     </data>
+    <data name="c_settings_header_scanner_com_port" xml:space="preserve">
+        <value>Escáner puerto com</value>
+    </data>
+    <data name="txt_com_port" xml:space="preserve">
+        <value>Puerto com</value>
+    </data>
+    <data name="txt_connected" xml:space="preserve">
+        <value>Conectado</value>
+    </data>
+    <data name="txt_disconnected" xml:space="preserve">
+        <value>Desconectado</value>
+    </data>
+    <data name="txt_scanner" xml:space="preserve">
+        <value>Escáner</value>
+    </data>
+    <data name="txt_trigger" xml:space="preserve">
+        <value>Trigger </value>
+    </data>
+    <data name="c_settings_header_gkg_tunnel_com_port" xml:space="preserve">
+        <value>Gkg puerto com túnel</value>
+    </data>
 </root>

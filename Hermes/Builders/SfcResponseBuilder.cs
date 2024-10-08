@@ -48,6 +48,19 @@ public class SfcResponseBuilder
         this.Content = WrongStation;
         return this;
     }
+    
+    public SfcResponseBuilder ScanError()
+    {
+        this.Content = SfcResponse.ScanError;
+        return this;
+    }
+
+    public SfcResponseBuilder SetFailContent(string message)
+    {
+        if (string.IsNullOrEmpty(message)) return this;
+        this.Content = FailContent + " - " + message;
+        return this;
+    }
 
     public SfcResponseBuilder SetUnknownContent()
     {

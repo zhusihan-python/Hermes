@@ -58,12 +58,13 @@ public partial class App
     private static void ConfigureRepos(ServiceCollection services)
     {
         services.AddDbContextFactory<HermesRemoteContext>();
+        services.AddSingleton<FeaturePermissionRemoteRepository>();
+        services.AddSingleton<ISettingsRepository, SettingsRepository>();
+        services.AddSingleton<SerialScanner>();
+        services.AddSingleton<UserProxy>();
+        services.AddSingleton<UserRemoteRepository>();
         services.AddTransient<HermesLocalContext>();
         services.AddTransient<HermesRemoteContext>();
-        services.AddSingleton<UserRemoteRepository>();
-        services.AddSingleton<FeaturePermissionRemoteRepository>();
-        services.AddSingleton<UserProxy>();
-        services.AddSingleton<ISettingsRepository, SettingsRepository>();
         services.AddTransient<IDefectRepository, DefectRepository>();
         services.AddTransient<ISfcRepository, SfcOracleRepository>();
         services.AddTransient<SfcResponseRepository>();
@@ -98,6 +99,8 @@ public partial class App
         services.AddTransient<SfcSimulatorService>();
         services.AddTransient<StopService>();
         services.AddTransient<UutSenderService>();
+        services.AddTransient<GkgUutSenderService>();
+        services.AddTransient<UutSenderServiceFactory>();
         services.AddTransient<WindowService>();
     }
 
@@ -119,6 +122,7 @@ public partial class App
         services.AddTransient<LoginViewModel>();
         services.AddTransient<PackageScannerViewModel>();
         services.AddTransient<PackageTrackingViewModel>();
+        services.AddTransient<ScannerViewModel>();
         services.AddTransient<SettingsView>();
         services.AddTransient<SettingsViewModel>();
         services.AddTransient<StopView>();

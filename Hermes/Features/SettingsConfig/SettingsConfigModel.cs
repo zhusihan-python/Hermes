@@ -1,5 +1,10 @@
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO.Ports;
+using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using ConfigFactory.Core.Attributes;
+using DynamicData;
 using Hermes.Common.Extensions;
 using Hermes.Common;
 using Hermes.Repositories;
@@ -133,6 +138,31 @@ public partial class SettingsConfigModel(
         Category = "c_settings_category_uut_processor",
         Group = "c_settings_group_common")]
     private bool _autostartUutProcessor;
+
+    [ObservableProperty]
+    [property: DropdownConfig(RuntimeItemsSourceMethodName = "GetPortNames")]
+    [property: Config(
+        Header = "c_settings_header_gkg_tunnel_com_port",
+        Description = "c_settings_header_gkg_tunnel_com_port",
+        Category = "c_settings_category_uut_processor",
+        Group = "c_settings_group_common")]
+    private string _gkgTunnelComPort = "COM50";
+
+    [ObservableProperty]
+    [property: DropdownConfig(RuntimeItemsSourceMethodName = "GetPortNames")]
+    [property: Config(
+        Header = "c_settings_header_scanner_com_port",
+        Description = "c_settings_header_scanner_com_port",
+        Category = "c_settings_category_uut_processor",
+        Group = "c_settings_group_common")]
+    private string _scannerComPort = "COM40";
+
+    private readonly ObservableCollection<string> _comPorts = [];
+
+    public ObservableCollection<string> GetPortNames()
+    {
+        return _comPorts;
+    }
 
     [ObservableProperty]
     [property: NumericConfig(Minimum = 0, Maximum = 5, Increment = 1)]
@@ -300,5 +330,11 @@ public partial class SettingsConfigModel(
     {
         var id = Station.GetDescription();
         StationId = !string.IsNullOrEmpty(id) ? $"{(int)Line + 1}1{id}" : string.Empty;
+    }
+
+    public void Refresh()
+    {
+        _comPorts.Clear();
+        _comPorts.AddRange(SerialPort.GetPortNames());
     }
 }

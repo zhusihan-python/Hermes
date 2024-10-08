@@ -18,18 +18,18 @@ public class UutSenderService
     public event EventHandler<UnitUnderTest>? SfcResponse;
     public event EventHandler<bool>? RunStatusChanged;
 
-    private readonly Session _session;
-    private readonly ILogger _logger;
     private readonly ISfcService _sfcService;
     private readonly FileService _fileService;
-    private readonly ISettingsRepository _settingsRepository;
-    private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
+    protected readonly UnitUnderTestBuilder _unitUnderTestBuilder;
     private readonly FolderWatcherService _folderWatcherService;
     private readonly UnitUnderTestRepository _unitUnderTestRepository;
     private readonly SfcResponseBuilder _sfcResponseBuilder;
     private readonly ConcurrentQueue<string> _pendingFiles = new();
-    private CancellationTokenSource? _cancellationTokenSource;
-    private bool _isRunning;
+    protected readonly ILogger Logger;
+    protected readonly ISettingsRepository SettingsRepository;
+    protected readonly Session Session;
+    protected CancellationTokenSource? CancellationTokenSource;
+    protected bool IsRunning;
     private int _retries = 0;
 
     public UutSenderService(
@@ -43,11 +43,11 @@ public class UutSenderService
         UnitUnderTestRepository unitUnderTestRepository,
         SfcResponseBuilder sfcResponseBuilder)
     {
-        this._session = session;
-        this._logger = logger;
+        this.Session = session;
+        this.Logger = logger;
         this._sfcService = sfcService;
         this._fileService = fileService;
-        this._settingsRepository = settingsRepository;
+        this.SettingsRepository = settingsRepository;
         this._unitUnderTestRepository = unitUnderTestRepository;
         this._folderWatcherService = folderWatcherService;
         this._unitUnderTestBuilder = unitUnderTestBuilder;
@@ -55,13 +55,15 @@ public class UutSenderService
         this._folderWatcherService.FileCreated += this.OnFileCreated;
     }
 
-    public void Start()
+    public virtual string Path => SettingsRepository.Settings.InputPath; 
+
+    public virtual void Start()
     {
-        if (_isRunning) return;
-        this._folderWatcherService.Filter = "*" + this._settingsRepository.Settings.InputFileExtension.GetDescription();
-        this._folderWatcherService.Start(_settingsRepository.Settings.InputPath);
-        this._cancellationTokenSource = new CancellationTokenSource();
-        Task.Run(() => this.ProcessFilesAsync(this._cancellationTokenSource.Token));
+        if (IsRunning) return;
+        this._folderWatcherService.Filter = "*" + this.SettingsRepository.Settings.InputFileExtension.GetDescription();
+        this._folderWatcherService.Start(SettingsRepository.Settings.InputPath);
+        this.CancellationTokenSource = new CancellationTokenSource();
+        Task.Run(() => this.ProcessFilesAsync(this.CancellationTokenSource.Token));
     }
 
     private async Task ProcessFilesAsync(CancellationToken cancellationToken)
@@ -71,9 +73,9 @@ public class UutSenderService
             this.OnRunStatusChanged(true);
             while (!cancellationToken.IsCancellationRequested)
             {
-                if (this._session.IsUutProcessorIdle && this._pendingFiles.TryDequeue(out var fullPath))
+                if (this.Session.IsUutProcessorIdle && this._pendingFiles.TryDequeue(out var fullPath))
                 {
-                    this._logger.Debug($"Processing file: {fullPath}");
+                    this.Logger.Debug($"Processing file: {fullPath}");
                     var unitUnderTest = await this.SendFileAsync(fullPath);
                     if (!unitUnderTest.IsNull)
                     {
@@ -82,7 +84,7 @@ public class UutSenderService
                 }
                 else
                 {
-                    await Task.Delay(this._settingsRepository.Settings.WaitDelayMilliseconds, cancellationToken);
+                    await Task.Delay(this.SettingsRepository.Settings.WaitDelayMilliseconds, cancellationToken);
                 }
             }
         }
@@ -90,9 +92,9 @@ public class UutSenderService
         {
             if (e is not OperationCanceledException)
             {
-                this._logger.Error(e.Message);
+                this.Logger.Error(e.Message);
 #if DEBUG
-                if (!this._cancellationTokenSource?.IsCancellationRequested ?? false)
+                if (!this.CancellationTokenSource?.IsCancellationRequested ?? false)
                 {
                     this.Stop();
                 }
@@ -114,10 +116,16 @@ public class UutSenderService
             return UnitUnderTest.Null;
         }
 
-        if (!_settingsRepository.Settings.SendRepairFile && unitUnderTest.IsFail)
+        await SendUnitUnderTest(unitUnderTest);
+        return unitUnderTest;
+    }
+
+    protected async Task SendUnitUnderTest(UnitUnderTest unitUnderTest)
+    {
+        if (!SettingsRepository.Settings.SendRepairFile && unitUnderTest.IsFail)
         {
             unitUnderTest.SfcResponse = _sfcResponseBuilder.SetOkContent().Build();
-            unitUnderTest.Message = _settingsRepository.Settings.Station is StationType.SpiBottom or StationType.SpiTop
+            unitUnderTest.Message = SettingsRepository.Settings.Station is StationType.SpiBottom or StationType.SpiTop
                 ? Resources.msg_spi_repair
                 : "";
         }
@@ -126,19 +134,18 @@ public class UutSenderService
             unitUnderTest.SfcResponse = await this._sfcService.SendAsync(unitUnderTest);
         }
 
-        if (unitUnderTest.SfcResponse.IsTimeout && this._retries < this._settingsRepository.Settings.MaxSfcRetries - 1)
+        if (unitUnderTest.SfcResponse.IsTimeout && this._retries < this.SettingsRepository.Settings.MaxSfcRetries - 1)
         {
+            // TODO: Enable retry again
             this._retries += 1;
-            this._logger.Error($"Timeout: {backupFullPath} | retry: {this._retries}");
-            await this._fileService.CopyFromBackupToInputAsync(backupFullPath);
+            //this.Logger.Error($"Timeout: {backupFullPath} | retry: {this._retries}");
+            //await this._fileService.CopyFromBackupToInputAsync(backupFullPath);
         }
         else
         {
             this._retries = 0;
             await _unitUnderTestRepository.SaveChangesAsync();
         }
-
-        return unitUnderTest;
     }
 
     private async Task<UnitUnderTest> BuildUnitUnderTest(string fullPath)
@@ -146,7 +153,7 @@ public class UutSenderService
         var unitUnderTest = await this._unitUnderTestBuilder.BuildAsync(fullPath);
         if (unitUnderTest.IsNull)
         {
-            this._logger.Error($"Invalid file: {fullPath}");
+            this.Logger.Error($"Invalid file: {fullPath}");
             await this._fileService.MoveToBackupAndAppendDateToNameAsync(fullPath);
         }
         else
@@ -158,10 +165,10 @@ public class UutSenderService
         return unitUnderTest;
     }
 
-    public void Stop()
+    public virtual void Stop()
     {
-        if (!_isRunning) return;
-        this._cancellationTokenSource?.Cancel();
+        if (!IsRunning) return;
+        this.CancellationTokenSource?.Cancel();
         this._folderWatcherService.Stop();
     }
 
@@ -172,7 +179,7 @@ public class UutSenderService
 
     private void EnqueueFullPath(string fullPath, string message = "File enqueued")
     {
-        _logger.Debug($"{message}: {fullPath}");
+        Logger.Debug($"{message}: {fullPath}");
         this._pendingFiles.Enqueue(fullPath);
     }
 
@@ -189,8 +196,8 @@ public class UutSenderService
 
     protected virtual void OnRunStatusChanged(bool isRunning)
     {
-        this._isRunning = isRunning;
+        this.IsRunning = isRunning;
         RunStatusChanged?.Invoke(this, isRunning);
-        this._logger.Info($"SfcSenderService {(isRunning ? "started" : "stopped")}");
+        this.Logger.Info($"SfcSenderService {(isRunning ? "started" : "stopped")}");
     }
 }

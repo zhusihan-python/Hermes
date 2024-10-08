@@ -9,9 +9,9 @@ using Hermes.Repositories;
 using Hermes.Services;
 using Hermes.Types;
 using Material.Icons;
+using System.Linq;
 using System.Threading.Tasks;
 using System;
-using System.Linq;
 
 namespace Hermes.Features.UutProcessor;
 
@@ -23,14 +23,17 @@ public partial class UutProcessorViewModel : PageBase
     [ObservableProperty] private string _stateText = "";
     private readonly Session _session;
     private readonly StopService _stopService;
-    private readonly UutSenderService _uutSenderService;
+    private readonly UutSenderServiceFactory _uutSenderServiceFactory;
+    private UutSenderService? _uutSenderService;
     private readonly ISettingsRepository _settingsRepository;
+    public ScannerViewModel ScannerViewModel { get; }
 
     public UutProcessorViewModel(
         Session session,
         StopService stopService,
-        UutSenderService uutSenderService,
-        ISettingsRepository settingsRepository)
+        UutSenderServiceFactory uutSenderServiceFactory,
+        ISettingsRepository settingsRepository,
+        ScannerViewModel scannerViewModel)
         : base(
             Resources.txt_uut_processor,
             MaterialIconKind.FolderEye,
@@ -39,9 +42,9 @@ public partial class UutProcessorViewModel : PageBase
     {
         this._session = session;
         this._stopService = stopService;
-        this._uutSenderService = uutSenderService;
+        this._uutSenderServiceFactory = uutSenderServiceFactory;
         this._settingsRepository = settingsRepository;
-        this.Path = this._settingsRepository.Settings.InputPath;
+        this.ScannerViewModel = scannerViewModel;
         this.IsActive = true;
         this.OnUutProcessorStateChanged(UutProcessorState.Stopped);
         this.StationFilter = EnumExtensions.GetValues<StationType>()
@@ -52,10 +55,6 @@ public partial class UutProcessorViewModel : PageBase
     protected override void OnActivated()
     {
         this._session.UutProcessorStateChanged += OnUutProcessorStateChanged;
-        this._uutSenderService.UnitUnderTestCreated += OnUnitUnderTestCreated;
-        this._uutSenderService.SfcResponse += OnSfcResponse;
-        this._uutSenderService.RunStatusChanged += OnSfcSenderRunStatusChanged;
-        this._settingsRepository.SettingsChanged += OnSettingsChanged;
         Messenger.Register<StartUutProcessorMessage>(this, this.OnStartReceive);
         Messenger.Register<UnblockMessage>(this, this.OnUnblockReceive);
         Messenger.Register<ExitMessage>(this, this.OnExitReceive);
@@ -64,10 +63,13 @@ public partial class UutProcessorViewModel : PageBase
 
     protected override void OnDeactivated()
     {
-        this._uutSenderService.UnitUnderTestCreated -= OnUnitUnderTestCreated;
-        this._uutSenderService.SfcResponse -= OnSfcResponse;
-        this._uutSenderService.RunStatusChanged -= OnSfcSenderRunStatusChanged;
-        this._settingsRepository.SettingsChanged -= OnSettingsChanged;
+        if (_uutSenderService != null)
+        {
+            this._uutSenderService.UnitUnderTestCreated -= OnUnitUnderTestCreated;
+            this._uutSenderService.SfcResponse -= OnSfcResponse;
+            this._uutSenderService.RunStatusChanged -= OnSfcSenderRunStatusChanged;
+        }
+
         Messenger.UnregisterAll(this);
     }
 
@@ -77,7 +79,9 @@ public partial class UutProcessorViewModel : PageBase
         try
         {
             if (this.IsRunning) return;
+            this._uutSenderService = this.BuildUutSenderService();
             this._uutSenderService.Start();
+            this.Path = this._uutSenderService.Path;
             this._stopService.Start();
             this.IsRunning = true;
             Messenger.Send(new ShowToastMessage("Info", "UUT Processor started"));
@@ -92,15 +96,24 @@ public partial class UutProcessorViewModel : PageBase
         }
     }
 
+    private UutSenderService BuildUutSenderService()
+    {
+        var uutSenderService = this._uutSenderServiceFactory.Build();
+        uutSenderService.UnitUnderTestCreated += OnUnitUnderTestCreated;
+        uutSenderService.SfcResponse += OnSfcResponse;
+        uutSenderService.RunStatusChanged += OnSfcSenderRunStatusChanged;
+        return uutSenderService;
+    }
+
     [RelayCommand]
     public void Stop()
     {
         if (!this.IsRunning) return;
-        this._uutSenderService.Stop();
+        this._uutSenderService?.Stop();
         this._stopService.Stop();
         this.IsRunning = false;
         this.SerialNumber = string.Empty;
-        this.Path = _settingsRepository.Settings.InputPath;
+        this.Path = this._uutSenderService?.Path ?? "";
         Messenger.Send(new ShowToastMessage("Info", "UUT Processor stopped"));
     }
 
@@ -169,13 +182,5 @@ public partial class UutProcessorViewModel : PageBase
     private void OnUnblockReceive(object recipient, UnblockMessage message)
     {
         this._session.UutProcessorState = UutProcessorState.Idle;
-    }
-
-    private void OnSettingsChanged(Settings settings)
-    {
-        if (!this.IsRunning)
-        {
-            this.Path = settings.InputPath;
-        }
     }
 }

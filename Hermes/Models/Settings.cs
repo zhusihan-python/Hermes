@@ -29,6 +29,8 @@ public class Settings
     public int SfcTimeoutSeconds { get; set; } = 10;
     public int UutSuccessWindowTimeoutSeconds { get; set; } = 5;
     public int MaxSfcRetries { get; set; } = 3;
+    public string GkgTunnelComPort { get; set; } = "COM50";
+    public string ScannerComPort { get; set; } = "COM40";
 
     #endregion
 }

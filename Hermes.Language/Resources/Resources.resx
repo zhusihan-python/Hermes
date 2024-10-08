@@ -513,4 +513,25 @@
     <data name="msg_user_without_permission" xml:space="preserve">
         <value>User without permission to excecute the action.</value>
     </data>
+    <data name="c_settings_header_scanner_com_port" xml:space="preserve">
+        <value>Scanner com port</value>
+    </data>
+    <data name="txt_connected" xml:space="preserve">
+        <value>Connected</value>
+    </data>
+    <data name="txt_disconnected" xml:space="preserve">
+        <value>Disconnected</value>
+    </data>
+    <data name="txt_com_port" xml:space="preserve">
+        <value>Com port</value>
+    </data>
+    <data name="txt_trigger" xml:space="preserve">
+        <value>Trigger</value>
+    </data>
+    <data name="txt_scanner" xml:space="preserve">
+        <value>Scanner</value>
+    </data>
+    <data name="c_settings_header_gkg_tunnel_com_port" xml:space="preserve">
+        <value>Gkg tunnel com port</value>
+    </data>
 </root>

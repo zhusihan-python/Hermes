@@ -240,6 +240,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Gkg tunnel com port.
+        /// </summary>
+        public static string c_settings_header_gkg_tunnel_com_port {
+            get {
+                return ResourceManager.GetString("c_settings_header_gkg_tunnel_com_port", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Input file extension.
         /// </summary>
         public static string c_settings_header_input_file_ext {
@@ -299,6 +308,15 @@ namespace Hermes.Language {
         public static string c_settings_header_max_retries {
             get {
                 return ResourceManager.GetString("c_settings_header_max_retries", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scanner com port.
+        /// </summary>
+        public static string c_settings_header_scanner_com_port {
+            get {
+                return ResourceManager.GetString("c_settings_header_scanner_com_port", resourceCulture);
             }
         }
         
@@ -942,6 +960,24 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Com port.
+        /// </summary>
+        public static string txt_com_port {
+            get {
+                return ResourceManager.GetString("txt_com_port", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connected.
+        /// </summary>
+        public static string txt_connected {
+            get {
+                return ResourceManager.GetString("txt_connected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dark theme.
         /// </summary>
         public static string txt_dark_theme {
@@ -974,6 +1010,15 @@ namespace Hermes.Language {
         public static string txt_department {
             get {
                 return ResourceManager.GetString("txt_department", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disconnected.
+        /// </summary>
+        public static string txt_disconnected {
+            get {
+                return ResourceManager.GetString("txt_disconnected", resourceCulture);
             }
         }
         
@@ -1302,6 +1347,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Scanner.
+        /// </summary>
+        public static string txt_scanner {
+            get {
+                return ResourceManager.GetString("txt_scanner", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Search.
         /// </summary>
         public static string txt_search {
@@ -1451,6 +1505,15 @@ namespace Hermes.Language {
         public static string txt_token {
             get {
                 return ResourceManager.GetString("txt_token", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trigger.
+        /// </summary>
+        public static string txt_trigger {
+            get {
+                return ResourceManager.GetString("txt_trigger", resourceCulture);
             }
         }
         

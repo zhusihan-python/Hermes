@@ -15,5 +15,8 @@ public enum SfcResponseType
     WrongStation,
 
     [Description("Error de SFC no identificado.")]
-    Unknown
+    Unknown,
+
+    [Description("Error al escanear el número de serie.")]
+    ScanError
 }

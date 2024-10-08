@@ -14,6 +14,7 @@ public class SfcResponse
     private static readonly Regex RegexWrongStation = new(@"^go-.+[\r\n]+", RgxOptions);
     private static readonly Regex RegexIsOk = new(@"^ok[\r\n]+", RgxOptions);
     public const string TimeoutText = "Timeout";
+    public const string ScanError = "ScanError";
 
     [Key] public int Id { get; init; }
     public virtual bool IsFail => this.ResponseType != SfcResponseType.Ok;
@@ -49,6 +50,11 @@ public class SfcResponse
         if (content == TimeoutText)
         {
             return SfcResponseType.Timeout;
+        }
+
+        if (content == ScanError)
+        {
+            return SfcResponseType.ScanError;
         }
 
         return SfcResponseType.Unknown;

@@ -10,7 +10,7 @@ namespace Hermes.Common.Parsers;
 public class GkgUnitUnderTestParser : IUnitUnderTestParser
 {
     private const RegexOptions RgxOptions = RegexOptions.IgnoreCase | RegexOptions.Multiline;
-    private static readonly Regex SerialNumberRgx = new(@"Describe,Value[\r\n]*,*[\r\n]*([\w-_']+),{1}", RgxOptions);
+    private static readonly Regex SerialNumberRgx = new(@"^\s*([A-z0-9-_]+)[\r\n]+");
 
     public List<Defect> ParseDefects(string content)
     {

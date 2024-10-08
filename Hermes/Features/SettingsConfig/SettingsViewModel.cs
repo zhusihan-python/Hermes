@@ -8,4 +8,9 @@ public class SettingsViewModel : ViewModelBase
     {
         this.Model = model;
     }
+
+    public void Refresh()
+    {
+        Model.Refresh();
+    }
 }
