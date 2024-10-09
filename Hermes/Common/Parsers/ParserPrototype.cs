@@ -8,14 +8,17 @@ public class ParserPrototype
 {
     private readonly Dictionary<LogfileType, IUnitUnderTestParser> _parsersDictionary = new()
     {
-        { LogfileType.TriDefault, new TriUnitUnderTestParser() },
-        { LogfileType.GkgDefault, new GkgUnitUnderTestParser() },
+        { LogfileType.TriDefault, new TriUnitUnderTestParser() }
     };
 
-    public ParserPrototype(LabelingMachineUnitUnderTestParser labelingMachineUnitUnderTestParser)
+    public ParserPrototype(
+        LabelingMachineUnitUnderTestParser labelingMachineUnitUnderTestParser,
+        GkgUnitUnderTestParser gkgUnitUnderTestParser)
     {
         this._parsersDictionary.Add(LogfileType.LabelingMachineDefault,
             labelingMachineUnitUnderTestParser);
+        this._parsersDictionary.Add(LogfileType.GkgDefault,
+            gkgUnitUnderTestParser);
     }
 
     public IUnitUnderTestParser? GetUnitUnderTestParser(LogfileType logfileType)

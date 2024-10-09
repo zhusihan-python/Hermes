@@ -47,7 +47,7 @@ public partial class TokenViewModel : ViewModelBase, ITokenViewModel
     [RelayCommand(CanExecute = nameof(CanExecuteUnlock))]
     private async Task Unlock()
     {
-#if DEBUG
+#if !DEBUG
         var user = await this._userRemoteRepository.FindUser(this.UserName, this.Password);
         var validation = this.Validate(user);
         if (validation != null)
@@ -55,9 +55,9 @@ public partial class TokenViewModel : ViewModelBase, ITokenViewModel
             ShowErrorToast(validation);
             return;
         }
+        this.UserName = user.Name;
 #endif
         this.IsUnlocked = true;
-        this.UserName = user.Name;
         this.Password = "";
         this.Unlocked?.Invoke(this, EventArgs.Empty);
     }

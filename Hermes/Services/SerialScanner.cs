@@ -11,7 +11,8 @@ namespace Hermes.Services;
 
 public class SerialScanner
 {
-    public const string TriggerCommand = "LOF\r";
+    public const string TriggerCommand = "LOF";
+    public const string LineTerminator = "\r";
     private const int Timeout = 5000;
 
     private readonly object _serialIncoming = new();
@@ -54,6 +55,7 @@ public class SerialScanner
     {
         try
         {
+            this._serialPort?.Close();
             this._serialPort?.Dispose();
             this.StateChanged?.Invoke(StateType.Stopped);
         }
@@ -69,11 +71,15 @@ public class SerialScanner
 
         this.StateChanged?.Invoke(StateType.Processing);
 
-        _serialPort.WriteLine(TriggerCommand);
+        _serialPort.WriteLine(TriggerCommand + LineTerminator);
         var scannedText = "";
         if (await WaitForData(Timeout))
         {
             scannedText = _serialPort.ReadExisting();
+        }
+        else
+        {
+            _serialPort.DiscardInBuffer();
         }
 
         this.Scanned?.Invoke(scannedText);

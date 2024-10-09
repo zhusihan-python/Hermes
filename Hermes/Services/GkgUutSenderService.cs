@@ -6,13 +6,20 @@ using System.IO.Ports;
 using System.Threading.Tasks;
 using System.Threading;
 using System;
+using System.Diagnostics;
+using Hermes.Types;
 
 namespace Hermes.Services;
 
 public class GkgUutSenderService : UutSenderService
 {
+    private const int Timeout = 2000;
+
     private SerialPort? _serialPort;
     private readonly SerialScanner _serialScanner;
+    private string _serialNumberRead = "";
+    private static int _triggerCount = 0;
+    private readonly Stopwatch _stopwatch;
 
     public override string Path => SettingsRepository.Settings.GkgTunnelComPort;
 
@@ -30,6 +37,7 @@ public class GkgUutSenderService : UutSenderService
         folderWatcherService, unitUnderTestBuilder, unitUnderTestRepository, sfcResponseBuilder)
     {
         _serialScanner = serialScanner;
+        this._stopwatch = new Stopwatch();
     }
 
     public override void Start()
@@ -47,11 +55,15 @@ public class GkgUutSenderService : UutSenderService
     {
         try
         {
+            this.Session.UutProcessorState = UutProcessorState.Processing;
             var instruction = _serialPort?.ReadExisting() ?? string.Empty;
-            if (!instruction.StartsWith(SerialScanner.TriggerCommand)) return;
+            if (!instruction.Contains(SerialScanner.TriggerCommand)) return;
+
+            Interlocked.Increment(ref _triggerCount);
+            if (_triggerCount > 1) return;
 
             UnitUnderTest uut;
-            var serialNumber = await _serialScanner.Scan();
+            var serialNumber = (await _serialScanner.Scan()).Replace("ERROR", "");
             if (string.IsNullOrEmpty(serialNumber))
             {
                 uut = _unitUnderTestBuilder
@@ -72,10 +84,13 @@ public class GkgUutSenderService : UutSenderService
 
             if (uut.SfcResponse is { IsFail: false })
             {
-                _serialPort.WriteLine($"{serialNumber}\n");
+                await this.WaitForSecondTrigger();
+                _serialPort?.Write($"{serialNumber}{SerialScanner.LineTerminator}");
             }
 
             this.OnSfcResponse(uut);
+
+            Interlocked.Exchange(ref _triggerCount, 0);
         }
         catch (Exception exception)
         {
@@ -87,9 +102,21 @@ public class GkgUutSenderService : UutSenderService
         }
     }
 
+    private async Task WaitForSecondTrigger()
+    {
+        this._stopwatch.Restart();
+        while (_triggerCount < 2 && this._stopwatch.ElapsedMilliseconds <= Timeout)
+        {
+            await Task.Delay(this.SettingsRepository.Settings.WaitDelayMilliseconds);
+        }
+
+        this._stopwatch.Stop();
+    }
+
     public override void Stop()
     {
         if (!IsRunning) return;
+        this._serialPort?.Close();
         _serialPort?.Dispose();
         this.CancellationTokenSource?.Cancel();
         _serialScanner.Stop();

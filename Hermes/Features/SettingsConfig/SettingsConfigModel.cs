@@ -47,7 +47,7 @@ public partial class SettingsConfigModel(
         Description = "c_settings_header_database_server",
         Category = "c_settings_category_general",
         Group = "c_settings_group_common")]
-    private string _databaseServer = "localhost";
+    private string _databaseServer = "10.12.204.48";
 
     [ObservableProperty]
     [property: DropdownConfig(RuntimeItemsSourceMethodName = "LineType")]

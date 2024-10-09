@@ -4,6 +4,7 @@ using Hermes.Types;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Hermes.Repositories;
 
 namespace Hermes.Common.Parsers;
 
@@ -11,6 +12,12 @@ public class GkgUnitUnderTestParser : IUnitUnderTestParser
 {
     private const RegexOptions RgxOptions = RegexOptions.IgnoreCase | RegexOptions.Multiline;
     private static readonly Regex SerialNumberRgx = new(@"^\s*([A-z0-9-_]+)[\r\n]+");
+    private readonly ISettingsRepository _settingsRepository;
+
+    public GkgUnitUnderTestParser(ISettingsRepository settingsRepository)
+    {
+        this._settingsRepository = settingsRepository;
+    }
 
     public List<Defect> ParseDefects(string content)
     {
@@ -32,9 +39,9 @@ public class GkgUnitUnderTestParser : IUnitUnderTestParser
     {
         var content = $"""
                        {serialNumber}
-                       6121
-                       gkg
-                       SSD-4TB-A67
+                       {this._settingsRepository.Settings.StationId}
+                       GKG
+                       ALL
                        {(isPass ? "PASS" : "FAIL")}
                        {DateTime.Now:ddMMyyHHmmss}
                        {DateTime.Now:ddMMyyHHmmss}

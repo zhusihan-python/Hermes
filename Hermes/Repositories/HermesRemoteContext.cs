@@ -11,7 +11,7 @@ public class HermesRemoteContext : DbContext
 {
     private const string DatabaseName = "hermes";
     private const string User = "hermes";
-    private const string Password = "9lF-Yc5nGuqAX[@r;";
+    private const string Password = "AmazingPassword";
 
     private string ConnectionString { get; }
     public DbSet<User> Users { get; set; }

@@ -75,6 +75,7 @@ public partial class App
     private static void ConfigureCommon(ServiceCollection services)
     {
         services.AddSingleton<AesEncryptor>();
+        services.AddSingleton<GkgUnitUnderTestParser>();
         services.AddSingleton<ILogger, HermesLogger>();
         services.AddSingleton<LabelingMachineUnitUnderTestParser>();
         services.AddSingleton<PackageParser>();
