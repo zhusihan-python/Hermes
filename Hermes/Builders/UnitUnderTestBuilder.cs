@@ -16,7 +16,7 @@ public class UnitUnderTestBuilder
     public string Content { get; private set; } = "";
     public List<Defect> Defects { get; } = [];
 
-    private string _serialNumber = "1A62TESTSERIALNUMBER";
+    private string _serialNumber = "SCAN_ERROR";
     private string _responseFailMessage = "";
     private string _fileNameWithoutExtension = "fileName";
     private bool _isPass = true;

@@ -14,12 +14,14 @@ namespace Hermes.Services;
 public class GkgUutSenderService : UutSenderService
 {
     private const int Timeout = 2000;
+    private const int MinDelayBetweenCycles = 3000;
 
     private SerialPort? _serialPort;
     private readonly SerialScanner _serialScanner;
     private string _serialNumberRead = "";
     private static int _triggerCount = 0;
     private readonly Stopwatch _stopwatch;
+    private readonly Stopwatch _stopwatchBetweenCycles;
 
     public override string Path => SettingsRepository.Settings.GkgTunnelComPort;
 
@@ -38,6 +40,8 @@ public class GkgUutSenderService : UutSenderService
     {
         _serialScanner = serialScanner;
         this._stopwatch = new Stopwatch();
+        this._stopwatchBetweenCycles = new Stopwatch();
+        this._stopwatchBetweenCycles.Restart();
     }
 
     public override void Start()
@@ -52,6 +56,12 @@ public class GkgUutSenderService : UutSenderService
     }
 
     private async void OnDataReceived(object sender, SerialDataReceivedEventArgs e)
+    {
+        if (this._stopwatchBetweenCycles.ElapsedMilliseconds <= MinDelayBetweenCycles && _triggerCount == 0) return;
+        await ProcessTriggerSignal();
+    }
+
+    private async Task ProcessTriggerSignal()
     {
         try
         {
@@ -82,15 +92,13 @@ public class GkgUutSenderService : UutSenderService
                 await this.SendUnitUnderTest(uut);
             }
 
+            this.OnSfcResponse(uut);
+
             if (uut.SfcResponse is { IsFail: false })
             {
                 await this.WaitForSecondTrigger();
                 _serialPort?.Write($"{serialNumber}{SerialScanner.LineTerminator}");
             }
-
-            this.OnSfcResponse(uut);
-
-            Interlocked.Exchange(ref _triggerCount, 0);
         }
         catch (Exception exception)
         {
@@ -100,6 +108,10 @@ public class GkgUutSenderService : UutSenderService
             Logger.Error(exception.Message);
             this.OnSfcResponse(uut);
         }
+
+        Interlocked.Exchange(ref _triggerCount, 0);
+        this.Session.UutProcessorState = UutProcessorState.Idle;
+        this._stopwatchBetweenCycles.Restart();
     }
 
     private async Task WaitForSecondTrigger()
