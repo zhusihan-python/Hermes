@@ -109,11 +109,11 @@ public partial class UutProcessorViewModel : PageBase
     public void Stop()
     {
         if (!this.IsRunning) return;
-        this._uutSenderService?.Stop();
-        this._stopService.Stop();
         this.IsRunning = false;
         this.SerialNumber = string.Empty;
         this.Path = this._uutSenderService?.Path ?? "";
+        this._uutSenderService?.Stop();
+        this._stopService.Stop();
         Messenger.Send(new ShowToastMessage("Info", "UUT Processor stopped"));
     }
 

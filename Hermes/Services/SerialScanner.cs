@@ -48,6 +48,7 @@ public class SerialScanner
         {
             _logger.Error(e.Message);
             this.Stop();
+            throw;
         }
     }
 

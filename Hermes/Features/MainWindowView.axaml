@@ -10,12 +10,22 @@
                  x:Name="Self"
                  x:Class="Hermes.Features.MainWindowView"
                  x:DataType="features:MainWindowViewModel"
+                 xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+                 xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
                  Width="1260"
                  Height="650"
                  WindowStartupLocation="CenterScreen"
                  Icon="avares://Hermes/AppData/Assets/logo-hermes.png"
                  Title="{Binding Title}"
                  ClosingBehavior="OwnerAndChildWindows">
+
+    <i:Interaction.Behaviors>
+        <ia:EventTriggerBehavior EventName="Closing" SourceObject="Self">
+            <ia:InvokeCommandAction
+                Command="{Binding CloseCommand}"
+                CommandParameter="{Binding #Self}" />
+        </ia:EventTriggerBehavior>
+    </i:Interaction.Behaviors>
 
     <suki:SukiWindow.Hosts>
         <suki:SukiToastHost Manager="{Binding ToastManager}" />

@@ -969,6 +969,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Connect.
+        /// </summary>
+        public static string txt_connect {
+            get {
+                return ResourceManager.GetString("txt_connect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Connected.
         /// </summary>
         public static string txt_connected {
@@ -1010,6 +1019,15 @@ namespace Hermes.Language {
         public static string txt_department {
             get {
                 return ResourceManager.GetString("txt_department", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disconnect.
+        /// </summary>
+        public static string txt_disconnect {
+            get {
+                return ResourceManager.GetString("txt_disconnect", resourceCulture);
             }
         }
         

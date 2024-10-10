@@ -1,7 +1,11 @@
+using System;
 using System.Threading.Tasks;
+using Avalonia.Controls.Notifications;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Hermes.Common.Extensions;
+using Hermes.Common.Messages;
 using Hermes.Language;
 using Hermes.Services;
 using Hermes.Types;
@@ -42,8 +46,15 @@ public partial class ScannerViewModel : ViewModelBase
     [RelayCommand]
     private void Start()
     {
-        _serialScanner.Start();
-        this.ComPort = _serialScanner.PortName;
+        try
+        {
+            _serialScanner.Start();
+            this.ComPort = _serialScanner.PortName;
+        }
+        catch (Exception e)
+        {
+            Messenger.Send(new ShowToastMessage("Error", e.Message, NotificationType.Error));
+        }
     }
 
     [RelayCommand]

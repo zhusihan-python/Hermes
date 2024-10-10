@@ -145,8 +145,13 @@ namespace Hermes.Features
         [RelayCommand]
         private void Exit(SukiWindow window)
         {
-            Messenger.Send(new ExitMessage());
             window.Close();
+        }
+
+        [RelayCommand]
+        private void Close(SukiWindow window)
+        {
+            Messenger.Send(new ExitMessage());
         }
 
         [RelayCommand]

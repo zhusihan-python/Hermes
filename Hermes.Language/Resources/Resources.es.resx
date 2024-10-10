@@ -527,4 +527,10 @@
     <data name="c_settings_header_gkg_tunnel_com_port" xml:space="preserve">
         <value>Gkg puerto com túnel</value>
     </data>
+    <data name="txt_connect" xml:space="preserve">
+        <value>Conectar</value>
+    </data>
+    <data name="txt_disconnect" xml:space="preserve">
+        <value>Desconectar</value>
+    </data>
 </root>

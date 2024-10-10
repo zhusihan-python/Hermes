@@ -62,7 +62,7 @@
 
             <Button
                 Classes="Flat"
-                Content="{x:Static lang:Resources.txt_start}"
+                Content="{x:Static lang:Resources.txt_connect}"
                 Command="{Binding StartCommand}"
                 IsVisible="{Binding !IsConnected}" />
 
@@ -71,7 +71,7 @@
                 <Button Grid.Column="0"
                         Margin="0 0 5 0"
                         Classes="Flat Accent"
-                        Content="{x:Static lang:Resources.txt_stop}"
+                        Content="{x:Static lang:Resources.txt_disconnect}"
                         Command="{Binding StopCommand}"
                         IsVisible="{Binding IsConnected}" />
 
