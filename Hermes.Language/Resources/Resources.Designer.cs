@@ -1185,6 +1185,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Input.
+        /// </summary>
+        public static string txt_input {
+            get {
+                return ResourceManager.GetString("txt_input", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid token.
         /// </summary>
         public static string txt_invalid_token {

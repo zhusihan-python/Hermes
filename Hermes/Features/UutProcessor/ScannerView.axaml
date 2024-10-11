@@ -34,8 +34,8 @@
                            Text="{x:Static lang:Resources.txt_scanner}"
                            Classes="h4"
                            Width="200"
-                           TextAlignment="Center"
-                           HorizontalAlignment="Center"
+                           TextAlignment="Left"
+                           HorizontalAlignment="Left"
                            VerticalAlignment="Bottom" />
 
                 <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Vertical">
@@ -59,8 +59,6 @@
                     </TextBlock>
                 </StackPanel>
             </Grid>
-
-            
 
             <Grid ColumnDefinitions="*,*">
                 

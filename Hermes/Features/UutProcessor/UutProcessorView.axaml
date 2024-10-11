@@ -24,89 +24,64 @@
             <controls:GlassCard Margin="40"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center">
-                <StackPanel
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Center"
-                    Background="Transparent"
-                    Spacing="{StaticResource DefaultSpacing}">
 
+                <StackPanel Orientation="Vertical"
+                            MinWidth="350"
+                            Spacing="{StaticResource DefaultSpacing}">
 
-                    <StackPanel
-                        Orientation="Horizontal"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Spacing="5">
+                    <Grid ColumnDefinitions="Auto,*"
+                          RowDefinitions="Auto,Auto">
 
-                        <avalonia:MaterialIcon
-                            VerticalAlignment="Center"
-                            Foreground="{DynamicResource SukiText}"
-                            Margin="0 0 10 0"
-                            Width="80"
-                            Height="80"
-                            Kind="{Binding IsRunning, Converter={x:Static converters:BoolToIconConverters.Connection}}" />
+                        <avalonia:MaterialIcon Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"
+                                               VerticalAlignment="Center"
+                                               Foreground="{DynamicResource SukiText}"
+                                               Margin="0 0 10 0"
+                                               Width="80"
+                                               Height="80"
+                                               Kind="{Binding IsRunning, Converter={x:Static converters:BoolToIconConverters.Connection}}" />
 
-                        <StackPanel
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Center"
-                            MinWidth="250"
-                            Spacing="10">
+                        <TextBlock Grid.Column="1" Grid.Row="0"
+                                   Text="{x:Static lang:Resources.txt_uut_processor}"
+                                   Classes="h4"
+                                   MinWidth="200"
+                                   TextAlignment="Left"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Bottom" />
 
-                            <StackPanel
-                                Orientation="Horizontal"
-                                Spacing="2">
+                        <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Vertical">
 
-                                <TextBlock
-                                    VerticalAlignment="Center"
-                                    Classes="h4"
-                                    Margin="0">
-                                    <Run Text="{x:Static lang:Resources.txt_status}" />
-                                    <Run Text=":" />
-                                </TextBlock>
+                            <TextBlock Classes="Caption">
+                                <Run Text="{x:Static lang:Resources.txt_status}" />
+                                <Run Text=":" />
+                                <Run Text="{Binding StateText}" />
+                            </TextBlock>
 
-                                <TextBlock
-                                    VerticalAlignment="Center"
-                                    Text="{Binding StateText}" />
-                            </StackPanel>
+                            <TextBlock Classes="Caption">
+                                <Run Text="{x:Static lang:Resources.txt_serial_number}" />
+                                <Run Text=":" />
+                                <Run Text="{Binding SerialNumber}" />
+                            </TextBlock>
 
-                            <StackPanel
-                                Orientation="Horizontal"
-                                Spacing="2">
-
-                                <TextBlock
-                                    VerticalAlignment="Center"
-                                    Classes="h4"
-                                    Margin="0">
-                                    <Run Text="{x:Static lang:Resources.txt_serial_number}" />
-                                    <Run Text=":" />
-                                </TextBlock>
-
-                                <TextBlock
-                                    VerticalAlignment="Center"
-                                    Text="{Binding SerialNumber}" />
-                            </StackPanel>
+                            <TextBlock Classes="Caption">
+                                <Run Text="{x:Static lang:Resources.txt_input}" />
+                                <Run Text=":" />
+                                <Run Text="{Binding Path}" />
+                            </TextBlock>
                         </StackPanel>
+                    </Grid>
+
+                    <StackPanel>
+
+                        <Button Classes="Flat"
+                                Content="{x:Static lang:Resources.txt_start}"
+                                Command="{Binding StartCommand}"
+                                IsVisible="{Binding !IsRunning}" />
+
+                        <Button Classes="Flat Accent"
+                                Content="{x:Static lang:Resources.txt_stop}"
+                                Command="{Binding StopCommand}"
+                                IsVisible="{Binding IsRunning}" />
                     </StackPanel>
-
-                    <Button
-                        Classes="Flat"
-                        Content="{x:Static lang:Resources.txt_start}"
-                        Command="{Binding StartCommand}"
-                        IsVisible="{Binding !IsRunning}" />
-
-                    <Button
-                        Classes="Flat Accent"
-                        Content="{x:Static lang:Resources.txt_stop}"
-                        Command="{Binding StopCommand}"
-                        IsVisible="{Binding IsRunning}" />
-
-                    <TextBlock
-                        VerticalAlignment="Center"
-                        Classes="Caption"
-                        Margin="0">
-                        <Run Text="{x:Static lang:Resources.txt_path}" />
-                        <Run Text=":" />
-                        <Run Text="{Binding Path}" />
-                    </TextBlock>
                 </StackPanel>
             </controls:GlassCard>
 

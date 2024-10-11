@@ -540,4 +540,7 @@
     <data name="txt_disconnect" xml:space="preserve">
         <value>Disconnect</value>
     </data>
+    <data name="txt_input" xml:space="preserve">
+        <value>Input</value>
+    </data>
 </root>
