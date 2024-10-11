@@ -12,15 +12,17 @@ public class HermesRemoteContext : DbContext
     private const string DatabaseName = "hermes";
     private const string User = "hermes";
     private const string Password = "AmazingPassword";
+    private string _server = "localhost";
 
-    private string ConnectionString { get; }
+    private string ConnectionString => $"Server={_server};Database={DatabaseName};user={User};password={Password}";
     public DbSet<User> Users { get; set; }
     public DbSet<FeaturePermission> FeaturePermissions { get; set; }
 
     public HermesRemoteContext(ISettingsRepository repository)
     {
-        ConnectionString =
-            $"Server={repository.Settings.DatabaseServer};Database={DatabaseName};user={User};password={Password}";
+#if !DEBUG
+        _server = repository.Settings.DatabaseServer;
+#endif
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

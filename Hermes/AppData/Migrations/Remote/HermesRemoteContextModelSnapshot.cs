@@ -23,7 +23,7 @@ namespace Hermes.AppData.Migrations.Remote
 
             modelBuilder.Entity("Hermes.Models.FeaturePermission", b =>
                 {
-                    b.Property<int>("Feature")
+                    b.Property<int>("Permission")
                         .HasColumnType("int");
 
                     b.Property<int>("Department")
@@ -32,7 +32,7 @@ namespace Hermes.AppData.Migrations.Remote
                     b.Property<int>("Level")
                         .HasColumnType("int");
 
-                    b.HasKey("Feature", "Department", "Level");
+                    b.HasKey("Permission", "Department", "Level");
 
                     b.ToTable("FeaturePermissions", (string)null);
                 });

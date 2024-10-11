@@ -55,6 +55,7 @@ public partial class TokenViewModel : ViewModelBase, ITokenViewModel
             ShowErrorToast(validation);
             return;
         }
+
         this.UserName = user.Name;
 #endif
         this.IsUnlocked = true;
@@ -80,14 +81,14 @@ public partial class TokenViewModel : ViewModelBase, ITokenViewModel
 
     private string? Validate(User user)
     {
+        if (user.Department == DepartmentType.Admin) return null;
+
         if (user.IsNull)
         {
             return Resources.msg_invalid_user_password;
         }
 
-        if (
-            user.Department != DepartmentType.Admin &&
-            !this._departments.Contains(DepartmentType.All) && !this._departments.Contains(user.Department))
+        if (!this._departments.Contains(DepartmentType.All) && !this._departments.Contains(user.Department))
         {
             return Resources.msg_invalid_department;
         }

@@ -103,6 +103,7 @@ public class GkgUutSenderService : UutSenderService
         catch (Exception exception)
         {
             var uut = _unitUnderTestBuilder
+                .Clone()
                 .ResponseFailMessage(exception.Message)
                 .Build();
             Logger.Error(exception.Message);

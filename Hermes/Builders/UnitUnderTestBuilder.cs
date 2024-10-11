@@ -20,7 +20,7 @@ public class UnitUnderTestBuilder
     private string _responseFailMessage = "";
     private string _fileNameWithoutExtension = "fileName";
     private bool _isPass = true;
-    private bool _isScanError = true;
+    private bool _isScanError;
     private string _message = "";
     private DateTime _createdAt = DateTime.Now;
 

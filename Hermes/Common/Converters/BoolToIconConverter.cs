@@ -12,8 +12,8 @@ public static class BoolToIconConverters
     public static readonly BoolToIconConverter Visibility = new(MaterialIconKind.EyeClosed, MaterialIconKind.Eye);
     public static readonly BoolToIconConverter Simple = new(MaterialIconKind.Close, MaterialIconKind.Ticket);
 
-    public static readonly BoolToIconConverter Connection = new(MaterialIconKind.AccessPoint,
-        MaterialIconKind.AccessPointOff);
+    public static readonly BoolToIconConverter Connection = new(MaterialIconKind.PowerPlug,
+        MaterialIconKind.PowerPlugOff);
 }
 
 public class BoolToIconConverter(MaterialIconKind trueIcon, MaterialIconKind falseIcon) : IValueConverter

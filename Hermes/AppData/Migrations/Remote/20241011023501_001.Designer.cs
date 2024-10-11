@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hermes.AppData.Migrations.Remote
 {
     [DbContext(typeof(HermesRemoteContext))]
-    [Migration("20241004200508_001")]
+    [Migration("20241011023501_001")]
     partial class _001
     {
         /// <inheritdoc />
@@ -26,7 +26,7 @@ namespace Hermes.AppData.Migrations.Remote
 
             modelBuilder.Entity("Hermes.Models.FeaturePermission", b =>
                 {
-                    b.Property<int>("Feature")
+                    b.Property<int>("Permission")
                         .HasColumnType("int");
 
                     b.Property<int>("Department")
@@ -35,7 +35,7 @@ namespace Hermes.AppData.Migrations.Remote
                     b.Property<int>("Level")
                         .HasColumnType("int");
 
-                    b.HasKey("Feature", "Department", "Level");
+                    b.HasKey("Permission", "Department", "Level");
 
                     b.ToTable("FeaturePermissions", (string)null);
                 });

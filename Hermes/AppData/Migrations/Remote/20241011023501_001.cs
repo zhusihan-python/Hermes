@@ -18,13 +18,13 @@ namespace Hermes.AppData.Migrations.Remote
                 name: "FeaturePermissions",
                 columns: table => new
                 {
-                    Feature = table.Column<int>(type: "int", nullable: false),
+                    Permission = table.Column<int>(type: "int", nullable: false),
                     Department = table.Column<int>(type: "int", nullable: false),
                     Level = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FeaturePermissions", x => new { x.Feature, x.Department, x.Level });
+                    table.PrimaryKey("PK_FeaturePermissions", x => new { x.Permission, x.Department, x.Level });
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
