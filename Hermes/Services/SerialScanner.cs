@@ -5,6 +5,9 @@ using System.Diagnostics;
 using System.IO.Ports;
 using System.Threading.Tasks;
 using System;
+using System.IO;
+using System.Text;
+using System.Threading;
 
 namespace Hermes.Services;
 
@@ -63,11 +66,12 @@ public class SerialScanner
 
         this.StateChanged?.Invoke(StateType.Processing);
 
-        _serialPort.WriteLine(TriggerCommand + LineTerminator);
+        _serialPort.DiscardInBuffer();
+        await WriteAsync(TriggerCommand + LineTerminator);
         var scannedText = "";
         if (await WaitForData(Timeout))
         {
-            scannedText = _serialPort.ReadExisting();
+            scannedText = await ReadAllAsync();
         }
         else
         {
@@ -77,6 +81,40 @@ public class SerialScanner
         this.Scanned?.Invoke(scannedText);
         this.StateChanged?.Invoke(StateType.Idle);
         return scannedText;
+    }
+
+    private async Task WriteAsync(string command)
+    {
+        if (_serialPort is not { IsOpen: true }) return;
+        using var cts = new CancellationTokenSource(500);
+        await _serialPort.BaseStream.WriteAsync(Encoding.ASCII.GetBytes(command + LineTerminator), cts.Token);
+    }
+
+    private async Task<string> ReadAllAsync()
+    {
+        if (_serialPort is not { IsOpen: true }) return string.Empty;
+
+        try
+        {
+            var expectedBytes = _serialPort.BytesToRead;
+            var buffer = new byte[expectedBytes];
+            var readBytes = 0;
+            using var memoryStream = new MemoryStream();
+            using var cts = new CancellationTokenSource(500);
+
+            do
+            {
+                readBytes += await _serialPort.BaseStream.ReadAsync(
+                    buffer.AsMemory(readBytes, expectedBytes), cts.Token);
+                memoryStream.Write(buffer, 0, readBytes);
+            } while (readBytes < expectedBytes);
+
+            return Encoding.ASCII.GetString(memoryStream.ToArray());
+        }
+        catch (Exception e)
+        {
+            return string.Empty;
+        }
     }
 
     private void Proxy(object _, SerialDataReceivedEventArgs __)

@@ -1,3 +1,4 @@
+using System;
 using Hermes.Common.Extensions;
 using Hermes.Types;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -23,6 +24,7 @@ public class SfcResponse
     [NotMapped] public string Details => IsFail ? $"{ResponseType} - {ResponseType.GetDescription()}" : "";
     [NotMapped] public bool IsNull => this == Null;
     [NotMapped] public bool IsTimeout => ResponseType == SfcResponseType.Timeout;
+    public bool IsEndOfFileError => throw new NotImplementedException(); // TODO: Add end of file error
 
     public SfcResponse()
 

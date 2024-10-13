@@ -14,48 +14,52 @@ namespace Hermes.Services;
 
 public partial class GkgUutSenderService : UutSenderService
 {
-    private const int Timeout = 2000;
+    private const int TimeoutBetweenTriggers = 2000;
     private const int MinDelayBetweenCycles = 3000;
 
     private SerialPort? _serialPort;
     private readonly SerialScanner _serialScanner;
-    private string _serialNumberRead = "";
-    private static int _triggerCount;
+    private readonly Session _session;
     private readonly Stopwatch _stopwatch;
     private readonly Stopwatch _stopwatchBetweenCycles;
+    private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
+    private static int _triggerCount;
 
     public override string Path => SettingsRepository.Settings.GkgTunnelComPort;
 
     public GkgUutSenderService(
-        Session session,
         ILogger logger,
-        ISfcService sfcService,
-        FileService fileService,
         ISettingsRepository settingsRepository,
-        FolderWatcherService folderWatcherService,
-        UnitUnderTestBuilder unitUnderTestBuilder,
-        UnitUnderTestRepository unitUnderTestRepository,
+        ISfcService sfcService,
+        SerialScanner serialScanner,
+        Session session,
         SfcResponseBuilder sfcResponseBuilder,
-        SerialScanner serialScanner) : base(session, logger, sfcService, fileService, settingsRepository,
-        folderWatcherService, unitUnderTestBuilder, unitUnderTestRepository, sfcResponseBuilder)
+        UnitUnderTestBuilder unitUnderTestBuilder)
+        : base(logger, sfcService, settingsRepository, sfcResponseBuilder)
     {
-        _serialScanner = serialScanner;
+        this._session = session;
+        this._serialScanner = serialScanner;
+        this._unitUnderTestBuilder = unitUnderTestBuilder;
         this._stopwatch = new Stopwatch();
         this._stopwatchBetweenCycles = new Stopwatch();
         this._stopwatchBetweenCycles.Restart();
     }
 
-    [CatchExceptionAndShowErrorToast]
     public override void Start()
     {
         try
         {
             if (IsRunning) return;
-            _serialPort = new SerialPort(SettingsRepository.Settings.GkgTunnelComPort, 115200, Parity.None, 8,
+            this.IsRunning = true;
+            this._serialPort = new SerialPort(
+                SettingsRepository.Settings.GkgTunnelComPort,
+                115200,
+                Parity.None,
+                8,
                 StopBits.One);
-            _serialPort.DataReceived += OnDataReceived;
-            _serialPort.Open();
-            _serialScanner.Start();
+            this._serialPort.DataReceived += OnDataReceived;
+            this._serialPort.Open();
+            this._serialScanner.Start();
             this.OnRunStatusChanged(true);
         }
         catch (Exception)
@@ -67,44 +71,38 @@ public partial class GkgUutSenderService : UutSenderService
 
     private async void OnDataReceived(object sender, SerialDataReceivedEventArgs e)
     {
-        if (this._stopwatchBetweenCycles.ElapsedMilliseconds <= MinDelayBetweenCycles && _triggerCount == 0) return;
-        await ProcessTriggerSignal();
+        if (!CanStartNewCycle) return;
+        await this.ProcessTriggerSignal();
     }
+
+    private bool CanStartNewCycle => this._stopwatchBetweenCycles.ElapsedMilliseconds > MinDelayBetweenCycles &&
+                                     this._session.UutProcessorState == UutProcessorState.Idle;
 
     private async Task ProcessTriggerSignal()
     {
         try
         {
-            this.Session.UutProcessorState = UutProcessorState.Processing;
-            var instruction = _serialPort?.ReadExisting() ?? string.Empty;
-            if (!instruction.Contains(SerialScanner.TriggerCommand)) return;
+            this._session.UutProcessorState = UutProcessorState.Processing;
+            var command = _serialPort?.ReadExisting() ?? string.Empty;
+            if (!command.Contains(SerialScanner.TriggerCommand)) return;
 
             Interlocked.Increment(ref _triggerCount);
             if (_triggerCount > 1) return;
 
-            UnitUnderTest uut;
-            var serialNumber = (await _serialScanner.Scan()).Replace("ERROR", "");
-            if (string.IsNullOrEmpty(serialNumber))
+            UnitUnderTest unitUnderTest = BuildScanErrorUnitUnderTest();
+            var serialNumber = (await this._serialScanner.Scan())
+                .Replace("ERROR", "")
+                .Trim();
+            if (!string.IsNullOrEmpty(serialNumber))
             {
-                uut = _unitUnderTestBuilder
-                    .Clone()
-                    .ScanError(true)
-                    .Build();
-            }
-            else
-            {
-                uut = _unitUnderTestBuilder
-                    .Clone()
-                    .FileNameWithoutExtension($"{serialNumber}_{DateTime.Now:yyMMddHHmmss}")
-                    .SerialNumber(serialNumber)
-                    .Build();
-                this.OnUnitUnderTestCreated(uut);
-                await this.SendUnitUnderTest(uut);
+                unitUnderTest = this.BuildUnitUnderTest(serialNumber);
+                this.OnUnitUnderTestCreated(unitUnderTest);
+                await this.SendUnitUnderTest(unitUnderTest);
             }
 
-            this.OnSfcResponse(uut);
+            this.OnSfcResponse(unitUnderTest);
 
-            if (uut.SfcResponse is { IsFail: false })
+            if (unitUnderTest.SfcResponse is { IsFail: false })
             {
                 await this.WaitForSecondTrigger();
                 _serialPort?.Write($"{serialNumber}{SerialScanner.LineTerminator}");
@@ -112,7 +110,8 @@ public partial class GkgUutSenderService : UutSenderService
         }
         catch (Exception exception)
         {
-            var uut = _unitUnderTestBuilder
+            // TODO: Show stop screen when a failure occurs or retry
+            var uut = this._unitUnderTestBuilder
                 .Clone()
                 .ResponseFailMessage(exception.Message)
                 .Build();
@@ -121,14 +120,31 @@ public partial class GkgUutSenderService : UutSenderService
         }
 
         Interlocked.Exchange(ref _triggerCount, 0);
-        this.Session.UutProcessorState = UutProcessorState.Idle;
+        this._session.UutProcessorState = UutProcessorState.Idle;
         this._stopwatchBetweenCycles.Restart();
+    }
+
+    private UnitUnderTest BuildUnitUnderTest(string serialNumber)
+    {
+        return this._unitUnderTestBuilder
+            .Clone()
+            .FileNameWithoutExtension($"{serialNumber}_{DateTime.Now:yyMMddHHmmss}")
+            .SerialNumber(serialNumber)
+            .Build();
+    }
+
+    private UnitUnderTest BuildScanErrorUnitUnderTest()
+    {
+        return this._unitUnderTestBuilder
+            .Clone()
+            .ScanError(true)
+            .Build();
     }
 
     private async Task WaitForSecondTrigger()
     {
         this._stopwatch.Restart();
-        while (_triggerCount < 2 && this._stopwatch.ElapsedMilliseconds <= Timeout)
+        while (_triggerCount < 2 && this._stopwatch.ElapsedMilliseconds <= TimeoutBetweenTriggers)
         {
             await Task.Delay(this.SettingsRepository.Settings.WaitDelayMilliseconds);
         }
@@ -136,14 +152,13 @@ public partial class GkgUutSenderService : UutSenderService
         this._stopwatch.Stop();
     }
 
-    [CatchExceptionAndShowErrorToast]
     public override void Stop()
     {
         if (!IsRunning) return;
+        this.IsRunning = false;
         this._serialPort?.Close();
-        _serialPort?.Dispose();
-        this.CancellationTokenSource?.Cancel();
-        _serialScanner.Stop();
+        this._serialPort?.Dispose();
+        this._serialScanner.Stop();
         this.OnRunStatusChanged(false);
     }
 }

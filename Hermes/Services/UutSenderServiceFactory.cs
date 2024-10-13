@@ -4,14 +4,14 @@ using Hermes.Types;
 namespace Hermes.Services;
 
 public class UutSenderServiceFactory(
-    UutSenderService uutSenderService,
+    TriUutSenderService triUutSenderService,
     GkgUutSenderService gkgUutSenderService,
     ISettingsRepository settingsRepository)
 {
-    public UutSenderService Build()
+    public IUutSenderService Build()
     {
         return settingsRepository.Settings.Machine is MachineType.ScreenPrinter
             ? gkgUutSenderService
-            : uutSenderService;
+            : triUutSenderService;
     }
 }

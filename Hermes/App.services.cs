@@ -99,7 +99,7 @@ public partial class App
         services.AddTransient<ISfcService, SharedFolderSfcService>();
         services.AddTransient<SfcSimulatorService>();
         services.AddTransient<StopService>();
-        services.AddTransient<UutSenderService>();
+        services.AddTransient<TriUutSenderService>();
         services.AddTransient<GkgUutSenderService>();
         services.AddTransient<UutSenderServiceFactory>();
         services.AddTransient<WindowService>();

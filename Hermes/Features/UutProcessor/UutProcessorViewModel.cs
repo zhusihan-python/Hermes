@@ -25,7 +25,7 @@ public partial class UutProcessorViewModel : PageBase
     private readonly Session _session;
     private readonly StopService _stopService;
     private readonly UutSenderServiceFactory _uutSenderServiceFactory;
-    private UutSenderService? _uutSenderService;
+    private IUutSenderService? _uutSenderService;
     private readonly ISettingsRepository _settingsRepository;
     public ScannerViewModel ScannerViewModel { get; }
 
@@ -95,7 +95,7 @@ public partial class UutProcessorViewModel : PageBase
         }
     }
 
-    private UutSenderService BuildUutSenderService()
+    private IUutSenderService BuildUutSenderService()
     {
         var uutSenderService = this._uutSenderServiceFactory.Build();
         uutSenderService.UnitUnderTestCreated += OnUnitUnderTestCreated;
