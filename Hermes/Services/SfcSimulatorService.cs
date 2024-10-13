@@ -1,14 +1,12 @@
-using System;
-using System.Collections.Concurrent;
-using System.Threading;
-using System.Threading.Tasks;
 using Hermes.Builders;
-using Hermes.Common;
 using Hermes.Common.Extensions;
 using Hermes.Common.Parsers;
+using Hermes.Common;
 using Hermes.Models;
 using Hermes.Repositories;
 using Hermes.Types;
+using System.Threading.Tasks;
+using System;
 
 namespace Hermes.Services;
 
@@ -65,7 +63,6 @@ public class SfcSimulatorService
     {
         await this.Process(fullPath);
     }
-
 
     private async Task Process(string fullPath)
     {

@@ -13,6 +13,8 @@ using SukiUI.Controls;
 using System.Threading.Tasks;
 using System.Threading;
 using System;
+using Avalonia.Controls.Notifications;
+using Hermes.Language;
 using SukiUI.Toasts;
 
 namespace Hermes.Services;
@@ -147,7 +149,12 @@ public class WindowService : ObservableRecipient
         Messenger.Send(new UnblockMessage());
     }
 
-    public void ShowToast(object recipient, ShowToastMessage message)
+    public void ShowErrorToast(string message)
+    {
+        ShowToast(null, new ShowToastMessage(Resources.txt_error, message, NotificationType.Error));
+    }
+
+    public void ShowToast(object? recipient, ShowToastMessage message)
     {
         Dispatcher.UIThread.Invoke(() =>
         {

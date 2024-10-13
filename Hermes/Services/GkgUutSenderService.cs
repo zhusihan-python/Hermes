@@ -1,17 +1,18 @@
 using Hermes.Builders;
+using Hermes.Common.Aspects;
 using Hermes.Common;
 using Hermes.Models;
 using Hermes.Repositories;
+using Hermes.Types;
+using System.Diagnostics;
 using System.IO.Ports;
 using System.Threading.Tasks;
 using System.Threading;
 using System;
-using System.Diagnostics;
-using Hermes.Types;
 
 namespace Hermes.Services;
 
-public class GkgUutSenderService : UutSenderService
+public partial class GkgUutSenderService : UutSenderService
 {
     private const int Timeout = 2000;
     private const int MinDelayBetweenCycles = 3000;
@@ -19,7 +20,7 @@ public class GkgUutSenderService : UutSenderService
     private SerialPort? _serialPort;
     private readonly SerialScanner _serialScanner;
     private string _serialNumberRead = "";
-    private static int _triggerCount = 0;
+    private static int _triggerCount;
     private readonly Stopwatch _stopwatch;
     private readonly Stopwatch _stopwatchBetweenCycles;
 
@@ -44,15 +45,24 @@ public class GkgUutSenderService : UutSenderService
         this._stopwatchBetweenCycles.Restart();
     }
 
+    [CatchExceptionAndShowErrorToast]
     public override void Start()
     {
-        if (IsRunning) return;
-        _serialPort = new SerialPort(SettingsRepository.Settings.GkgTunnelComPort, 115200, Parity.None, 8,
-            StopBits.One);
-        _serialPort.DataReceived += OnDataReceived;
-        _serialPort.Open();
-        _serialScanner.Start();
-        this.OnRunStatusChanged(true);
+        try
+        {
+            if (IsRunning) return;
+            _serialPort = new SerialPort(SettingsRepository.Settings.GkgTunnelComPort, 115200, Parity.None, 8,
+                StopBits.One);
+            _serialPort.DataReceived += OnDataReceived;
+            _serialPort.Open();
+            _serialScanner.Start();
+            this.OnRunStatusChanged(true);
+        }
+        catch (Exception)
+        {
+            this.Stop();
+            throw;
+        }
     }
 
     private async void OnDataReceived(object sender, SerialDataReceivedEventArgs e)
@@ -126,6 +136,7 @@ public class GkgUutSenderService : UutSenderService
         this._stopwatch.Stop();
     }
 
+    [CatchExceptionAndShowErrorToast]
     public override void Stop()
     {
         if (!IsRunning) return;

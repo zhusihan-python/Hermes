@@ -1,11 +1,10 @@
-using Hermes.Common;
+using Hermes.Common.Aspects;
 using Hermes.Repositories;
 using Hermes.Types;
+using System.Diagnostics;
 using System.IO.Ports;
 using System.Threading.Tasks;
 using System;
-using System.Diagnostics;
-using System.Threading;
 
 namespace Hermes.Services;
 
@@ -15,25 +14,23 @@ public class SerialScanner
     public const string LineTerminator = "\r";
     private const int Timeout = 5000;
 
-    private readonly object _serialIncoming = new();
-    private bool _isWaitingForData;
-    private readonly Stopwatch _stopwatch;
-    private SerialPort? _serialPort;
-    private readonly ISettingsRepository _settingsRepository;
-    private readonly ILogger _logger;
     public event Action<StateType>? StateChanged;
     public event Action<string>? Scanned;
 
-    public SerialScanner(ISettingsRepository settingsRepository,
-        ILogger logger)
+    private SerialPort? _serialPort;
+    private bool _isWaitingForData;
+    private readonly ISettingsRepository _settingsRepository;
+    private readonly Stopwatch _stopwatch;
+
+    public SerialScanner(ISettingsRepository settingsRepository)
     {
         this._settingsRepository = settingsRepository;
-        this._logger = logger;
         this._stopwatch = new Stopwatch();
     }
 
     public string PortName => _settingsRepository.Settings.ScannerComPort;
 
+    [LogException]
     public void Start()
     {
         try
@@ -46,26 +43,20 @@ public class SerialScanner
         }
         catch (Exception e)
         {
-            _logger.Error(e.Message);
             this.Stop();
             throw;
         }
     }
 
+    [LogException]
     public void Stop()
     {
-        try
-        {
-            this._serialPort?.Close();
-            this._serialPort?.Dispose();
-            this.StateChanged?.Invoke(StateType.Stopped);
-        }
-        catch (Exception e)
-        {
-            _logger.Error(e.Message);
-        }
+        this._serialPort?.Close();
+        this._serialPort?.Dispose();
+        this.StateChanged?.Invoke(StateType.Stopped);
     }
 
+    [LogException]
     public async Task<string> Scan()
     {
         if (_serialPort is not { IsOpen: true }) return "";

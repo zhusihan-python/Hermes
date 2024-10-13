@@ -14,6 +14,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
 using System;
+using Hermes.Common.Aspects;
 
 namespace Hermes.Features.Bender;
 
@@ -39,22 +40,18 @@ public partial class PackageTrackingViewModel : ViewModelBase
     [NotifyCanExecuteChangedFor(nameof(RemovePackageFromLoadedCommand))]
     private Package? _selectedPackage;
 
-    [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(FindByPkgidCommand))]
-    private string _pkgid = "";
+    [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(FindByPkgIdCommand))]
+    private string _pkgId = "";
 
     private readonly ISfcRepository _sfcRepository;
-
     private readonly ISettingsRepository _settingsRepository;
     private readonly Timer _timer;
     private readonly Timer _timerTick;
-    private readonly ILogger _logger;
 
-    public PackageTrackingViewModel(ISfcRepository sfcRepository, ISettingsRepository settingsRepository,
-        ILogger logger)
+    public PackageTrackingViewModel(ISfcRepository sfcRepository, ISettingsRepository settingsRepository)
     {
         this._sfcRepository = sfcRepository;
         this._settingsRepository = settingsRepository;
-        this._logger = logger;
         this._timer = new Timer(RefreshInterval.TotalMilliseconds);
         this._timer.Elapsed += TimerOnElapsed;
         this._timerTick = new Timer(TickInterval.TotalMilliseconds);
@@ -78,14 +75,15 @@ public partial class PackageTrackingViewModel : ViewModelBase
         }
     }
 
-    [RelayCommand(CanExecute = nameof(CanExecuteFindByPkgid))]
-    private async Task FindByPkgid()
+    [RelayCommand(CanExecute = nameof(CanExecuteFindByPkgId))]
+    [CatchExceptionAndShowErrorToast]
+    private async Task FindByPkgId()
     {
         IsDataLoading = true;
         this.StopTimers();
         try
         {
-            var normalizedPkgId = Package.NormalizePkgId(this.Pkgid);
+            var normalizedPkgId = Package.NormalizePkgId(this.PkgId);
             var packages = await this._sfcRepository.FindAllPackagesTrackingByPkgid(normalizedPkgId);
             this.Packages.Clear();
             this.Packages.AddRange(packages.ToList());
@@ -93,11 +91,6 @@ public partial class PackageTrackingViewModel : ViewModelBase
             {
                 Messenger.Send(new ShowToastMessage("Not found", "Package not found", NotificationType.Warning));
             }
-        }
-        catch (Exception e)
-        {
-            Messenger.Send(new ShowToastMessage("Error", "Error finding package", NotificationType.Error));
-            _logger.Error(e.Message);
         }
         finally
         {
@@ -120,7 +113,7 @@ public partial class PackageTrackingViewModel : ViewModelBase
         this.ElapsedRefreshPercentage = 0;
     }
 
-    private bool CanExecuteFindByPkgid => !string.IsNullOrEmpty(this.Pkgid);
+    private bool CanExecuteFindByPkgId => !string.IsNullOrEmpty(this.PkgId);
 
     [RelayCommand]
     public async Task DataReload()
@@ -131,13 +124,12 @@ public partial class PackageTrackingViewModel : ViewModelBase
     }
 
     [RelayCommand]
+    [CatchExceptionAndShowErrorToast]
     private async Task FindByDate()
     {
         if (this.ToDate - this.FromDate > TimeSpan.FromDays(MaxDays))
         {
-            Messenger.Send(new ShowToastMessage("Error", $"Date range is too big, max is {MaxDays} days",
-                NotificationType.Error));
-            return;
+            throw new Exception($"Date range is too big, max is {MaxDays} days");
         }
 
         IsDataLoading = true;
@@ -152,12 +144,6 @@ public partial class PackageTrackingViewModel : ViewModelBase
             this.Packages.AddRange(packages.ToList());
             this.LastDataLoadedAt = DateTime.Now;
         }
-        catch (Exception e)
-        {
-            Messenger.Send(new ShowToastMessage("Error", $"Error loading packages: {e.Message}",
-                NotificationType.Error));
-            _logger.Error(e.Message);
-        }
         finally
         {
             this.IsDataLoading = false;
@@ -166,6 +152,7 @@ public partial class PackageTrackingViewModel : ViewModelBase
     }
 
     [RelayCommand]
+    [CatchExceptionAndShowErrorToast]
     private async Task Load(Package package)
     {
         IsDataLoading = true;
@@ -176,11 +163,6 @@ public partial class PackageTrackingViewModel : ViewModelBase
             {
                 package.LoadedAt = DateTime.Now;
             }
-        }
-        catch (Exception e)
-        {
-            Messenger.Send(new ShowToastMessage("Error", "Error loading package", NotificationType.Error));
-            _logger.Error(e.Message);
         }
         finally
         {
@@ -196,38 +178,24 @@ public partial class PackageTrackingViewModel : ViewModelBase
     }
 
     [RelayCommand(CanExecute = nameof(CanRemovePackageFromLoaded))]
+    [CatchExceptionAndShowErrorToast]
     private void RemovePackageFromLoaded()
     {
-        try
-        {
-            if (SelectedPackage == null) return;
-            this._sfcRepository.ResetPackageTrackingLoadedAt(SelectedPackage.Id);
-            SelectedPackage.LoadedAt = null;
-            Messenger.Send(new ShowToastMessage("Success", "Package removed from loaded", NotificationType.Success));
-        }
-        catch (Exception e)
-        {
-            Messenger.Send(new ShowToastMessage("Error", "Error removing package from loaded", NotificationType.Error));
-            _logger.Error(e.Message);
-        }
+        if (SelectedPackage == null) return;
+        this._sfcRepository.ResetPackageTrackingLoadedAt(SelectedPackage.Id);
+        SelectedPackage.LoadedAt = null;
+        Messenger.Send(new ShowToastMessage("Success", "Package removed from loaded", NotificationType.Success));
     }
 
     private bool CanRemovePackageFromLoaded => SelectedPackage is { IsLoaded: true };
 
     [RelayCommand]
+    [CatchExceptionAndShowErrorToast]
     private async Task DeletePackageTracking()
     {
-        try
-        {
-            if (SelectedPackage == null) return;
-            await this._sfcRepository.DeletePackageTracking(SelectedPackage.Id);
-            await this.DataReload();
-            Messenger.Send(new ShowToastMessage("Success", "Package removed", NotificationType.Success));
-        }
-        catch (Exception e)
-        {
-            Messenger.Send(new ShowToastMessage("Error", "Error removing package", NotificationType.Error));
-            _logger.Error(e.Message);
-        }
+        if (SelectedPackage == null) return;
+        await this._sfcRepository.DeletePackageTracking(SelectedPackage.Id);
+        await this.DataReload();
+        Messenger.Send(new ShowToastMessage("Success", "Package removed", NotificationType.Success));
     }
 }

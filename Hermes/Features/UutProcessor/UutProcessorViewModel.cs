@@ -12,6 +12,7 @@ using Material.Icons;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
+using Hermes.Common.Aspects;
 
 namespace Hermes.Features.UutProcessor;
 
@@ -74,6 +75,7 @@ public partial class UutProcessorViewModel : PageBase
     }
 
     [RelayCommand]
+    [CatchExceptionAndShowErrorToast]
     private void Start()
     {
         try
@@ -86,13 +88,10 @@ public partial class UutProcessorViewModel : PageBase
             this.IsRunning = true;
             Messenger.Send(new ShowToastMessage("Info", "UUT Processor started"));
         }
-        catch (Exception e)
+        catch (Exception)
         {
-            Task.Run(async () =>
-            {
-                await Task.Delay(2000);
-                Messenger.Send(new ShowToastMessage("Error in UUT Processor ", e.Message));
-            });
+            this.Stop();
+            throw;
         }
     }
 
@@ -106,7 +105,8 @@ public partial class UutProcessorViewModel : PageBase
     }
 
     [RelayCommand]
-    public void Stop()
+    [CatchExceptionAndShowErrorToast]
+    private void Stop()
     {
         if (!this.IsRunning) return;
         this.IsRunning = false;

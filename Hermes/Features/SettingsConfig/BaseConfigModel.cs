@@ -63,7 +63,7 @@ public abstract class BaseConfigModel<TConfigModel> : ObservableObject, IConfigM
         this.Load();
     }
 
-    public void Load()
+    private void Load()
     {
         try
         {

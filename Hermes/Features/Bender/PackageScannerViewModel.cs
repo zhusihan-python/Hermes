@@ -14,6 +14,7 @@ using Hermes.Repositories;
 using SukiUI.Dialogs;
 using System.Threading.Tasks;
 using System;
+using Hermes.Common.Aspects;
 
 namespace Hermes.Features.Bender;
 
@@ -37,24 +38,20 @@ public partial class PackageScannerViewModel : ViewModelBase
     private readonly ISukiDialogManager _dialogManager;
     private readonly ISfcRepository _sfcRepository;
     private readonly ISettingsRepository _settingsRepository;
-    private readonly ILogger _logger;
 
     public PackageScannerViewModel(
         PackageParser packageParser,
         QrGenerator qrGenerator,
         ISukiDialogManager dialogManager,
         ISfcRepository sfcRepository,
-        ISettingsRepository settingsRepository,
-        ILogger logger)
+        ISettingsRepository settingsRepository)
     {
         this._packageParser = packageParser;
         this._qrGenerator = qrGenerator;
         this._dialogManager = dialogManager;
         this._sfcRepository = sfcRepository;
         this._settingsRepository = settingsRepository;
-        this._logger = logger;
     }
-
 
     [RelayCommand]
     private async Task ParsePackage()
@@ -82,31 +79,24 @@ public partial class PackageScannerViewModel : ViewModelBase
         this.Instructions = Resources.msg_scan_2d_package;
     }
 
+    [CatchExceptionAndShowErrorToast]
     private async Task AddPackageToSfc()
     {
-        try
+        var package = await _sfcRepository.FindPackageTracking(this.Package.NormalizedId);
+        if (package.IsNull)
         {
-            var package = await _sfcRepository.FindPackageTracking(this.Package.NormalizedId);
-            if (package.IsNull)
-            {
-                Package.Line = _settingsRepository.Settings.Line.ToUpperString();
-                await _sfcRepository.AddPackageTrack(Package);
-            }
-            else
-            {
-                await _sfcRepository.UpdatePackageTrackingLine(
-                    package.NormalizedId,
-                    _settingsRepository.Settings.Line.ToUpperString());
-            }
+            Package.Line = _settingsRepository.Settings.Line.ToUpperString();
+            await _sfcRepository.AddPackageTrack(Package);
+        }
+        else
+        {
+            await _sfcRepository.UpdatePackageTrackingLine(
+                package.NormalizedId,
+                _settingsRepository.Settings.Line.ToUpperString());
+        }
 
-            Messenger.Send(new ShowToastMessage("Success", "Package added to Hermes", NotificationType.Success));
-            PackageScanned?.Invoke(Package);
-        }
-        catch (Exception e)
-        {
-            Messenger.Send(new ShowToastMessage("Error", e.Message, NotificationType.Error));
-            _logger.Error(e.Message);
-        }
+        Messenger.Send(new ShowToastMessage("Success", "Package added to Hermes", NotificationType.Success));
+        PackageScanned?.Invoke(Package);
     }
 
     [RelayCommand]

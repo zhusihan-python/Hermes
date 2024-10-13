@@ -21,6 +21,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using Hermes.Common.Messages;
 using Hermes.Language;
 using Hermes.Common;
+using Hermes.Common.Aspects;
 using Hermes.Services;
 using SukiUI.Dialogs;
 
@@ -35,7 +36,6 @@ public partial class UserAdminViewModel : PageBase
     [ObservableProperty] private bool _isDataLoading;
     [ObservableProperty] private string _searchEmployeeId = "";
     [ObservableProperty] private User _selectedUser = User.Null;
-    private readonly ILogger _logger;
     private readonly ISukiDialogManager _dialogManager;
     private ManageUserDialogViewModel _manageUserDialogViewModel;
     private readonly FileService _fileService;
@@ -44,8 +44,7 @@ public partial class UserAdminViewModel : PageBase
         Session session,
         ISukiDialogManager dialogManager,
         FileService fileService,
-        UserProxy userProxy,
-        ILogger logger)
+        UserProxy userProxy)
         : base(
             "User Admin",
             MaterialIconKind.Users,
@@ -59,7 +58,6 @@ public partial class UserAdminViewModel : PageBase
         _session.UserChanged += UserChanged;
         this._dialogManager = dialogManager;
         _fileService = fileService;
-        _logger = logger;
     }
 
     private void UserChanged(User user)
@@ -68,6 +66,7 @@ public partial class UserAdminViewModel : PageBase
     }
 
     [RelayCommand]
+    [CatchExceptionAndShowErrorToast]
     private async Task FindUsers()
     {
         try
@@ -87,11 +86,6 @@ public partial class UserAdminViewModel : PageBase
                 Messenger.Send(new ShowToastMessage(Resources.txt_error, Resources.msg_no_users_found,
                     NotificationType.Error));
             }
-        }
-        catch (Exception e)
-        {
-            Messenger.Send(new ShowToastMessage(Resources.txt_error, e.Message, NotificationType.Error));
-            _logger.Error(e, e.Message);
         }
         finally
         {
@@ -124,6 +118,7 @@ public partial class UserAdminViewModel : PageBase
             .TryShow();
     }
 
+    [CatchExceptionAndShowErrorToast]
     private async Task Update(User user)
     {
         try
@@ -138,10 +133,6 @@ public partial class UserAdminViewModel : PageBase
             Messenger.Send(new ShowToastMessage(Resources.txt_success, Resources.msg_user_updated,
                 NotificationType.Success));
             this._manageUserDialogViewModel.CloseDialog();
-        }
-        catch (Exception e)
-        {
-            Messenger.Send(new ShowToastMessage(Resources.txt_error, e.Message, NotificationType.Error));
         }
         finally
         {
@@ -164,6 +155,7 @@ public partial class UserAdminViewModel : PageBase
             .TryShow();
     }
 
+    [CatchExceptionAndShowErrorToast]
     private async Task Add(User user)
     {
         try
@@ -173,10 +165,6 @@ public partial class UserAdminViewModel : PageBase
             Messenger.Send(new ShowToastMessage(Resources.txt_success, Resources.msg_user_added,
                 NotificationType.Success));
             this._manageUserDialogViewModel.CloseDialog();
-        }
-        catch (Exception e)
-        {
-            Messenger.Send(new ShowToastMessage(Resources.txt_error, e.Message, NotificationType.Error));
         }
         finally
         {
@@ -197,21 +185,14 @@ public partial class UserAdminViewModel : PageBase
             .TryShow();
     }
 
+    [CatchExceptionAndShowErrorToast]
     private async Task Remove(User user)
     {
-        try
-        {
-            _userProxy.Delete(user);
-            Messenger.Send(new ShowToastMessage(Resources.txt_success, Resources.msg_user_deleted,
-                NotificationType.Success));
-            await this.FindAllUsers();
-        }
-        catch (Exception e)
-        {
-            Messenger.Send(new ShowToastMessage(Resources.txt_error, e.Message, NotificationType.Error));
-        }
+        _userProxy.Delete(user);
+        Messenger.Send(new ShowToastMessage(Resources.txt_success, Resources.msg_user_deleted,
+            NotificationType.Success));
+        await this.FindAllUsers();
     }
-
 
     private async Task FindAllUsers()
     {
@@ -226,6 +207,7 @@ public partial class UserAdminViewModel : PageBase
     }
 
     [RelayCommand]
+    [CatchExceptionAndShowErrorToast]
     private async Task ExportToCsv()
     {
         var topLevel =

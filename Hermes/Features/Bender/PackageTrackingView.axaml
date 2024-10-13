@@ -83,14 +83,14 @@
                         </TextBlock>
 
                         <TextBox Width="270"
-                                 Text="{Binding Pkgid, Mode=TwoWay}">
+                                 Text="{Binding PkgId, Mode=TwoWay}">
                             <TextBox.KeyBindings>
-                                <KeyBinding Gesture="Enter" Command="{Binding FindByPkgidCommand}" />
+                                <KeyBinding Gesture="Enter" Command="{Binding FindByPkgIdCommand}" />
                             </TextBox.KeyBindings>
                         </TextBox>
 
                         <Button Padding="5" Width="35" Height="35"
-                                Command="{Binding FindByPkgidCommand}">
+                                Command="{Binding FindByPkgIdCommand}">
                             <avalonia:MaterialIcon Kind="Search" />
                         </Button>
 
