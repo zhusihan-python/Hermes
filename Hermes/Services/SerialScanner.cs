@@ -38,7 +38,10 @@ public class SerialScanner
     {
         try
         {
-            this._serialPort = new SerialPort(_settingsRepository.Settings.ScannerComPort, 115200, Parity.None, 8,
+            if (_serialPort is not { IsOpen: true }) return;
+            
+            this._serialPort = new SerialPort(_settingsRepository.Settings.ScannerComPort, 115200, Parity.None,
+                8,
                 StopBits.One);
             this._serialPort.DataReceived += Proxy;
             this._serialPort.Open();
@@ -85,9 +88,17 @@ public class SerialScanner
 
     private async Task WriteAsync(string command)
     {
-        if (_serialPort is not { IsOpen: true }) return;
-        using var cts = new CancellationTokenSource(500);
-        await _serialPort.BaseStream.WriteAsync(Encoding.ASCII.GetBytes(command + LineTerminator), cts.Token);
+        try
+        {
+            if (_serialPort is not { IsOpen: true }) return;
+            using var cts = new CancellationTokenSource(500);
+            await _serialPort.BaseStream.WriteAsync(Encoding.ASCII.GetBytes(command + LineTerminator), cts.Token);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     private async Task<string> ReadAllAsync()

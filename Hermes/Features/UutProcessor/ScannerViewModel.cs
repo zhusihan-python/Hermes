@@ -26,7 +26,7 @@ public partial class ScannerViewModel : ViewModelBase
 
     private void OnSerialScannerScanned(string scannedText)
     {
-        this.ScannedText = scannedText;
+        this.ScannedText = string.IsNullOrEmpty(scannedText) ? "ERROR_SCANNING" : scannedText;
     }
 
     private void OnSerialScannerStateChanged(StateType state)

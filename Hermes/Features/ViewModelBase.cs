@@ -10,7 +10,6 @@ public abstract class ViewModelBase : ObservableRecipient
 {
     protected ViewModelBase()
     {
-        this.IsActive = true;
     }
 
     protected void ShowErrorToast(string message, string? title = null)

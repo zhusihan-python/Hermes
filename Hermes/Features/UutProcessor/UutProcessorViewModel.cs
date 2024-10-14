@@ -6,7 +6,6 @@ using Hermes.Common.Extensions;
 using Hermes.Common.Messages;
 using Hermes.Language;
 using Hermes.Models;
-using Hermes.Repositories;
 using Hermes.Services;
 using Hermes.Types;
 using Material.Icons;
@@ -26,14 +25,12 @@ public partial class UutProcessorViewModel : PageBase
     private readonly StopService _stopService;
     private readonly UutSenderServiceFactory _uutSenderServiceFactory;
     private IUutSenderService? _uutSenderService;
-    private readonly ISettingsRepository _settingsRepository;
     public ScannerViewModel ScannerViewModel { get; }
 
     public UutProcessorViewModel(
         Session session,
         StopService stopService,
         UutSenderServiceFactory uutSenderServiceFactory,
-        ISettingsRepository settingsRepository,
         ScannerViewModel scannerViewModel)
         : base(
             Resources.txt_uut_processor,
@@ -44,7 +41,6 @@ public partial class UutProcessorViewModel : PageBase
         this._session = session;
         this._stopService = stopService;
         this._uutSenderServiceFactory = uutSenderServiceFactory;
-        this._settingsRepository = settingsRepository;
         this.ScannerViewModel = scannerViewModel;
         this.IsActive = true;
         this.OnUutProcessorStateChanged(UutProcessorState.Stopped);
