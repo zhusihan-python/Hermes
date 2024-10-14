@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Hermes.Cipher.Types;
 using Hermes.Language;
@@ -41,21 +42,29 @@ public partial class LoginViewModel : PageBase
     [RelayCommand]
     private async Task Login()
     {
-        IsLoggingIn = true;
-        var user = await _userProxy.FindUser(this.UserName, this.Password);
-        IsLoggedIn = !user.IsNull;
-        _session.UpdateUser(user);
-        if (!IsLoggedIn)
+        await Task.Run(async () =>
         {
-            this.ShowErrorToast(Resources.msg_invalid_user_password);
-        }
-        else
-        {
-            this.UserName = string.Empty;
-            this.Password = string.Empty;
-        }
-
-        IsLoggingIn = false;
+            try
+            {
+                IsLoggingIn = true;
+                var user = await _userProxy.FindUser(this.UserName, this.Password);
+                IsLoggedIn = !user.IsNull;
+                _session.UpdateUser(user);
+                if (!IsLoggedIn)
+                {
+                    this.ShowErrorToast(Resources.msg_invalid_user_password);
+                }
+                else
+                {
+                    this.UserName = string.Empty;
+                    this.Password = string.Empty;
+                }
+            }
+            finally
+            {
+                IsLoggingIn = false;
+            }
+        });
     }
 
     [RelayCommand]

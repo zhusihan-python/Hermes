@@ -14,7 +14,7 @@ public class SfcResponse
     private const RegexOptions RgxOptions = RegexOptions.IgnoreCase | RegexOptions.Multiline;
     private static readonly Regex RegexWrongStation = new(@"^go-.+[\r\n]+", RgxOptions);
     private static readonly Regex RegexIsOk = new(@"^ok[\r\n]+", RgxOptions);
-    private static readonly Regex RegexIsEndOfFileError = new(@"end of file", RgxOptions);
+    private static readonly Regex RegexIsEndOfFileError = new(@"end-of-file", RgxOptions);
     public const string TimeoutText = "Timeout";
     public const string ScanError = "ScanError";
 
