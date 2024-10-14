@@ -80,6 +80,7 @@ public partial class GkgUutSenderService : UutSenderService
 
     private async Task ProcessTriggerSignal()
     {
+        UnitUnderTest unitUnderTest = BuildScanErrorUnitUnderTest();
         try
         {
             this._session.UutProcessorState = UutProcessorState.Processing;
@@ -89,7 +90,6 @@ public partial class GkgUutSenderService : UutSenderService
             Interlocked.Increment(ref _triggerCount);
             if (_triggerCount > 1) return;
 
-            UnitUnderTest unitUnderTest = BuildScanErrorUnitUnderTest();
             var serialNumber = (await this._serialScanner.Scan())
                 .Replace("ERROR", "")
                 .Trim();
@@ -108,14 +108,21 @@ public partial class GkgUutSenderService : UutSenderService
                 _serialPort?.Write($"{serialNumber}{SerialScanner.LineTerminator}");
             }
         }
-        catch (Exception exception)
+        catch (Exception e) when (e is not TimeoutException)
         {
-            var uut = this._unitUnderTestBuilder
+            unitUnderTest = this._unitUnderTestBuilder
                 .Clone()
-                .ResponseFailMessage(exception.Message)
+                .ResponseFailMessage(e.Message)
                 .Build();
-            Logger.Error(exception.Message);
-            this.OnSfcResponse(uut);
+            Logger.Error(e.Message);
+        }
+        catch (Exception e)
+        {
+            Logger.Error(e.Message);
+        }
+        finally
+        {
+            this.OnSfcResponse(unitUnderTest);
         }
 
         Interlocked.Exchange(ref _triggerCount, 0);

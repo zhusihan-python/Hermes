@@ -24,6 +24,11 @@ public static class EnumExtensions
         return "enum_" + value.ToString().ToLower();
     }
 
+    public static string GetTranslatedDescription(this Enum value)
+    {
+        return Resources.ResourceManager.GetString(value.GetDescription()) ?? value.ToString();
+    }
+
     public static string GetDescription(this Enum value)
     {
         var fi = value.GetType().GetField(value.ToString());

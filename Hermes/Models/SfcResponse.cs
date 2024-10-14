@@ -22,7 +22,11 @@ public class SfcResponse
     public virtual bool IsFail => this.ResponseType != SfcResponseType.Ok;
     public SfcResponseType ResponseType { get; init; }
     [MaxLength(3000)] public string Content { get; init; } = "";
-    [NotMapped] public string Details => IsFail ? $"{ResponseType} - {ResponseType.GetDescription()}" : "";
+
+    [NotMapped]
+    public string Details =>
+        IsFail ? $"{ResponseType.ToTranslatedString()} - {ResponseType.GetTranslatedDescription()}" : "";
+
     [NotMapped] public bool IsNull => this == Null;
     [NotMapped] public bool IsTimeout => ResponseType == SfcResponseType.Timeout;
     public bool IsEndOfFileError => RegexIsEndOfFileError.IsMatch(Content);

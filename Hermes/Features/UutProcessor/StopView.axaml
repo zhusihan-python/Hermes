@@ -47,13 +47,16 @@
                     <Grid
                         RowDefinitions="*, Auto">
 
-                        <TextBlock
-                            TextWrapping="Wrap"
-                            VerticalAlignment="Center"
-                            HorizontalAlignment="Center"
-                            Classes="h1"
-                            Foreground="White"
-                            Text="{Binding Stop.Message}" />
+                        <ScrollViewer>
+                            <TextBlock
+                                TextAlignment="Center"
+                                TextWrapping="Wrap"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                Classes="h1"
+                                Foreground="White"
+                                Text="{Binding Stop.Message}" />
+                        </ScrollViewer>
 
                         <StackPanel
                             Grid.Row="1"

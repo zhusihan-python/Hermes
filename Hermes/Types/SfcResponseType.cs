@@ -4,19 +4,19 @@ namespace Hermes.Types;
 
 public enum SfcResponseType
 {
-    // TODO: Translate these
-    [Description("Tarea ejecutada con exito.")]
+    // TODO: Translate these Task successfully executed
+    [Description("msg_success_task")]
     Ok,
 
-    [Description("El servidor de SFC no responde, por favor contacte al departameto de IT.")]
+    [Description("msg_sfc_timeout")]
     Timeout,
 
-    [Description("El flujo de la unidad no corresponde a esta estación.")]
+    [Description("msg_wrong_station")]
     WrongStation,
 
-    [Description("Error de SFC no identificado.")]
+    [Description("msg_sfc_unkown_error")]
     Unknown,
 
-    [Description("Error al escanear el número de serie.")]
+    [Description("msg_scan_error")]
     ScanError
 }

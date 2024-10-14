@@ -575,4 +575,22 @@
     <data name="txt_not_found" xml:space="preserve">
         <value>No encontrado</value>
     </data>
+    <data name="msg_success_task" xml:space="preserve">
+        <value>Tarea ejecutada con exito</value>
+    </data>
+    <data name="msg_sfc_timeout" xml:space="preserve">
+        <value>El servidor de SFC no responde, por favor contacte al departameto de IT</value>
+    </data>
+    <data name="msg_wrong_station" xml:space="preserve">
+        <value>El flujo de la unidad no corresponde a esta estación</value>
+    </data>
+    <data name="msg_sfc_unkown_error" xml:space="preserve">
+        <value>Error de SFC no identificado</value>
+    </data>
+    <data name="msg_scan_error" xml:space="preserve">
+        <value>Error al escanear el número de serie</value>
+    </data>
+    <data name="enum_scanerror" xml:space="preserve">
+        <value>Error de escaneo</value>
+    </data>
 </root>

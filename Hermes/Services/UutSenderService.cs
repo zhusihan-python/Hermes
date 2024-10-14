@@ -31,7 +31,7 @@ public abstract partial class UutSenderService(
 
     public abstract void Stop();
 
-    [Retry(Attempts = 2, Delay = 500)]
+    [Retry(Attempts = 1, Delay = 500)]
     protected async Task SendUnitUnderTest(UnitUnderTest unitUnderTest)
     {
         if (!SettingsRepository.Settings.SendRepairFile && unitUnderTest.IsFail)
@@ -48,7 +48,6 @@ public abstract partial class UutSenderService(
 
         if (unitUnderTest.SfcResponse.IsTimeout || unitUnderTest.SfcResponse.IsEndOfFileError)
         {
-            unitUnderTest.SfcResponse = Models.SfcResponse.Null;
             throw new TimeoutException();
         }
     }

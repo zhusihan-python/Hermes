@@ -38,7 +38,7 @@ public class SerialScanner
     {
         try
         {
-            if (_serialPort is not { IsOpen: true }) return;
+            if (_serialPort is { IsOpen: true }) return;
             
             this._serialPort = new SerialPort(_settingsRepository.Settings.ScannerComPort, 115200, Parity.None,
                 8,

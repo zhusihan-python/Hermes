@@ -1,7 +1,8 @@
-using System.Collections.Generic;
+using Hermes.Cipher.Extensions;
 using Hermes.Types;
-using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace Hermes.Models;
 
@@ -15,10 +16,18 @@ public class Stop
     public List<Defect> Defects { get; set; } = [];
     [NotMapped] public bool IsNull => this == Null;
     [NotMapped] public bool IsMachineStop => this.Type == StopType.Machine;
-    [NotMapped] public string Message => $"Stop {Type}";
     [NotMapped] public string Details { get; set; } = "";
     [NotMapped] public string SerialNumber { get; set; } = "";
     [NotMapped] public bool IsFake { get; init; }
+
+    private string? _message;
+
+    [NotMapped]
+    public string Message
+    {
+        get => _message ?? $"Stop {this.Type.ToTranslatedString()}";
+        set => this._message = value;
+    }
 
     public Stop()
     {

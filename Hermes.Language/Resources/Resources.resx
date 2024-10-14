@@ -582,4 +582,22 @@
     <data name="msg_uut_processor_stopped" xml:space="preserve">
         <value>UUT Processor stopped</value>
     </data>
+    <data name="msg_success_task" xml:space="preserve">
+        <value>Task successfully executed</value>
+    </data>
+    <data name="msg_sfc_timeout" xml:space="preserve">
+        <value>SFC server not responding, please contact IT department</value>
+    </data>
+    <data name="msg_wrong_station" xml:space="preserve">
+        <value>The uut does not correspond to this station</value>
+    </data>
+    <data name="msg_sfc_unkown_error" xml:space="preserve">
+        <value>SFC unknown error</value>
+    </data>
+    <data name="msg_scan_error" xml:space="preserve">
+        <value>Error scanning serial number</value>
+    </data>
+    <data name="enum_scanerror" xml:space="preserve">
+        <value>Scann error</value>
+    </data>
 </root>

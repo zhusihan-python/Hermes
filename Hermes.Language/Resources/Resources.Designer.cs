@@ -699,6 +699,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Scann error.
+        /// </summary>
+        public static string enum_scanerror {
+            get {
+                return ResourceManager.GetString("enum_scanerror", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Scanned.
         /// </summary>
         public static string enum_scanned {
@@ -888,6 +897,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error scanning serial number.
+        /// </summary>
+        public static string msg_scan_error {
+            get {
+                return ResourceManager.GetString("msg_scan_error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Scan the vendor.
         /// </summary>
         public static string msg_scan_vendor {
@@ -897,11 +915,38 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SFC server not responding, please contact IT department.
+        /// </summary>
+        public static string msg_sfc_timeout {
+            get {
+                return ResourceManager.GetString("msg_sfc_timeout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SFC unknown error.
+        /// </summary>
+        public static string msg_sfc_unkown_error {
+            get {
+                return ResourceManager.GetString("msg_sfc_unkown_error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please clean the pcb and feed it back into the screen printer.
         /// </summary>
         public static string msg_spi_repair {
             get {
                 return ResourceManager.GetString("msg_spi_repair", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Task successfully executed.
+        /// </summary>
+        public static string msg_success_task {
+            get {
+                return ResourceManager.GetString("msg_success_task", resourceCulture);
             }
         }
         
@@ -992,6 +1037,15 @@ namespace Hermes.Language {
         public static string msg_work_order_not_found {
             get {
                 return ResourceManager.GetString("msg_work_order_not_found", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The uut does not correspond to this station.
+        /// </summary>
+        public static string msg_wrong_station {
+            get {
+                return ResourceManager.GetString("msg_wrong_station", resourceCulture);
             }
         }
         
