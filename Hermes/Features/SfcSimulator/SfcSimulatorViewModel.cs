@@ -1,20 +1,18 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using Hermes.Builders;
+using Hermes.Common.Aspects;
+using Hermes.Common.Extensions;
 using Hermes.Common.Messages;
+using Hermes.Language;
+using Hermes.Models;
 using Hermes.Services;
 using Hermes.Types;
 using Material.Icons;
 using System.Collections.Generic;
-using System.Linq;
-using System;
 using System.Threading.Tasks;
-using Avalonia;
-using Hermes.Builders;
-using Hermes.Common.Extensions;
-using Hermes.Language;
-using Hermes.Models;
-using Microsoft.EntityFrameworkCore.Sqlite.Migrations.Internal;
+using System;
 
 namespace Hermes.Features.SfcSimulator;
 
@@ -58,19 +56,14 @@ public partial class SfcSimulatorViewModel : PageBase
     }
 
     [RelayCommand]
+    [CatchExceptionAndShowErrorToast]
     private void Start()
     {
-        try
-        {
-            _sfcSimulatorService.Start();
-        }
-        catch (Exception e)
-        {
-            Messenger.Send(new ShowToastMessage("Error in SFC simulator", e.Message));
-        }
+        _sfcSimulatorService.Start();
     }
 
     [RelayCommand]
+    [CatchExceptionAndShowErrorToast]
     private void Stop()
     {
         _sfcSimulatorService.Stop();

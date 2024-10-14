@@ -771,6 +771,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An error occurred while getting the information from the database.
+        /// </summary>
+        public static string msg_error_while_getting_info_from_db {
+            get {
+                return ResourceManager.GetString("msg_error_while_getting_info_from_db", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The user belongs to a different department.
         /// </summary>
         public static string msg_invalid_department {
@@ -789,6 +798,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid user information.
+        /// </summary>
+        public static string msg_invalid_user_info {
+            get {
+                return ResourceManager.GetString("msg_invalid_user_info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid user/password.
         /// </summary>
         public static string msg_invalid_user_password {
@@ -803,6 +821,42 @@ namespace Hermes.Language {
         public static string msg_no_users_found {
             get {
                 return ResourceManager.GetString("msg_no_users_found", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Package added to Hermes.
+        /// </summary>
+        public static string msg_package_added_to_hermes {
+            get {
+                return ResourceManager.GetString("msg_package_added_to_hermes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Package not found.
+        /// </summary>
+        public static string msg_package_not_found {
+            get {
+                return ResourceManager.GetString("msg_package_not_found", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Package removed.
+        /// </summary>
+        public static string msg_package_removed {
+            get {
+                return ResourceManager.GetString("msg_package_removed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Package removed from &quot;loaded&quot;.
+        /// </summary>
+        public static string msg_package_removed_from_loaded {
+            get {
+                return ResourceManager.GetString("msg_package_removed_from_loaded", resourceCulture);
             }
         }
         
@@ -902,6 +956,42 @@ namespace Hermes.Language {
         public static string msg_user_without_permission {
             get {
                 return ResourceManager.GetString("msg_user_without_permission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The users have been exported to a CSV file.
+        /// </summary>
+        public static string msg_users_exported_to_csv {
+            get {
+                return ResourceManager.GetString("msg_users_exported_to_csv", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UUT Processor started.
+        /// </summary>
+        public static string msg_uut_processor_started {
+            get {
+                return ResourceManager.GetString("msg_uut_processor_started", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UUT Processor stopped.
+        /// </summary>
+        public static string msg_uut_processor_stopped {
+            get {
+                return ResourceManager.GetString("msg_uut_processor_stopped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Work order not found.
+        /// </summary>
+        public static string msg_work_order_not_found {
+            get {
+                return ResourceManager.GetString("msg_work_order_not_found", resourceCulture);
             }
         }
         
@@ -1185,6 +1275,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Info.
+        /// </summary>
+        public static string txt_info {
+            get {
+                return ResourceManager.GetString("txt_info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Input.
         /// </summary>
         public static string txt_input {
@@ -1298,6 +1397,15 @@ namespace Hermes.Language {
         public static string txt_no {
             get {
                 return ResourceManager.GetString("txt_no", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not found.
+        /// </summary>
+        public static string txt_not_found {
+            get {
+                return ResourceManager.GetString("txt_not_found", resourceCulture);
             }
         }
         
@@ -1604,6 +1712,15 @@ namespace Hermes.Language {
         public static string txt_visible {
             get {
                 return ResourceManager.GetString("txt_visible", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warning.
+        /// </summary>
+        public static string txt_warning {
+            get {
+                return ResourceManager.GetString("txt_warning", resourceCulture);
             }
         }
         

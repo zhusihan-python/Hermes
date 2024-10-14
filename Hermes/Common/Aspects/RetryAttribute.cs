@@ -50,7 +50,6 @@ public class RetryAttribute : OverrideMethodAspect
             {
                 return await meta.ProceedAsync();
             }
-
             catch (Exception e) when (i < this.Attempts)
             {
                 var delay = this.Delay * Math.Pow(2, i + 1);

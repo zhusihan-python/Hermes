@@ -543,4 +543,43 @@
     <data name="txt_input" xml:space="preserve">
         <value>Input</value>
     </data>
+    <data name="txt_warning" xml:space="preserve">
+        <value>Warning</value>
+    </data>
+    <data name="txt_info" xml:space="preserve">
+        <value>Info</value>
+    </data>
+    <data name="msg_package_added_to_hermes" xml:space="preserve">
+        <value>Package added to Hermes</value>
+    </data>
+    <data name="msg_package_not_found" xml:space="preserve">
+        <value>Package not found</value>
+    </data>
+    <data name="txt_not_found" xml:space="preserve">
+        <value>Not found</value>
+    </data>
+    <data name="msg_package_removed_from_loaded" xml:space="preserve">
+        <value>Package removed from "loaded"</value>
+    </data>
+    <data name="msg_package_removed" xml:space="preserve">
+        <value>Package removed</value>
+    </data>
+    <data name="msg_error_while_getting_info_from_db" xml:space="preserve">
+        <value>An error occurred while getting the information from the database</value>
+    </data>
+    <data name="msg_work_order_not_found" xml:space="preserve">
+        <value>Work order not found</value>
+    </data>
+    <data name="msg_invalid_user_info" xml:space="preserve">
+        <value>Invalid user information</value>
+    </data>
+    <data name="msg_users_exported_to_csv" xml:space="preserve">
+        <value>The users have been exported to a CSV file</value>
+    </data>
+    <data name="msg_uut_processor_started" xml:space="preserve">
+        <value>UUT Processor started</value>
+    </data>
+    <data name="msg_uut_processor_stopped" xml:space="preserve">
+        <value>UUT Processor stopped</value>
+    </data>
 </root>

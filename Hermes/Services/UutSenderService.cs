@@ -10,7 +10,7 @@ using System;
 
 namespace Hermes.Services;
 
-public abstract class UutSenderService(
+public abstract partial class UutSenderService(
     ILogger logger,
     ISfcService sfcService,
     ISettingsRepository settingsRepository,
@@ -46,7 +46,7 @@ public abstract class UutSenderService(
             unitUnderTest.SfcResponse = await sfcService.SendAsync(unitUnderTest);
         }
 
-        if (unitUnderTest.SfcResponse.IsTimeout || unitUnderTest.SfcResponse.IsEndOfFileError) 
+        if (unitUnderTest.SfcResponse.IsTimeout || unitUnderTest.SfcResponse.IsEndOfFileError)
         {
             unitUnderTest.SfcResponse = Models.SfcResponse.Null;
             throw new TimeoutException();

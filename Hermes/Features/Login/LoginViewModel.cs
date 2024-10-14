@@ -1,15 +1,12 @@
-﻿using Avalonia.Controls.Notifications;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
 using Hermes.Cipher.Types;
-using Hermes.Common.Messages;
 using Hermes.Language;
 using Hermes.Models;
 using Hermes.Repositories;
+using Hermes.Types;
 using Material.Icons;
 using System.Threading.Tasks;
-using Hermes.Types;
 
 namespace Hermes.Features.Login;
 
@@ -50,8 +47,7 @@ public partial class LoginViewModel : PageBase
         _session.UpdateUser(user);
         if (!IsLoggedIn)
         {
-            Messenger.Send(new ShowToastMessage(Resources.txt_error, Resources.msg_invalid_user_password,
-                NotificationType.Error));
+            this.ShowErrorToast(Resources.msg_invalid_user_password);
         }
         else
         {

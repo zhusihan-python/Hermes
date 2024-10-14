@@ -1,11 +1,9 @@
-using Avalonia.Controls.Notifications;
 using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
+using Hermes.Common.Aspects;
 using Hermes.Common.Extensions;
-using Hermes.Common.Messages;
 using Hermes.Common.Parsers;
 using Hermes.Common;
 using Hermes.Language;
@@ -14,7 +12,6 @@ using Hermes.Repositories;
 using SukiUI.Dialogs;
 using System.Threading.Tasks;
 using System;
-using Hermes.Common.Aspects;
 
 namespace Hermes.Features.Bender;
 
@@ -95,7 +92,7 @@ public partial class PackageScannerViewModel : ViewModelBase
                 _settingsRepository.Settings.Line.ToUpperString());
         }
 
-        Messenger.Send(new ShowToastMessage("Success", "Package added to Hermes", NotificationType.Success));
+        this.ShowSuccessToast(Resources.msg_package_added_to_hermes);
         PackageScanned?.Invoke(Package);
     }
 

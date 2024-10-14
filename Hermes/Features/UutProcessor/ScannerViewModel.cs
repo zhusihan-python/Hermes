@@ -1,14 +1,10 @@
-using System;
-using System.Threading.Tasks;
-using Avalonia.Controls.Notifications;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
+using Hermes.Common.Aspects;
 using Hermes.Common.Extensions;
-using Hermes.Common.Messages;
-using Hermes.Language;
 using Hermes.Services;
 using Hermes.Types;
+using System.Threading.Tasks;
 
 namespace Hermes.Features.UutProcessor;
 
@@ -44,20 +40,15 @@ public partial class ScannerViewModel : ViewModelBase
     }
 
     [RelayCommand]
+    [CatchExceptionAndShowErrorToast]
     private void Start()
     {
-        try
-        {
-            _serialScanner.Start();
-            this.ComPort = _serialScanner.PortName;
-        }
-        catch (Exception e)
-        {
-            Messenger.Send(new ShowToastMessage("Error", e.Message, NotificationType.Error));
-        }
+        _serialScanner.Start();
+        this.ComPort = _serialScanner.PortName;
     }
 
     [RelayCommand]
+    [CatchExceptionAndShowErrorToast]
     private void Stop()
     {
         _serialScanner.Stop();

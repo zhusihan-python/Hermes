@@ -1,4 +1,8 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using Avalonia.Controls.Notifications;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
+using Hermes.Common.Messages;
+using Hermes.Language;
 
 namespace Hermes.Features;
 
@@ -7,5 +11,25 @@ public abstract class ViewModelBase : ObservableRecipient
     protected ViewModelBase()
     {
         this.IsActive = true;
+    }
+
+    protected void ShowErrorToast(string message, string? title = null)
+    {
+        Messenger.Send(new ShowToastMessage(title ?? Resources.txt_error, message, NotificationType.Error));
+    }
+
+    protected void ShowSuccessToast(string message, string? title = null)
+    {
+        Messenger.Send(new ShowToastMessage(title ?? Resources.txt_success, message, NotificationType.Success));
+    }
+
+    protected void ShowWarningToast(string message, string? title = null)
+    {
+        Messenger.Send(new ShowToastMessage(title ?? Resources.txt_warning, message, NotificationType.Warning));
+    }
+
+    protected void ShowInfoToast(string message, string? title = null)
+    {
+        Messenger.Send(new ShowToastMessage(title ?? Resources.txt_info, message, NotificationType.Information));
     }
 }

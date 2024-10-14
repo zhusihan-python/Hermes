@@ -1,12 +1,10 @@
-using Avalonia.Controls.Notifications;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
 using DynamicData;
+using Hermes.Common.Aspects;
 using Hermes.Common.Extensions;
-using Hermes.Common.Messages;
-using Hermes.Common;
+using Hermes.Language;
 using Hermes.Models;
 using Hermes.Repositories;
 using System.Collections.ObjectModel;
@@ -14,7 +12,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
 using System;
-using Hermes.Common.Aspects;
 
 namespace Hermes.Features.Bender;
 
@@ -89,7 +86,7 @@ public partial class PackageTrackingViewModel : ViewModelBase
             this.Packages.AddRange(packages.ToList());
             if (this.Packages.Count <= 0)
             {
-                Messenger.Send(new ShowToastMessage("Not found", "Package not found", NotificationType.Warning));
+                this.ShowWarningToast(Resources.msg_package_not_found, Resources.txt_not_found);
             }
         }
         finally
@@ -184,7 +181,7 @@ public partial class PackageTrackingViewModel : ViewModelBase
         if (SelectedPackage == null) return;
         this._sfcRepository.ResetPackageTrackingLoadedAt(SelectedPackage.Id);
         SelectedPackage.LoadedAt = null;
-        Messenger.Send(new ShowToastMessage("Success", "Package removed from loaded", NotificationType.Success));
+        this.ShowSuccessToast(Resources.msg_package_removed_from_loaded);
     }
 
     private bool CanRemovePackageFromLoaded => SelectedPackage is { IsLoaded: true };
@@ -196,6 +193,6 @@ public partial class PackageTrackingViewModel : ViewModelBase
         if (SelectedPackage == null) return;
         await this._sfcRepository.DeletePackageTracking(SelectedPackage.Id);
         await this.DataReload();
-        Messenger.Send(new ShowToastMessage("Success", "Package removed", NotificationType.Success));
+        this.ShowSuccessToast(Resources.msg_package_removed);
     }
 }

@@ -1,17 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Avalonia.Controls.Notifications;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
-using Hermes.Cipher.Extensions;
 using Hermes.Cipher.Types;
-using Hermes.Common.Messages;
+using Hermes.Language;
 using Hermes.Models;
 using Hermes.Types;
 using SukiUI.Dialogs;
+using System;
 
 namespace Hermes.Features.UserAdmin;
 
@@ -54,7 +49,7 @@ public partial class ManageUserDialogViewModel : ViewModelBase
     {
         if (!this.User.IsValid)
         {
-            Messenger.Send(new ShowToastMessage("Error", "Invalid user information", NotificationType.Error));
+            this.ShowErrorToast(Resources.msg_invalid_user_info);
             return;
         }
 

@@ -14,6 +14,7 @@ public class SfcResponse
     private const RegexOptions RgxOptions = RegexOptions.IgnoreCase | RegexOptions.Multiline;
     private static readonly Regex RegexWrongStation = new(@"^go-.+[\r\n]+", RgxOptions);
     private static readonly Regex RegexIsOk = new(@"^ok[\r\n]+", RgxOptions);
+    private static readonly Regex RegexIsEndOfFileError = new(@"end of file", RgxOptions);
     public const string TimeoutText = "Timeout";
     public const string ScanError = "ScanError";
 
@@ -24,7 +25,7 @@ public class SfcResponse
     [NotMapped] public string Details => IsFail ? $"{ResponseType} - {ResponseType.GetDescription()}" : "";
     [NotMapped] public bool IsNull => this == Null;
     [NotMapped] public bool IsTimeout => ResponseType == SfcResponseType.Timeout;
-    public bool IsEndOfFileError => throw new NotImplementedException(); // TODO: Add end of file error
+    public bool IsEndOfFileError => RegexIsEndOfFileError.IsMatch(Content);
 
     public SfcResponse()
 

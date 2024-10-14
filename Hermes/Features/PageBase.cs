@@ -1,8 +1,7 @@
-using System.Collections.Generic;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Hermes.Cipher.Types;
 using Hermes.Types;
 using Material.Icons;
+using System.Collections.Generic;
 
 namespace Hermes.Features;
 
@@ -12,7 +11,7 @@ public abstract partial class PageBase(
     PermissionType permissionType,
     int index = 0,
     List<StationType>? stationFilter = null)
-    : ObservableRecipient
+    : ViewModelBase
 {
     [ObservableProperty] private string _displayName = displayName;
     [ObservableProperty] private MaterialIconKind _icon = icon;

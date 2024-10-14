@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using Hermes.Common.Aspects;
 using Hermes.Common.Extensions;
 using Hermes.Common.Messages;
 using Hermes.Language;
@@ -12,7 +13,6 @@ using Material.Icons;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
-using Hermes.Common.Aspects;
 
 namespace Hermes.Features.UutProcessor;
 
@@ -86,7 +86,7 @@ public partial class UutProcessorViewModel : PageBase
             this.Path = this._uutSenderService.Path;
             this._stopService.Start();
             this.IsRunning = true;
-            Messenger.Send(new ShowToastMessage("Info", "UUT Processor started"));
+            this.ShowInfoToast(Resources.msg_uut_processor_started);
         }
         catch (Exception)
         {
@@ -114,7 +114,7 @@ public partial class UutProcessorViewModel : PageBase
         this.Path = this._uutSenderService?.Path ?? "";
         this._uutSenderService?.Stop();
         this._stopService.Stop();
-        Messenger.Send(new ShowToastMessage("Info", "UUT Processor stopped"));
+        this.ShowInfoToast(Resources.msg_uut_processor_stopped);
     }
 
     private void OnUnitUnderTestCreated(object? sender, UnitUnderTest unitUnderTest)

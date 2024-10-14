@@ -3,20 +3,20 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using DynamicData;
+using Hermes.Cipher.Types;
 using Hermes.Common.Messages;
 using Hermes.Features.Login;
 using Hermes.Language;
 using Hermes.Models;
 using Hermes.Repositories;
+using Hermes.Types;
 using SukiUI.Controls;
+using SukiUI.Dialogs;
+using SukiUI.Toasts;
 using SukiUI;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Hermes.Cipher.Types;
-using Hermes.Types;
-using SukiUI.Dialogs;
-using SukiUI.Toasts;
 
 namespace Hermes.Features
 {
@@ -134,12 +134,14 @@ namespace Hermes.Features
         private void ToggleTitleBar()
         {
             TitleBarVisible = !TitleBarVisible;
-            Messenger.Send(new ShowToastMessage(
-                TitleBarVisible ? Resources.c_main_window_title_bar_vissible : Resources.c_main_window_title_bar_hidden,
+            this.ShowInfoToast(
+                TitleBarVisible
+                    ? Resources.c_main_window_title_bar_vissible
+                    : Resources.c_main_window_title_bar_hidden,
                 TitleBarVisible
                     ? Resources.c_main_window_title_bar_visible_msg
                     : Resources.c_main_window_title_bar_hidden_msg
-            ));
+            );
         }
 
         [RelayCommand]

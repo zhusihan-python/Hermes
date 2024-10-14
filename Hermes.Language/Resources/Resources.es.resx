@@ -536,4 +536,43 @@
     <data name="txt_input" xml:space="preserve">
         <value>Entrada</value>
     </data>
+    <data name="txt_warning" xml:space="preserve">
+        <value>Advertencia</value>
+    </data>
+    <data name="txt_info" xml:space="preserve">
+        <value>Información</value>
+    </data>
+    <data name="msg_package_added_to_hermes" xml:space="preserve">
+        <value>Paquete agregado a Hermes</value>
+    </data>
+    <data name="msg_error_while_getting_info_from_db" xml:space="preserve">
+        <value>Ocurrió un error mientras se obtenía la información desde la base de datos</value>
+    </data>
+    <data name="msg_invalid_user_info" xml:space="preserve">
+        <value>Información de usuario inválido</value>
+    </data>
+    <data name="msg_package_not_found" xml:space="preserve">
+        <value>Paquete no encontrado</value>
+    </data>
+    <data name="msg_package_removed" xml:space="preserve">
+        <value>Paquete eliminado</value>
+    </data>
+    <data name="msg_package_removed_from_loaded" xml:space="preserve">
+        <value>Paquete eliminado de "cargados"</value>
+    </data>
+    <data name="msg_users_exported_to_csv" xml:space="preserve">
+        <value>Se han exportado todos los usuarios al archivo CSV</value>
+    </data>
+    <data name="msg_uut_processor_started" xml:space="preserve">
+        <value>Procesador de unidades iniciado</value>
+    </data>
+    <data name="msg_uut_processor_stopped" xml:space="preserve">
+        <value>Procesador de unidades detenido</value>
+    </data>
+    <data name="msg_work_order_not_found" xml:space="preserve">
+        <value>Workorder no encontrada</value>
+    </data>
+    <data name="txt_not_found" xml:space="preserve">
+        <value>No encontrado</value>
+    </data>
 </root>

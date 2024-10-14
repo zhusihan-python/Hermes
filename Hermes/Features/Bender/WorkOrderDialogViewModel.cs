@@ -1,13 +1,11 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Hermes.Language;
 using Hermes.Models;
 using Hermes.Repositories;
 using SukiUI.Dialogs;
 using System.Threading.Tasks;
 using System;
-using Avalonia.Controls.Notifications;
-using CommunityToolkit.Mvvm.Messaging;
-using Hermes.Common.Messages;
 
 namespace Hermes.Features.Bender;
 
@@ -44,8 +42,7 @@ public partial class WorkOrderDialogViewModel : ViewModelBase
         }
         catch (Exception)
         {
-            Messenger.Send(new ShowToastMessage("Error", "An error occurred while getting the work order information",
-                NotificationType.Error));
+            this.ShowErrorToast(Resources.msg_error_while_getting_info_from_db);
         }
         finally
         {

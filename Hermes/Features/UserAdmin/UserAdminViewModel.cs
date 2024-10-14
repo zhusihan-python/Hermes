@@ -1,29 +1,25 @@
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Controls;
+using Avalonia.Platform.Storage;
+using Avalonia.Threading;
+using Avalonia;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DynamicData;
 using Hermes.Cipher.Types;
+using Hermes.Common.Aspects;
+using Hermes.Language;
 using Hermes.Models;
 using Hermes.Repositories;
+using Hermes.Services;
 using Hermes.Types;
 using Material.Icons;
+using SukiUI.Dialogs;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Controls.Notifications;
-using Avalonia.Platform.Storage;
-using Avalonia.Threading;
-using CommunityToolkit.Mvvm.Messaging;
-using Hermes.Common.Messages;
-using Hermes.Language;
-using Hermes.Common;
-using Hermes.Common.Aspects;
-using Hermes.Services;
-using SukiUI.Dialogs;
 
 namespace Hermes.Features.UserAdmin;
 
@@ -83,8 +79,7 @@ public partial class UserAdminViewModel : PageBase
             }
             else
             {
-                Messenger.Send(new ShowToastMessage(Resources.txt_error, Resources.msg_no_users_found,
-                    NotificationType.Error));
+                this.ShowErrorToast(Resources.msg_no_users_found);
             }
         }
         finally
@@ -130,8 +125,7 @@ public partial class UserAdminViewModel : PageBase
                 throw new Exception(Resources.msg_user_not_found);
             }
 
-            Messenger.Send(new ShowToastMessage(Resources.txt_success, Resources.msg_user_updated,
-                NotificationType.Success));
+            this.ShowSuccessToast(Resources.msg_user_updated);
             this._manageUserDialogViewModel.CloseDialog();
         }
         finally
@@ -162,8 +156,7 @@ public partial class UserAdminViewModel : PageBase
         {
             this._manageUserDialogViewModel.IsLoading = true;
             await _userProxy.Add(user);
-            Messenger.Send(new ShowToastMessage(Resources.txt_success, Resources.msg_user_added,
-                NotificationType.Success));
+            this.ShowSuccessToast(Resources.msg_user_added);
             this._manageUserDialogViewModel.CloseDialog();
         }
         finally
@@ -189,8 +182,7 @@ public partial class UserAdminViewModel : PageBase
     private async Task Remove(User user)
     {
         _userProxy.Delete(user);
-        Messenger.Send(new ShowToastMessage(Resources.txt_success, Resources.msg_user_deleted,
-            NotificationType.Success));
+        this.ShowSuccessToast(Resources.msg_user_deleted);
         await this.FindAllUsers();
     }
 
@@ -229,7 +221,6 @@ public partial class UserAdminViewModel : PageBase
             .Select(user => $"{user.EmployeeId},{user.Name},{user.Department},{user.Password}")
             .Aggregate((a, b) => $"{a}\n{b}");
         await _fileService.WriteAllTextAsync(file.Path.AbsolutePath, csv);
-        Messenger.Send(new ShowToastMessage("Exported to CSV", "The users have been exported to a CSV file.",
-            NotificationType.Success));
+        this.ShowSuccessToast(Resources.msg_users_exported_to_csv);
     }
 }

@@ -149,9 +149,9 @@ public class WindowService : ObservableRecipient
         Messenger.Send(new UnblockMessage());
     }
 
-    public void ShowErrorToast(string message)
+    public void ShowErrorToast(string message, string? title = null)
     {
-        ShowToast(null, new ShowToastMessage(Resources.txt_error, message, NotificationType.Error));
+        ShowToast(null, new ShowToastMessage(title ?? Resources.txt_error, message, NotificationType.Error));
     }
 
     public void ShowToast(object? recipient, ShowToastMessage message)

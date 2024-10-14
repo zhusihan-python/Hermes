@@ -1,8 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
 using DynamicData;
-using Hermes.Common.Messages;
+using Hermes.Language;
 using Hermes.Models;
 using Hermes.Repositories;
 using Hermes.Types;
@@ -11,8 +10,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
-using Avalonia.Controls.Notifications;
-using Hermes.Language;
 
 namespace Hermes.Features.PackageId;
 
@@ -79,8 +76,7 @@ public partial class PackageIdViewModel : PageBase
             this.Package = await this._sfcRepository.FindPackage(normalizedPkgId);
             if (this.Package.IsNull)
             {
-                //TODO language
-                Messenger.Send(new ShowToastMessage("Not found", "Package not found", NotificationType.Warning));
+                this.ShowWarningToast(Resources.msg_package_not_found, Resources.txt_not_found);
             }
             else
             {
@@ -92,9 +88,7 @@ public partial class PackageIdViewModel : PageBase
         }
         catch (Exception)
         {
-            //TODO language
-            Messenger.Send(new ShowToastMessage("Error", "An error occurred while getting the package information",
-                NotificationType.Error));
+            this.ShowErrorToast(Resources.msg_error_while_getting_info_from_db);
             this.Package = Package.Null;
         }
         finally
@@ -133,8 +127,7 @@ public partial class PackageIdViewModel : PageBase
             this.WorkOrder = await this._sfcRepository.FindWorkOrder(normalizedWorkOrder);
             if (this.WorkOrder.IsNull)
             {
-                //TODO language
-                Messenger.Send(new ShowToastMessage("Not found", "Work order not found", NotificationType.Warning));
+                this.ShowWarningToast(Resources.msg_work_order_not_found, Resources.txt_not_found);
             }
             else
             {

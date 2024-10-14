@@ -110,7 +110,6 @@ public partial class GkgUutSenderService : UutSenderService
         }
         catch (Exception exception)
         {
-            // TODO: Show stop screen when a failure occurs or retry
             var uut = this._unitUnderTestBuilder
                 .Clone()
                 .ResponseFailMessage(exception.Message)
