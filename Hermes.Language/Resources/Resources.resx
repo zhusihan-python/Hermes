@@ -600,4 +600,10 @@
     <data name="enum_scanerror" xml:space="preserve">
         <value>Scann error</value>
     </data>
+    <data name="c_settings_header_additional_ok_sfc_response" xml:space="preserve">
+        <value>Additional sfc ok response</value>
+    </data>
+    <data name="c_settings_description_additional_ok_sfc_response" xml:space="preserve">
+        <value>Respuesta ok adicional en sfc </value>
+    </data>
 </root>

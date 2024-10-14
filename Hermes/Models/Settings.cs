@@ -31,6 +31,7 @@ public class Settings
     public int MaxSfcRetries { get; set; } = 3;
     public string GkgTunnelComPort { get; set; } = "COM50";
     public string ScannerComPort { get; set; } = "COM40";
+    public string AdditionalOkSfcResponse { get; set; } = "";
 
     #endregion
 }

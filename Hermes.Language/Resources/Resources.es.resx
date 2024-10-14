@@ -593,4 +593,10 @@
     <data name="enum_scanerror" xml:space="preserve">
         <value>Error de escaneo</value>
     </data>
+    <data name="c_settings_description_additional_ok_sfc_response" xml:space="preserve">
+        <value>Cuando la respuesta del SFC copntenga este texto, se evaluará como ok</value>
+    </data>
+    <data name="c_settings_header_additional_ok_sfc_response" xml:space="preserve">
+        <value>When SFC response contains this text, it will be evaluated as ok</value>
+    </data>
 </root>

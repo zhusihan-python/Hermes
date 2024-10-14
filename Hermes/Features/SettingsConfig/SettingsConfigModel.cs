@@ -174,6 +174,14 @@ public partial class SettingsConfigModel(
     private int _maxSfcRetries = 3;
 
     [ObservableProperty]
+    [property: Config(
+        Header = "c_settings_header_additional_ok_sfc_response",
+        Description = "c_settings_description_additional_ok_sfc_response",
+        Category = "c_settings_category_uut_processor",
+        Group = "c_settings_group_common")]
+    private string _additionalOkSfcResponse = "";
+
+    [ObservableProperty]
     [property: BrowserConfig(BrowserMode = BrowserMode.OpenFolder, Filter = "Folder:*.*")]
     [property: Config(
         Header = "c_settings_header_input_path",

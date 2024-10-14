@@ -141,6 +141,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Respuesta ok adicional en sfc .
+        /// </summary>
+        public static string c_settings_description_additional_ok_sfc_response {
+            get {
+                return ResourceManager.GetString("c_settings_description_additional_ok_sfc_response", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Language of interface.
         /// </summary>
         public static string c_settings_description_language {
@@ -209,6 +218,15 @@ namespace Hermes.Language {
         public static string c_settings_group_time {
             get {
                 return ResourceManager.GetString("c_settings_group_time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Additional sfc ok response.
+        /// </summary>
+        public static string c_settings_header_additional_ok_sfc_response {
+            get {
+                return ResourceManager.GetString("c_settings_header_additional_ok_sfc_response", resourceCulture);
             }
         }
         

@@ -1,19 +1,20 @@
 using Hermes.Models;
 using Hermes.Types;
 using System.Threading.Tasks;
+using Hermes.Repositories;
 
 namespace Hermes.Common.Validators;
 
-public class MachineStopValidator : IStopValidator
+public class MachineStopValidator(ISettingsRepository settingsRepository) : IStopValidator
 {
     public Task<Stop> ValidateAsync(UnitUnderTest unitUnderTest)
     {
         var result = Stop.Null;
-        if (unitUnderTest.IsSfcFail)
+        if (unitUnderTest is { IsSfcFail: true, SfcResponse: not null } &&
+            !unitUnderTest.SfcResponse.Content.Contains(settingsRepository.Settings.AdditionalOkSfcResponse))
         {
             result = new Stop(StopType.Machine)
             {
-                Message = unitUnderTest.SfcResponse?.Content ?? "Stop machine",
                 Details = unitUnderTest.SfcResponse?.Details ?? "Error en SFC"
             };
         }

@@ -59,9 +59,10 @@ public class TriUutSenderService : UutSenderService
             this._cancellationTokenSource = new CancellationTokenSource();
             Task.Run(() => this.ProcessFilesAsync(this._cancellationTokenSource.Token));
         }
-        finally
+        catch (Exception)
         {
             this.Stop();
+            throw;
         }
     }
 
