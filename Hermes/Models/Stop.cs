@@ -23,7 +23,7 @@ public class Stop
     private string? _message;
 
     [NotMapped]
-    public string Message
+    public string? Message
     {
         get => _message ?? $"Stop {this.Type.ToTranslatedString()}";
         set => this._message = value;

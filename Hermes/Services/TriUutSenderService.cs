@@ -68,10 +68,10 @@ public class TriUutSenderService : UutSenderService
 
     private async Task ProcessFilesAsync(CancellationToken cancellationToken)
     {
-        try
+        this.OnRunStatusChanged(true);
+        while (!cancellationToken.IsCancellationRequested)
         {
-            this.OnRunStatusChanged(true);
-            while (!cancellationToken.IsCancellationRequested)
+            try
             {
                 if (this._session.IsUutProcessorIdle && this._pendingFiles.TryDequeue(out var fullPath))
                 {
@@ -87,24 +87,16 @@ public class TriUutSenderService : UutSenderService
                     await Task.Delay(this._settingsRepository.Settings.WaitDelayMilliseconds, cancellationToken);
                 }
             }
-        }
-        catch (Exception e)
-        {
-            if (e is not OperationCanceledException)
+            catch (Exception e)
             {
-                this._logger.Error(e.Message);
-#if DEBUG
-                if (!this._cancellationTokenSource?.IsCancellationRequested ?? false)
+                if (e is not OperationCanceledException)
                 {
-                    this.Stop();
+                    this._logger.Error(e.Message);
                 }
-#endif
             }
         }
-        finally
-        {
-            this.OnRunStatusChanged(false);
-        }
+
+        this.OnRunStatusChanged(false);
     }
 
     private async Task<UnitUnderTest> SendFileAsync(string fullPath)

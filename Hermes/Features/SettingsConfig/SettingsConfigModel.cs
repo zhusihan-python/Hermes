@@ -171,7 +171,7 @@ public partial class SettingsConfigModel(
         Description = "c_settings_description_max_retries",
         Category = "c_settings_category_uut_processor",
         Group = "c_settings_group_common")]
-    private int _maxSfcRetries = 3;
+    private int _maxSfcRetries = 1;
 
     [ObservableProperty]
     [property: Config(

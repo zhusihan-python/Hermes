@@ -1,0 +1,169 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
+             xmlns:unitUnderTestLogView="clr-namespace:Hermes.Features.Logs"
+             xmlns:controls="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+             xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:local="clr-namespace:Hermes.Features.Logs"
+             x:Class="Hermes.Features.Logs.UnitUnderTestLogView"
+             Background="{DynamicResource SukiBackground}"
+             x:DataType="unitUnderTestLogView:UnitUnderTestLogViewModel"
+             >
+
+    <UserControl.Styles>
+        <Style Selector="DataGridColumnHeader">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+    </UserControl.Styles>
+
+    <controls:GlassCard Margin="10"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Height="580"
+                        MaxHeight="1200">
+
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+
+			<StackPanel Grid.Row="0"
+                        Orientation="Horizontal"
+                        Spacing="10"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Stretch"
+                        Background="Transparent">
+				<TextBox Width="200"
+                         Watermark="Número de serie:"
+                         Text="{Binding SerialNumberFilter}" />
+
+				<ComboBox Width="150"
+                          ItemsSource="{Binding TestStatusOptions}"
+                          SelectedItem="{Binding SelectedTestStatus}"
+                          PlaceholderText="Test status:" />
+
+				<ComboBox Width="200"
+                          ItemsSource="{Binding SfcResponseOptions}"
+                          SelectedItem="{Binding SelectedSfcResponse}"
+                          PlaceholderText="Sfc response:" />
+
+				<Button Name="ButtonSearch"
+                        Width="37"
+                        Height="37"
+                        Padding="0"
+                        Margin="0"
+                        IsDefault="True"
+                        Command="{Binding SearchCommand}">
+					<avalonia:MaterialIcon
+                        Kind="Search"
+                        Width="18"
+                        Height="18" />
+				</Button>
+
+				<StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+					<Button Width="37"
+                            Height="37"
+                            Padding="0"
+                            Margin="20,0,3,0"
+                            Command="{Binding ExportCommand}">
+						<StackPanel Orientation="Horizontal">
+							<avalonia:MaterialIcon
+                                Kind="DatabaseArrowRight"
+                                Width="18"
+                                Height="18"/>
+						</StackPanel>
+					</Button>
+
+					<Button Width="37"
+                            Height="37"
+                            Padding="0"
+                            Margin="3,0,3,0"
+                            Command="{Binding EditCommand}">
+						<StackPanel Orientation="Horizontal">
+							<avalonia:MaterialIcon
+                                Kind="FileEdit"
+                                Width="18"
+                                Height="18"/>
+						</StackPanel>
+					</Button>
+
+					<Button Width="37"
+                            Height="37"
+                            Padding="0"
+                            Margin="3,0,3,0"
+                            Command="{Binding ReSendCommand}">
+						<StackPanel Orientation="Horizontal">
+							<avalonia:MaterialIcon
+                                Kind="FileRefresh"
+                                Width="18"
+                                Height="18"/>
+						</StackPanel>
+					</Button>
+
+					<Button Width="37"
+                            Height="37"
+                            Padding="0"
+                            Margin="3,0,3,0"
+                            Command="{Binding RefreshCommand}">
+						<StackPanel Orientation="Horizontal">
+							<avalonia:MaterialIcon
+                                Kind="Refresh"
+                                Width="18"
+                                Height="18"/>
+						</StackPanel>
+					</Button>
+				</StackPanel>
+			</StackPanel>
+
+			<ScrollViewer Grid.Row="1"
+                          HorizontalScrollBarVisibility="Auto"
+                          VerticalScrollBarVisibility="Auto">
+
+                <DataGrid AutoGenerateColumns="False"
+                          Name="DataGridLogs"
+                          ItemsSource="{Binding Logs}"
+                          SelectedItem="{Binding SelectedLogEntry, Mode=TwoWay}"
+                          IsReadOnly="True"
+                          HeadersVisibility="Column"
+                          HorizontalAlignment="Stretch"
+                          VerticalAlignment="Stretch">
+					<DataGrid.Columns>
+						<DataGridTemplateColumn
+                            Header="Icon"
+                            Width="70">
+							<DataGridTemplateColumn.CellTemplate>
+								<DataTemplate>
+									<avalonia:MaterialIcon
+                                        Kind="{Binding IconKind}" />
+								</DataTemplate>
+							</DataGridTemplateColumn.CellTemplate>
+						</DataGridTemplateColumn>
+
+						<DataGridTextColumn Header="Log Id"
+                                            Binding="{Binding Id}"
+                                            Width="80" />
+						<DataGridTextColumn Header="Serial Number"
+                                            Binding="{Binding SerialNumber}"
+                                            Width="150" />
+						<DataGridTextColumn Header="Filename"
+                                            Binding="{Binding Filename}"
+                                            Width="200" />
+						<DataGridTextColumn Header="Test status"
+                                            Binding="{Binding TestStatus}"
+                                            Width="120" />
+						<DataGridTextColumn Header="Sfc response"
+                                            Binding="{Binding SfcResponse}"
+                                            Width="120" />
+						<DataGridTextColumn Header="Created At"
+                                            Binding="{Binding CreatedAt}"
+                                            Width="150" />
+					</DataGrid.Columns>
+				</DataGrid>
+			</ScrollViewer>
+		</Grid>
+	</controls:GlassCard>
+</UserControl>

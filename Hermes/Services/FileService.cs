@@ -5,6 +5,7 @@ using Polly;
 using System.IO;
 using System.Threading.Tasks;
 using System;
+using System.Diagnostics;
 
 namespace Hermes.Services;
 
@@ -88,13 +89,19 @@ public class FileService
         return fileName;
     }
 
+    public string GetBackupFullPathByName(string fileName)
+    {
+        return this._settingsRepository.Settings.BackupPath + "\\" + fileName;
+    }
+
     private async Task<string> TryCopy(string source, string dest)
     {
         return await _retryPipeline.ExecuteAsync((_) =>
         {
+            string destFileName = Path.Combine(Path.GetDirectoryName(dest), Path.GetFileName(source));
             CreateDirectoryIfNotExists(dest);
-            File.Copy(source, dest);
-            return ValueTask.FromResult(dest);
+            File.Copy(source, destFileName);
+            return ValueTask.FromResult(destFileName);
         });
     }
 

@@ -28,7 +28,7 @@ public class Settings
     public string SfcPath { get; set; } = @".\Sfc";
     public int SfcTimeoutSeconds { get; set; } = 10;
     public int UutSuccessWindowTimeoutSeconds { get; set; } = 5;
-    public int MaxSfcRetries { get; set; } = 3;
+    public int MaxSfcRetries { get; set; } = 1;
     public string GkgTunnelComPort { get; set; } = "COM50";
     public string ScannerComPort { get; set; } = "COM40";
     public string AdditionalOkSfcResponse { get; set; } = "";

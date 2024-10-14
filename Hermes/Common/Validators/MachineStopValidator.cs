@@ -15,6 +15,7 @@ public class MachineStopValidator(ISettingsRepository settingsRepository) : ISto
         {
             result = new Stop(StopType.Machine)
             {
+                Message = unitUnderTest.SfcResponse?.Content,
                 Details = unitUnderTest.SfcResponse?.Details ?? "Error en SFC"
             };
         }

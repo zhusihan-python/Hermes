@@ -1,5 +1,4 @@
 using Hermes.Builders;
-using Hermes.Common.Aspects;
 using Hermes.Common;
 using Hermes.Language;
 using Hermes.Models;
@@ -31,25 +30,34 @@ public abstract partial class UutSenderService(
 
     public abstract void Stop();
 
-    [Retry(Attempts = 1, Delay = 500)]
     protected async Task SendUnitUnderTest(UnitUnderTest unitUnderTest)
     {
-        if (!SettingsRepository.Settings.SendRepairFile && unitUnderTest.IsFail)
+        var attempt = 0;
+        var shouldRetry = false;
+        do
         {
-            unitUnderTest.SfcResponse = sfcResponseBuilder.SetOkContent().Build();
-            unitUnderTest.Message = SettingsRepository.Settings.Machine is MachineType.Spi
-                ? Resources.msg_spi_repair
-                : "";
-        }
-        else
-        {
-            unitUnderTest.SfcResponse = await sfcService.SendAsync(unitUnderTest);
-        }
+            if (shouldRetry)
+            {
+                var delay = this.SettingsRepository.Settings.WaitDelayMilliseconds * Math.Pow(2, attempt + 1);
+                logger.Warn($" Retry SendUnitUnderTest waiting {delay} ms.");
+                await Task.Delay((int)delay);
+            }
 
-        if (unitUnderTest.SfcResponse.IsTimeout || unitUnderTest.SfcResponse.IsEndOfFileError)
-        {
-            throw new TimeoutException();
-        }
+            if (!SettingsRepository.Settings.SendRepairFile && unitUnderTest.IsFail)
+            {
+                unitUnderTest.SfcResponse = sfcResponseBuilder.SetOkContent().Build();
+                unitUnderTest.Message = SettingsRepository.Settings.Machine is MachineType.Spi
+                    ? Resources.msg_spi_repair
+                    : "";
+            }
+            else
+            {
+                unitUnderTest.SfcResponse = await sfcService.SendAsync(unitUnderTest);
+            }
+
+            shouldRetry = unitUnderTest.SfcResponse.IsTimeout || unitUnderTest.SfcResponse.IsEndOfFileError;
+            attempt++;
+        } while (shouldRetry && attempt <= this.SettingsRepository.Settings.MaxSfcRetries);
     }
 
     protected void OnUnitUnderTestCreated(UnitUnderTest unitUnderTest)
