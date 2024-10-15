@@ -86,6 +86,8 @@
             </controls:GlassCard>
 
             <local:ScannerView DataContext="{Binding ScannerViewModel}" />
+            
+            <local:DummyView DataContext="{Binding DummyViewModel}" />
         </WrapPanel>
     </ScrollViewer>
 </UserControl>

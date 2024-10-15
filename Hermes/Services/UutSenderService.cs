@@ -25,6 +25,7 @@ public abstract partial class UutSenderService(
     protected bool IsRunning;
 
     public abstract string Path { get; }
+    public bool IsWaitingForDummy { get; set; }
 
     public abstract void Start();
 
@@ -45,7 +46,7 @@ public abstract partial class UutSenderService(
 
             if (!SettingsRepository.Settings.SendRepairFile && unitUnderTest.IsFail)
             {
-                unitUnderTest.SfcResponse = sfcResponseBuilder.SetOkContent().Build();
+                unitUnderTest.SfcResponse = sfcResponseBuilder.SetOkSfcResponse().Build();
                 unitUnderTest.Message = SettingsRepository.Settings.Machine is MachineType.Spi
                     ? Resources.msg_spi_repair
                     : "";

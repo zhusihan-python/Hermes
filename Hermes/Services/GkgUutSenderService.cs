@@ -1,5 +1,4 @@
 using Hermes.Builders;
-using Hermes.Common.Aspects;
 using Hermes.Common;
 using Hermes.Models;
 using Hermes.Repositories;
@@ -72,18 +71,40 @@ public partial class GkgUutSenderService : UutSenderService
     private async void OnDataReceived(object sender, SerialDataReceivedEventArgs e)
     {
         if (!CanStartNewCycle) return;
-        await this.ProcessTriggerSignal();
+
+        this._session.UutProcessorState = UutProcessorState.Processing;
+        if (IsWaitingForDummy)
+        {
+            this.SendDummyUnitUnderTest();
+        }
+        else
+        {
+            await this.ProcessTriggerSignal();
+        }
+
+        this._session.UutProcessorState = UutProcessorState.Idle;
     }
 
     private bool CanStartNewCycle => this._stopwatchBetweenCycles.ElapsedMilliseconds > MinDelayBetweenCycles &&
                                      this._session.UutProcessorState == UutProcessorState.Idle;
+
+    private void SendDummyUnitUnderTest()
+    {
+        var unitUnderTest = this._unitUnderTestBuilder
+            .Clone()
+            .FileNameWithoutExtension($"{UnitUnderTestBuilder.DummySerialNumber}_{DateTime.Now:yyMMddHHmmss}")
+            .SerialNumber(UnitUnderTestBuilder.DummySerialNumber)
+            .SetOkResponse()
+            .Build();
+        this.OnSfcResponse(unitUnderTest);
+        _serialPort?.Write($"{UnitUnderTestBuilder.DummySerialNumber}{SerialScanner.LineTerminator}");
+    }
 
     private async Task ProcessTriggerSignal()
     {
         UnitUnderTest unitUnderTest = BuildScanErrorUnitUnderTest();
         try
         {
-            this._session.UutProcessorState = UutProcessorState.Processing;
             var command = _serialPort?.ReadExisting() ?? string.Empty;
             if (!command.Contains(SerialScanner.TriggerCommand)) return;
 
@@ -126,7 +147,6 @@ public partial class GkgUutSenderService : UutSenderService
         }
 
         Interlocked.Exchange(ref _triggerCount, 0);
-        this._session.UutProcessorState = UutProcessorState.Idle;
         this._stopwatchBetweenCycles.Restart();
     }
 

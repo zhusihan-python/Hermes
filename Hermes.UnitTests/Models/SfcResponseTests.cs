@@ -30,7 +30,7 @@ public class SfcResponseTests
     void IsFail_PassContent_ReturnsFalse()
     {
         var sfcResponse = this._sfcResponseBuilder
-            .SetOkContent()
+            .SetOkSfcResponse()
             .Build();
         Assert.False(sfcResponse.IsFail);
     }
@@ -73,7 +73,7 @@ public class SfcResponseTests
     void Details_OkContent_ReturnsEmptyString()
     {
         var sfcResponse = this._sfcResponseBuilder
-            .SetOkContent()
+            .SetOkSfcResponse()
             .Build();
         Assert.True(string.IsNullOrEmpty(sfcResponse.Details));
     }

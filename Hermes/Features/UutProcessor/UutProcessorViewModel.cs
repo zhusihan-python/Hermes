@@ -21,17 +21,20 @@ public partial class UutProcessorViewModel : PageBase
     [ObservableProperty] private string _path = "";
     [ObservableProperty] private string _serialNumber = string.Empty;
     [ObservableProperty] private string _stateText = "";
+    [ObservableProperty] private bool _isWaitingForDummy;
     private readonly Session _session;
     private readonly StopService _stopService;
     private readonly UutSenderServiceFactory _uutSenderServiceFactory;
     private IUutSenderService? _uutSenderService;
     public ScannerViewModel ScannerViewModel { get; }
+    public DummyViewModel DummyViewModel { get; }
 
     public UutProcessorViewModel(
         Session session,
         StopService stopService,
         UutSenderServiceFactory uutSenderServiceFactory,
-        ScannerViewModel scannerViewModel)
+        ScannerViewModel scannerViewModel,
+        DummyViewModel dummyViewModel)
         : base(
             Resources.txt_uut_processor,
             MaterialIconKind.FolderEye,
@@ -42,6 +45,7 @@ public partial class UutProcessorViewModel : PageBase
         this._stopService = stopService;
         this._uutSenderServiceFactory = uutSenderServiceFactory;
         this.ScannerViewModel = scannerViewModel;
+        this.DummyViewModel = dummyViewModel;
         this.IsActive = true;
         this.OnUutProcessorStateChanged(UutProcessorState.Stopped);
         this.StationFilter = EnumExtensions.GetValues<StationType>()
@@ -55,7 +59,16 @@ public partial class UutProcessorViewModel : PageBase
         Messenger.Register<StartUutProcessorMessage>(this, this.OnStartReceive);
         Messenger.Register<UnblockMessage>(this, this.OnUnblockReceive);
         Messenger.Register<ExitMessage>(this, this.OnExitReceive);
+        Messenger.Register<WaitForDummyMessage>(this, this.OnWaitForDummyMessage);
         base.OnActivated();
+    }
+
+    private void OnWaitForDummyMessage(object recipient, WaitForDummyMessage message)
+    {
+        if (this._uutSenderService != null)
+        {
+            this._uutSenderService.IsWaitingForDummy = message.Value;
+        }
     }
 
     protected override void OnDeactivated()

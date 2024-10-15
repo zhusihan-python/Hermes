@@ -599,4 +599,19 @@
     <data name="c_settings_header_additional_ok_sfc_response" xml:space="preserve">
         <value>When SFC response contains this text, it will be evaluated as ok</value>
     </data>
+    <data name="txt_input_dummy" xml:space="preserve">
+        <value>Ingresar tarjeta dummy</value>
+    </data>
+    <data name="msg_wait_for_dummy_error" xml:space="preserve">
+        <value>Ocurrió un error al intentar ingresar la tarjeta dummy</value>
+    </data>
+    <data name="txt_dummy_board" xml:space="preserve">
+        <value>Tarjeta dummy</value>
+    </data>
+    <data name="msg_waiting_dummy_board" xml:space="preserve">
+        <value>Esperando tarjeta dummy</value>
+    </data>
+    <data name="txt_cancel" xml:space="preserve">
+        <value>Cancelar</value>
+    </data>
 </root>

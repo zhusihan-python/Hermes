@@ -107,7 +107,7 @@ namespace Hermes.Features.Logs
 
         private async Task LoadLogsAsync()
         {
-            var units = await _unitUnderTestRepository.GetAllUnits();
+            var units = await _unitUnderTestRepository.GetAllLast24HrsUnits();
             foreach (var unit in units)
             {
                 Logs.Add(new LogEntry
@@ -171,7 +171,7 @@ namespace Hermes.Features.Logs
         private async Task Search()
         {
             Logs.Clear();
-            var units = await _unitUnderTestRepository.GetAllUnits();
+            var units = await _unitUnderTestRepository.GetAllLast24HrsUnits();
             if (!string.IsNullOrWhiteSpace(SerialNumberFilter))
             {
                 units = units.Where(u => u.SerialNumber.ToLower().Contains(SerialNumberFilter.ToLower())).ToList();

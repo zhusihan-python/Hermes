@@ -89,7 +89,7 @@ public class SfcSimulatorService
         else if (this.Mode == SfcResponseType.Unknown)
             this._sfcResponseBuilder.SetUnknownContent();
         else
-            this._sfcResponseBuilder.SetOkContent();
+            this._sfcResponseBuilder.SetOkSfcResponse();
 
 
         this._sfcResponseBuilder.SerialNumber(

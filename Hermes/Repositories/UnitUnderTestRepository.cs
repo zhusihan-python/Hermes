@@ -1,3 +1,4 @@
+using System;
 using Hermes.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -25,10 +26,11 @@ public class UnitUnderTestRepository(HermesLocalContext db) : BaseRepository<Uni
             .ToListAsync();
     }
 
-    public async Task<List<UnitUnderTest>> GetAllUnits()
+    public async Task<List<UnitUnderTest>> GetAllLast24HrsUnits()
     {
         return await db.Set<UnitUnderTest>()
             .Include(x => x.SfcResponse)
+            .Where(x => x.CreatedAt >= DateTime.Now.AddDays(-1))
             .ToListAsync();
     }
 

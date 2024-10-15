@@ -13,6 +13,8 @@ namespace Hermes.Builders;
 
 public class UnitUnderTestBuilder
 {
+    public static string DummySerialNumber = "Dummy";
+
     public string Content { get; private set; } = "";
     public List<Defect> Defects { get; } = [];
 
@@ -21,6 +23,7 @@ public class UnitUnderTestBuilder
     private string _fileNameWithoutExtension = "fileName";
     private bool _isPass = true;
     private bool _isScanError;
+    private bool _isSfcResponseOk;
     private string _message = "";
     private DateTime _createdAt = DateTime.Now;
 
@@ -40,7 +43,7 @@ public class UnitUnderTestBuilder
         this._settingsRepository = settingsRepositoryRepository;
         this._parserPrototype = parserPrototype;
         this._sfcResponseBuilder = sfcResponseBuilder;
-        sfcResponseBuilder.SetOkContent();
+        sfcResponseBuilder.SetOkSfcResponse();
     }
 
     public async Task<UnitUnderTest> BuildAsync(string fileFullPath)
@@ -100,8 +103,16 @@ public class UnitUnderTestBuilder
     {
         var sfcResponseBuilder = _sfcResponseBuilder
             .Clone()
-            .SerialNumber(_serialNumber)
-            .SetFailContent(_responseFailMessage);
+            .SerialNumber(_serialNumber);
+
+        if (_isSfcResponseOk)
+        {
+            sfcResponseBuilder.SetOkSfcResponse();
+        }
+        else
+        {
+            sfcResponseBuilder.SetFailContent(_responseFailMessage);
+        }
 
         if (_isScanError)
         {
@@ -206,7 +217,7 @@ public class UnitUnderTestBuilder
         }
         else
         {
-            this._sfcResponseBuilder.SetOkContent();
+            this._sfcResponseBuilder.SetOkSfcResponse();
         }
 
         return this;
@@ -215,6 +226,12 @@ public class UnitUnderTestBuilder
     public UnitUnderTestBuilder Message(string message)
     {
         this._message = message;
+        return this;
+    }
+
+    public UnitUnderTestBuilder SetOkResponse()
+    {
+        this._isSfcResponseOk = true;
         return this;
     }
 }

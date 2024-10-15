@@ -21,7 +21,7 @@ public class SharedFolderSfcServiceTests
     public async Task Send_PassContent_ReturnsSfcResponsePass()
     {
         var sfcResponse = this._sfcResponseBuilder
-            .SetOkContent()
+            .SetOkSfcResponse()
             .Build();
         var fileServiceMock = this._fileServiceMockBuilder
             .FileExists(true)

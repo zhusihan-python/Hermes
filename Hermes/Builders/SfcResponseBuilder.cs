@@ -31,7 +31,7 @@ public class SfcResponseBuilder
         return SfcResponse.BuildTimeout();
     }
 
-    public SfcResponseBuilder SetOkContent()
+    public SfcResponseBuilder SetOkSfcResponse()
     {
         this.Content = PassContent;
         return this;

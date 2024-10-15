@@ -1,0 +1,65 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:controls="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+             xmlns:uutProcessor="clr-namespace:Hermes.Features.UutProcessor"
+             xmlns:lang="clr-namespace:Hermes.Language;assembly=Hermes.Language"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Hermes.Features.UutProcessor.DummyView"
+             x:DataType="uutProcessor:DummyViewModel">
+
+    <controls:GlassCard Margin="40"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+
+        <StackPanel Orientation="Vertical"
+                    MinWidth="350"
+                    Spacing="{StaticResource DefaultSpacing}">
+
+            <Grid ColumnDefinitions="Auto,*"
+                  RowDefinitions="Auto,Auto">
+
+                <avalonia:MaterialIcon Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource SukiText}"
+                                       Margin="0 0 10 0"
+                                       Width="80"
+                                       Height="80"
+                                       Kind="Chip" />
+
+                <TextBlock Grid.Column="1" Grid.Row="0"
+                           Text="{x:Static lang:Resources.txt_dummy_board}"
+                           Classes="h4"
+                           Width="200"
+                           TextAlignment="Left"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Bottom" />
+
+                <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Vertical">
+
+                    <TextBlock Classes="Caption">
+                        <Run Text="{x:Static lang:Resources.txt_status}" />
+                        <Run Text=":" />
+                        <Run Text="{Binding StatusText}" />
+                    </TextBlock>
+                </StackPanel>
+            </Grid>
+
+            <StackPanel>
+
+                <Button Classes="Flat"
+                        Content="{x:Static lang:Resources.txt_input_dummy}"
+                        Command="{Binding WaitForDummyCommand}"
+                        IsVisible="{Binding !IsWaitingForDummy}" />
+
+                <Button Classes="Flat Accent"
+                        Content="{x:Static lang:Resources.txt_cancel}"
+                        Command="{Binding CancelWaitForDummyCommand}"
+                        IsVisible="{Binding IsWaitingForDummy}" />
+
+            </StackPanel>
+        </StackPanel>
+    </controls:GlassCard>
+</UserControl>

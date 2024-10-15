@@ -121,11 +121,15 @@ public partial class App
     {
         services.AddSingleton<MainWindowViewModel>();
         services.AddSingleton<SfcSimulatorViewModel>();
+        services.AddTransient<DummyViewModel>();
         services.AddTransient<LoginViewModel>();
+        services.AddTransient<LoginViewModel>();
+        services.AddTransient<LogsView>();
         services.AddTransient<PackageScannerViewModel>();
         services.AddTransient<PackageTrackingViewModel>();
         services.AddTransient<ScannerViewModel>();
         services.AddTransient<SettingsView>();
+        services.AddTransient<SettingsViewModel>();
         services.AddTransient<SettingsViewModel>();
         services.AddTransient<StopView>();
         services.AddTransient<StopViewModel>();
@@ -133,9 +137,6 @@ public partial class App
         services.AddTransient<SuccessViewModel>();
         services.AddTransient<TokenView>();
         services.AddTransient<TokenViewModel>();
-        services.AddTransient<SettingsViewModel>();
-        services.AddTransient<LogsView>();
-        services.AddTransient<LoginViewModel>();
         services.AddTransient<UnitUnderTestLogView>();
         services.AddTransient<UnitUnderTestLogViewModel>();
     }
