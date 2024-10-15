@@ -123,7 +123,8 @@ public partial class GkgUutSenderService : UutSenderService
 
             this.OnSfcResponse(unitUnderTest);
 
-            if (unitUnderTest.SfcResponse is { IsFail: false })
+            if (!unitUnderTest.IsSfcFail ||
+                unitUnderTest.SfcResponseContains(SettingsRepository.Settings.AdditionalOkSfcResponse))
             {
                 await this.WaitForSecondTrigger();
                 _serialPort?.Write($"{serialNumber}{SerialScanner.LineTerminator}");
@@ -141,11 +142,8 @@ public partial class GkgUutSenderService : UutSenderService
         {
             Logger.Error(e.Message);
         }
-        finally
-        {
-            this.OnSfcResponse(unitUnderTest);
-        }
 
+        this.OnSfcResponse(unitUnderTest);
         Interlocked.Exchange(ref _triggerCount, 0);
         this._stopwatchBetweenCycles.Restart();
     }

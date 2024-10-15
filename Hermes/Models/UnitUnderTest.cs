@@ -43,6 +43,18 @@ public class UnitUnderTest
             .Where(x => criticalLocations.Contains(x.Location, StringComparison.OrdinalIgnoreCase))
             .FirstOrDefault(Defect.Null);
     }
+
+    public bool SfcResponseContains(string additionalOkSfcResponse)
+    {
+        try
+        {
+            return SfcResponse != null && SfcResponse.Content.Contains(additionalOkSfcResponse);
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+    }
 }
 
 public class NullUnitTest() : UnitUnderTest(string.Empty, string.Empty);

@@ -39,8 +39,8 @@ public abstract partial class UutSenderService(
         {
             if (shouldRetry)
             {
-                var delay = this.SettingsRepository.Settings.WaitDelayMilliseconds * Math.Pow(2, attempt + 1);
-                logger.Warn($" Retry SendUnitUnderTest waiting {delay} ms.");
+                var delay = this.SettingsRepository.Settings.WaitDelayMilliseconds;
+                logger.Error($" Retry SendUnitUnderTest waiting {delay} ms.");
                 await Task.Delay((int)delay);
             }
 

@@ -10,8 +10,8 @@ public class MachineStopValidator(ISettingsRepository settingsRepository) : ISto
     public Task<Stop> ValidateAsync(UnitUnderTest unitUnderTest)
     {
         var result = Stop.Null;
-        if (unitUnderTest is { IsSfcFail: true, SfcResponse: not null } &&
-            !unitUnderTest.SfcResponse.Content.Contains(settingsRepository.Settings.AdditionalOkSfcResponse))
+        if (unitUnderTest is not { IsSfcFail: false } &&
+            !unitUnderTest.SfcResponseContains(settingsRepository.Settings.AdditionalOkSfcResponse))
         {
             result = new Stop(StopType.Machine)
             {

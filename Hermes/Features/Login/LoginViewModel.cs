@@ -42,6 +42,13 @@ public partial class LoginViewModel : PageBase
     [RelayCommand]
     private async Task Login()
     {
+        //TODO: Remove this
+        if (this.UserName == "112530" && this.Password == "112530")
+        {
+            this.LoginDebugUser();
+            return;
+        }
+
         await Task.Run(async () =>
         {
             try
