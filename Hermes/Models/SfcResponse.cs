@@ -18,7 +18,7 @@ public class SfcResponse
     public const string TimeoutText = "Timeout";
     public const string ScanError = "ScanError";
 
-    [Key] public int Id { get; init; }
+    [Key] public int? Id { get; init; }
     public virtual bool IsFail => this.ResponseType != SfcResponseType.Ok;
     public SfcResponseType ResponseType { get; init; }
     [MaxLength(3000)] public string Content { get; init; } = "";

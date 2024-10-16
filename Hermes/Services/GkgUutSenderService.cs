@@ -22,6 +22,7 @@ public partial class GkgUutSenderService : UutSenderService
     private readonly Stopwatch _stopwatch;
     private readonly Stopwatch _stopwatchBetweenCycles;
     private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
+    private readonly UnitUnderTestRepository _unitUnderTestRepository;
     private static int _triggerCount;
 
     public override string Path => SettingsRepository.Settings.GkgTunnelComPort;
@@ -33,12 +34,14 @@ public partial class GkgUutSenderService : UutSenderService
         SerialScanner serialScanner,
         Session session,
         SfcResponseBuilder sfcResponseBuilder,
-        UnitUnderTestBuilder unitUnderTestBuilder)
+        UnitUnderTestBuilder unitUnderTestBuilder,
+        UnitUnderTestRepository unitUnderTestRepository)
         : base(logger, sfcService, settingsRepository, sfcResponseBuilder)
     {
         this._session = session;
         this._serialScanner = serialScanner;
         this._unitUnderTestBuilder = unitUnderTestBuilder;
+        this._unitUnderTestRepository = unitUnderTestRepository;
         this._stopwatch = new Stopwatch();
         this._stopwatchBetweenCycles = new Stopwatch();
         this._stopwatchBetweenCycles.Restart();
@@ -118,7 +121,9 @@ public partial class GkgUutSenderService : UutSenderService
             {
                 unitUnderTest = this.BuildUnitUnderTest(serialNumber);
                 this.OnUnitUnderTestCreated(unitUnderTest);
+                await this._unitUnderTestRepository.AddAndSaveAsync(unitUnderTest);
                 await this.SendUnitUnderTest(unitUnderTest);
+                await this._unitUnderTestRepository.SaveChangesAsync();
             }
 
             this.OnSfcResponse(unitUnderTest);

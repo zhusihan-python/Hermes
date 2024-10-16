@@ -29,8 +29,7 @@ public class HermesRemoteContext : DbContext
     {
         optionsBuilder.UseMySql(
             connectionString: ConnectionString,
-            serverVersion: ServerVersion.AutoDetect(ConnectionString),
-            mySqlOptionsAction: op => { op.MigrationsAssembly(Assembly.GetExecutingAssembly().FullName); });
+            serverVersion: ServerVersion.AutoDetect(ConnectionString));
         base.OnConfiguring(optionsBuilder);
     }
 

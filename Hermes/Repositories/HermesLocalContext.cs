@@ -16,9 +16,7 @@ public class HermesLocalContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite(
-            connectionString: ConnectionString,
-            sqliteOptionsAction: op => { op.MigrationsAssembly(Assembly.GetExecutingAssembly().FullName); });
+        optionsBuilder.UseSqlite(connectionString: ConnectionString);
         base.OnConfiguring(optionsBuilder);
     }
 
