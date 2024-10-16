@@ -14,7 +14,7 @@ namespace Hermes.Services;
 public partial class GkgUutSenderService : UutSenderService
 {
     private const int TimeoutBetweenTriggers = 2000;
-    private const int MinDelayBetweenCycles = 3000;
+    private const int MinDelayBetweenCycles = 8000;
 
     private SerialPort? _serialPort;
     private readonly SerialScanner _serialScanner;

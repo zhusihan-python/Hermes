@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls.Notifications;
+using Avalonia.Threading;
 using CommunityToolkit.Mvvm.Messaging;
 using Hermes.Common.Messages;
 using Hermes.Models;
@@ -47,20 +48,36 @@ public partial class TokenViewModel : ViewModelBase, ITokenViewModel
     [RelayCommand(CanExecute = nameof(CanExecuteUnlock))]
     private async Task Unlock()
     {
-#if !DEBUG
-        var user = await this._userRemoteRepository.FindUser(this.UserName, this.Password);
-        var validation = this.Validate(user);
-        if (validation != null)
+        await Task.Run(async () =>
         {
-            ShowErrorToast(validation);
-            return;
-        }
-
-        this.UserName = user.Name;
+            try
+            {
+#if !DEBUG
+                var user = await this._userRemoteRepository.FindUser(this.UserName, this.Password);
+                var validation = this.Validate(user);
+                if (validation != null)
+                {
+                    ShowErrorToast(validation);
+                    return;
+                }
 #endif
-        this.IsUnlocked = true;
-        this.Password = "";
-        this.Unlocked?.Invoke(this, EventArgs.Empty);
+
+                Dispatcher.UIThread.InvokeAsync(() =>
+                {
+#if !DEBUG
+                    this.UserName = user.Name;
+#endif
+                    this.IsUnlocked = true;
+                    this.Password = "";
+                    this.Unlocked?.Invoke(this, EventArgs.Empty);
+                });
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        });
     }
 
     private void ShowErrorToast(string message)
