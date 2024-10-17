@@ -3,9 +3,7 @@ using Hermes.Common.Extensions;
 using Hermes.Common;
 using Hermes.Models;
 using Hermes.Repositories;
-using System.Collections.Concurrent;
 using System.Threading.Tasks;
-using System.Threading;
 using System;
 using System.Reactive.Linq;
 
@@ -49,13 +47,12 @@ public class TriUutSenderService : UutSenderService
     {
         this._folderWatcherService.TextDocumentCreated
             .Distinct(x => x.FullPath)
-            .Select(x =>
-            {
-                Console.WriteLine($"File created: {x.FullPath}");
-                return x;
-            })
-            .Select(async (x) => await this.OnTextDocumentCreated(x))
-            .Subscribe();
+            .Select(async x => await this.OnTextDocumentCreated(x))
+            .Subscribe(
+                x => _logger.Info("On next"),
+                ex => _logger.Info("FS Error" + ex.Message),
+                () => _logger.Info("Completed")
+            );
     }
 
     public override void Start()
@@ -86,6 +83,10 @@ public class TriUutSenderService : UutSenderService
             {
                 this.OnSfcResponse(unitUnderTest);
             }
+        }
+        else
+        {
+            this._logger.Debug($"Not idle: {textDocument.FileName}");
         }
     }
 

@@ -39,7 +39,7 @@ public class SerialScanner
         try
         {
             if (_serialPort is { IsOpen: true }) return;
-            
+
             this._serialPort = new SerialPort(_settingsRepository.Settings.ScannerComPort, 115200, Parity.None,
                 8,
                 StopBits.One);
@@ -83,7 +83,9 @@ public class SerialScanner
 
         this.Scanned?.Invoke(scannedText);
         this.StateChanged?.Invoke(StateType.Idle);
-        return scannedText;
+        return scannedText
+            .Replace("ERROR", "")
+            .Trim();
     }
 
     private async Task WriteAsync(string command)

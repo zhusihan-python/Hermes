@@ -1,7 +1,9 @@
 using Hermes.Models;
 using System.IO;
-using System;
 using System.Reactive.Linq;
+using System;
+using System.Collections.ObjectModel;
+using System.Reactive;
 
 namespace Hermes.Services;
 
@@ -10,7 +12,7 @@ public class FolderWatcherService
     public IObservable<TextDocument> TextDocumentCreated { get; private set; } = null!;
 
     private FileSystemWatcher _fsw;
-    private FileService _fileService;
+    private readonly FileService _fileService;
 
     public FolderWatcherService(FileService fileService)
     {
@@ -22,17 +24,24 @@ public class FolderWatcherService
     private void SetupReactiveExtensions()
     {
         this._fsw = new FileSystemWatcher();
-        TextDocumentCreated = Observable
+
+        this.TextDocumentCreated = Observable
             .FromEventPattern<FileSystemEventHandler, FileSystemEventArgs>(
                 x => _fsw.Created += x,
                 x => _fsw.Created -= x)
+            .Delay(TimeSpan.FromSeconds(0.1))
             .Select((x) => Observable.FromAsync(async () =>
-                new TextDocument()
                 {
-                    FullPath = x.EventArgs.FullPath,
-                    Content =
-                        await _fileService.TryReadAllTextAsync(x.EventArgs.FullPath)
-                }))
+                    var textDocument = new TextDocument()
+                    {
+                        FullPath = x.EventArgs.FullPath,
+                        Content =
+                            await _fileService.TryReadAllTextAsync(x.EventArgs.FullPath)
+                    };
+                    Console.WriteLine($@"TextDocument created: {textDocument.FileName}");
+                    return textDocument;
+                }
+            ))
             .Concat();
     }
 
