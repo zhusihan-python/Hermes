@@ -68,6 +68,14 @@ public class UnitUnderTestBuilder
             , this.Content);
     }
 
+    public UnitUnderTest Build(TextDocument textDocument)
+    {
+        return Build(
+            textDocument.FileNameWithoutExtension +
+            _settingsRepository.Settings.InputFileExtension.GetDescription(),
+            textDocument.Content);
+    }
+
     public string GetTestContent()
     {
         var parser = _parserPrototype.GetUnitUnderTestParser(_settingsRepository.Settings.LogfileType);

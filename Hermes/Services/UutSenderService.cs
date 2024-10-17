@@ -70,7 +70,7 @@ public abstract partial class UutSenderService(
     {
         SfcResponse?.Invoke(this, unitUnderTest);
     }
-
+    
     protected void OnRunStatusChanged(bool isRunning)
     {
         this.IsRunning = isRunning;

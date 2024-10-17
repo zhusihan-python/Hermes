@@ -5,6 +5,7 @@ using Hermes.Common;
 using Hermes.Models;
 using Hermes.Repositories;
 using Hermes.Types;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System;
 
@@ -22,8 +23,6 @@ public class SfcSimulatorService
     private readonly ISettingsRepository _settingsRepository;
     private readonly SfcResponseBuilder _sfcResponseBuilder;
     private readonly ParserPrototype _parserPrototype;
-    private string _lastProcessedFile = "";
-
 
     public SfcSimulatorService(
         ILogger logger,
@@ -40,14 +39,23 @@ public class SfcSimulatorService
         this._parserPrototype = parserPrototype;
         this._sfcResponseBuilder = sfcResponseBuilder;
         this._folderWatcherService = folderWatcherService;
+        this.SetupReactiveExtensions();
+    }
+
+    private void SetupReactiveExtensions()
+    {
+        this._folderWatcherService.TextDocumentCreated
+            .Distinct(x => x.FullPath)
+            .Select(async (x) => await this.OnTextDocumentCreated(x))
+            .Subscribe();
     }
 
     public void Start()
     {
         if (_isRunning) return;
-        this._folderWatcherService.Filter = "*" + _settingsRepository.Settings.InputFileExtension.GetDescription();
-        this._folderWatcherService.FileCreated += this.OnFileCreated;
-        this._folderWatcherService.Start(_settingsRepository.Settings.SfcPath);
+        this._folderWatcherService.Start(
+            _settingsRepository.Settings.SfcPath,
+            "*" + _settingsRepository.Settings.InputFileExtension.GetDescription());
         this.OnRunStatusChanged(true);
     }
 
@@ -55,55 +63,50 @@ public class SfcSimulatorService
     {
         if (!_isRunning) return;
         this._folderWatcherService.Stop();
-        this._folderWatcherService.FileCreated -= this.OnFileCreated;
         this.OnRunStatusChanged(false);
     }
 
-    private async void OnFileCreated(object? sender, string fullPath)
+    private async Task OnTextDocumentCreated(TextDocument textDocument)
     {
-        await this.Process(fullPath);
-    }
-
-    private async Task Process(string fullPath)
-    {
-        if (_lastProcessedFile == fullPath) return;
-        _lastProcessedFile = fullPath;
-        _logger.Info($"SfcSimulator Process: {fullPath} | Mode: {this.Mode}");
-        var content = await this.GetContent(fullPath);
-        await this._fileService.DeleteFileIfExists(fullPath);
+        _logger.Info($"SfcSimulator Process: {textDocument.FileName} | Mode: {this.Mode}");
+        await this._fileService.DeleteFileIfExists(textDocument.FullPath);
         if (this.Mode == SfcResponseType.Timeout)
         {
             return;
         }
 
-        await this._fileService.WriteAllTextAsync(
-            SfcRequest.GetResponseFullpath(fullPath, this._settingsRepository.Settings.SfcResponseExtension),
-            content
-        );
+        await this._fileService.WriteSfcResponseAsync(
+            textDocument.FileNameWithoutExtension,
+            this.GetContent(textDocument));
     }
 
-    private async Task<string> GetContent(string fullPath)
+    private string GetContent(TextDocument textDocument)
     {
-        if (this.Mode == SfcResponseType.WrongStation)
-            this._sfcResponseBuilder.SetWrongStation();
-        else if (this.Mode == SfcResponseType.Unknown)
-            this._sfcResponseBuilder.SetUnknownContent();
-        else
-            this._sfcResponseBuilder.SetOkSfcResponse();
-
+        switch (this.Mode)
+        {
+            case SfcResponseType.WrongStation:
+                this._sfcResponseBuilder.SetWrongStation();
+                break;
+            case SfcResponseType.Unknown:
+                this._sfcResponseBuilder.SetUnknownContent();
+                break;
+            default:
+                this._sfcResponseBuilder.SetOkSfcResponse();
+                break;
+        }
 
         this._sfcResponseBuilder.SerialNumber(
-            (await this.GetSerialNumber(fullPath))
-            .ToUpper());
+            this.GetSerialNumber(textDocument));
 
         return this._sfcResponseBuilder.GetContent();
     }
 
-    private async Task<string> GetSerialNumber(string fullPath)
+    private string GetSerialNumber(TextDocument textDocument)
     {
-        var content = await this._fileService.TryReadAllTextAsync(fullPath);
         var parser = _parserPrototype.GetUnitUnderTestParser(_settingsRepository.Settings.LogfileType);
-        return parser == null ? "" : parser.ParseSerialNumber(content);
+        return parser == null
+            ? ""
+            : parser.ParseSerialNumber(textDocument.Content).ToUpper();
     }
 
     protected virtual void OnRunStatusChanged(bool isRunning)

@@ -1,5 +1,4 @@
 using Hermes.Builders;
-using Hermes.Common.Aspects;
 using Hermes.Common.Extensions;
 using Hermes.Common;
 using Hermes.Models;
@@ -8,13 +7,12 @@ using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using System.Threading;
 using System;
+using System.Reactive.Linq;
 
 namespace Hermes.Services;
 
 public class TriUutSenderService : UutSenderService
 {
-    private CancellationTokenSource? _cancellationTokenSource;
-    private readonly ConcurrentQueue<string> _pendingFiles = new();
     private readonly FileService _fileService;
     private readonly FolderWatcherService _folderWatcherService;
     private readonly ILogger _logger;
@@ -42,10 +40,23 @@ public class TriUutSenderService : UutSenderService
         this._unitUnderTestRepository = unitUnderTestRepository;
         this._folderWatcherService = folderWatcherService;
         this._unitUnderTestBuilder = unitUnderTestBuilder;
-        this._folderWatcherService.FileCreated += this.OnFileCreated;
+        this.SetupReactiveExtensions();
     }
 
     public override string Path => _settingsRepository.Settings.InputPath;
+
+    private void SetupReactiveExtensions()
+    {
+        this._folderWatcherService.TextDocumentCreated
+            .Distinct(x => x.FullPath)
+            .Select(x =>
+            {
+                Console.WriteLine($"File created: {x.FullPath}");
+                return x;
+            })
+            .Select(async (x) => await this.OnTextDocumentCreated(x))
+            .Subscribe();
+    }
 
     public override void Start()
     {
@@ -53,11 +64,10 @@ public class TriUutSenderService : UutSenderService
         {
             if (IsRunning) return;
             this.IsRunning = true;
-            this._folderWatcherService.Filter =
-                "*" + this._settingsRepository.Settings.InputFileExtension.GetDescription();
-            this._folderWatcherService.Start(_settingsRepository.Settings.InputPath);
-            this._cancellationTokenSource = new CancellationTokenSource();
-            Task.Run(() => this.ProcessFilesAsync(this._cancellationTokenSource.Token));
+            this._folderWatcherService.Start(
+                _settingsRepository.Settings.InputPath,
+                "*" + this._settingsRepository.Settings.InputFileExtension.GetDescription());
+            this.OnRunStatusChanged(true);
         }
         catch (Exception)
         {
@@ -66,43 +76,23 @@ public class TriUutSenderService : UutSenderService
         }
     }
 
-    private async Task ProcessFilesAsync(CancellationToken cancellationToken)
+    private async Task OnTextDocumentCreated(TextDocument textDocument)
     {
-        this.OnRunStatusChanged(true);
-        while (!cancellationToken.IsCancellationRequested)
+        if (this._session.IsUutProcessorIdle)
         {
-            try
+            this._logger.Debug($"Processing file: {textDocument.FileName}");
+            var unitUnderTest = await this.SendFileAsync(textDocument);
+            if (!unitUnderTest.IsNull)
             {
-                if (this._session.IsUutProcessorIdle && this._pendingFiles.TryDequeue(out var fullPath))
-                {
-                    this._logger.Debug($"Processing file: {fullPath}");
-                    var unitUnderTest = await this.SendFileAsync(fullPath);
-                    if (!unitUnderTest.IsNull)
-                    {
-                        this.OnSfcResponse(unitUnderTest);
-                    }
-                }
-                else
-                {
-                    await Task.Delay(this._settingsRepository.Settings.WaitDelayMilliseconds, cancellationToken);
-                }
-            }
-            catch (Exception e)
-            {
-                if (e is not OperationCanceledException)
-                {
-                    this._logger.Error(e.Message);
-                }
+                this.OnSfcResponse(unitUnderTest);
             }
         }
-
-        this.OnRunStatusChanged(false);
     }
 
-    private async Task<UnitUnderTest> SendFileAsync(string fullPath)
+    private async Task<UnitUnderTest> SendFileAsync(TextDocument textDocument)
     {
-        var backupFullPath = await this._fileService.MoveToBackupAndAppendDateToNameAsync(fullPath);
-        var unitUnderTest = await this.BuildUnitUnderTest(backupFullPath);
+        await this._fileService.MoveToBackupAndAppendDateToNameAsync(textDocument.FullPath);
+        var unitUnderTest = await this.BuildUnitUnderTest(textDocument);
         if (unitUnderTest.IsNull)
         {
             return UnitUnderTest.Null;
@@ -113,13 +103,12 @@ public class TriUutSenderService : UutSenderService
         return unitUnderTest;
     }
 
-    private async Task<UnitUnderTest> BuildUnitUnderTest(string fullPath)
+    private async Task<UnitUnderTest> BuildUnitUnderTest(TextDocument textDocument)
     {
-        var unitUnderTest = await this._unitUnderTestBuilder.BuildAsync(fullPath);
+        var unitUnderTest = this._unitUnderTestBuilder.Build(textDocument);
         if (unitUnderTest.IsNull)
         {
-            this._logger.Error($"Invalid file: {fullPath}");
-            await this._fileService.MoveToBackupAndAppendDateToNameAsync(fullPath);
+            this._logger.Error($"Invalid file: {textDocument.FileName}");
         }
         else
         {
@@ -134,13 +123,7 @@ public class TriUutSenderService : UutSenderService
     {
         if (!IsRunning) return;
         this.IsRunning = false;
-        this._cancellationTokenSource?.Cancel();
         this._folderWatcherService.Stop();
-    }
-
-    private void OnFileCreated(object? sender, string fullPath)
-    {
-        _logger.Debug($"File enqueued: {fullPath}");
-        this._pendingFiles.Enqueue(fullPath);
+        this.OnRunStatusChanged(false);
     }
 }

@@ -21,7 +21,7 @@ public class FileService
     {
         this._settingsRepository = settingsRepository;
         this._retryPipeline = new ResiliencePipelineBuilder()
-            .AddRetry(new RetryStrategyOptions(){MaxDelay = TimeSpan.FromSeconds(1), MaxRetryAttempts = 3})
+            .AddRetry(new RetryStrategyOptions() { MaxDelay = TimeSpan.FromMilliseconds(200), MaxRetryAttempts = 3 })
             .AddTimeout(TimeSpan.FromSeconds(10))
             .Build();
     }
@@ -140,6 +140,13 @@ public class FileService
     {
         var path = Path.Combine(this._settingsRepository.Settings.InputPath,
             fileNameWithoutExtension + _settingsRepository.Settings.InputFileExtension.GetDescription());
+        await WriteAllTextAsync(path, content);
+    }
+
+    public virtual async Task WriteSfcResponseAsync(string fileNameWithoutExtension, string content)
+    {
+        var path = Path.Combine(this._settingsRepository.Settings.SfcPath,
+            fileNameWithoutExtension + _settingsRepository.Settings.SfcResponseExtension.GetDescription());
         await WriteAllTextAsync(path, content);
     }
 
