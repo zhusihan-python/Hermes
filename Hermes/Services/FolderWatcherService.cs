@@ -29,7 +29,7 @@ public class FolderWatcherService
             .FromEventPattern<FileSystemEventHandler, FileSystemEventArgs>(
                 x => _fsw.Created += x,
                 x => _fsw.Created -= x)
-            .Delay(TimeSpan.FromSeconds(0.1))
+            .Delay(TimeSpan.FromMilliseconds(20))
             .Select((x) => Observable.FromAsync(async () =>
                 {
                     var textDocument = new TextDocument()
@@ -38,7 +38,6 @@ public class FolderWatcherService
                         Content =
                             await _fileService.TryReadAllTextAsync(x.EventArgs.FullPath)
                     };
-                    Console.WriteLine($@"TextDocument created: {textDocument.FileName}");
                     return textDocument;
                 }
             ))

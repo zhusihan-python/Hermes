@@ -13,6 +13,7 @@ namespace Hermes.Services;
 
 public class SerialScanner
 {
+    public const string DummySerialNumber = "Dummy";
     public const string TriggerCommand = "LOF";
     public const string LineTerminator = "\r";
     private const int Timeout = 5000;
@@ -83,9 +84,7 @@ public class SerialScanner
 
         this.Scanned?.Invoke(scannedText);
         this.StateChanged?.Invoke(StateType.Idle);
-        return scannedText
-            .Replace("ERROR", "")
-            .Trim();
+        return scannedText;
     }
 
     private async Task WriteAsync(string command)

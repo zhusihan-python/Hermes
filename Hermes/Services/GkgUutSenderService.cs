@@ -70,64 +70,68 @@ public partial class GkgUutSenderService : UutSenderService
             .Where(x => x.Contains(SerialScanner.TriggerCommand));
 
         this._serialNumberScanned = this._triggerReceived
-            .SelectMany(async x => await this._serialScanner.Scan());
+            .SelectMany(async x =>
+            {
+                _logger.Debug("Scanning");
+                this._session.UutProcessorState = UutProcessorState.Scanning;
+                return await this._serialScanner.Scan();
+            })
+            .Select(x => x.Replace("ERROR", "").Trim())
+            .Select(x =>
+            {
+                _logger.Debug("Scanned");
+                if (this.IsWaitingForDummy)
+                {
+                    this.IsWaitingForDummy = false;
+                    return string.IsNullOrEmpty(x) ? SerialScanner.DummySerialNumber : x;
+                }
+
+                return x;
+            });
     }
 
     private void SetupReactiveObservers()
     {
-        var triggerReceivedSubject = new Subject<string>();
+        var serialNumberReceivedSubject = new Subject<string>();
         this._serialNumberScanned
-            .SubscribeOn(SynchronizationContext.Current)
+            .SubscribeOn(SynchronizationContext.Current!)
             .Subscribe(serialNumber =>
             {
                 _logger.Debug("TriggerReceived");
                 this._session.UutProcessorState = UutProcessorState.Processing;
-                triggerReceivedSubject.OnNext(serialNumber);
+                serialNumberReceivedSubject.OnNext(serialNumber);
                 this.IsWaitingForDummy = false;
                 this._session.UutProcessorState = UutProcessorState.Idle;
                 _logger.Debug("TriggerEnd");
             });
 
-        // this._sendDummyUnitUnderTestObserver = triggerReceivedSubject
-        //     .Where(_ => this.IsWaitingForDummy)
-        //     .Select(x =>
-        //     {
-        //         _logger.Debug($"Dummy");
-        //         return x;
-        //     })
-        //     .SubscribeOn(SynchronizationContext.Current)
-        //     .Subscribe(x => this.SendDummyUnitUnderTest());
+        this._sendDummyUnitUnderTestObserver = serialNumberReceivedSubject
+            .Where(serialNumber => serialNumber == SerialScanner.DummySerialNumber)
+            .Subscribe(serialNumber =>
+            {
+                _logger.Debug($"Dummy enabled: {serialNumber}");
+                this.SendDummyUnitUnderTest();
+            });
 
-        // var serialNumberScannedSubject = new Subject<string>();
-        // triggerReceivedSubject
-        //     .Where(_ => !this.IsWaitingForDummy)
-        //     .Subscribe(x => serialNumberScannedSubject.OnNext(x));
+        this._validSerialNumberObserver = serialNumberReceivedSubject
+            .Where(serialNumber => serialNumber != SerialScanner.DummySerialNumber)
+            .Where(serialNumber => !string.IsNullOrEmpty(serialNumber))
+            .SelectMany(async serialNumber =>
+            {
+                _logger.Debug($"SendSerialNumber: {serialNumber}");
+                await this.SendSerialNumber(serialNumber);
+                return serialNumber;
+            })
+            .Subscribe(
+                _ => _logger.Debug($"NextScanning"),
+                _ => this.Stop());
 
-        // this._validSerialNumberObserver = triggerReceivedSubject
-        //     .Where(_ => !this.IsWaitingForDummy)
-        //     .Select(x =>
-        //     {
-        //         _logger.Debug($"Scanning");
-        //         this._session.UutProcessorState = UutProcessorState.Scanning;
-        //         return x;
-        //     })
-        //     .Where(x => !string.IsNullOrEmpty(x))
-        //     .Select(x =>
-        //     {
-        //         _logger.Debug($"Before SendSerialNumber");
-        //         _logger.Debug($"After SendSerialNumber");
-        //         return x;
-        //     })
-        //     .ObserveOn(SynchronizationContext.Current)
-        //     .Subscribe(
-        //         _ => _logger.Debug($"NextScanning"),
-        //         _ => this.Stop());
-        //
-        // this._notValidSerialNumberObserver = this._serialNumberScanned
-        //     .Where(string.IsNullOrEmpty)
-        //     .Subscribe(
-        //         _ => { },
-        //         _ => this.Stop());
+        this._notValidSerialNumberObserver = serialNumberReceivedSubject
+            .Where(serialNumber => serialNumber != SerialScanner.DummySerialNumber)
+            .Where(string.IsNullOrEmpty)
+            .Subscribe(
+                _ => this.SendScanErrorUnitUnderTest(),
+                _ => this.Stop());
     }
 
     private async Task SendSerialNumber(string serialNumber)
@@ -138,8 +142,23 @@ public partial class GkgUutSenderService : UutSenderService
         await this._unitUnderTestRepository.AddAndSaveAsync(unitUnderTest);
         await this.SendUnitUnderTest(unitUnderTest);
         await this._unitUnderTestRepository.SaveChangesAsync();
+        if (!unitUnderTest.IsSfcFail ||
+            unitUnderTest.SfcResponseContains(SettingsRepository.Settings.AdditionalOkSfcResponse))
+        {
+            _serialPort?.Write($"{serialNumber}{SerialScanner.LineTerminator}");
+            _logger.Debug($"Responded to trigger");
+        }
+
         this.OnSfcResponse(unitUnderTest);
         this._session.UutProcessorState = UutProcessorState.Idle;
+    }
+
+    private void SendScanErrorUnitUnderTest()
+    {
+        this.OnSfcResponse(this._unitUnderTestBuilder
+            .Clone()
+            .ScanError(true)
+            .Build());
     }
 
     private string SerialReadExisting()
@@ -204,7 +223,6 @@ public partial class GkgUutSenderService : UutSenderService
             .Build();
         this.OnSfcResponse(unitUnderTest);
         _serialPort?.Write($"{UnitUnderTestBuilder.DummySerialNumber}{SerialScanner.LineTerminator}");
-        this.IsWaitingForDummy = false;
         this._session.UutProcessorState = UutProcessorState.Idle;
     }
 

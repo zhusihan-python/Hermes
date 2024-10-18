@@ -48,6 +48,7 @@ public class UnitUnderTest
     {
         try
         {
+            if (string.IsNullOrEmpty(additionalOkSfcResponse)) return false;
             return SfcResponse != null && SfcResponse.Content.Contains(additionalOkSfcResponse);
         }
         catch (Exception)
