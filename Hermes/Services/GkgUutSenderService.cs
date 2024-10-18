@@ -3,36 +3,27 @@ using Hermes.Common;
 using Hermes.Models;
 using Hermes.Repositories;
 using Hermes.Types;
-using System.Diagnostics;
 using System.IO.Ports;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using System.Threading;
 using System;
-using System.Reactive;
-using System.Reactive.Linq;
-using System.Reactive.Subjects;
 
 namespace Hermes.Services;
 
-public partial class GkgUutSenderService : UutSenderService
+public class GkgUutSenderService : UutSenderService
 {
-    private const int TimeoutBetweenTriggers = 2000;
-    private const int MinDelayBetweenCycles = 8000;
-
+    private IObservable<string> _serialNumberScanned = null!;
+    private IObservable<string> _triggerReceived;
     private SerialPort _serialPort;
+    private readonly CompositeDisposable _disposables = [];
+    private readonly ILogger _logger;
     private readonly SerialScanner _serialScanner;
     private readonly Session _session;
-    private readonly Stopwatch _stopwatch;
-    private readonly Stopwatch _stopwatchBetweenCycles;
     private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
     private readonly UnitUnderTestRepository _unitUnderTestRepository;
-    private IObservable<string> _serialNumberScanned = null!;
-    private IDisposable _validSerialNumberObserver = null!;
-    private IDisposable _notValidSerialNumberObserver = null!;
-    private IObservable<string> _triggerReceived;
-    private IDisposable _sendDummyUnitUnderTestObserver;
-    private readonly ILogger _logger;
-    private static int _triggerCount;
 
     public override string Path => SettingsRepository.Settings.GkgTunnelComPort;
 
@@ -53,9 +44,6 @@ public partial class GkgUutSenderService : UutSenderService
         this._unitUnderTestBuilder = unitUnderTestBuilder;
         this._unitUnderTestRepository = unitUnderTestRepository;
         this._serialPort = new SerialPort();
-        this._stopwatch = new Stopwatch();
-        this._stopwatchBetweenCycles = new Stopwatch();
-        this._stopwatchBetweenCycles.Restart();
         this.SetupReactiveExtensions();
     }
 
@@ -93,10 +81,11 @@ public partial class GkgUutSenderService : UutSenderService
     private void SetupReactiveObservers()
     {
         var serialNumberReceivedSubject = new Subject<string>();
-        this._serialNumberScanned
+        var serialNumberDisposable = this._serialNumberScanned
             .SubscribeOn(SynchronizationContext.Current!)
             .Subscribe(serialNumber =>
             {
+                // TODO: remove this
                 _logger.Debug("TriggerReceived");
                 this._session.UutProcessorState = UutProcessorState.Processing;
                 serialNumberReceivedSubject.OnNext(serialNumber);
@@ -105,7 +94,7 @@ public partial class GkgUutSenderService : UutSenderService
                 _logger.Debug("TriggerEnd");
             });
 
-        this._sendDummyUnitUnderTestObserver = serialNumberReceivedSubject
+        var sendDummyUnitUnderTestDisposable = serialNumberReceivedSubject
             .Where(serialNumber => serialNumber == SerialScanner.DummySerialNumber)
             .Subscribe(serialNumber =>
             {
@@ -113,7 +102,7 @@ public partial class GkgUutSenderService : UutSenderService
                 this.SendDummyUnitUnderTest();
             });
 
-        this._validSerialNumberObserver = serialNumberReceivedSubject
+        var validSerialNumberDisposable = serialNumberReceivedSubject
             .Where(serialNumber => serialNumber != SerialScanner.DummySerialNumber)
             .Where(serialNumber => !string.IsNullOrEmpty(serialNumber))
             .SelectMany(async serialNumber =>
@@ -126,12 +115,17 @@ public partial class GkgUutSenderService : UutSenderService
                 _ => _logger.Debug($"NextScanning"),
                 _ => this.Stop());
 
-        this._notValidSerialNumberObserver = serialNumberReceivedSubject
+        var notValidSerialNumberDisposable = serialNumberReceivedSubject
             .Where(serialNumber => serialNumber != SerialScanner.DummySerialNumber)
             .Where(string.IsNullOrEmpty)
             .Subscribe(
                 _ => this.SendScanErrorUnitUnderTest(),
                 _ => this.Stop());
+
+        this._disposables.Add(serialNumberDisposable);
+        this._disposables.Add(sendDummyUnitUnderTestDisposable);
+        this._disposables.Add(validSerialNumberDisposable);
+        this._disposables.Add(notValidSerialNumberDisposable);
     }
 
     private async Task SendSerialNumber(string serialNumber)
@@ -192,26 +186,6 @@ public partial class GkgUutSenderService : UutSenderService
         }
     }
 
-    private async void OnDataReceived(SerialDataReceivedEventArgs e)
-    {
-        if (!CanStartNewCycle) return;
-
-        this._session.UutProcessorState = UutProcessorState.Processing;
-        if (IsWaitingForDummy)
-        {
-            this.SendDummyUnitUnderTest();
-        }
-        else
-        {
-            await this.ProcessTriggerSignal();
-        }
-
-        this._session.UutProcessorState = UutProcessorState.Idle;
-    }
-
-    private bool CanStartNewCycle => this._stopwatchBetweenCycles.ElapsedMilliseconds > MinDelayBetweenCycles &&
-                                     this._session.UutProcessorState == UutProcessorState.Idle;
-
     private void SendDummyUnitUnderTest()
     {
         this._session.UutProcessorState = UutProcessorState.Processing;
@@ -226,100 +200,6 @@ public partial class GkgUutSenderService : UutSenderService
         this._session.UutProcessorState = UutProcessorState.Idle;
     }
 
-    private async Task ProcessTrigger()
-    {
-        UnitUnderTest unitUnderTest = BuildScanErrorUnitUnderTest();
-        try
-        {
-            var serialNumber = (await this._serialScanner.Scan())
-                .Replace("ERROR", "")
-                .Trim();
-            if (!string.IsNullOrEmpty(serialNumber))
-            {
-                unitUnderTest = this.BuildUnitUnderTest(serialNumber);
-                this.OnUnitUnderTestCreated(unitUnderTest);
-                await this._unitUnderTestRepository.AddAndSaveAsync(unitUnderTest);
-                await this.SendUnitUnderTest(unitUnderTest);
-                await this._unitUnderTestRepository.SaveChangesAsync();
-            }
-
-            this.OnSfcResponse(unitUnderTest);
-
-            if (!unitUnderTest.IsSfcFail ||
-                unitUnderTest.SfcResponseContains(SettingsRepository.Settings.AdditionalOkSfcResponse))
-            {
-                await this.WaitForSecondTrigger();
-                _serialPort?.Write($"{serialNumber}{SerialScanner.LineTerminator}");
-            }
-        }
-        catch (Exception e) when (e is not TimeoutException)
-        {
-            unitUnderTest = this._unitUnderTestBuilder
-                .Clone()
-                .ResponseFailMessage(e.Message)
-                .Build();
-            Logger.Error(e.Message);
-        }
-        catch (Exception e)
-        {
-            Logger.Error(e.Message);
-        }
-
-        this.OnSfcResponse(unitUnderTest);
-        Interlocked.Exchange(ref _triggerCount, 0);
-        this._stopwatchBetweenCycles.Restart();
-    }
-
-    private async Task ProcessTriggerSignal()
-    {
-        UnitUnderTest unitUnderTest = BuildScanErrorUnitUnderTest();
-        try
-        {
-            var command = _serialPort?.ReadExisting() ?? string.Empty;
-            if (!command.Contains(SerialScanner.TriggerCommand)) return;
-
-            Interlocked.Increment(ref _triggerCount);
-            if (_triggerCount > 1) return;
-
-            var serialNumber = (await this._serialScanner.Scan())
-                .Replace("ERROR", "")
-                .Trim();
-            if (!string.IsNullOrEmpty(serialNumber))
-            {
-                unitUnderTest = this.BuildUnitUnderTest(serialNumber);
-                this.OnUnitUnderTestCreated(unitUnderTest);
-                await this._unitUnderTestRepository.AddAndSaveAsync(unitUnderTest);
-                await this.SendUnitUnderTest(unitUnderTest);
-                await this._unitUnderTestRepository.SaveChangesAsync();
-            }
-
-            this.OnSfcResponse(unitUnderTest);
-
-            if (!unitUnderTest.IsSfcFail ||
-                unitUnderTest.SfcResponseContains(SettingsRepository.Settings.AdditionalOkSfcResponse))
-            {
-                await this.WaitForSecondTrigger();
-                _serialPort?.Write($"{serialNumber}{SerialScanner.LineTerminator}");
-            }
-        }
-        catch (Exception e) when (e is not TimeoutException)
-        {
-            unitUnderTest = this._unitUnderTestBuilder
-                .Clone()
-                .ResponseFailMessage(e.Message)
-                .Build();
-            Logger.Error(e.Message);
-        }
-        catch (Exception e)
-        {
-            Logger.Error(e.Message);
-        }
-
-        this.OnSfcResponse(unitUnderTest);
-        Interlocked.Exchange(ref _triggerCount, 0);
-        this._stopwatchBetweenCycles.Restart();
-    }
-
     private UnitUnderTest BuildUnitUnderTest(string serialNumber)
     {
         return this._unitUnderTestBuilder
@@ -329,34 +209,12 @@ public partial class GkgUutSenderService : UutSenderService
             .Build();
     }
 
-    private UnitUnderTest BuildScanErrorUnitUnderTest()
-    {
-        return this._unitUnderTestBuilder
-            .Clone()
-            .ScanError(true)
-            .Build();
-    }
-
-    private async Task WaitForSecondTrigger()
-    {
-        this._stopwatch.Restart();
-        while (_triggerCount < 2 && this._stopwatch.ElapsedMilliseconds <= TimeoutBetweenTriggers)
-        {
-            await Task.Delay(this.SettingsRepository.Settings.WaitDelayMilliseconds);
-        }
-
-        this._stopwatch.Stop();
-    }
-
     public override void Stop()
     {
         if (!IsRunning) return;
         this.IsRunning = false;
-        this._validSerialNumberObserver?.Dispose();
-        this._notValidSerialNumberObserver?.Dispose();
-        this._sendDummyUnitUnderTestObserver?.Dispose();
+        this._disposables.Dispose();
         this._serialPort?.Close();
-        this._serialPort?.Dispose();
         this._serialScanner.Stop();
         this.OnRunStatusChanged(false);
     }
