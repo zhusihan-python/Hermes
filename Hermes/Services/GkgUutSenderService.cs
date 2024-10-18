@@ -87,13 +87,9 @@ public class GkgUutSenderService : UutSenderService
             .SubscribeOn(SynchronizationContext.Current!)
             .Subscribe(serialNumber =>
             {
-                // TODO: remove this
                 _logger.Debug("TriggerReceived");
-                this._session.UutProcessorState = UutProcessorState.Processing;
                 serialNumberReceivedSubject.OnNext(serialNumber);
                 this.IsWaitingForDummy = false;
-                this._session.UutProcessorState = UutProcessorState.Idle;
-                _logger.Debug("TriggerEnd");
             });
 
         var sendDummyUnitUnderTestDisposable = serialNumberReceivedSubject
