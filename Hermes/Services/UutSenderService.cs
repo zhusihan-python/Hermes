@@ -6,21 +6,23 @@ using Hermes.Repositories;
 using Hermes.Types;
 using System.Threading.Tasks;
 using System;
+using Reactive.Bindings;
+using ReactiveUI;
 
 namespace Hermes.Services;
 
-public abstract partial class UutSenderService(
+public abstract class UutSenderService(
     ILogger logger,
     ISfcService sfcService,
     ISettingsRepository settingsRepository,
     SfcResponseBuilder sfcResponseBuilder)
     : IUutSenderService
 {
+    public ReactivePropertySlim<UutProcessorState> State { get; protected set; } = new();
     public event EventHandler<UnitUnderTest>? UnitUnderTestCreated;
     public event EventHandler<UnitUnderTest>? SfcResponse;
     public event EventHandler<bool>? RunStatusChanged;
 
-    protected readonly ILogger Logger = logger;
     protected readonly ISettingsRepository SettingsRepository = settingsRepository;
     protected bool IsRunning;
 
@@ -70,11 +72,11 @@ public abstract partial class UutSenderService(
     {
         SfcResponse?.Invoke(this, unitUnderTest);
     }
-    
+
     protected void OnRunStatusChanged(bool isRunning)
     {
         this.IsRunning = isRunning;
         RunStatusChanged?.Invoke(this, isRunning);
-        this.Logger.Info($"SfcSenderService {(isRunning ? "started" : "stopped")}");
+        logger.Info($"SfcSenderService {(isRunning ? "started" : "stopped")}");
     }
 }

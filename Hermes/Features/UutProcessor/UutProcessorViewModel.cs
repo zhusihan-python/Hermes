@@ -110,6 +110,8 @@ public partial class UutProcessorViewModel : PageBase
         uutSenderService.UnitUnderTestCreated += OnUnitUnderTestCreated;
         uutSenderService.SfcResponse += OnSfcResponse;
         uutSenderService.RunStatusChanged += OnSfcSenderRunStatusChanged;
+        uutSenderService.State
+            .Subscribe(x => this.StateText = x.ToTranslatedString());
         return uutSenderService;
     }
 

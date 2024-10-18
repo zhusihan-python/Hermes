@@ -1,4 +1,5 @@
 using Hermes.Builders;
+using Hermes.Common.Extensions;
 using Hermes.Common;
 using Hermes.Models;
 using Hermes.Repositories;
@@ -17,9 +18,9 @@ public class GkgUutSenderService : UutSenderService
 {
     private IObservable<string> _serialNumberScanned = null!;
     private IObservable<string> _triggerReceived;
-    private SerialPort _serialPort;
     private readonly CompositeDisposable _disposables = [];
     private readonly ILogger _logger;
+    private readonly SerialPort _serialPort;
     private readonly SerialScanner _serialScanner;
     private readonly Session _session;
     private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
@@ -55,13 +56,14 @@ public class GkgUutSenderService : UutSenderService
                 x => _serialPort.DataReceived -= x)
             .Delay(TimeSpan.FromMilliseconds(20))
             .Select(x => this.SerialReadExisting())
-            .Where(x => x.Contains(SerialScanner.TriggerCommand));
+            .Where(x => x.Contains(SerialScanner.TriggerCommand))
+            .TakeFirstAndThrottle(TimeSpan.FromSeconds(5));
 
         this._serialNumberScanned = this._triggerReceived
             .SelectMany(async x =>
             {
                 _logger.Debug("Scanning");
-                this._session.UutProcessorState = UutProcessorState.Scanning;
+                this.State.Value = UutProcessorState.Scanning;
                 return await this._serialScanner.Scan();
             })
             .Select(x => x.Replace("ERROR", "").Trim())
@@ -130,7 +132,7 @@ public class GkgUutSenderService : UutSenderService
 
     private async Task SendSerialNumber(string serialNumber)
     {
-        this._session.UutProcessorState = UutProcessorState.Processing;
+        this.State.Value = UutProcessorState.Processing;
         var unitUnderTest = this.BuildUnitUnderTest(serialNumber);
         this.OnUnitUnderTestCreated(unitUnderTest);
         await this._unitUnderTestRepository.AddAndSaveAsync(unitUnderTest);
@@ -144,7 +146,7 @@ public class GkgUutSenderService : UutSenderService
         }
 
         this.OnSfcResponse(unitUnderTest);
-        this._session.UutProcessorState = UutProcessorState.Idle;
+        this.State.Value = UutProcessorState.Idle;
     }
 
     private void SendScanErrorUnitUnderTest()
@@ -188,7 +190,7 @@ public class GkgUutSenderService : UutSenderService
 
     private void SendDummyUnitUnderTest()
     {
-        this._session.UutProcessorState = UutProcessorState.Processing;
+        this.State.Value = UutProcessorState.Processing;
         var unitUnderTest = this._unitUnderTestBuilder
             .Clone()
             .FileNameWithoutExtension($"{UnitUnderTestBuilder.DummySerialNumber}_{DateTime.Now:yyMMddHHmmss}")
@@ -197,7 +199,7 @@ public class GkgUutSenderService : UutSenderService
             .Build();
         this.OnSfcResponse(unitUnderTest);
         _serialPort?.Write($"{UnitUnderTestBuilder.DummySerialNumber}{SerialScanner.LineTerminator}");
-        this._session.UutProcessorState = UutProcessorState.Idle;
+        this.State.Value = UutProcessorState.Idle;
     }
 
     private UnitUnderTest BuildUnitUnderTest(string serialNumber)
