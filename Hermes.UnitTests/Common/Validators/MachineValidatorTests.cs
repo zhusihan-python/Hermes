@@ -1,6 +1,10 @@
 using Hermes.Builders;
+using Hermes.Common;
 using Hermes.Common.Validators;
+using Hermes.Models;
+using Hermes.Repositories;
 using Hermes.Types;
+using Moq;
 
 namespace HermesTests.Common.Validators;
 
@@ -21,7 +25,7 @@ public class MachineValidatorTests
             .IsSfcFail(false)
             .Build();
 
-        var sut = new MachineStopValidator();
+        var sut = this.GetSut();
         Assert.True((await sut.ValidateAsync(sfcResponse)).IsNull);
     }
 
@@ -32,7 +36,7 @@ public class MachineValidatorTests
             .IsSfcFail(true)
             .Build();
 
-        var sut = new MachineStopValidator();
+        var sut = this.GetSut();
         Assert.False((await sut.ValidateAsync(sfcResponse)).IsNull);
     }
 
@@ -43,7 +47,7 @@ public class MachineValidatorTests
             .IsSfcFail(true)
             .Build();
 
-        var sut = new MachineStopValidator();
+        var sut = this.GetSut();
         Assert.Equal(StopType.Machine, (await sut.ValidateAsync(sfcResponse)).Type);
     }
 
@@ -54,7 +58,19 @@ public class MachineValidatorTests
             .IsSfcTimeout(true)
             .Build();
 
-        var sut = new MachineStopValidator();
+        var sut = this.GetSut();
         Assert.False((await sut.ValidateAsync(sfcResponse)).IsNull);
+    }
+
+    private MachineStopValidator GetSut(string additionalOkSfcResponse = "")
+    {
+        var settingsRepositoryMock = new Mock<ISettingsRepository>();
+        settingsRepositoryMock
+            .Setup(x => x.Settings)
+            .Returns(new Settings()
+            {
+                AdditionalOkSfcResponse = additionalOkSfcResponse
+            });
+        return new MachineStopValidator(new Session(settingsRepositoryMock.Object));
     }
 }

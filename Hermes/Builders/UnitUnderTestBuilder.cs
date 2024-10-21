@@ -181,7 +181,14 @@ public class UnitUnderTestBuilder
             this._fileService,
             this._parserPrototype,
             this._settingsRepository,
-            this._sfcResponseBuilder);
+            this._sfcResponseBuilder)
+        {
+            _isPass = this._isPass,
+            _isScanError = this._isScanError,
+            _isSfcResponseOk = this._isSfcResponseOk,
+            _message = this._message,
+            _createdAt = this._createdAt
+        };
     }
 
     public UnitUnderTestBuilder CreatedAt(DateTime createdAt)
@@ -198,6 +205,7 @@ public class UnitUnderTestBuilder
 
     public UnitUnderTestBuilder IsSfcFail(bool isFail)
     {
+        _isSfcResponseOk = !isFail;
         return this;
     }
 

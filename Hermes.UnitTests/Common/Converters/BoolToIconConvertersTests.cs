@@ -12,8 +12,8 @@ public class BoolToIconConvertersTests
         AssertTrueAndFalseIcons(BoolToIconConverters.WindowLock, MaterialIconKind.Unlocked, MaterialIconKind.Lock);
         AssertTrueAndFalseIcons(BoolToIconConverters.Visibility, MaterialIconKind.EyeClosed, MaterialIconKind.Eye);
         AssertTrueAndFalseIcons(BoolToIconConverters.Simple, MaterialIconKind.Close, MaterialIconKind.Ticket);
-        AssertTrueAndFalseIcons(BoolToIconConverters.Connection, MaterialIconKind.AccessPoint,
-            MaterialIconKind.AccessPointOff);
+        AssertTrueAndFalseIcons(BoolToIconConverters.Connection, MaterialIconKind.PowerPlug,
+            MaterialIconKind.PowerPlugOff);
     }
 
     private static void AssertTrueAndFalseIcons(BoolToIconConverter converter, MaterialIconKind trueIcon,

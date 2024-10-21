@@ -13,7 +13,8 @@ public class DefectRepositoryTests
 
     public DefectRepositoryTests(UnitUnderTestBuilder unitUnderTestBuilder, HermesLocalContext hermesLocalContext)
     {
-        this._unitUnderTestBuilder = unitUnderTestBuilder;
+        this._unitUnderTestBuilder = unitUnderTestBuilder
+            .IsSfcFail(false);
         this._localContext = hermesLocalContext;
         this._localContext.Database.EnsureDeleted();
         this._localContext.Database.EnsureCreated();
@@ -141,8 +142,8 @@ public class DefectRepositoryTests
         {
             uutBuilder.CreatedAt(DateTime.Now - timeLapse);
             uutBuilderWithDefects.CreatedAt(DateTime.Now - timeLapse);
-            _localContext.UnitsUnderTest.Add(uutBuilder.Build());
-            _localContext.UnitsUnderTest.Add(uutBuilderWithDefects.Build());
+            await _localContext.UnitsUnderTest.AddAsync(uutBuilder.Build());
+            await _localContext.UnitsUnderTest.AddAsync(uutBuilderWithDefects.Build());
             timeLapse -= step;
         }
 

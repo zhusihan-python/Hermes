@@ -23,5 +23,6 @@ public class Startup
         services.AddTransient<Settings>();
         services.AddTransient<SfcResponseBuilder>();
         services.AddTransient<UnitUnderTestBuilder>();
+        services.AddTransient<GkgUnitUnderTestParser>();
     }
 }

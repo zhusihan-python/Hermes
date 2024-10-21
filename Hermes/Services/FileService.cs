@@ -89,10 +89,9 @@ public class FileService
     {
         return await _retryPipeline.ExecuteAsync((_) =>
         {
-            string destFileName = Path.Combine(Path.GetDirectoryName(dest), Path.GetFileName(source));
             CreateDirectoryIfNotExists(dest);
-            File.Copy(source, destFileName);
-            return ValueTask.FromResult(destFileName);
+            File.Copy(source, dest);
+            return ValueTask.FromResult(dest);
         });
     }
 

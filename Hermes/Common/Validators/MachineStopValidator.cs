@@ -5,13 +5,13 @@ using Hermes.Repositories;
 
 namespace Hermes.Common.Validators;
 
-public class MachineStopValidator(ISettingsRepository settingsRepository) : IStopValidator
+public class MachineStopValidator(Session session) : IStopValidator
 {
     public Task<Stop> ValidateAsync(UnitUnderTest unitUnderTest)
     {
         var result = Stop.Null;
         if (unitUnderTest is { IsSfcFail: true } &&
-            !unitUnderTest.SfcResponseContains(settingsRepository.Settings.AdditionalOkSfcResponse))
+            !unitUnderTest.SfcResponseContains(session.Settings.AdditionalOkSfcResponse))
         {
             result = new Stop(StopType.Machine)
             {

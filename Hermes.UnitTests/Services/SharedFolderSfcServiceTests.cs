@@ -1,4 +1,6 @@
+using System.Reactive.Linq;
 using Hermes.Builders;
+using Hermes.Common.Reactive;
 using Hermes.Models;
 using Hermes.Repositories;
 using Hermes.Services;
@@ -34,7 +36,6 @@ public class SharedFolderSfcServiceTests
     [Fact]
     public async Task Send_Timeout_ReturnsSfcResponseTimeout()
     {
-        var sfcResponse = this._sfcResponseBuilder.Build();
         var fileServiceMock = this._fileServiceMockBuilder
             .FileExists(false)
             .Build();
@@ -57,13 +58,21 @@ public class SharedFolderSfcServiceTests
         unitUnderTestRepositoryMock
             .Setup(x => x.AddAndSaveAsync(It.IsAny<UnitUnderTest>()))
             .Returns(Task.CompletedTask);
+
         var settingsRepositoryMock = new Mock<ISettingsRepository>();
-        settingsRepositoryMock.Setup(x => x.Settings)
+        settingsRepositoryMock
+            .Setup(x => x.Settings)
             .Returns(settings ?? new Settings());
+
+        var folderWatcherServiceMock =
+            new Mock<FolderWatcherService>(new FileService(settingsRepositoryMock.Object), new FileSystemWatcherRx());
+        folderWatcherServiceMock.Setup(x => x.TextDocumentCreated)
+            .Returns(Observable.Never<TextDocument>());
+
         var sfcService = new SharedFolderSfcService(
             fileService,
-            settingsRepositoryMock.Object,
-            sfcResponseRepositoryMock.Object
+            folderWatcherServiceMock.Object,
+            new Session(settingsRepositoryMock.Object)
         );
 
         return sfcService;

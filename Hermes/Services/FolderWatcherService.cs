@@ -9,7 +9,7 @@ namespace Hermes.Services;
 
 public class FolderWatcherService : IDisposable
 {
-    public IObservable<TextDocument> TextDocumentCreated { get; private set; } = null!;
+    public virtual IObservable<TextDocument> TextDocumentCreated { get; private set; } = null!;
 
     private readonly FileService _fileService;
     private readonly FileSystemWatcherRx _fileSystemWatcherRx;
