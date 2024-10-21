@@ -9,6 +9,7 @@ namespace Hermes.Models;
 
 public class SfcResponse
 {
+    private readonly string _additionalOkResponse;
     public static readonly SfcResponse Null = new SfcResponseNull();
 
     private const RegexOptions RgxOptions = RegexOptions.IgnoreCase | RegexOptions.Multiline;
@@ -19,6 +20,7 @@ public class SfcResponse
     public const string ScanError = "ScanError";
 
     [Key] public int? Id { get; init; }
+    public bool IsOk => !IsFail || Content.Contains(_additionalOkResponse);
     public virtual bool IsFail => this.ResponseType != SfcResponseType.Ok;
     public SfcResponseType ResponseType { get; init; }
     [MaxLength(3000)] public string Content { get; init; } = "";
@@ -32,13 +34,13 @@ public class SfcResponse
     public bool IsEndOfFileError => RegexIsEndOfFileError.IsMatch(Content);
 
     public SfcResponse()
-
     {
     }
 
-    public SfcResponse(string content)
+    public SfcResponse(string content, string additionalOkResponse = "")
     {
         this.Content = content;
+        this._additionalOkResponse = additionalOkResponse;
         this.ResponseType = ParseErrorType(content);
     }
 
@@ -69,7 +71,7 @@ public class SfcResponse
 
     public static SfcResponse BuildTimeout()
     {
-        return new SfcResponse(TimeoutText);
+        return new SfcResponse(TimeoutText, "");
     }
 }
 

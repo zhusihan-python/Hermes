@@ -8,7 +8,7 @@ public class UutSenderServiceFactory(
     GkgUutSenderService gkgUutSenderService,
     ISettingsRepository settingsRepository)
 {
-    public IUutSenderService Build()
+    public UutSenderService Build()
     {
         return settingsRepository.Settings.Machine is MachineType.ScreenPrinter
             ? gkgUutSenderService

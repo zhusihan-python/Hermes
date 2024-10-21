@@ -1,116 +1,82 @@
 using Hermes.Builders;
 using Hermes.Common.Extensions;
+using Hermes.Common.Reactive;
 using Hermes.Common;
 using Hermes.Models;
-using Hermes.Repositories;
 using Hermes.Types;
-using System.IO.Ports;
-using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
-using System.Threading;
 using System;
 
 namespace Hermes.Services;
 
 public class GkgUutSenderService : UutSenderService
 {
-    private IObservable<string> _serialNumberScanned = null!;
-    private IObservable<string> _triggerReceived;
-    private readonly CompositeDisposable _disposables = [];
+    private IObservable<string> _triggerReceived = null!;
     private readonly ILogger _logger;
-    private readonly SerialPort _serialPort;
     private readonly SerialScanner _serialScanner;
+    private readonly SerialPortRx _serialPortRx;
     private readonly Session _session;
     private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
-    private readonly UnitUnderTestRepository _unitUnderTestRepository;
+    private readonly SfcResponseBuilder _sfcResponseBuilder;
 
-    public override string Path => SettingsRepository.Settings.GkgTunnelComPort;
+    public override string Path => _session.Settings.GkgTunnelComPort;
 
     public GkgUutSenderService(
         ILogger logger,
-        ISettingsRepository settingsRepository,
         ISfcService sfcService,
+        SerialPortRx serialPortRx,
         SerialScanner serialScanner,
         Session session,
         SfcResponseBuilder sfcResponseBuilder,
-        UnitUnderTestBuilder unitUnderTestBuilder,
-        UnitUnderTestRepository unitUnderTestRepository)
-        : base(logger, sfcService, settingsRepository, sfcResponseBuilder)
+        UnitUnderTestBuilder unitUnderTestBuilder)
+        : base(logger, sfcService, session, sfcResponseBuilder)
     {
-        this._session = session;
         this._logger = logger;
+        this._serialPortRx = serialPortRx;
         this._serialScanner = serialScanner;
+        this._session = session;
+        this._sfcResponseBuilder = sfcResponseBuilder;
         this._unitUnderTestBuilder = unitUnderTestBuilder;
-        this._unitUnderTestRepository = unitUnderTestRepository;
-        this._serialPort = new SerialPort();
         this.SetupReactiveExtensions();
     }
 
     private void SetupReactiveExtensions()
     {
-        this._triggerReceived = Observable
-            .FromEventPattern<SerialDataReceivedEventHandler, SerialDataReceivedEventArgs>(
-                x => _serialPort.DataReceived += x,
-                x => _serialPort.DataReceived -= x)
-            .Delay(TimeSpan.FromMilliseconds(20))
-            .Select(x => this.SerialReadExisting())
+        this._triggerReceived = this._serialPortRx
+            .DataReceived
             .Where(x => x.Contains(SerialScanner.TriggerCommand))
+            .Do(_ => _logger.Debug($"Trigger received"))
             .TakeFirstAndThrottle(TimeSpan.FromSeconds(5));
-
-        this._serialNumberScanned = this._triggerReceived
-            .SelectMany(async x =>
-            {
-                _logger.Debug("Scanning");
-                this.State.Value = UutProcessorState.Scanning;
-                return await this._serialScanner.Scan();
-            })
-            .Select(x => x.Replace("ERROR", "").Trim())
-            .Select(x =>
-            {
-                _logger.Debug("Scanned");
-                if (this.IsWaitingForDummy)
-                {
-                    this.IsWaitingForDummy = false;
-                    return string.IsNullOrEmpty(x) ? SerialScanner.DummySerialNumber : x;
-                }
-
-                return x;
-            });
     }
 
     private void SetupReactiveObservers()
     {
         var serialNumberReceivedSubject = new Subject<string>();
-        var serialNumberDisposable = this._serialNumberScanned
-            .SubscribeOn(SynchronizationContext.Current!)
-            .Subscribe(serialNumber =>
-            {
-                _logger.Debug("TriggerReceived");
-                serialNumberReceivedSubject.OnNext(serialNumber);
-                this.IsWaitingForDummy = false;
-            });
+        var scannedDisposable = this._triggerReceived
+            .SelectMany(async _ => await ScanSerialNumber())
+            .Do(_ => _logger.Debug("Serial number scanned"))
+            .Subscribe(serialNumber => serialNumberReceivedSubject.OnNext(serialNumber));
 
         var sendDummyUnitUnderTestDisposable = serialNumberReceivedSubject
             .Where(serialNumber => serialNumber == SerialScanner.DummySerialNumber)
-            .Subscribe(serialNumber =>
-            {
-                _logger.Debug($"Dummy enabled: {serialNumber}");
-                this.SendDummyUnitUnderTest();
-            });
+            .Do(_ => _logger.Debug($"Dummy enabled"))
+            .Do(_ => this.IsWaitingForDummy = false)
+            .Subscribe(_ => this.SendDummyUnitUnderTest());
 
         var validSerialNumberDisposable = serialNumberReceivedSubject
             .Where(serialNumber => serialNumber != SerialScanner.DummySerialNumber)
             .Where(serialNumber => !string.IsNullOrEmpty(serialNumber))
             .SelectMany(async serialNumber =>
             {
-                _logger.Debug($"SendSerialNumber: {serialNumber}");
+                _logger.Debug($"Send serial number: {serialNumber}");
                 await this.SendSerialNumber(serialNumber);
                 return serialNumber;
             })
             .Subscribe(
-                _ => _logger.Debug($"NextScanning"),
+                _ => { },
                 _ => this.Stop());
 
         var notValidSerialNumberDisposable = serialNumberReceivedSubject
@@ -120,81 +86,84 @@ public class GkgUutSenderService : UutSenderService
                 _ => this.SendScanErrorUnitUnderTest(),
                 _ => this.Stop());
 
-        this._disposables.Add(serialNumberDisposable);
-        this._disposables.Add(sendDummyUnitUnderTestDisposable);
-        this._disposables.Add(validSerialNumberDisposable);
-        this._disposables.Add(notValidSerialNumberDisposable);
+        this.Disposables.Add(scannedDisposable);
+        this.Disposables.Add(sendDummyUnitUnderTestDisposable);
+        this.Disposables.Add(validSerialNumberDisposable);
+        this.Disposables.Add(notValidSerialNumberDisposable);
+    }
+
+    private Task<string> ScanSerialNumber()
+    {
+        return Observable
+            .FromAsync(async () =>
+            {
+                this.State.Value = UutProcessorState.Scanning;
+                return await this._serialScanner.Scan();
+            })
+            .Select(x => x.Replace("ERROR", ""))
+            .Select(x => x.Trim())
+            .Select(x =>
+            {
+                if (this.IsWaitingForDummy)
+                {
+                    return string.IsNullOrEmpty(x) ? SerialScanner.DummySerialNumber : x;
+                }
+
+                return x;
+            })
+            .ToTask();
     }
 
     private async Task SendSerialNumber(string serialNumber)
     {
         this.State.Value = UutProcessorState.Processing;
+
         var unitUnderTest = this.BuildUnitUnderTest(serialNumber);
-        this.OnUnitUnderTestCreated(unitUnderTest);
-        await this._unitUnderTestRepository.AddAndSaveAsync(unitUnderTest);
-        await this.SendUnitUnderTest(unitUnderTest);
-        await this._unitUnderTestRepository.SaveChangesAsync();
-        if (!unitUnderTest.IsSfcFail ||
-            unitUnderTest.SfcResponseContains(SettingsRepository.Settings.AdditionalOkSfcResponse))
+        this.UnitUnderTestCreated.Value = unitUnderTest;
+        var sfcResponse = await this.SendUnitUnderTest(unitUnderTest);
+        if (sfcResponse.IsOk)
         {
-            _serialPort?.Write($"{serialNumber}{SerialScanner.LineTerminator}");
+            _serialPortRx.Write($"{serialNumber}{SerialScanner.LineTerminator}");
             _logger.Debug($"Responded to trigger");
         }
 
-        this.OnSfcResponse(unitUnderTest);
+        this.SfcResponseCreated.Value = sfcResponse;
         this.State.Value = UutProcessorState.Idle;
     }
 
     private void SendScanErrorUnitUnderTest()
     {
-        this.OnSfcResponse(this._unitUnderTestBuilder
-            .Clone()
-            .ScanError(true)
-            .Build());
+        this.SfcResponseCreated.Value = this._sfcResponseBuilder
+            .SetScanError()
+            .Build();
+        this.State.Value = UutProcessorState.Idle;
     }
 
-    private string SerialReadExisting()
+    protected override void StartService()
     {
-        try
-        {
-            return _serialPort.ReadExisting();
-        }
-        catch (Exception)
-        {
-            return string.Empty;
-        }
-    }
-
-    public override void Start()
-    {
-        if (IsRunning) return;
-        this.IsRunning = true;
-        try
-        {
-            this.SetupReactiveObservers();
-            this._serialPort.PortName = SettingsRepository.Settings.GkgTunnelComPort;
-            this._serialPort.Open();
-            this._serialScanner.Start();
-            this.OnRunStatusChanged(true);
-        }
-        catch (Exception)
-        {
-            this.Stop();
-            throw;
-        }
+        this.SetupReactiveObservers();
+        this._serialPortRx.PortName = _session.Settings.GkgTunnelComPort;
+        this._serialPortRx.Open();
+        this._serialScanner.Open();
     }
 
     private void SendDummyUnitUnderTest()
     {
         this.State.Value = UutProcessorState.Processing;
+
         var unitUnderTest = this._unitUnderTestBuilder
             .Clone()
             .FileNameWithoutExtension($"{UnitUnderTestBuilder.DummySerialNumber}_{DateTime.Now:yyMMddHHmmss}")
             .SerialNumber(UnitUnderTestBuilder.DummySerialNumber)
-            .SetOkResponse()
             .Build();
-        this.OnSfcResponse(unitUnderTest);
-        _serialPort?.Write($"{UnitUnderTestBuilder.DummySerialNumber}{SerialScanner.LineTerminator}");
+        this.UnitUnderTestCreated.Value = unitUnderTest;
+
+        this.SfcResponseCreated.Value = this._sfcResponseBuilder
+            .SetOkSfcResponse()
+            .Build();
+
+        _serialPortRx.Write($"{UnitUnderTestBuilder.DummySerialNumber}{SerialScanner.LineTerminator}");
+
         this.State.Value = UutProcessorState.Idle;
     }
 
@@ -207,13 +176,9 @@ public class GkgUutSenderService : UutSenderService
             .Build();
     }
 
-    public override void Stop()
+    protected override void StopService()
     {
-        if (!IsRunning) return;
-        this.IsRunning = false;
-        this._disposables.Dispose();
-        this._serialPort?.Close();
-        this._serialScanner.Stop();
-        this.OnRunStatusChanged(false);
+        this._serialPortRx.Close();
+        this._serialScanner.Close();
     }
 }

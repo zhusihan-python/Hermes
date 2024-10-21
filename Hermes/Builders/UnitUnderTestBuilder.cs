@@ -124,7 +124,7 @@ public class UnitUnderTestBuilder
 
         if (_isScanError)
         {
-            sfcResponseBuilder.ScanError();
+            sfcResponseBuilder.SetScanError();
         }
 
         return sfcResponseBuilder.Build();

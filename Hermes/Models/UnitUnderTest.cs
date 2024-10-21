@@ -12,7 +12,6 @@ public class UnitUnderTest
     public static readonly UnitUnderTest Null = new NullUnitTest();
 
     [Key] public int Id { get; set; }
-    [MaxLength(250)] public string FileName { get; init; }
     [MaxLength(250)] public string SerialNumber { get; init; } = string.Empty;
     public virtual bool IsFail { get; init; }
     public DateTime CreatedAt { get; set; } = DateTime.Now;
@@ -20,6 +19,10 @@ public class UnitUnderTest
     public Stop? Stop { get; set; }
     public SfcResponse? SfcResponse { get; set; }
     [NotMapped] public string Content { get; init; }
+
+    [MaxLength(250)] public string FileName { get; init; }
+
+    //[NotMapped] public string FileName { get; init; }
     [NotMapped] public bool IsNull => this == Null;
     [NotMapped] public bool IsRepair => this.IsFail && this.SfcResponse?.IsFail == false;
     [NotMapped] public bool IsSfcTimeout => this.SfcResponse?.IsTimeout == true;

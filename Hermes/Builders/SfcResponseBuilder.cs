@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Hermes.Models;
 using Hermes.Types;
 
@@ -49,7 +50,7 @@ public class SfcResponseBuilder
         return this;
     }
     
-    public SfcResponseBuilder ScanError()
+    public SfcResponseBuilder SetScanError()
     {
         this.Content = SfcResponse.ScanError;
         return this;

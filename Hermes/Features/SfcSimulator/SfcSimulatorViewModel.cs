@@ -2,7 +2,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Hermes.Builders;
-using Hermes.Common.Aspects;
 using Hermes.Common.Extensions;
 using Hermes.Common.Messages;
 using Hermes.Language;
@@ -13,6 +12,7 @@ using Material.Icons;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
+using Hermes.Common;
 
 namespace Hermes.Features.SfcSimulator;
 
@@ -26,12 +26,14 @@ public partial class SfcSimulatorViewModel : PageBase
     public IEnumerable<SfcResponseType> SfcErrorTypes => EnumExtensions.GetValues<SfcResponseType>();
     public IEnumerable<ErrorFlag> ErrorFlags => EnumExtensions.GetValues<ErrorFlag>();
 
+    private readonly CoreSettings _coreSettings;
     private readonly FileService _fileService;
+    private readonly ILogger _logger;
     private readonly SfcSimulatorService _sfcSimulatorService;
     private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
-    private readonly CoreSettings _coreSettings;
 
     public SfcSimulatorViewModel(
+        ILogger logger,
         CoreSettings coreSettings,
         FileService fileService,
         SfcSimulatorService sfcSimulatorService,
@@ -42,31 +44,49 @@ public partial class SfcSimulatorViewModel : PageBase
             PermissionType.OpenSfcSimulator,
             100)
     {
+        _logger = logger;
         _coreSettings = coreSettings;
         _fileService = fileService;
         _sfcSimulatorService = sfcSimulatorService;
-        _sfcSimulatorService.RunStatusChanged += OnRunStatusChange();
         _unitUnderTestBuilder = underTestBuilder;
+        this.IsActive = true;
     }
 
     protected override void OnActivated()
     {
         Messenger.Register<ExitMessage>(this, this.OnExitReceive);
+        _sfcSimulatorService
+            .IsRunning
+            .Subscribe(x => IsRunning = x);
         base.OnActivated();
     }
 
     [RelayCommand]
-    [CatchExceptionAndShowErrorToast]
     private void Start()
     {
-        _sfcSimulatorService.Start();
+        try
+        {
+            _sfcSimulatorService.Start();
+        }
+        catch (Exception e)
+        {
+            _logger.Error(e.Message);
+            this.ShowErrorToast(e.Message);
+        }
     }
 
     [RelayCommand]
-    [CatchExceptionAndShowErrorToast]
     private void Stop()
     {
-        _sfcSimulatorService.Stop();
+        try
+        {
+            _sfcSimulatorService.Stop();
+        }
+        catch (Exception e)
+        {
+            _logger.Error(e.Message);
+            this.ShowErrorToast(e.Message);
+        }
     }
 
     [RelayCommand]
@@ -189,11 +209,6 @@ public partial class SfcSimulatorViewModel : PageBase
     partial void OnModeChanged(SfcResponseType value)
     {
         _sfcSimulatorService.Mode = value;
-    }
-
-    private EventHandler<bool>? OnRunStatusChange()
-    {
-        return (sender, isRunning) => { IsRunning = isRunning; };
     }
 
     private void OnExitReceive(object recipient, ExitMessage message)

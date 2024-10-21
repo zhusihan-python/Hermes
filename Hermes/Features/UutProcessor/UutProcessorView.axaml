@@ -59,7 +59,7 @@
                             <TextBlock Classes="Caption">
                                 <Run Text="{x:Static lang:Resources.txt_serial_number}" />
                                 <Run Text=":" />
-                                <Run Text="{Binding SerialNumber}" />
+                                <Run Text="{Binding CurrentUnitUnderTest.SerialNumber}" />
                             </TextBlock>
 
                             <TextBlock Classes="Caption">
@@ -86,7 +86,7 @@
             </controls:GlassCard>
 
             <local:ScannerView DataContext="{Binding ScannerViewModel}" />
-            
+
             <local:DummyView DataContext="{Binding DummyViewModel}" />
         </WrapPanel>
     </ScrollViewer>

@@ -2,7 +2,6 @@ using Avalonia.Media.Imaging;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Hermes.Common.Aspects;
 using Hermes.Common.Extensions;
 using Hermes.Common.Parsers;
 using Hermes.Common;
@@ -30,19 +29,22 @@ public partial class PackageScannerViewModel : ViewModelBase
     [ObservableProperty] private Bitmap? _revisionImage;
     [ObservableProperty] private Bitmap? _workOrderImage;
 
+    private readonly ILogger _logger;
+    private readonly ISettingsRepository _settingsRepository;
+    private readonly ISfcRepository _sfcRepository;
+    private readonly ISukiDialogManager _dialogManager;
     private readonly PackageParser _packageParser;
     private readonly QrGenerator _qrGenerator;
-    private readonly ISukiDialogManager _dialogManager;
-    private readonly ISfcRepository _sfcRepository;
-    private readonly ISettingsRepository _settingsRepository;
 
     public PackageScannerViewModel(
-        PackageParser packageParser,
-        QrGenerator qrGenerator,
-        ISukiDialogManager dialogManager,
+        ILogger logger,
+        ISettingsRepository settingsRepository,
         ISfcRepository sfcRepository,
-        ISettingsRepository settingsRepository)
+        ISukiDialogManager dialogManager,
+        PackageParser packageParser,
+        QrGenerator qrGenerator)
     {
+        this._logger = logger;
         this._packageParser = packageParser;
         this._qrGenerator = qrGenerator;
         this._dialogManager = dialogManager;
@@ -76,24 +78,31 @@ public partial class PackageScannerViewModel : ViewModelBase
         this.Instructions = Resources.msg_scan_2d_package;
     }
 
-    [CatchExceptionAndShowErrorToast]
     private async Task AddPackageToSfc()
     {
-        var package = await _sfcRepository.FindPackageTracking(this.Package.NormalizedId);
-        if (package.IsNull)
+        try
         {
-            Package.Line = _settingsRepository.Settings.Line.ToUpperString();
-            await _sfcRepository.AddPackageTrack(Package);
-        }
-        else
-        {
-            await _sfcRepository.UpdatePackageTrackingLine(
-                package.NormalizedId,
-                _settingsRepository.Settings.Line.ToUpperString());
-        }
+            var package = await _sfcRepository.FindPackageTracking(this.Package.NormalizedId);
+            if (package.IsNull)
+            {
+                Package.Line = _settingsRepository.Settings.Line.ToUpperString();
+                await _sfcRepository.AddPackageTrack(Package);
+            }
+            else
+            {
+                await _sfcRepository.UpdatePackageTrackingLine(
+                    package.NormalizedId,
+                    _settingsRepository.Settings.Line.ToUpperString());
+            }
 
-        this.ShowSuccessToast(Resources.msg_package_added_to_hermes);
-        PackageScanned?.Invoke(Package);
+            this.ShowSuccessToast(Resources.msg_package_added_to_hermes);
+            PackageScanned?.Invoke(Package);
+        }
+        catch (Exception e)
+        {
+            _logger.Error(e.Message);
+            this.ShowErrorToast(e.Message);
+        }
     }
 
     [RelayCommand]

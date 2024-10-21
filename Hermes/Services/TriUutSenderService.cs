@@ -2,10 +2,9 @@ using Hermes.Builders;
 using Hermes.Common.Extensions;
 using Hermes.Common;
 using Hermes.Models;
-using Hermes.Repositories;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System;
-using System.Reactive.Linq;
 
 namespace Hermes.Services;
 
@@ -14,117 +13,63 @@ public class TriUutSenderService : UutSenderService
     private readonly FileService _fileService;
     private readonly FolderWatcherService _folderWatcherService;
     private readonly ILogger _logger;
-    private readonly ISettingsRepository _settingsRepository;
     private readonly Session _session;
     private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
-    private readonly UnitUnderTestRepository _unitUnderTestRepository;
 
     public TriUutSenderService(
         FileService fileService,
         FolderWatcherService folderWatcherService,
         ILogger logger,
-        ISettingsRepository settingsRepository,
         ISfcService sfcService,
         Session session,
         SfcResponseBuilder sfcResponseBuilder,
-        UnitUnderTestBuilder unitUnderTestBuilder,
-        UnitUnderTestRepository unitUnderTestRepository)
-        : base(logger, sfcService, settingsRepository, sfcResponseBuilder)
+        UnitUnderTestBuilder unitUnderTestBuilder)
+        : base(logger, sfcService, session, sfcResponseBuilder)
     {
         this._session = session;
         this._logger = logger;
         this._fileService = fileService;
-        this._settingsRepository = settingsRepository;
-        this._unitUnderTestRepository = unitUnderTestRepository;
         this._folderWatcherService = folderWatcherService;
         this._unitUnderTestBuilder = unitUnderTestBuilder;
-        this.SetupReactiveExtensions();
     }
 
-    public override string Path => _settingsRepository.Settings.InputPath;
+    public override string Path => _session.Settings.InputPath;
 
-    private void SetupReactiveExtensions()
+    private void SetupReactiveObservers()
     {
-        this._folderWatcherService.TextDocumentCreated
-            .Distinct(x => x.FullPath)
-            .Select(async x => await this.OnTextDocumentCreated(x))
-            .Subscribe(
-                x => _logger.Info("On next"),
-                ex => _logger.Info("FS Error" + ex.Message),
-                () => _logger.Info("Completed")
-            );
+        var textDocumentCreatedDisposable = this._folderWatcherService
+            .TextDocumentCreated
+            .Select(this.SendTextDocument)
+            .Subscribe();
+
+        this.Disposables.Add(textDocumentCreatedDisposable);
     }
 
-    public override void Start()
+    protected override void StartService()
     {
-        try
-        {
-            if (IsRunning) return;
-            this.IsRunning = true;
-            this._folderWatcherService.Start(
-                _settingsRepository.Settings.InputPath,
-                "*" + this._settingsRepository.Settings.InputFileExtension.GetDescription());
-            this.OnRunStatusChanged(true);
-        }
-        catch (Exception)
-        {
-            this.Stop();
-            throw;
-        }
+        this.SetupReactiveObservers();
+        this._folderWatcherService.Start(
+            _session.Settings.InputPath,
+            "*" + this._session.Settings.InputFileExtension.GetDescription());
     }
 
-    private async Task OnTextDocumentCreated(TextDocument textDocument)
+    private async Task SendTextDocument(TextDocument textDocument)
     {
-        if (this._session.IsUutProcessorIdle)
-        {
-            this._logger.Debug($"Processing file: {textDocument.FileName}");
-            var unitUnderTest = await this.SendFileAsync(textDocument);
-            if (!unitUnderTest.IsNull)
-            {
-                this.OnSfcResponse(unitUnderTest);
-            }
-        }
-        else
-        {
-            this._logger.Debug($"Not idle: {textDocument.FileName}");
-        }
-    }
-
-    private async Task<UnitUnderTest> SendFileAsync(TextDocument textDocument)
-    {
-        await this._fileService.MoveToBackupAndAppendDateToNameAsync(textDocument.FullPath);
-        var unitUnderTest = await this.BuildUnitUnderTest(textDocument);
-        if (unitUnderTest.IsNull)
-        {
-            return UnitUnderTest.Null;
-        }
-
-        await SendUnitUnderTest(unitUnderTest);
-        await _unitUnderTestRepository.SaveChangesAsync();
-        return unitUnderTest;
-    }
-
-    private async Task<UnitUnderTest> BuildUnitUnderTest(TextDocument textDocument)
-    {
+        this._logger.Debug($"Processing file: {textDocument.FileName}");
         var unitUnderTest = this._unitUnderTestBuilder.Build(textDocument);
+        this.UnitUnderTestCreated.Value = unitUnderTest;
         if (unitUnderTest.IsNull)
         {
             this._logger.Error($"Invalid file: {textDocument.FileName}");
-        }
-        else
-        {
-            this.OnUnitUnderTestCreated(unitUnderTest);
-            await this._unitUnderTestRepository.AddAndSaveAsync(unitUnderTest);
+            return;
         }
 
-        return unitUnderTest;
+        var sfcResponse = await SendUnitUnderTest(unitUnderTest);
+        this.SfcResponseCreated.Value = sfcResponse;
     }
 
-    public override void Stop()
+    protected override void StopService()
     {
-        if (!IsRunning) return;
-        this.IsRunning = false;
         this._folderWatcherService.Stop();
-        this.OnRunStatusChanged(false);
     }
 }

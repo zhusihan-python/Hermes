@@ -21,6 +21,7 @@ using SukiUI.Toasts;
 using System.Linq;
 using System;
 using System.Reflection;
+using Hermes.Common.Reactive;
 using Microsoft.EntityFrameworkCore;
 
 namespace Hermes;
@@ -44,6 +45,7 @@ public partial class App
     {
         services.AddSingleton<CoreSettings>();
         services.AddSingleton<Session>();
+        services.AddSingleton<Settings>();
     }
 
     private static void ConfigureValidators(ServiceCollection services)
@@ -87,21 +89,23 @@ public partial class App
         services.AddSingleton<SfcResponseBuilder>();
         services.AddSingleton<TokenGenerator>();
         services.AddSingleton<UnitUnderTestBuilder>();
+        services.AddTransient<SerialPortRx>();
     }
 
     private static void ConfigureServices(ServiceCollection services)
     {
-        services.AddSingleton<ISukiToastManager, SukiToastManager>();
         services.AddSingleton<ISukiDialogManager, SukiDialogManager>();
+        services.AddSingleton<ISukiToastManager, SukiToastManager>();
         services.AddSingleton<PageNavigationService>();
         services.AddSingleton<ViewLocator>();
         services.AddTransient<FileService>();
+        services.AddTransient<FileSystemWatcherRx>();
         services.AddTransient<FolderWatcherService>();
+        services.AddTransient<GkgUutSenderService>();
         services.AddTransient<ISfcService, SharedFolderSfcService>();
         services.AddTransient<SfcSimulatorService>();
         services.AddTransient<StopService>();
         services.AddTransient<TriUutSenderService>();
-        services.AddTransient<GkgUutSenderService>();
         services.AddTransient<UutSenderServiceFactory>();
         services.AddTransient<WindowService>();
     }

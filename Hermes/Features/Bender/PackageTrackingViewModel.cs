@@ -2,8 +2,8 @@ using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DynamicData;
-using Hermes.Common.Aspects;
 using Hermes.Common.Extensions;
+using Hermes.Common;
 using Hermes.Language;
 using Hermes.Models;
 using Hermes.Repositories;
@@ -40,13 +40,18 @@ public partial class PackageTrackingViewModel : ViewModelBase
     [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(FindByPkgIdCommand))]
     private string _pkgId = "";
 
-    private readonly ISfcRepository _sfcRepository;
+    private readonly ILogger _logger;
     private readonly ISettingsRepository _settingsRepository;
+    private readonly ISfcRepository _sfcRepository;
     private readonly Timer _timer;
     private readonly Timer _timerTick;
 
-    public PackageTrackingViewModel(ISfcRepository sfcRepository, ISettingsRepository settingsRepository)
+    public PackageTrackingViewModel(
+        ILogger logger,
+        ISfcRepository sfcRepository,
+        ISettingsRepository settingsRepository)
     {
+        this._logger = logger;
         this._sfcRepository = sfcRepository;
         this._settingsRepository = settingsRepository;
         this._timer = new Timer(RefreshInterval.TotalMilliseconds);
@@ -73,26 +78,33 @@ public partial class PackageTrackingViewModel : ViewModelBase
     }
 
     [RelayCommand(CanExecute = nameof(CanExecuteFindByPkgId))]
-    [CatchExceptionAndShowErrorToast]
     private async Task FindByPkgId()
     {
-        IsDataLoading = true;
-        this.StopTimers();
         try
         {
-            var normalizedPkgId = Package.NormalizePkgId(this.PkgId);
-            var packages = await this._sfcRepository.FindAllPackagesTrackingByPkgid(normalizedPkgId);
-            this.Packages.Clear();
-            this.Packages.AddRange(packages.ToList());
-            if (this.Packages.Count <= 0)
+            IsDataLoading = true;
+            this.StopTimers();
+            try
             {
-                this.ShowWarningToast(Resources.msg_package_not_found, Resources.txt_not_found);
+                var normalizedPkgId = Package.NormalizePkgId(this.PkgId);
+                var packages = await this._sfcRepository.FindAllPackagesTrackingByPkgid(normalizedPkgId);
+                this.Packages.Clear();
+                this.Packages.AddRange(packages.ToList());
+                if (this.Packages.Count <= 0)
+                {
+                    this.ShowWarningToast(Resources.msg_package_not_found, Resources.txt_not_found);
+                }
+            }
+            finally
+            {
+                IsDataLoading = false;
+                this.StartTimers();
             }
         }
-        finally
+        catch (Exception e)
         {
-            IsDataLoading = false;
-            this.StartTimers();
+            _logger.Error(e.Message);
+            this.ShowErrorToast(e.Message);
         }
     }
 
@@ -121,7 +133,6 @@ public partial class PackageTrackingViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    [CatchExceptionAndShowErrorToast]
     private async Task FindByDate()
     {
         if (this.ToDate - this.FromDate > TimeSpan.FromDays(MaxDays))
@@ -141,6 +152,11 @@ public partial class PackageTrackingViewModel : ViewModelBase
             this.Packages.AddRange(packages.ToList());
             this.LastDataLoadedAt = DateTime.Now;
         }
+        catch (Exception e)
+        {
+            _logger.Error(e.Message);
+            this.ShowErrorToast(e.Message);
+        }
         finally
         {
             this.IsDataLoading = false;
@@ -149,7 +165,6 @@ public partial class PackageTrackingViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    [CatchExceptionAndShowErrorToast]
     private async Task Load(Package package)
     {
         IsDataLoading = true;
@@ -160,6 +175,11 @@ public partial class PackageTrackingViewModel : ViewModelBase
             {
                 package.LoadedAt = DateTime.Now;
             }
+        }
+        catch (Exception e)
+        {
+            _logger.Error(e.Message);
+            this.ShowErrorToast(e.Message);
         }
         finally
         {
@@ -175,24 +195,38 @@ public partial class PackageTrackingViewModel : ViewModelBase
     }
 
     [RelayCommand(CanExecute = nameof(CanRemovePackageFromLoaded))]
-    [CatchExceptionAndShowErrorToast]
     private void RemovePackageFromLoaded()
     {
-        if (SelectedPackage == null) return;
-        this._sfcRepository.ResetPackageTrackingLoadedAt(SelectedPackage.Id);
-        SelectedPackage.LoadedAt = null;
-        this.ShowSuccessToast(Resources.msg_package_removed_from_loaded);
+        try
+        {
+            if (SelectedPackage == null) return;
+            this._sfcRepository.ResetPackageTrackingLoadedAt(SelectedPackage.Id);
+            SelectedPackage.LoadedAt = null;
+            this.ShowSuccessToast(Resources.msg_package_removed_from_loaded);
+        }
+        catch (Exception e)
+        {
+            _logger.Error(e.Message);
+            this.ShowErrorToast(e.Message);
+        }
     }
 
     private bool CanRemovePackageFromLoaded => SelectedPackage is { IsLoaded: true };
 
     [RelayCommand]
-    [CatchExceptionAndShowErrorToast]
     private async Task DeletePackageTracking()
     {
-        if (SelectedPackage == null) return;
-        await this._sfcRepository.DeletePackageTracking(SelectedPackage.Id);
-        await this.DataReload();
-        this.ShowSuccessToast(Resources.msg_package_removed);
+        try
+        {
+            if (SelectedPackage == null) return;
+            await this._sfcRepository.DeletePackageTracking(SelectedPackage.Id);
+            await this.DataReload();
+            this.ShowSuccessToast(Resources.msg_package_removed);
+        }
+        catch (Exception e)
+        {
+            _logger.Error(e.Message);
+            this.ShowErrorToast(e.Message);
+        }
     }
 }

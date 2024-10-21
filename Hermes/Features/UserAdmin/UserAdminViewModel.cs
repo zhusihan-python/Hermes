@@ -7,7 +7,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DynamicData;
 using Hermes.Cipher.Types;
-using Hermes.Common.Aspects;
+using Hermes.Common;
 using Hermes.Language;
 using Hermes.Models;
 using Hermes.Repositories;
@@ -32,11 +32,14 @@ public partial class UserAdminViewModel : PageBase
     [ObservableProperty] private bool _isDataLoading;
     [ObservableProperty] private string _searchEmployeeId = "";
     [ObservableProperty] private User _selectedUser = User.Null;
-    private readonly ISukiDialogManager _dialogManager;
+
     private ManageUserDialogViewModel _manageUserDialogViewModel;
     private readonly FileService _fileService;
+    private readonly ILogger _logger;
+    private readonly ISukiDialogManager _dialogManager;
 
     public UserAdminViewModel(
+        ILogger logger,
         Session session,
         ISukiDialogManager dialogManager,
         FileService fileService,
@@ -49,6 +52,7 @@ public partial class UserAdminViewModel : PageBase
             [StationType.Labeling]
         )
     {
+        _logger = logger;
         _userProxy = userProxy;
         _session = session;
         _session.UserChanged += UserChanged;
@@ -62,7 +66,6 @@ public partial class UserAdminViewModel : PageBase
     }
 
     [RelayCommand]
-    [CatchExceptionAndShowErrorToast]
     private async Task FindUsers()
     {
         try
@@ -81,6 +84,11 @@ public partial class UserAdminViewModel : PageBase
             {
                 this.ShowErrorToast(Resources.msg_no_users_found);
             }
+        }
+        catch (Exception e)
+        {
+            _logger.Error(e.Message);
+            this.ShowErrorToast(e.Message);
         }
         finally
         {
@@ -113,7 +121,6 @@ public partial class UserAdminViewModel : PageBase
             .TryShow();
     }
 
-    [CatchExceptionAndShowErrorToast]
     private async Task Update(User user)
     {
         try
@@ -127,6 +134,11 @@ public partial class UserAdminViewModel : PageBase
 
             this.ShowSuccessToast(Resources.msg_user_updated);
             this._manageUserDialogViewModel.CloseDialog();
+        }
+        catch (Exception e)
+        {
+            _logger.Error(e.Message);
+            this.ShowErrorToast(e.Message);
         }
         finally
         {
@@ -149,7 +161,6 @@ public partial class UserAdminViewModel : PageBase
             .TryShow();
     }
 
-    [CatchExceptionAndShowErrorToast]
     private async Task Add(User user)
     {
         try
@@ -158,6 +169,11 @@ public partial class UserAdminViewModel : PageBase
             await _userProxy.Add(user);
             this.ShowSuccessToast(Resources.msg_user_added);
             this._manageUserDialogViewModel.CloseDialog();
+        }
+        catch (Exception e)
+        {
+            _logger.Error(e.Message);
+            this.ShowErrorToast(e.Message);
         }
         finally
         {
@@ -178,12 +194,19 @@ public partial class UserAdminViewModel : PageBase
             .TryShow();
     }
 
-    [CatchExceptionAndShowErrorToast]
     private async Task Remove(User user)
     {
-        _userProxy.Delete(user);
-        this.ShowSuccessToast(Resources.msg_user_deleted);
-        await this.FindAllUsers();
+        try
+        {
+            _userProxy.Delete(user);
+            this.ShowSuccessToast(Resources.msg_user_deleted);
+            await this.FindAllUsers();
+        }
+        catch (Exception e)
+        {
+            _logger.Error(e.Message);
+            this.ShowErrorToast(e.Message);
+        }
     }
 
     private async Task FindAllUsers()
@@ -199,28 +222,35 @@ public partial class UserAdminViewModel : PageBase
     }
 
     [RelayCommand]
-    [CatchExceptionAndShowErrorToast]
     private async Task ExportToCsv()
     {
-        var topLevel =
-            TopLevel.GetTopLevel(((IClassicDesktopStyleApplicationLifetime)Application.Current.ApplicationLifetime)
-                .MainWindow);
-
-        var file = await topLevel?.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions()
+        try
         {
-            SuggestedFileName = @$"hermes_users_{DateTime.Now:yyyy_MM_dd_mm_ss}.csv",
-            FileTypeChoices = new[]
-            {
-                new FilePickerFileType("CSV Files") { Patterns = ["*.csv"] }
-            }
-        })!;
-        if (file is null) return;
+            var topLevel =
+                TopLevel.GetTopLevel(((IClassicDesktopStyleApplicationLifetime)Application.Current.ApplicationLifetime)
+                    .MainWindow);
 
-        var csv = "Employee Id, Employee Name, Department, Password\n";
-        csv += Users
-            .Select(user => $"{user.EmployeeId},{user.Name},{user.Department},{user.Password}")
-            .Aggregate((a, b) => $"{a}\n{b}");
-        await _fileService.WriteAllTextAsync(file.Path.AbsolutePath, csv);
-        this.ShowSuccessToast(Resources.msg_users_exported_to_csv);
+            var file = await topLevel?.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions()
+            {
+                SuggestedFileName = @$"hermes_users_{DateTime.Now:yyyy_MM_dd_mm_ss}.csv",
+                FileTypeChoices = new[]
+                {
+                    new FilePickerFileType("CSV Files") { Patterns = ["*.csv"] }
+                }
+            })!;
+            if (file is null) return;
+
+            var csv = "Employee Id, Employee Name, Department, Password\n";
+            csv += Users
+                .Select(user => $"{user.EmployeeId},{user.Name},{user.Department},{user.Password}")
+                .Aggregate((a, b) => $"{a}\n{b}");
+            await _fileService.WriteAllTextAsync(file.Path.AbsolutePath, csv);
+            this.ShowSuccessToast(Resources.msg_users_exported_to_csv);
+        }
+        catch (Exception e)
+        {
+            _logger.Error(e.Message);
+            this.ShowErrorToast(e.Message);
+        }
     }
 }

@@ -21,7 +21,7 @@ public class FileService
     {
         this._settingsRepository = settingsRepository;
         this._retryPipeline = new ResiliencePipelineBuilder()
-            .AddRetry(new RetryStrategyOptions() { MaxDelay = TimeSpan.FromMilliseconds(200), MaxRetryAttempts = 3 })
+            .AddRetry(new RetryStrategyOptions() { MaxDelay = TimeSpan.FromMilliseconds(50), MaxRetryAttempts = 3 })
             .AddTimeout(TimeSpan.FromSeconds(10))
             .Build();
     }

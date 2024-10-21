@@ -1,10 +1,11 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Hermes.Common.Aspects;
 using Hermes.Common.Extensions;
+using Hermes.Common;
 using Hermes.Services;
 using Hermes.Types;
 using System.Threading.Tasks;
+using System;
 
 namespace Hermes.Features.UutProcessor;
 
@@ -14,10 +15,15 @@ public partial class ScannerViewModel : ViewModelBase
     [ObservableProperty] private string _statusText = StateType.Stopped.ToTranslatedString();
     [ObservableProperty] private string _comPort;
     [ObservableProperty] private string _scannedText = "";
+
+    private readonly ILogger _logger;
     private readonly SerialScanner _serialScanner;
 
-    public ScannerViewModel(SerialScanner serialScanner)
+    public ScannerViewModel(
+        ILogger logger,
+        SerialScanner serialScanner)
     {
+        this._logger = logger;
         this._serialScanner = serialScanner;
         this._serialScanner.StateChanged += OnSerialScannerStateChanged;
         this._serialScanner.Scanned += OnSerialScannerScanned;
@@ -40,18 +46,32 @@ public partial class ScannerViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    [CatchExceptionAndShowErrorToast]
     private void Start()
     {
-        _serialScanner.Start();
-        this.ComPort = _serialScanner.PortName;
+        try
+        {
+            _serialScanner.Open();
+            this.ComPort = _serialScanner.PortName;
+        }
+        catch (Exception e)
+        {
+            _logger.Error(e.Message);
+            this.ShowErrorToast(e.Message);
+        }
     }
 
     [RelayCommand]
-    [CatchExceptionAndShowErrorToast]
     private void Stop()
     {
-        _serialScanner.Stop();
+        try
+        {
+            _serialScanner.Close();
+        }
+        catch (Exception e)
+        {
+            _logger.Error(e.Message);
+            this.ShowErrorToast(e.Message);
+        }
     }
 
     [RelayCommand]

@@ -1,82 +1,103 @@
 using Hermes.Builders;
 using Hermes.Common;
-using Hermes.Language;
 using Hermes.Models;
-using Hermes.Repositories;
 using Hermes.Types;
+using Reactive.Bindings.Disposables;
+using Reactive.Bindings;
+using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
 using System;
-using Reactive.Bindings;
-using ReactiveUI;
 
 namespace Hermes.Services;
 
-public abstract class UutSenderService(
-    ILogger logger,
-    ISfcService sfcService,
-    ISettingsRepository settingsRepository,
-    SfcResponseBuilder sfcResponseBuilder)
-    : IUutSenderService
+public abstract class UutSenderService
 {
-    public ReactivePropertySlim<UutProcessorState> State { get; protected set; } = new();
-    public event EventHandler<UnitUnderTest>? UnitUnderTestCreated;
-    public event EventHandler<UnitUnderTest>? SfcResponse;
-    public event EventHandler<bool>? RunStatusChanged;
-
-    protected readonly ISettingsRepository SettingsRepository = settingsRepository;
-    protected bool IsRunning;
+    public ReactiveProperty<UutProcessorState> State { get; } = new(UutProcessorState.Stopped);
+    public ReactiveProperty<UnitUnderTest> UnitUnderTestCreated { get; } = new(UnitUnderTest.Null);
+    public ReactiveProperty<SfcResponse> SfcResponseCreated { get; } = new(SfcResponse.Null);
+    public ReactiveProperty<bool> IsRunning { get; } = new(false);
 
     public abstract string Path { get; }
     public bool IsWaitingForDummy { get; set; }
 
-    public abstract void Start();
+    private readonly ILogger _logger;
+    private readonly ISfcService _sfcService;
+    private readonly SfcResponseBuilder _sfcResponseBuilder;
+    protected readonly CompositeDisposable Disposables = [];
+    private readonly Session _session;
 
-    public abstract void Stop();
-
-    protected async Task SendUnitUnderTest(UnitUnderTest unitUnderTest)
+    protected UutSenderService(
+        ILogger logger,
+        ISfcService sfcService,
+        Session session,
+        SfcResponseBuilder sfcResponseBuilder)
     {
-        var attempt = 0;
-        var shouldRetry = false;
-        do
+        _logger = logger;
+        _session = session;
+        _sfcResponseBuilder = sfcResponseBuilder;
+        _sfcService = sfcService;
+        this.SetupReactiveObservers();
+    }
+
+    private void SetupReactiveObservers()
+    {
+        var isRunningDisposable = IsRunning
+            .Subscribe(isRunning => _logger.Info($"UutSenderService {(isRunning ? "started" : "stopped")}"));
+
+        this.Disposables.Add(isRunningDisposable);
+    }
+
+    public void Start()
+    {
+        try
         {
-            if (shouldRetry)
-            {
-                var delay = this.SettingsRepository.Settings.WaitDelayMilliseconds;
-                logger.Info($" Retry SendUnitUnderTest waiting {delay} ms for {unitUnderTest.FileName}");
-                await Task.Delay((int)delay);
-            }
-
-            if (!SettingsRepository.Settings.SendRepairFile && unitUnderTest.IsFail)
-            {
-                unitUnderTest.SfcResponse = sfcResponseBuilder.SetOkSfcResponse().Build();
-                unitUnderTest.Message = SettingsRepository.Settings.Machine is MachineType.Spi
-                    ? Resources.msg_spi_repair
-                    : "";
-            }
-            else
-            {
-                unitUnderTest.SfcResponse = await sfcService.SendAsync(unitUnderTest);
-            }
-
-            shouldRetry = unitUnderTest.SfcResponse.IsTimeout || unitUnderTest.SfcResponse.IsEndOfFileError;
-            attempt++;
-        } while (shouldRetry && attempt <= this.SettingsRepository.Settings.MaxSfcRetries);
+            if (IsRunning.Value) return;
+            this.IsRunning.Value = true;
+            this.State.Value = UutProcessorState.Idle;
+            StartService();
+        }
+        catch (Exception)
+        {
+            this.Stop();
+            throw;
+        }
     }
 
-    protected void OnUnitUnderTestCreated(UnitUnderTest unitUnderTest)
+    protected abstract void StartService();
+
+    public void Stop()
     {
-        UnitUnderTestCreated?.Invoke(this, unitUnderTest);
+        if (!IsRunning.Value) return;
+        this.IsRunning.Value = false;
+        this.Disposables.Dispose();
+        StopService();
+        this.State.Value = UutProcessorState.Stopped;
     }
 
-    protected void OnSfcResponse(UnitUnderTest unitUnderTest)
-    {
-        SfcResponse?.Invoke(this, unitUnderTest);
-    }
+    protected abstract void StopService();
 
-    protected void OnRunStatusChanged(bool isRunning)
+    protected Task<SfcResponse> SendUnitUnderTest(UnitUnderTest unitUnderTest)
     {
-        this.IsRunning = isRunning;
-        RunStatusChanged?.Invoke(this, isRunning);
-        logger.Info($"SfcSenderService {(isRunning ? "started" : "stopped")}");
+        if (!_session.Settings.SendRepairFile && unitUnderTest.IsFail)
+        {
+            return Task.FromResult(_sfcResponseBuilder
+                .SetOkSfcResponse()
+                .Build());
+
+            // TODO: Move from here
+            //unitUnderTest.Message = _session.Settings.Machine is MachineType.Spi
+            //   ? Resources.msg_spi_repair
+            //   : "";
+
+            // TODO: Move sfc response to backup
+        }
+
+        return Observable
+            .FromAsync(async () => await _sfcService.SendAsync(unitUnderTest))
+            .Do(x => _logger.Debug($"SendUnitUnderTest {unitUnderTest.FileName}, SfcResponse: {x.ResponseType}"))
+            .Retry(this._session.Settings.MaxSfcRetries)
+            .Catch<SfcResponse, Exception>(_ => Observable.Return(Models.SfcResponse.Null))
+            .ToTask();
     }
 }

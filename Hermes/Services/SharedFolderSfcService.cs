@@ -1,59 +1,64 @@
+using Hermes.Cipher.Extensions;
 using Hermes.Models;
-using Hermes.Repositories;
-using System.Diagnostics;
+using System.IO;
+using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
+using System;
 
 namespace Hermes.Services;
 
 public class SharedFolderSfcService : ISfcService
 {
-    private readonly Stopwatch _stopwatch;
     private readonly FileService _fileService;
-    private readonly ISettingsRepository _settingsRepository;
-    private readonly SfcResponseRepository _sfcResponseRepository;
+    private readonly FolderWatcherService _folderWatcherService;
+    private readonly Session _session;
 
     public SharedFolderSfcService(
         FileService fileService,
-        ISettingsRepository settingsRepositoryRepository,
-        SfcResponseRepository sfcResponseRepository)
+        FolderWatcherService folderWatcherService,
+        Session session)
     {
-        this._settingsRepository = settingsRepositoryRepository;
+        this._session = session;
+        this._folderWatcherService = folderWatcherService;
         this._fileService = fileService;
-        this._sfcResponseRepository = sfcResponseRepository;
-        this._stopwatch = new Stopwatch();
     }
 
-    public async Task<SfcResponse> SendAsync(UnitUnderTest unitUnderTest)
+
+    public Task<SfcResponse> SendAsync(UnitUnderTest unitUnderTest)
     {
-        var sfcRequest = new SfcRequest(
-            unitUnderTest,
-            this._settingsRepository.Settings.SfcPath,
-            this._settingsRepository.Settings.SfcResponseExtension);
-        await this._fileService.WriteAllTextAsync(sfcRequest.FullPath, sfcRequest.Content);
+        this._folderWatcherService.Start(this._session.Settings.SfcPath);
 
-        var sfcResponse = SfcResponse.BuildTimeout();
-        if (await WaitForFileCreationAsync(sfcRequest.ResponseFullPath))
-        {
-            sfcResponse = new SfcResponse(
-                content: await this._fileService.TryReadAllTextAsync(sfcRequest.ResponseFullPath)
-            );
-            await _fileService.MoveToBackupAndAppendResponseAsync(sfcRequest.ResponseFullPath);
-        }
+        var responseCreated = this._folderWatcherService
+            .TextDocumentCreated
+            .Timeout(TimeSpan.FromSeconds(this._session.Settings.SfcTimeoutSeconds))
+            .Where(x => IsResponseFile(x, unitUnderTest))
+            .Take(1);
 
-        await this._sfcResponseRepository.AddAndSaveAsync(sfcResponse);
-        return sfcResponse;
+        return Observable
+            .FromAsync(_ => SendUnitUnderTest(unitUnderTest))
+            .Select(_ => responseCreated)
+            .Concat()
+            .Select(x => new SfcResponse(
+                content: x.Content,
+                additionalOkResponse: _session.Settings.AdditionalOkSfcResponse
+            ))
+            .Catch<SfcResponse, TimeoutException>(_ => Observable.Return(SfcResponse.BuildTimeout()))
+            .Catch<SfcResponse, Exception>(_ => Observable.Return(SfcResponse.Null))
+            .Finally(() => this._folderWatcherService.Stop())
+            .ToTask();
     }
 
-    private async Task<bool> WaitForFileCreationAsync(string fullPath)
+    private bool IsResponseFile(TextDocument textDocument, UnitUnderTest unitUnderTest)
     {
-        var timeout = this._settingsRepository.Settings.SfcTimeoutSeconds * 1000;
-        this._stopwatch.Restart();
-        while (!this._fileService.FileExists(fullPath) && this._stopwatch.ElapsedMilliseconds <= timeout)
-        {
-            await Task.Delay(this._settingsRepository.Settings.WaitDelayMilliseconds);
-        }
+        return unitUnderTest.FileName.StartsWith(textDocument.FileNameWithoutExtension) &&
+               textDocument.FileName.EndsWith(this._session.Settings.SfcResponseExtension.GetDescription());
+    }
 
-        this._stopwatch.Stop();
-        return this._stopwatch.ElapsedMilliseconds < timeout;
+    private async Task SendUnitUnderTest(UnitUnderTest unitUnderTest)
+    {
+        await this._fileService.WriteAllTextAsync(
+            Path.Combine(this._session.Settings.SfcPath, unitUnderTest.FileName),
+            unitUnderTest.Content);
     }
 }

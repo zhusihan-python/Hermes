@@ -1,118 +1,110 @@
 using Hermes.Builders;
-using Hermes.Common.Extensions;
 using Hermes.Common.Parsers;
 using Hermes.Common;
 using Hermes.Models;
-using Hermes.Repositories;
 using Hermes.Types;
+using Reactive.Bindings;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System;
 
 namespace Hermes.Services;
 
-public class SfcSimulatorService
+public class SfcSimulatorService(
+    FileService fileService,
+    FolderWatcherService folderWatcherService,
+    ILogger logger,
+    ParserPrototype parserPrototype,
+    Session session,
+    SfcResponseBuilder sfcResponseBuilder)
 {
     public SfcResponseType Mode { get; set; } = SfcResponseType.Ok;
-    public event EventHandler<bool>? RunStatusChanged;
 
-    private bool _isRunning;
-    private readonly FileService _fileService;
-    private readonly FolderWatcherService _folderWatcherService;
-    private readonly ILogger _logger;
-    private readonly ISettingsRepository _settingsRepository;
-    private readonly SfcResponseBuilder _sfcResponseBuilder;
-    private readonly ParserPrototype _parserPrototype;
-
-    public SfcSimulatorService(
-        ILogger logger,
-        FileService fileService,
-        ISettingsRepository settingsRepository,
-        ParserPrototype parserPrototype,
-        SfcResponseBuilder sfcResponseBuilder,
-        FolderWatcherService folderWatcherService
-    )
-    {
-        this._logger = logger;
-        this._fileService = fileService;
-        this._settingsRepository = settingsRepository;
-        this._parserPrototype = parserPrototype;
-        this._sfcResponseBuilder = sfcResponseBuilder;
-        this._folderWatcherService = folderWatcherService;
-        this.SetupReactiveExtensions();
-    }
-
-    private void SetupReactiveExtensions()
-    {
-        this._folderWatcherService.TextDocumentCreated
-            .Distinct(x => x.FullPath)
-            .Select(async (x) => await this.OnTextDocumentCreated(x))
-            .Subscribe();
-    }
+    private readonly CompositeDisposable _disposables = [];
+    public readonly ReactiveProperty<bool> IsRunning = new();
 
     public void Start()
     {
-        if (_isRunning) return;
-        this._folderWatcherService.Start(
-            _settingsRepository.Settings.SfcPath,
-            "*" + _settingsRepository.Settings.InputFileExtension.GetDescription());
-        this.OnRunStatusChanged(true);
+        try
+        {
+            if (IsRunning.Value) return;
+            IsRunning.Value = true;
+            SetupReactiveObservers();
+            folderWatcherService.Start(
+                session.Settings.SfcPath,
+                session.Settings.InputFileFilter);
+        }
+        catch (Exception)
+        {
+            Stop();
+            throw;
+        }
+    }
+
+    private void SetupReactiveObservers()
+    {
+        var textDocumentCreatedDisposable = folderWatcherService
+            .TextDocumentCreated
+            .Distinct(x => x.FullPath)
+            .Select(SendSfcResponse)
+            .Subscribe();
+
+        var isRunningDisposable = IsRunning
+            .Subscribe(isRunning => { logger.Info($"Sfc simulator {(isRunning ? "started" : "stopped")}"); });
+
+        _disposables.Add(textDocumentCreatedDisposable);
+        _disposables.Add(isRunningDisposable);
     }
 
     public void Stop()
     {
-        if (!_isRunning) return;
-        this._folderWatcherService.Stop();
-        this.OnRunStatusChanged(false);
+        if (!IsRunning.Value) return;
+        IsRunning.Value = false;
+        folderWatcherService.Stop();
+        _disposables.Dispose();
     }
 
-    private async Task OnTextDocumentCreated(TextDocument textDocument)
+    private async Task SendSfcResponse(TextDocument textDocument)
     {
-        _logger.Info($"SfcSimulator Process: {textDocument.FileName} | Mode: {this.Mode}");
-        await this._fileService.DeleteFileIfExists(textDocument.FullPath);
-        if (this.Mode == SfcResponseType.Timeout)
+        logger.Debug($"SfcSimulator Process: {textDocument.FileName} | Mode: {Mode}");
+        await fileService.DeleteFileIfExists(textDocument.FullPath);
+        if (Mode == SfcResponseType.Timeout)
         {
             return;
         }
 
-        await this._fileService.WriteSfcResponseAsync(
+        await fileService.WriteSfcResponseAsync(
             textDocument.FileNameWithoutExtension,
-            this.GetContent(textDocument));
+            GetSfcResponseContent(textDocument));
+        logger.Debug($"SfcSimulator Responded");
     }
 
-    private string GetContent(TextDocument textDocument)
+    private string GetSfcResponseContent(TextDocument textDocument)
     {
-        switch (this.Mode)
+        switch (Mode)
         {
             case SfcResponseType.WrongStation:
-                this._sfcResponseBuilder.SetWrongStation();
+                sfcResponseBuilder.SetWrongStation();
                 break;
             case SfcResponseType.Unknown:
-                this._sfcResponseBuilder.SetUnknownContent();
+                sfcResponseBuilder.SetUnknownContent();
                 break;
             default:
-                this._sfcResponseBuilder.SetOkSfcResponse();
+                sfcResponseBuilder.SetOkSfcResponse();
                 break;
         }
 
-        this._sfcResponseBuilder.SerialNumber(
-            this.GetSerialNumber(textDocument));
+        sfcResponseBuilder.SerialNumber(GetSerialNumber(textDocument));
 
-        return this._sfcResponseBuilder.GetContent();
+        return sfcResponseBuilder.GetContent();
     }
 
     private string GetSerialNumber(TextDocument textDocument)
     {
-        var parser = _parserPrototype.GetUnitUnderTestParser(_settingsRepository.Settings.LogfileType);
+        var parser = parserPrototype.GetUnitUnderTestParser(session.Settings.LogfileType);
         return parser == null
             ? ""
             : parser.ParseSerialNumber(textDocument.Content).ToUpper();
-    }
-
-    protected virtual void OnRunStatusChanged(bool isRunning)
-    {
-        this._isRunning = isRunning;
-        RunStatusChanged?.Invoke(this, isRunning);
-        this._logger.Info($"SfcSenderService {(isRunning ? "started" : "stopped")}");
     }
 }

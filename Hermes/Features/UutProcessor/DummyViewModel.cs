@@ -1,4 +1,3 @@
-using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -6,6 +5,10 @@ using Hermes.Common.Messages;
 using Hermes.Language;
 using Hermes.Models;
 using Hermes.Types;
+using Reactive.Bindings.Disposables;
+using System.Reactive.Linq;
+using System.Threading;
+using System;
 
 namespace Hermes.Features.UutProcessor;
 
@@ -20,6 +23,7 @@ public partial class DummyViewModel : ViewModelBase
     private bool _canChangeStatus;
 
     private readonly Session _session;
+    private readonly CompositeDisposable _disposables = [];
 
     public DummyViewModel(Session session)
     {
@@ -29,27 +33,31 @@ public partial class DummyViewModel : ViewModelBase
 
     protected override void OnActivated()
     {
-        this._session.UutProcessorStateChanged += OnUutProcessorStateChanged;
+        this.SetupReactiveObservers();
         base.OnActivated();
     }
 
-    private void OnUutProcessorStateChanged(UutProcessorState state)
+    private void SetupReactiveObservers()
     {
-        Dispatcher.UIThread.InvokeAsync(() =>
-        {
-            CanChangeStatus = state == UutProcessorState.Idle;
-            if (state != UutProcessorState.Idle)
+        var uutProcessorStateChangedDisposable = this._session
+            .UutProcessorCurrentState
+            .ObserveOn(SynchronizationContext.Current!)
+            .Do(uutProcessorState =>
             {
-                this.IsWaitingForDummy = false;
-            }
-        });
+                if (uutProcessorState != UutProcessorState.Idle)
+                {
+                    this.IsWaitingForDummy = false;
+                }
+            })
+            .Do(uutProcessorState => CanChangeStatus = uutProcessorState == UutProcessorState.Idle)
+            .Subscribe();
+
+        this._disposables.Add(uutProcessorStateChangedDisposable);
     }
 
-    partial void OnIsWaitingForDummyChanged(bool oldValue, bool newValue)
+    protected override void OnDeactivated()
     {
-        this.StatusText = newValue
-            ? Resources.msg_waiting_dummy_board
-            : Resources.enum_idle;
+        this._disposables.Dispose();
     }
 
     [RelayCommand(CanExecute = nameof(CanChangeStatus))]
@@ -64,5 +72,12 @@ public partial class DummyViewModel : ViewModelBase
     {
         this.IsWaitingForDummy = false;
         Messenger.Send(new WaitForDummyMessage(this.IsWaitingForDummy));
+    }
+
+    partial void OnIsWaitingForDummyChanged(bool oldValue, bool newValue)
+    {
+        this.StatusText = newValue
+            ? Resources.msg_waiting_dummy_board
+            : Resources.enum_idle;
     }
 }

@@ -1,13 +1,12 @@
-using Hermes.Common.Aspects;
 using Hermes.Repositories;
 using Hermes.Types;
 using System.Diagnostics;
 using System.IO.Ports;
-using System.Threading.Tasks;
-using System;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using System.Threading;
+using System;
 
 namespace Hermes.Services;
 
@@ -34,8 +33,7 @@ public class SerialScanner
 
     public string PortName => _settingsRepository.Settings.ScannerComPort;
 
-    [LogException]
-    public void Start()
+    public void Open()
     {
         try
         {
@@ -50,20 +48,18 @@ public class SerialScanner
         }
         catch (Exception e)
         {
-            this.Stop();
+            this.Close();
             throw;
         }
     }
 
-    [LogException]
-    public void Stop()
+    public void Close()
     {
         this._serialPort?.Close();
         this._serialPort?.Dispose();
         this.StateChanged?.Invoke(StateType.Stopped);
     }
 
-    [LogException]
     public async Task<string> Scan()
     {
         if (_serialPort is not { IsOpen: true }) return "";

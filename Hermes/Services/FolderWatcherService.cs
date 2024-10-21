@@ -1,74 +1,55 @@
+using Hermes.Common.Reactive;
 using Hermes.Models;
 using System.IO;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using System;
-using System.Collections.ObjectModel;
-using System.Reactive;
 
 namespace Hermes.Services;
 
-public class FolderWatcherService
+public class FolderWatcherService : IDisposable
 {
     public IObservable<TextDocument> TextDocumentCreated { get; private set; } = null!;
 
-    private FileSystemWatcher _fsw;
     private readonly FileService _fileService;
+    private readonly FileSystemWatcherRx _fileSystemWatcherRx;
 
-    public FolderWatcherService(FileService fileService)
+    public FolderWatcherService(FileService fileService, FileSystemWatcherRx fileSystemWatcherRx)
     {
         this._fileService = fileService;
-        this._fsw = new FileSystemWatcher();
+        this._fileSystemWatcherRx = fileSystemWatcherRx;
         this.SetupReactiveExtensions();
     }
 
     private void SetupReactiveExtensions()
     {
-        this._fsw = new FileSystemWatcher();
+        this.TextDocumentCreated = this._fileSystemWatcherRx
+            .Created
+            .Delay(TimeSpan.FromMilliseconds(10))
+            .SelectMany(this.ReadTextDocument);
+    }
 
-        this.TextDocumentCreated = Observable
-            .FromEventPattern<FileSystemEventHandler, FileSystemEventArgs>(
-                x => _fsw.Created += x,
-                x => _fsw.Created -= x)
-            .Delay(TimeSpan.FromMilliseconds(20))
-            .Select((x) => Observable.FromAsync(async () =>
-                {
-                    var textDocument = new TextDocument()
-                    {
-                        FullPath = x.EventArgs.FullPath,
-                        Content =
-                            await _fileService.TryReadAllTextAsync(x.EventArgs.FullPath)
-                    };
-                    return textDocument;
-                }
-            ))
-            .Concat();
+    private async Task<TextDocument> ReadTextDocument(FileSystemEventArgs e)
+    {
+        return new TextDocument()
+        {
+            FullPath = e.FullPath,
+            Content = await _fileService.TryReadAllTextAsync(e.FullPath)
+        };
     }
 
     public void Start(string path, string filter = "*.*")
     {
-        this.ProcessExistingFiles(path);
-        this._fsw.Path = path;
-        this._fsw.Filter = filter;
-        this._fsw.EnableRaisingEvents = true;
-    }
-
-    private void ProcessExistingFiles(string path)
-    {
-        // TODO: implement
-        return;
-        foreach (var file in Directory.EnumerateFiles(path))
-        {
-            // this.FileCreated?.Invoke(this, file);
-        }
+        this._fileSystemWatcherRx.Start(path, filter);
     }
 
     public void Stop()
     {
-        this._fsw.EnableRaisingEvents = false;
+        this._fileSystemWatcherRx.Stop();
     }
 
     public void Dispose()
     {
-        this._fsw.Dispose();
+        this._fileSystemWatcherRx.Dispose();
     }
 }

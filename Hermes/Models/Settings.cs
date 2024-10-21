@@ -1,4 +1,6 @@
-﻿using Hermes.Types;
+﻿using System.Text.Json.Serialization;
+using Hermes.Cipher.Extensions;
+using Hermes.Types;
 
 namespace Hermes.Models;
 
@@ -32,6 +34,7 @@ public class Settings
     public string GkgTunnelComPort { get; set; } = "COM50";
     public string ScannerComPort { get; set; } = "COM40";
     public string AdditionalOkSfcResponse { get; set; } = "";
+    public string InputFileFilter => "*" + InputFileExtension.GetDescription();
 
     #endregion
 }

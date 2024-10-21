@@ -45,8 +45,6 @@
         <PackageReference Include="ConfigFactory.Core" Version="0.4.2"/>
         <PackageReference Include="Dapper" Version="2.1.35"/>
         <PackageReference Include="Material.Icons.Avalonia" Version="2.1.10"/>
-        <PackageReference Include="Metalama.Extensions.DependencyInjection" Version="2024.2.25" />
-        <PackageReference Include="Metalama.Framework" Version="2024.2.25" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
