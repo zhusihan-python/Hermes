@@ -18,7 +18,8 @@ namespace Hermes.AppData.Migrations.Local
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     ResponseType = table.Column<int>(type: "INTEGER", nullable: false),
-                    Content = table.Column<string>(type: "TEXT", maxLength: 3000, nullable: false)
+                    Content = table.Column<string>(type: "TEXT", maxLength: 3000, nullable: false),
+                    FullPath = table.Column<string>(type: "TEXT", maxLength: 512, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -45,12 +46,12 @@ namespace Hermes.AppData.Migrations.Local
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    FileName = table.Column<string>(type: "TEXT", maxLength: 250, nullable: false),
                     SerialNumber = table.Column<string>(type: "TEXT", maxLength: 250, nullable: false),
                     IsFail = table.Column<bool>(type: "INTEGER", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     StopId = table.Column<int>(type: "INTEGER", nullable: true),
-                    SfcResponseId = table.Column<int>(type: "INTEGER", nullable: true)
+                    SfcResponseId = table.Column<int>(type: "INTEGER", nullable: true),
+                    FullPath = table.Column<string>(type: "TEXT", maxLength: 512, nullable: false)
                 },
                 constraints: table =>
                 {

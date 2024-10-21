@@ -48,7 +48,7 @@ public class FileServicesTests
         const string content = "content";
         var inputFullPath = Path.Combine(_settingsRepository.Settings.InputPath, "test.txt");
         await _sut.WriteAllTextAsync(inputFullPath, content);
-        var backupFullPath = await _sut.MoveToBackupAndAppendDateToNameAsync(inputFullPath);
+        var backupFullPath = await _sut.MoveToBackupAsync(inputFullPath);
         Assert.False(_sut.FileExists(inputFullPath));
         Assert.True(_sut.FileExists(backupFullPath));
         Assert.Equal(content, await _sut.TryReadAllTextAsync(backupFullPath));
@@ -60,7 +60,7 @@ public class FileServicesTests
         const string content = "content";
         var inputFullPath = Path.Combine(_settingsRepository.Settings.InputPath, "test.txt");
         await _sut.WriteAllTextAsync(inputFullPath, content);
-        var backupFullPath = await _sut.MoveToBackupAndAppendDateToNameAsync(inputFullPath);
+        var backupFullPath = await _sut.MoveToBackupAsync(inputFullPath);
         await _sut.CopyFromBackupToInputAsync(backupFullPath);
         Assert.True(_sut.FileExists(inputFullPath));
         Assert.Equal(content, await _sut.TryReadAllTextAsync(inputFullPath));

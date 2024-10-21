@@ -13,9 +13,9 @@ using Material.Icons;
 using Reactive.Bindings.Disposables;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using System.Threading;
 using System;
-using System.Threading.Tasks;
 
 namespace Hermes.Features.UutProcessor;
 
@@ -26,6 +26,7 @@ public partial class UutProcessorViewModel : PageBase
     [ObservableProperty] private string _stateText = Resources.enum_stopped;
     [ObservableProperty] private bool _isWaitingForDummy;
     [ObservableProperty] private UnitUnderTest _currentUnitUnderTest = UnitUnderTest.Null;
+    [ObservableProperty] private SfcResponse _currentSfcResponse = SfcResponse.Null;
     public ScannerViewModel ScannerViewModel { get; }
     public DummyViewModel DummyViewModel { get; }
 
@@ -89,19 +90,19 @@ public partial class UutProcessorViewModel : PageBase
             .SubscribeOn(SynchronizationContext.Current!)
             .Where(unitUnderTest => !unitUnderTest.IsNull)
             .Do(unitUnderTest => this.CurrentUnitUnderTest = unitUnderTest)
-            .Select(async unitUnderTest => await this._unitUnderTestRepository.AddAndSaveAsync(unitUnderTest))
             .Subscribe();
 
         var uutResponseCreatedDisposable = this._uutSenderService
             .SfcResponseCreated
             .SubscribeOn(SynchronizationContext.Current!)
             .Where(sfcResponse => !sfcResponse.IsNull)
+            .Do(sfcResponse => this.CurrentSfcResponse = sfcResponse)
             .Do(sfcResponse => this.CurrentUnitUnderTest.SfcResponse = sfcResponse)
-            .Select(async sfcResponse => await this._unitUnderTestRepository.SaveChangesAsync())
             .Select(async _ => await this._stopService.Calculate(CurrentUnitUnderTest))
             .Concat()
             .Do(this.ShowResult)
-            .Do(this.MoveFilesToBackup)
+            .Select(async _ => await this.MoveFilesToBackup())
+            .Select(async _ => await this.PersistCurrentUnitUnderTest())
             .Subscribe();
 
         this._disposables.Add(uutSenderServiceIsRunningChangeDisposable);
@@ -186,10 +187,16 @@ public partial class UutProcessorViewModel : PageBase
         }
     }
 
-    private async Task MoveFilesToBackup(Stop stop)
+    private async Task MoveFilesToBackup()
     {
-        return;
-        //await this._fileService.MoveToBackupAndAppendDateToNameAsync(CurrentUnitUnderTest.FullPath);
+        CurrentUnitUnderTest.FullPath = await this._fileService.MoveToBackupAsync(CurrentUnitUnderTest.FullPath);
+        CurrentSfcResponse.FullPath = await this._fileService.MoveToBackupAsync(CurrentSfcResponse.FullPath);
+    }
+
+    private async Task PersistCurrentUnitUnderTest()
+    {
+        await this._unitUnderTestRepository.AddAndSaveAsync(CurrentUnitUnderTest);
+        await this._unitUnderTestRepository.SaveChangesAsync();
     }
 
     private void OnStartReceive(object recipient, StartUutProcessorMessage message)

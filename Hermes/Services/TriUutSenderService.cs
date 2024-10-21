@@ -10,14 +10,12 @@ namespace Hermes.Services;
 
 public class TriUutSenderService : UutSenderService
 {
-    private readonly FileService _fileService;
     private readonly FolderWatcherService _folderWatcherService;
     private readonly ILogger _logger;
     private readonly Session _session;
     private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
 
     public TriUutSenderService(
-        FileService fileService,
         FolderWatcherService folderWatcherService,
         ILogger logger,
         ISfcService sfcService,
@@ -28,7 +26,6 @@ public class TriUutSenderService : UutSenderService
     {
         this._session = session;
         this._logger = logger;
-        this._fileService = fileService;
         this._folderWatcherService = folderWatcherService;
         this._unitUnderTestBuilder = unitUnderTestBuilder;
     }

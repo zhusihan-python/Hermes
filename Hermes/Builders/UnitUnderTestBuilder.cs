@@ -46,19 +46,6 @@ public class UnitUnderTestBuilder
         sfcResponseBuilder.SetOkSfcResponse();
     }
 
-    public async Task<UnitUnderTest> BuildAsync(string fileFullPath)
-    {
-        var fileName = this._fileService.FileName(fileFullPath);
-        var content = await this._fileService.TryReadAllTextAsync(fileFullPath);
-        var parser = _parserPrototype.GetUnitUnderTestParser(_settingsRepository.Settings.LogfileType);
-        if (parser != null)
-        {
-            content = await parser.GetContentAsync(content);
-        }
-
-        return Build(fileName, content);
-    }
-
     public UnitUnderTest Build()
     {
         this.Content = this.GetTestContent();
@@ -66,14 +53,6 @@ public class UnitUnderTestBuilder
             this._fileNameWithoutExtension +
             _settingsRepository.Settings.InputFileExtension.GetDescription()
             , this.Content);
-    }
-
-    public UnitUnderTest Build(TextDocument textDocument)
-    {
-        return Build(
-            textDocument.FileNameWithoutExtension +
-            _settingsRepository.Settings.InputFileExtension.GetDescription(),
-            textDocument.Content);
     }
 
     public string GetTestContent()
@@ -87,16 +66,21 @@ public class UnitUnderTestBuilder
         return parser.GetTestContent(this._serialNumber, this._isPass, this.Defects);
     }
 
-    private UnitUnderTest Build(string fileName, string content)
+    public UnitUnderTest Build(TextDocument textDocument)
+    {
+        return Build(textDocument.FullPath, textDocument.Content);
+    }
+
+    private UnitUnderTest Build(string fullPath, string content)
     {
         var parser = _parserPrototype.GetUnitUnderTestParser(_settingsRepository.Settings.LogfileType);
-        if (!HasValidExtension(fileName) || parser == null)
+        if (!HasValidExtension(fullPath) || parser == null)
         {
             return UnitUnderTest.Null;
         }
 
 
-        return new UnitUnderTest(fileName, content)
+        return new UnitUnderTest(fullPath, content)
         {
             IsFail = parser.ParseIsFail(content),
             SerialNumber = parser.ParseSerialNumber(content),

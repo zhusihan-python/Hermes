@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using Hermes.Types;
 
@@ -19,19 +20,17 @@ public class UnitUnderTest
     public Stop? Stop { get; set; }
     public SfcResponse? SfcResponse { get; set; }
     [NotMapped] public string Content { get; init; }
-
-    [MaxLength(250)] public string FileName { get; init; }
-
-    //[NotMapped] public string FileName { get; init; }
+    [MaxLength(512)] public string FullPath { get; set; }
+    [NotMapped] public string FileName => Path.GetFileName(this.FullPath);
     [NotMapped] public bool IsNull => this == Null;
     [NotMapped] public bool IsRepair => this.IsFail && this.SfcResponse?.IsFail == false;
     [NotMapped] public bool IsSfcTimeout => this.SfcResponse?.IsTimeout == true;
     [NotMapped] public bool IsSfcFail => this.SfcResponse?.IsFail == true;
     [NotMapped] public string Message { get; set; } = "";
 
-    public UnitUnderTest(string fileName, string content)
+    public UnitUnderTest(string fullPath, string content)
     {
-        this.FileName = fileName;
+        this.FullPath = fullPath;
         this.Content = content;
     }
 

@@ -24,6 +24,7 @@ public class SfcResponse
     public virtual bool IsFail => this.ResponseType != SfcResponseType.Ok;
     public SfcResponseType ResponseType { get; init; }
     [MaxLength(3000)] public string Content { get; init; } = "";
+    [MaxLength(512)] public string FullPath { get; set; } = "";
 
     [NotMapped]
     public string Details =>
@@ -37,8 +38,9 @@ public class SfcResponse
     {
     }
 
-    public SfcResponse(string content, string additionalOkResponse = "")
+    public SfcResponse(string content, string fullPath = "", string additionalOkResponse = "")
     {
+        this.FullPath = fullPath;
         this.Content = content;
         this._additionalOkResponse = additionalOkResponse;
         this.ResponseType = ParseErrorType(content);
@@ -71,7 +73,7 @@ public class SfcResponse
 
     public static SfcResponse BuildTimeout()
     {
-        return new SfcResponse(TimeoutText, "");
+        return new SfcResponse(TimeoutText);
     }
 }
 

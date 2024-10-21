@@ -5,14 +5,12 @@ using Polly;
 using System.IO;
 using System.Threading.Tasks;
 using System;
-using System.Diagnostics;
 
 namespace Hermes.Services;
 
 public class FileService
 {
     private const string BackupPrefix = "_backupAt_";
-    private const string ResponseSufix = "_response";
 
     private readonly ISettingsRepository _settingsRepository;
     private readonly ResiliencePipeline _retryPipeline;
@@ -42,23 +40,16 @@ public class FileService
         });
     }
 
-    public virtual async Task<string> MoveToBackupAndAppendResponseAsync(string fullPath)
+    public async Task<string> MoveToBackupAsync(string fullPath)
     {
-        return await MoveToBackupAsync(
-            fullPath,
-            $"{Path.GetFileNameWithoutExtension(fullPath)}{ResponseSufix}{Path.GetExtension(fullPath)}");
-    }
+        if (!File.Exists(fullPath))
+        {
+            return "";
+        }
 
-    public virtual async Task<string> MoveToBackupAndAppendDateToNameAsync(string fullPath)
-    {
-        return await MoveToBackupAsync(
-            fullPath,
+        var backupFullPath = Path.Combine(
+            this._settingsRepository.Settings.BackupPath,
             $"{Path.GetFileNameWithoutExtension(fullPath)}{BackupPrefix}{DateTime.Now:dd_MM_HHmmss}{Path.GetExtension(fullPath)}");
-    }
-
-    private async Task<string> MoveToBackupAsync(string fullPath, string fileName)
-    {
-        var backupFullPath = Path.Combine(this._settingsRepository.Settings.BackupPath, fileName);
         if (File.Exists(backupFullPath))
         {
             File.Delete(backupFullPath);

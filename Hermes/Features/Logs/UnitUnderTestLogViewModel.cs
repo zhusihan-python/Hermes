@@ -1,23 +1,18 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using Avalonia.Controls.Notifications;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Hermes.Repositories;
-using System;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.Messaging;
 using Hermes.Common.Extensions;
-using Hermes.Types;
+using Hermes.Common.Messages;
+using Hermes.Repositories;
 using Hermes.Services;
-using Hermes.Models;
-using System.Linq;
+using Hermes.Types;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
-using Avalonia.Controls;
-using Material.Icons;
-using ReactiveUI;
-using Avalonia.Controls.Notifications;
-using Hermes.Common.Messages;
-using Hermes.Language;
-using CommunityToolkit.Mvvm.Messaging;
+using System.Linq;
+using System.Threading.Tasks;
+using System;
 
 namespace Hermes.Features.Logs
 {
@@ -116,8 +111,8 @@ namespace Hermes.Features.Logs
                     SerialNumber = unit.SerialNumber,
                     Filename = unit.FileName,
                     TestStatus = unit.IsFail ? "Fail" : "Pass",
-                    SfcResponse = unit.SfcResponse?.ResponseType.ToTranslatedString(),
-                    CreatedAt = unit.CreatedAt.ToString("dd/MM/yyyy"),
+                    SfcResponse = (unit.SfcResponse?.ResponseType ?? SfcResponseType.Unknown).ToTranslatedString(),
+                    CreatedAt = unit.CreatedAt.ToString("g"),
                     IconKind = unit.IsFail ? "AlertCircleOutline" : "CheckCircleOutline"
                 });
             }

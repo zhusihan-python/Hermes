@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hermes.AppData.Migrations.Local
 {
     [DbContext(typeof(HermesLocalContext))]
-    [Migration("20241004193314_001")]
+    [Migration("20241021021018_001")]
     partial class _001
     {
         /// <inheritdoc />
@@ -56,13 +56,18 @@ namespace Hermes.AppData.Migrations.Local
 
             modelBuilder.Entity("Hermes.Models.SfcResponse", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasMaxLength(3000)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FullPath")
+                        .IsRequired()
+                        .HasMaxLength(512)
                         .HasColumnType("TEXT");
 
                     b.Property<int>("ResponseType")
@@ -99,9 +104,9 @@ namespace Hermes.AppData.Migrations.Local
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("FileName")
+                    b.Property<string>("FullPath")
                         .IsRequired()
-                        .HasMaxLength(250)
+                        .HasMaxLength(512)
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("IsFail")

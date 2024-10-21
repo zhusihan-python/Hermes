@@ -41,6 +41,7 @@ public class SharedFolderSfcService : ISfcService
             .Concat()
             .Select(x => new SfcResponse(
                 content: x.Content,
+                fullPath: x.FullPath,
                 additionalOkResponse: _session.Settings.AdditionalOkSfcResponse
             ))
             .Catch<SfcResponse, TimeoutException>(_ => Observable.Return(SfcResponse.BuildTimeout()))
