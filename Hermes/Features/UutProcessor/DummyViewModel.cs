@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using Hermes.Common.Extensions;
 using Hermes.Common.Messages;
 using Hermes.Language;
 using Hermes.Models;
@@ -57,7 +58,7 @@ public partial class DummyViewModel : ViewModelBase
 
     protected override void OnDeactivated()
     {
-        this._disposables.Dispose();
+        this._disposables.DisposeItems();
     }
 
     [RelayCommand(CanExecute = nameof(CanChangeStatus))]

@@ -20,7 +20,10 @@ public class SfcResponse
     public const string ScanError = "ScanError";
 
     [Key] public int? Id { get; init; }
-    public bool IsOk => !IsFail || Content.Contains(_additionalOkResponse);
+
+    public bool IsOk => !IsFail ||
+                        (!string.IsNullOrEmpty(_additionalOkResponse) && Content.Contains(_additionalOkResponse));
+
     public virtual bool IsFail => this.ResponseType != SfcResponseType.Ok;
     public SfcResponseType ResponseType { get; init; }
     [MaxLength(3000)] public string Content { get; init; } = "";

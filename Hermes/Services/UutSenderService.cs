@@ -1,4 +1,5 @@
 using Hermes.Builders;
+using Hermes.Common.Extensions;
 using Hermes.Common;
 using Hermes.Models;
 using Hermes.Types;
@@ -37,12 +38,12 @@ public abstract class UutSenderService
         _session = session;
         _sfcResponseBuilder = sfcResponseBuilder;
         _sfcService = sfcService;
-        this.SetupReactiveObservers();
     }
 
     private void SetupReactiveObservers()
     {
         var isRunningDisposable = IsRunning
+            .SkipWhile(x => x == false)
             .Subscribe(isRunning => _logger.Info($"UutSenderService {(isRunning ? "started" : "stopped")}"));
 
         this.Disposables.Add(isRunningDisposable);
@@ -53,9 +54,10 @@ public abstract class UutSenderService
         try
         {
             if (IsRunning.Value) return;
+            this.SetupReactiveObservers();
+            this.StartService();
             this.IsRunning.Value = true;
             this.State.Value = UutProcessorState.Idle;
-            StartService();
         }
         catch (Exception)
         {
@@ -70,9 +72,9 @@ public abstract class UutSenderService
     {
         if (!IsRunning.Value) return;
         this.IsRunning.Value = false;
-        this.Disposables.Dispose();
-        StopService();
+        this.StopService();
         this.State.Value = UutProcessorState.Stopped;
+        this.Disposables.DisposeItems();
     }
 
     protected abstract void StopService();

@@ -27,12 +27,16 @@ public class SharedFolderSfcService : ISfcService
 
     public Task<SfcResponse> SendAsync(UnitUnderTest unitUnderTest)
     {
-        this._folderWatcherService.Start(this._session.Settings.SfcPath);
+        this._folderWatcherService.Start(
+            this._session.Settings.SfcPath);
 
         var responseCreated = this._folderWatcherService
             .TextDocumentCreated
+            .Delay(TimeSpan.FromMilliseconds(20))
             .Timeout(TimeSpan.FromSeconds(this._session.Settings.SfcTimeoutSeconds))
             .Where(x => IsResponseFile(x, unitUnderTest))
+            .Select(GetResponseFileContent)
+            .Concat()
             .Take(1);
 
         return Observable
@@ -53,7 +57,19 @@ public class SharedFolderSfcService : ISfcService
     private bool IsResponseFile(TextDocument textDocument, UnitUnderTest unitUnderTest)
     {
         return unitUnderTest.FileName.StartsWith(textDocument.FileNameWithoutExtension) &&
-               textDocument.FileName.EndsWith(this._session.Settings.SfcResponseExtension.GetDescription());
+               !textDocument.FileName.EndsWith(this._session.Settings.InputFileExtension.GetDescription());
+    }
+
+    private async Task<TextDocument> GetResponseFileContent(TextDocument textDocument)
+    {
+        var responseFullPath = Path.Combine(Path.GetPathRoot(textDocument.FullPath)!,
+            textDocument.FileNameWithoutExtension +
+            this._session.Settings.SfcResponseExtension.GetDescription());
+        return new TextDocument()
+        {
+            FullPath = responseFullPath,
+            Content = await this._fileService.TryReadAllTextAsync(responseFullPath)
+        };
     }
 
     private async Task SendUnitUnderTest(UnitUnderTest unitUnderTest)

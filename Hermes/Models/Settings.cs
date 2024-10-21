@@ -35,6 +35,7 @@ public class Settings
     public string ScannerComPort { get; set; } = "COM40";
     public string AdditionalOkSfcResponse { get; set; } = "";
     public string InputFileFilter => "*" + InputFileExtension.GetDescription();
+    public string ResponseFileFilter => "*" + SfcResponseExtension.GetDescription();
 
     #endregion
 }

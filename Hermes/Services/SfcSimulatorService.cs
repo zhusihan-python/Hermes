@@ -1,13 +1,14 @@
 using Hermes.Builders;
+using Hermes.Common.Extensions;
 using Hermes.Common.Parsers;
 using Hermes.Common;
 using Hermes.Models;
 using Hermes.Types;
 using Reactive.Bindings;
-using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System;
+using Reactive.Bindings.Disposables;
 
 namespace Hermes.Services;
 
@@ -62,7 +63,7 @@ public class SfcSimulatorService(
         if (!IsRunning.Value) return;
         IsRunning.Value = false;
         folderWatcherService.Stop();
-        _disposables.Dispose();
+        _disposables.DisposeItems();
     }
 
     private async Task SendSfcResponse(TextDocument textDocument)

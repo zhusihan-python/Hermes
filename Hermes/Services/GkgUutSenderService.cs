@@ -124,9 +124,9 @@ public class GkgUutSenderService : UutSenderService
         if (sfcResponse.IsOk)
         {
             _serialPortRx.Write($"{serialNumber}{SerialScanner.LineTerminator}");
-            _logger.Debug($"Responded to trigger");
         }
 
+        _logger.Debug($"Responded to trigger");
         this.SfcResponseCreated.Value = sfcResponse;
         this.State.Value = UutProcessorState.Idle;
     }
@@ -145,6 +145,8 @@ public class GkgUutSenderService : UutSenderService
         this._serialPortRx.PortName = _session.Settings.GkgTunnelComPort;
         this._serialPortRx.Open();
         this._serialScanner.Open();
+        this.IsRunning.Value = true;
+        this.State.Value = UutProcessorState.Idle;
     }
 
     private void SendDummyUnitUnderTest()
