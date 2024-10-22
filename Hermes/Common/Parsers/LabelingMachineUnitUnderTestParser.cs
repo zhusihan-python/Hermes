@@ -15,14 +15,14 @@ public class LabelingMachineUnitUnderTestParser : IUnitUnderTestParser
     private static readonly Regex SerialNumberRgx = new(@"^\s*([\w]+)$[\r\n]*");
 
     private readonly ISfcRepository _sfcRepository;
-    private readonly Session _session;
+    private readonly Settings _settings;
 
     public LabelingMachineUnitUnderTestParser(
         ISfcRepository sfcRepository,
-        Session session)
+        Settings settings)
     {
         this._sfcRepository = sfcRepository;
-        this._session = session;
+        this._settings = settings;
     }
 
     public List<Defect> ParseDefects(string content)
@@ -63,8 +63,9 @@ public class LabelingMachineUnitUnderTestParser : IUnitUnderTestParser
     public async Task<string> GetContentAsync(string content)
     {
         if (string.IsNullOrEmpty(content)) return content;
-        var package = await this._sfcRepository.FindNextCanUsePackage(
-            _session.Settings.Line.ToUpperString());
+        var package = await this._sfcRepository
+            .FindNextCanUsePackage(
+                _settings.Line.ToUpperString());
         var packageId = NoPackageAvailableText;
         if (!package.IsNull)
         {

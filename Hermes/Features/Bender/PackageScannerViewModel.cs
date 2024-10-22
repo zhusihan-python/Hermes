@@ -34,7 +34,7 @@ public partial class PackageScannerViewModel : ViewModelBase
     private readonly ISukiDialogManager _dialogManager;
     private readonly PackageParser _packageParser;
     private readonly QrGenerator _qrGenerator;
-    private readonly Session _session;
+    private readonly Settings _settings;
 
     public PackageScannerViewModel(
         ILogger logger,
@@ -42,13 +42,13 @@ public partial class PackageScannerViewModel : ViewModelBase
         ISukiDialogManager dialogManager,
         PackageParser packageParser,
         QrGenerator qrGenerator,
-        Session session)
+        Settings settings)
     {
         this._dialogManager = dialogManager;
         this._logger = logger;
         this._packageParser = packageParser;
         this._qrGenerator = qrGenerator;
-        this._session = session;
+        this._settings = settings;
         this._sfcRepository = sfcRepository;
     }
 
@@ -85,14 +85,14 @@ public partial class PackageScannerViewModel : ViewModelBase
             var package = await _sfcRepository.FindPackageTracking(this.Package.NormalizedId);
             if (package.IsNull)
             {
-                Package.Line = _session.Settings.Line.ToUpperString();
+                Package.Line = _settings.Line.ToUpperString();
                 await _sfcRepository.AddPackageTrack(Package);
             }
             else
             {
                 await _sfcRepository.UpdatePackageTrackingLine(
                     package.NormalizedId,
-                    _session.Settings.Line.ToUpperString());
+                    _settings.Line.ToUpperString());
             }
 
             this.ShowSuccessToast(Resources.msg_package_added_to_hermes);

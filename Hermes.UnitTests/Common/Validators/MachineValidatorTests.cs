@@ -64,13 +64,9 @@ public class MachineValidatorTests
 
     private MachineStopValidator GetSut(string additionalOkSfcResponse = "")
     {
-        var settingsRepositoryMock = new Mock<ISettingsRepository>();
-        settingsRepositoryMock
-            .Setup(x => x.Settings)
-            .Returns(new Settings()
-            {
-                AdditionalOkSfcResponse = additionalOkSfcResponse
-            });
-        return new MachineStopValidator(new Session(settingsRepositoryMock.Object));
+        return new MachineStopValidator(new Settings()
+        {
+            AdditionalOkSfcResponse = additionalOkSfcResponse
+        });
     }
 }

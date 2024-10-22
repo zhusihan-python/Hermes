@@ -43,7 +43,7 @@ public class WindowService : ObservableRecipient
     private StopView StopView => _stopView ??= (_viewLocator.BuildWindow(_stopViewModel) as StopView)!;
 
     private readonly ViewLocator _viewLocator;
-    private readonly Session _session;
+    private readonly Settings _settings;
     private readonly SettingsViewModel _settingsViewModel;
     private readonly StopViewModel _stopViewModel;
     private readonly SuccessViewModel _successViewModel;
@@ -55,14 +55,14 @@ public class WindowService : ObservableRecipient
 
     public WindowService(
         ViewLocator viewLocator,
-        Session session,
+        Settings settings,
         SettingsViewModel settingsViewModel,
         StopViewModel stopViewModel,
         SuccessViewModel successViewModel,
         ISukiToastManager toastManager)
     {
         this._viewLocator = viewLocator;
-        this._session = session;
+        this._settings = settings;
         this._successViewModel = successViewModel;
         this._stopViewModel = stopViewModel;
         this._stopViewModel.Restored += this.OnStopViewModelRestored;
@@ -106,7 +106,7 @@ public class WindowService : ObservableRecipient
             SetBottomCenterPosition(SuccessView);
             SuccessView.UpdateLayout();
             SuccessView.Show();
-            await Task.Delay(this._session.Settings.UutSuccessWindowTimeoutSeconds * 1000,
+            await Task.Delay(this._settings.UutSuccessWindowTimeoutSeconds * 1000,
                 _successViewCancellationTokenSource.Token);
             if (!_successViewCancellationTokenSource.Token.IsCancellationRequested)
             {

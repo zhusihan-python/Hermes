@@ -18,26 +18,26 @@ public class GkgUutSenderService : UutSenderService
     private readonly ILogger _logger;
     private readonly SerialScanner _serialScanner;
     private readonly SerialPortRx _serialPortRx;
-    private readonly Session _session;
+    private readonly Settings _settings;
     private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
     private readonly SfcResponseBuilder _sfcResponseBuilder;
 
-    public override string Path => _session.Settings.GkgTunnelComPort;
+    public override string Path => _settings.GkgTunnelComPort;
 
     public GkgUutSenderService(
         ILogger logger,
         ISfcService sfcService,
         SerialPortRx serialPortRx,
         SerialScanner serialScanner,
-        Session session,
+        Settings settings,
         SfcResponseBuilder sfcResponseBuilder,
         UnitUnderTestBuilder unitUnderTestBuilder)
-        : base(logger, sfcService, session, sfcResponseBuilder)
+        : base(logger, sfcService, settings, sfcResponseBuilder)
     {
         this._logger = logger;
         this._serialPortRx = serialPortRx;
         this._serialScanner = serialScanner;
-        this._session = session;
+        this._settings = settings;
         this._sfcResponseBuilder = sfcResponseBuilder;
         this._unitUnderTestBuilder = unitUnderTestBuilder;
         this.SetupReactiveExtensions();
@@ -142,7 +142,7 @@ public class GkgUutSenderService : UutSenderService
     protected override void StartService()
     {
         this.SetupReactiveObservers();
-        this._serialPortRx.PortName = _session.Settings.GkgTunnelComPort;
+        this._serialPortRx.PortName = _settings.GkgTunnelComPort;
         this._serialPortRx.Open();
         this._serialScanner.Open();
         this.IsRunning.Value = true;

@@ -41,7 +41,7 @@ public partial class PackageTrackingViewModel : ViewModelBase
     private string _pkgId = "";
 
     private readonly ILogger _logger;
-    private readonly Session _session;
+    private readonly Settings _settings;
     private readonly ISfcRepository _sfcRepository;
     private readonly Timer _timer;
     private readonly Timer _timerTick;
@@ -49,11 +49,11 @@ public partial class PackageTrackingViewModel : ViewModelBase
     public PackageTrackingViewModel(
         ILogger logger,
         ISfcRepository sfcRepository,
-        Session session)
+        Settings settings)
     {
         this._logger = logger;
         this._sfcRepository = sfcRepository;
-        this._session = session;
+        this._settings = settings;
         this._timer = new Timer(RefreshInterval.TotalMilliseconds);
         this._timer.Elapsed += TimerOnElapsed;
         this._timerTick = new Timer(TickInterval.TotalMilliseconds);
@@ -145,7 +145,7 @@ public partial class PackageTrackingViewModel : ViewModelBase
         try
         {
             var packages = await this._sfcRepository.FindAllPackagesTrackingByDate(
-                this._session.Settings.Line.ToUpperString(),
+                this._settings.Line.ToUpperString(),
                 this.FromDate.ToStartOfDay(),
                 this.ToDate.ToEndOfDay());
             this.Packages.Clear();

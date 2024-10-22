@@ -8,11 +8,9 @@ namespace HermesTests.Common.Parsers;
 public class LabelingMachineUnitUnderTestParserTests
 {
     private readonly LabelingMachineUnitUnderTestParser _sut;
-    private readonly ISettingsRepository _settingsRepository;
 
-    public LabelingMachineUnitUnderTestParserTests(ISettingsRepository settingsRepository)
+    public LabelingMachineUnitUnderTestParserTests()
     {
-        this._settingsRepository = settingsRepository;
         this._sut = BuildSut();
     }
 
@@ -74,7 +72,7 @@ public class LabelingMachineUnitUnderTestParserTests
         var mockSfcRepository = new Mock<ISfcRepository>();
         mockSfcRepository.Setup(x => x.FindNextCanUsePackage(It.IsAny<string>()))
             .ReturnsAsync(package ?? Package.Null);
-        var sut = new LabelingMachineUnitUnderTestParser(mockSfcRepository.Object, _settingsRepository);
+        var sut = new LabelingMachineUnitUnderTestParser(mockSfcRepository.Object, new Settings());
         return sut;
     }
 }

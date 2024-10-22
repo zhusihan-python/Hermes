@@ -13,12 +13,12 @@ public class FileService
 {
     private const string BackupPrefix = "_backupAt_";
 
-    private readonly Session _session;
+    private readonly Settings _settings;
     private readonly ResiliencePipeline _retryPipeline;
 
-    public FileService(Session session)
+    public FileService(Settings settings)
     {
-        this._session = session;
+        this._settings = settings;
         this._retryPipeline = new ResiliencePipelineBuilder()
             .AddRetry(new RetryStrategyOptions() { MaxDelay = TimeSpan.FromMilliseconds(50), MaxRetryAttempts = 3 })
             .AddTimeout(TimeSpan.FromSeconds(10))
@@ -49,7 +49,7 @@ public class FileService
         }
 
         var backupFullPath = Path.Combine(
-            this._session.Settings.BackupPath,
+            this._settings.BackupPath,
             $"{Path.GetFileNameWithoutExtension(fullPath)}{BackupPrefix}{DateTime.Now:dd_MM_HHmmss}{Path.GetExtension(fullPath)}");
         if (File.Exists(backupFullPath))
         {
@@ -62,7 +62,7 @@ public class FileService
     public async Task<string> CopyFromBackupToInputAsync(string backupFullPath)
     {
         var inputFullPath =
-            Path.Combine(this._session.Settings.InputPath, GetFileNameWithoutCurrentDate(backupFullPath));
+            Path.Combine(this._settings.InputPath, GetFileNameWithoutCurrentDate(backupFullPath));
         if (File.Exists(inputFullPath))
         {
             return inputFullPath;
@@ -83,7 +83,7 @@ public class FileService
 
     public string GetBackupFullPathByName(string fileName)
     {
-        return this._session.Settings.BackupPath + "\\" + fileName;
+        return this._settings.BackupPath + "\\" + fileName;
     }
 
     private async Task<string> TryCopy(string source, string dest)
@@ -129,15 +129,15 @@ public class FileService
 
     public virtual async Task WriteAllTextToInputPathAsync(string fileNameWithoutExtension, string content)
     {
-        var path = Path.Combine(this._session.Settings.InputPath,
-            fileNameWithoutExtension + _session.Settings.InputFileExtension.GetDescription());
+        var path = Path.Combine(this._settings.InputPath,
+            fileNameWithoutExtension + _settings.InputFileExtension.GetDescription());
         await WriteAllTextAsync(path, content);
     }
 
     public virtual async Task WriteSfcResponseAsync(string fileNameWithoutExtension, string content)
     {
-        var path = Path.Combine(this._session.Settings.SfcPath,
-            fileNameWithoutExtension + _session.Settings.SfcResponseExtension.GetDescription());
+        var path = Path.Combine(this._settings.SfcPath,
+            fileNameWithoutExtension + _settings.SfcResponseExtension.GetDescription());
         await WriteAllTextAsync(path, content);
     }
 

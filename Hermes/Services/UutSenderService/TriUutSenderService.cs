@@ -12,25 +12,25 @@ public class TriUutSenderService : UutSenderService
 {
     private readonly FolderWatcherService _folderWatcherService;
     private readonly ILogger _logger;
-    private readonly Session _session;
+    private readonly Settings _settings;
     private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
 
     public TriUutSenderService(
         FolderWatcherService folderWatcherService,
         ILogger logger,
         ISfcService sfcService,
-        Session session,
+        Settings settings,
         SfcResponseBuilder sfcResponseBuilder,
         UnitUnderTestBuilder unitUnderTestBuilder)
-        : base(logger, sfcService, session, sfcResponseBuilder)
+        : base(logger, sfcService, settings, sfcResponseBuilder)
     {
-        this._session = session;
+        this._settings = settings;
         this._logger = logger;
         this._folderWatcherService = folderWatcherService;
         this._unitUnderTestBuilder = unitUnderTestBuilder;
     }
 
-    public override string Path => _session.Settings.InputPath;
+    public override string Path => _settings.InputPath;
 
     private void SetupReactiveObservers()
     {
@@ -46,8 +46,8 @@ public class TriUutSenderService : UutSenderService
     {
         this.SetupReactiveObservers();
         this._folderWatcherService.Start(
-            _session.Settings.InputPath,
-            "*" + this._session.Settings.InputFileExtension.GetDescription());
+            _settings.InputPath,
+            "*" + this._settings.InputFileExtension.GetDescription());
     }
 
     private async Task SendTextDocument(TextDocument textDocument)

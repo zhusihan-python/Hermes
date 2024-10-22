@@ -26,16 +26,16 @@ public abstract class UutSenderService
     private readonly ISfcService _sfcService;
     private readonly SfcResponseBuilder _sfcResponseBuilder;
     protected readonly CompositeDisposable Disposables = [];
-    private readonly Session _session;
+    private readonly Settings _settings;
 
     protected UutSenderService(
         ILogger logger,
         ISfcService sfcService,
-        Session session,
+        Settings settings,
         SfcResponseBuilder sfcResponseBuilder)
     {
         _logger = logger;
-        _session = session;
+        _settings = settings;
         _sfcResponseBuilder = sfcResponseBuilder;
         _sfcService = sfcService;
     }
@@ -81,7 +81,7 @@ public abstract class UutSenderService
 
     protected Task<SfcResponse> SendUnitUnderTest(UnitUnderTest unitUnderTest)
     {
-        if (!_session.Settings.SendRepairFile && unitUnderTest.IsFail)
+        if (!_settings.SendRepairFile && unitUnderTest.IsFail)
         {
             return Task.FromResult(_sfcResponseBuilder
                 .SetOkSfcResponse()
@@ -91,14 +91,12 @@ public abstract class UutSenderService
             //unitUnderTest.Message = _session.Settings.Machine is MachineType.Spi
             //   ? Resources.msg_spi_repair
             //   : "";
-
-            // TODO: Move sfc response to backup
         }
 
         return Observable
             .FromAsync(async () => await _sfcService.SendAsync(unitUnderTest))
             .Do(x => _logger.Debug($"SendUnitUnderTest {unitUnderTest.FileName}, SfcResponse: {x.ResponseType}"))
-            .Retry(this._session.Settings.MaxSfcRetries)
+            .Retry(this._settings.MaxSfcRetries)
             .Catch<SfcResponse, Exception>(_ => Observable.Return(Models.SfcResponse.Null))
             .ToTask();
     }

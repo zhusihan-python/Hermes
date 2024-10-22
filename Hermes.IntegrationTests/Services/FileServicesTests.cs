@@ -6,22 +6,22 @@ namespace HermesIntegrationTests.Services;
 
 public class FileServicesTests
 {
-    private readonly ISettingsRepository _settingsRepository;
+    private readonly Settings _settings;
     private readonly FileService _sut;
 
-    public FileServicesTests(ISettingsRepository settingsRepository)
+    public FileServicesTests()
     {
-        _settingsRepository = settingsRepository;
-        _sut = new FileService(_settingsRepository);
-        _sut.DeleteFolderIfExists(_settingsRepository.Settings.InputPath);
-        _sut.DeleteFolderIfExists(_settingsRepository.Settings.BackupPath);
+        _settings = new Settings();
+        _sut = new FileService(_settings);
+        _sut.DeleteFolderIfExists(_settings.InputPath);
+        _sut.DeleteFolderIfExists(_settings.BackupPath);
     }
 
     [Fact]
     public async Task TryReadAllTextAsync_FileExists_ReturnsContent()
     {
         const string content = "content";
-        var fullPath = Path.Combine(_settingsRepository.Settings.InputPath, "test.txt");
+        var fullPath = Path.Combine(_settings.InputPath, "test.txt");
         await _sut.WriteAllTextAsync(fullPath, content);
         Assert.Equal(content, await _sut.TryReadAllTextAsync(fullPath));
     }
@@ -29,7 +29,7 @@ public class FileServicesTests
     [Fact]
     public async Task TryReadAllTextAsync_NotFileExists_ReturnsEmptyString()
     {
-        var fullPath = Path.Combine(_settingsRepository.Settings.InputPath, "doesNotExists.txt");
+        var fullPath = Path.Combine(_settings.InputPath, "doesNotExists.txt");
         Assert.Equal(string.Empty, await _sut.TryReadAllTextAsync(fullPath));
     }
 
@@ -37,7 +37,7 @@ public class FileServicesTests
     public async Task WriteAllTextAsync_FileExists_WritesContentInFile()
     {
         const string content = "content";
-        var fullPath = Path.Combine(_settingsRepository.Settings.InputPath, "test.txt");
+        var fullPath = Path.Combine(_settings.InputPath, "test.txt");
         await _sut.WriteAllTextAsync(fullPath, content);
         Assert.True(_sut.FileExists(fullPath));
     }
@@ -46,7 +46,7 @@ public class FileServicesTests
     public async Task MoveToBackupAsync_FileExists_MovesToBackup()
     {
         const string content = "content";
-        var inputFullPath = Path.Combine(_settingsRepository.Settings.InputPath, "test.txt");
+        var inputFullPath = Path.Combine(_settings.InputPath, "test.txt");
         await _sut.WriteAllTextAsync(inputFullPath, content);
         var backupFullPath = await _sut.MoveToBackupAsync(inputFullPath);
         Assert.False(_sut.FileExists(inputFullPath));
@@ -58,7 +58,7 @@ public class FileServicesTests
     public async Task CopyFromBackupToInputAsync_FileExists_CopyToInput()
     {
         const string content = "content";
-        var inputFullPath = Path.Combine(_settingsRepository.Settings.InputPath, "test.txt");
+        var inputFullPath = Path.Combine(_settings.InputPath, "test.txt");
         await _sut.WriteAllTextAsync(inputFullPath, content);
         var backupFullPath = await _sut.MoveToBackupAsync(inputFullPath);
         await _sut.CopyFromBackupToInputAsync(backupFullPath);
@@ -70,7 +70,7 @@ public class FileServicesTests
     public async Task DeleteFileIfExists_FileExists_DeletesFile()
     {
         const string content = "content";
-        var inputFullPath = Path.Combine(_settingsRepository.Settings.InputPath, "test.txt");
+        var inputFullPath = Path.Combine(_settings.InputPath, "test.txt");
         await _sut.WriteAllTextAsync(inputFullPath, content);
         Assert.True(_sut.FileExists(inputFullPath));
         await _sut.DeleteFileIfExists(inputFullPath);

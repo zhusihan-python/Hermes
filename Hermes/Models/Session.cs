@@ -13,6 +13,10 @@ public partial class Session : ObservableObject
 {
     public ReactiveProperty<UutProcessorState> UutProcessorCurrentState { get; } = new(UutProcessorState.Stopped);
 
+
+    [ObservableProperty] private string _path = string.Empty;
+    public Stop Stop { get; set; } = Stop.Null;
+
     private User User
     {
         get => _user;
@@ -23,23 +27,13 @@ public partial class Session : ObservableObject
         }
     }
 
-    [ObservableProperty] private string _path = string.Empty;
-    public Stop Stop { get; set; } = Stop.Null;
-
     public event Action<User>? UserChanged;
 
-    private UutProcessorState _uutProcessorState;
     private User _user = User.Null;
 
     public bool IsLoggedIn => !_user.IsNull;
     public DepartmentType UserDepartment => _user.Department;
     public UserLevel UserLevel => _user.Level;
-    public Settings Settings { get; set; }
-
-    public Session(Settings settings)
-    {
-        this.Settings = settings;
-    }
 
     public void ResetStop()
     {

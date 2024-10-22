@@ -23,16 +23,16 @@ public class SerialScanner
 
     private SerialPort? _serialPort;
     private bool _isWaitingForData;
-    private readonly Session _session;
+    private readonly Settings _settings;
     private readonly Stopwatch _stopwatch;
 
-    public SerialScanner(Session session)
+    public SerialScanner(Settings settings)
     {
-        this._session = session;
+        this._settings = settings;
         this._stopwatch = new Stopwatch();
     }
 
-    public string PortName => _session.Settings.ScannerComPort;
+    public string PortName => _settings.ScannerComPort;
 
     public void Open()
     {
@@ -40,7 +40,7 @@ public class SerialScanner
         {
             if (_serialPort is { IsOpen: true }) return;
 
-            this._serialPort = new SerialPort(_session.Settings.ScannerComPort, 115200, Parity.None,
+            this._serialPort = new SerialPort(_settings.ScannerComPort, 115200, Parity.None,
                 8,
                 StopBits.One);
             this._serialPort.DataReceived += Proxy;
@@ -137,7 +137,7 @@ public class SerialScanner
         this._stopwatch.Restart();
         while (_isWaitingForData && this._stopwatch.ElapsedMilliseconds <= timeout)
         {
-            await Task.Delay(this._session.Settings.WaitDelayMilliseconds);
+            await Task.Delay(this._settings.WaitDelayMilliseconds);
         }
 
         this._stopwatch.Stop();

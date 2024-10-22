@@ -12,11 +12,11 @@ public class GkgUnitUnderTestParser : IUnitUnderTestParser
 {
     private static readonly Regex SerialNumberRgx = new(@"^\s*([A-z0-9-_]+)[\r\n]+");
 
-    private readonly Session _session;
+    private readonly Settings _settings;
 
-    public GkgUnitUnderTestParser(Session session)
+    public GkgUnitUnderTestParser(Settings settings)
     {
-        this._session = session;
+        this._settings = settings;
     }
 
     public List<Defect> ParseDefects(string content)
@@ -39,7 +39,7 @@ public class GkgUnitUnderTestParser : IUnitUnderTestParser
     {
         var content = $"""
                        {serialNumber}
-                       {this._session.Settings.StationId}
+                       {this._settings.StationId}
                        GKG
                        ALL
                        {(isPass ? "PASS" : "FAIL")}

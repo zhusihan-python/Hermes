@@ -37,16 +37,18 @@ namespace Hermes.Features
         [ObservableProperty] private bool _isLoggedIn;
         private readonly string _baseTitle;
 
-        private readonly SukiTheme _theme;
         private readonly Session _session;
+        private readonly Settings _settings;
+        private readonly SukiTheme _theme;
 
         public MainWindowViewModel(
-            Session session,
             IEnumerable<PageBase> pages,
-            Session settingsRepository,
+            ISukiDialogManager dialogManager,
             ISukiToastManager toastManager,
-            ISukiDialogManager dialogManager)
+            Session session,
+            Settings settings)
         {
+            this._settings = settings;
             this._session = session;
             this._session.UserChanged += this.OnUserChanged;
             this._theme = SukiTheme.GetInstance();
@@ -55,12 +57,12 @@ namespace Hermes.Features
             this.TitleBarVisible = false;
             this.ToastManager = toastManager;
             this.DialogManager = dialogManager;
-            this.ConfigureBasedOnSession();
+            this.ConfigureBasedOnSettings();
             this.UpdateBaseTheme();
             this._baseTitle =
-                $"{Resources.txt_hermes} - {_session.Settings.Station} - {_session.Settings.Line}";
+                $"{Resources.txt_hermes} - {_settings.Station} - {_settings.Line}";
             Title = this._baseTitle;
-            if (settingsRepository.Settings.AutostartUutProcessor)
+            if (settings.AutostartUutProcessor)
             {
                 Messenger.Send(new StartUutProcessorMessage());
             }
@@ -68,7 +70,7 @@ namespace Hermes.Features
 
         private void OnUserChanged(User user)
         {
-            this.ConfigureBasedOnSession();
+            this.ConfigureBasedOnSettings();
             if (!user.IsNull)
             {
                 Title = $"{this._baseTitle}     (👤{user.Name})";
@@ -79,31 +81,31 @@ namespace Hermes.Features
             }
         }
 
-        private void ConfigureBasedOnSession()
+        private void ConfigureBasedOnSettings()
         {
             var visiblePages = Pages
                 .Where(x =>
-                    _session.UserDepartment == DepartmentType.Admin ||
+                    this._session.UserDepartment == DepartmentType.Admin ||
                     x.PermissionType == PermissionType.FreeAccess ||
-                    _session.HasUserPermission(x.PermissionType))
+                    this._session.HasUserPermission(x.PermissionType))
                 .Where(x =>
-                    _session.UserDepartment == DepartmentType.Admin ||
+                    this._session.UserDepartment == DepartmentType.Admin ||
                     x.StationFilter == null ||
-                    x.StationFilter.Contains(_session.Settings.Station))
+                    x.StationFilter.Contains(_settings.Station))
                 .OrderBy(x => x.Index)
                 .ThenBy(x => x.DisplayName)
                 .ToList();
             this.ShownPages.Clear();
             this.ShownPages.AddRange(visiblePages);
-            this.AreSettingsVisible = _session.HasUserPermission(PermissionType.OpenSettingsConfig);
-            this.CanExit = _session.CanUserExit();
-            this.IsLoggedIn = _session.IsLoggedIn;
+            this.AreSettingsVisible = this._session.HasUserPermission(PermissionType.OpenSettingsConfig);
+            this.CanExit = this._session.CanUserExit();
+            this.IsLoggedIn = this._session.IsLoggedIn;
         }
 
         [RelayCommand]
         private void Logout()
         {
-            _session.Logout();
+            this._session.Logout();
             this.OpenLogin();
         }
 

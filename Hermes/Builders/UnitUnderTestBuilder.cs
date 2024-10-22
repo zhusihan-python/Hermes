@@ -31,16 +31,16 @@ public class UnitUnderTestBuilder
     private readonly Random _random = new();
     private readonly ParserPrototype _parserPrototype;
     private readonly SfcResponseBuilder _sfcResponseBuilder;
-    private readonly Session _session;
+    private readonly Settings _settings;
 
     public UnitUnderTestBuilder(
         FileService fileService,
         ParserPrototype parserPrototype,
-        Session session,
+        Settings settings,
         SfcResponseBuilder sfcResponseBuilder)
     {
         this._fileService = fileService;
-        this._session = session;
+        this._settings = settings;
         this._parserPrototype = parserPrototype;
         this._sfcResponseBuilder = sfcResponseBuilder;
         sfcResponseBuilder.SetOkSfcResponse();
@@ -51,13 +51,13 @@ public class UnitUnderTestBuilder
         this.Content = this.GetTestContent();
         return Build(
             this._fileNameWithoutExtension +
-            _session.Settings.InputFileExtension.GetDescription()
+            _settings.InputFileExtension.GetDescription()
             , this.Content);
     }
 
     public string GetTestContent()
     {
-        var parser = _parserPrototype.GetUnitUnderTestParser(_session.Settings.LogfileType);
+        var parser = _parserPrototype.GetUnitUnderTestParser(_settings.LogfileType);
         if (parser == null)
         {
             return "";
@@ -73,7 +73,7 @@ public class UnitUnderTestBuilder
 
     private UnitUnderTest Build(string fullPath, string content)
     {
-        var parser = _parserPrototype.GetUnitUnderTestParser(_session.Settings.LogfileType);
+        var parser = _parserPrototype.GetUnitUnderTestParser(_settings.LogfileType);
         if (!HasValidExtension(fullPath) || parser == null)
         {
             return UnitUnderTest.Null;
@@ -116,8 +116,8 @@ public class UnitUnderTestBuilder
 
     private bool HasValidExtension(string fileName)
     {
-        return _session.Settings.InputFileExtension.GetDescription() == "*.*" ||
-               _session.Settings.InputFileExtension.GetDescription()
+        return _settings.InputFileExtension.GetDescription() == "*.*" ||
+               _settings.InputFileExtension.GetDescription()
                    .Contains(Path.GetExtension(fileName), StringComparison.OrdinalIgnoreCase);
     }
 
@@ -147,13 +147,13 @@ public class UnitUnderTestBuilder
 
     public UnitUnderTestBuilder InputFileExtension(FileExtension value)
     {
-        this._session.Settings.InputFileExtension = value;
+        this._settings.InputFileExtension = value;
         return this;
     }
 
     public UnitUnderTestBuilder LogfileType(LogfileType value)
     {
-        this._session.Settings.LogfileType = value;
+        this._settings.LogfileType = value;
         return this;
     }
 
@@ -180,7 +180,7 @@ public class UnitUnderTestBuilder
         return new UnitUnderTestBuilder(
             this._fileService,
             this._parserPrototype,
-            this._session,
+            this._settings,
             this._sfcResponseBuilder)
         {
             _isPass = this._isPass,

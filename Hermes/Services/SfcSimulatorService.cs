@@ -17,7 +17,7 @@ public class SfcSimulatorService(
     FolderWatcherService folderWatcherService,
     ILogger logger,
     ParserPrototype parserPrototype,
-    Session session,
+    Settings settings,
     SfcResponseBuilder sfcResponseBuilder)
 {
     public SfcResponseType Mode { get; set; } = SfcResponseType.Ok;
@@ -33,8 +33,8 @@ public class SfcSimulatorService(
             IsRunning.Value = true;
             SetupReactiveObservers();
             folderWatcherService.Start(
-                session.Settings.SfcPath,
-                session.Settings.InputFileFilter);
+                settings.SfcPath,
+                settings.InputFileFilter);
         }
         catch (Exception)
         {
@@ -103,7 +103,7 @@ public class SfcSimulatorService(
 
     private string GetSerialNumber(TextDocument textDocument)
     {
-        var parser = parserPrototype.GetUnitUnderTestParser(session.Settings.LogfileType);
+        var parser = parserPrototype.GetUnitUnderTestParser(settings.LogfileType);
         return parser == null
             ? ""
             : parser.ParseSerialNumber(textDocument.Content).ToUpper();

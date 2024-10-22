@@ -6,14 +6,8 @@ namespace HermesIntegrationTests.Repositories;
 
 public class SettingsRepositoryTests
 {
-    private readonly SettingsRepository _sut;
-    private readonly Settings _settings;
-
-    public SettingsRepositoryTests(AesEncryptor aesEncryptor)
-    {
-        _settings = new Settings();
-        _sut = new SettingsRepository(aesEncryptor);
-    }
+    private readonly SettingsRepository _sut = new();
+    private readonly Settings _settings = new();
 
     [Fact]
     public void Save_ValidGeneralSettings_WritesFile()

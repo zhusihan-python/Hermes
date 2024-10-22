@@ -59,20 +59,15 @@ public class SharedFolderSfcServiceTests
             .Setup(x => x.AddAndSaveAsync(It.IsAny<UnitUnderTest>()))
             .Returns(Task.CompletedTask);
 
-        var settingsRepositoryMock = new Mock<ISettingsRepository>();
-        settingsRepositoryMock
-            .Setup(x => x.Settings)
-            .Returns(settings ?? new Settings());
-
         var folderWatcherServiceMock =
-            new Mock<FolderWatcherService>(new FileService(settingsRepositoryMock.Object), new FileSystemWatcherRx());
+            new Mock<FolderWatcherService>(new FileService(settings ?? new Settings()), new FileSystemWatcherRx());
         folderWatcherServiceMock.Setup(x => x.TextDocumentCreated)
             .Returns(Observable.Never<TextDocument>());
 
         var sfcService = new SharedFolderSfcService(
             fileService,
             folderWatcherServiceMock.Object,
-            new Session(settingsRepositoryMock.Object)
+            settings ?? new Settings()
         );
 
         return sfcService;
