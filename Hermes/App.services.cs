@@ -2,27 +2,26 @@
 using Hermes.Builders;
 using Hermes.Cipher;
 using Hermes.Common.Parsers;
+using Hermes.Common.Reactive;
 using Hermes.Common.Validators;
 using Hermes.Common;
 using Hermes.Features.Bender;
 using Hermes.Features.Controls.Token;
 using Hermes.Features.Login;
+using Hermes.Features.Logs;
 using Hermes.Features.SettingsConfig;
 using Hermes.Features.SfcSimulator;
 using Hermes.Features.UutProcessor;
-using Hermes.Features.Logs;
 using Hermes.Features;
 using Hermes.Models;
 using Hermes.Repositories;
+using Hermes.Services.UutSenderService;
 using Hermes.Services;
 using Microsoft.Extensions.DependencyInjection;
 using SukiUI.Dialogs;
 using SukiUI.Toasts;
 using System.Linq;
 using System;
-using System.Reflection;
-using Hermes.Common.Reactive;
-using Microsoft.EntityFrameworkCore;
 
 namespace Hermes;
 
@@ -45,7 +44,7 @@ public partial class App
     {
         services.AddSingleton<CoreSettings>();
         services.AddSingleton<Session>();
-        services.AddSingleton<Settings>();
+        services.AddSingleton<Settings>(sp => sp.GetRequiredService<ISettingsRepository>().Read());
     }
 
     private static void ConfigureValidators(ServiceCollection services)

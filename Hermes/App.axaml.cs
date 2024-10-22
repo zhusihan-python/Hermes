@@ -35,7 +35,6 @@ namespace Hermes
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                _provider.GetRequiredService<ISettingsRepository>().Load();
                 _provider.GetRequiredService<HermesLocalContext>().Migrate();
                 _provider.GetRequiredService<HermesRemoteContext>().Migrate();
                 desktop.MainWindow = this._provider.BuildWindow<MainWindowViewModel>(true);

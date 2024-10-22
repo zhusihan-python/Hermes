@@ -13,13 +13,16 @@ public class LabelingMachineUnitUnderTestParser : IUnitUnderTestParser
     public const string NoPackageAvailableText = "SNoPackageAvailable";
     private static readonly Regex PkgIdRgx = new(@"^(\s*)(S[\w]*)([\r\n]*)");
     private static readonly Regex SerialNumberRgx = new(@"^\s*([\w]+)$[\r\n]*");
-    private readonly ISfcRepository _sfcRepository;
-    private readonly ISettingsRepository _settingsRepository;
 
-    public LabelingMachineUnitUnderTestParser(ISfcRepository sfcRepository, ISettingsRepository settingsRepository)
+    private readonly ISfcRepository _sfcRepository;
+    private readonly Session _session;
+
+    public LabelingMachineUnitUnderTestParser(
+        ISfcRepository sfcRepository,
+        Session session)
     {
         this._sfcRepository = sfcRepository;
-        this._settingsRepository = settingsRepository;
+        this._session = session;
     }
 
     public List<Defect> ParseDefects(string content)
@@ -61,7 +64,7 @@ public class LabelingMachineUnitUnderTestParser : IUnitUnderTestParser
     {
         if (string.IsNullOrEmpty(content)) return content;
         var package = await this._sfcRepository.FindNextCanUsePackage(
-            _settingsRepository.Settings.Line.ToUpperString());
+            _session.Settings.Line.ToUpperString());
         var packageId = NoPackageAvailableText;
         if (!package.IsNull)
         {

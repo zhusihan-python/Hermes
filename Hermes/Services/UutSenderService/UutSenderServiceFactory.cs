@@ -1,16 +1,16 @@
-using Hermes.Repositories;
+using Hermes.Models;
 using Hermes.Types;
 
-namespace Hermes.Services;
+namespace Hermes.Services.UutSenderService;
 
 public class UutSenderServiceFactory(
     TriUutSenderService triUutSenderService,
     GkgUutSenderService gkgUutSenderService,
-    ISettingsRepository settingsRepository)
+    Session session)
 {
     public UutSenderService Build()
     {
-        return settingsRepository.Settings.Machine is MachineType.ScreenPrinter
+        return session.Settings.Machine is MachineType.ScreenPrinter
             ? gkgUutSenderService
             : triUutSenderService;
     }

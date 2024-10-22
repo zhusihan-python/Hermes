@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using System;
+using Hermes.Models;
 
 namespace Hermes.Services;
 
@@ -22,16 +23,16 @@ public class SerialScanner
 
     private SerialPort? _serialPort;
     private bool _isWaitingForData;
-    private readonly ISettingsRepository _settingsRepository;
+    private readonly Session _session;
     private readonly Stopwatch _stopwatch;
 
-    public SerialScanner(ISettingsRepository settingsRepository)
+    public SerialScanner(Session session)
     {
-        this._settingsRepository = settingsRepository;
+        this._session = session;
         this._stopwatch = new Stopwatch();
     }
 
-    public string PortName => _settingsRepository.Settings.ScannerComPort;
+    public string PortName => _session.Settings.ScannerComPort;
 
     public void Open()
     {
@@ -39,7 +40,7 @@ public class SerialScanner
         {
             if (_serialPort is { IsOpen: true }) return;
 
-            this._serialPort = new SerialPort(_settingsRepository.Settings.ScannerComPort, 115200, Parity.None,
+            this._serialPort = new SerialPort(_session.Settings.ScannerComPort, 115200, Parity.None,
                 8,
                 StopBits.One);
             this._serialPort.DataReceived += Proxy;
@@ -136,7 +137,7 @@ public class SerialScanner
         this._stopwatch.Restart();
         while (_isWaitingForData && this._stopwatch.ElapsedMilliseconds <= timeout)
         {
-            await Task.Delay(this._settingsRepository.Settings.WaitDelayMilliseconds);
+            await Task.Delay(this._session.Settings.WaitDelayMilliseconds);
         }
 
         this._stopwatch.Stop();

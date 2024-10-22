@@ -10,13 +10,13 @@ namespace Hermes.Common.Parsers;
 
 public class GkgUnitUnderTestParser : IUnitUnderTestParser
 {
-    private const RegexOptions RgxOptions = RegexOptions.IgnoreCase | RegexOptions.Multiline;
     private static readonly Regex SerialNumberRgx = new(@"^\s*([A-z0-9-_]+)[\r\n]+");
-    private readonly ISettingsRepository _settingsRepository;
 
-    public GkgUnitUnderTestParser(ISettingsRepository settingsRepository)
+    private readonly Session _session;
+
+    public GkgUnitUnderTestParser(Session session)
     {
-        this._settingsRepository = settingsRepository;
+        this._session = session;
     }
 
     public List<Defect> ParseDefects(string content)
@@ -39,7 +39,7 @@ public class GkgUnitUnderTestParser : IUnitUnderTestParser
     {
         var content = $"""
                        {serialNumber}
-                       {this._settingsRepository.Settings.StationId}
+                       {this._session.Settings.StationId}
                        GKG
                        ALL
                        {(isPass ? "PASS" : "FAIL")}

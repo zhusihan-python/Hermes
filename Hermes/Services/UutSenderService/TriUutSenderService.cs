@@ -6,7 +6,7 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System;
 
-namespace Hermes.Services;
+namespace Hermes.Services.UutSenderService;
 
 public class TriUutSenderService : UutSenderService
 {

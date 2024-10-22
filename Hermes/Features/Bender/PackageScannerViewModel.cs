@@ -30,26 +30,26 @@ public partial class PackageScannerViewModel : ViewModelBase
     [ObservableProperty] private Bitmap? _workOrderImage;
 
     private readonly ILogger _logger;
-    private readonly ISettingsRepository _settingsRepository;
     private readonly ISfcRepository _sfcRepository;
     private readonly ISukiDialogManager _dialogManager;
     private readonly PackageParser _packageParser;
     private readonly QrGenerator _qrGenerator;
+    private readonly Session _session;
 
     public PackageScannerViewModel(
         ILogger logger,
-        ISettingsRepository settingsRepository,
         ISfcRepository sfcRepository,
         ISukiDialogManager dialogManager,
         PackageParser packageParser,
-        QrGenerator qrGenerator)
+        QrGenerator qrGenerator,
+        Session session)
     {
+        this._dialogManager = dialogManager;
         this._logger = logger;
         this._packageParser = packageParser;
         this._qrGenerator = qrGenerator;
-        this._dialogManager = dialogManager;
+        this._session = session;
         this._sfcRepository = sfcRepository;
-        this._settingsRepository = settingsRepository;
     }
 
     [RelayCommand]
@@ -85,14 +85,14 @@ public partial class PackageScannerViewModel : ViewModelBase
             var package = await _sfcRepository.FindPackageTracking(this.Package.NormalizedId);
             if (package.IsNull)
             {
-                Package.Line = _settingsRepository.Settings.Line.ToUpperString();
+                Package.Line = _session.Settings.Line.ToUpperString();
                 await _sfcRepository.AddPackageTrack(Package);
             }
             else
             {
                 await _sfcRepository.UpdatePackageTrackingLine(
                     package.NormalizedId,
-                    _settingsRepository.Settings.Line.ToUpperString());
+                    _session.Settings.Line.ToUpperString());
             }
 
             this.ShowSuccessToast(Resources.msg_package_added_to_hermes);

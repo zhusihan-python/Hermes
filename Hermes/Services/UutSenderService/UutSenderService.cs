@@ -10,7 +10,7 @@ using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
 using System;
 
-namespace Hermes.Services;
+namespace Hermes.Services.UutSenderService;
 
 public abstract class UutSenderService
 {

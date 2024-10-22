@@ -36,10 +36,9 @@ public partial class Session : ObservableObject
     public UserLevel UserLevel => _user.Level;
     public Settings Settings { get; set; }
 
-    public Session(ISettingsRepository settingsRepository)
+    public Session(Settings settings)
     {
-        this.Settings = settingsRepository.Settings;
-        settingsRepository.SettingsChanged += x => this.Settings = x;
+        this.Settings = settings;
     }
 
     public void ResetStop()

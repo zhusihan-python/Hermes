@@ -39,12 +39,11 @@ namespace Hermes.Features
 
         private readonly SukiTheme _theme;
         private readonly Session _session;
-        private readonly ISettingsRepository _settingsRepository;
 
         public MainWindowViewModel(
             Session session,
             IEnumerable<PageBase> pages,
-            ISettingsRepository settingsRepository,
+            Session settingsRepository,
             ISukiToastManager toastManager,
             ISukiDialogManager dialogManager)
         {
@@ -52,7 +51,6 @@ namespace Hermes.Features
             this._session.UserChanged += this.OnUserChanged;
             this._theme = SukiTheme.GetInstance();
             this._theme.ChangeBaseTheme(ThemeVariant.Light);
-            this._settingsRepository = settingsRepository;
             this.Pages = pages.ToList();
             this.TitleBarVisible = false;
             this.ToastManager = toastManager;
@@ -60,7 +58,7 @@ namespace Hermes.Features
             this.ConfigureBasedOnSession();
             this.UpdateBaseTheme();
             this._baseTitle =
-                $"{Resources.txt_hermes} - {_settingsRepository.Settings.Station} - {_settingsRepository.Settings.Line}";
+                $"{Resources.txt_hermes} - {_session.Settings.Station} - {_session.Settings.Line}";
             Title = this._baseTitle;
             if (settingsRepository.Settings.AutostartUutProcessor)
             {
@@ -91,7 +89,7 @@ namespace Hermes.Features
                 .Where(x =>
                     _session.UserDepartment == DepartmentType.Admin ||
                     x.StationFilter == null ||
-                    x.StationFilter.Contains(_settingsRepository.Settings.Station))
+                    x.StationFilter.Contains(_session.Settings.Station))
                 .OrderBy(x => x.Index)
                 .ThenBy(x => x.DisplayName)
                 .ToList();

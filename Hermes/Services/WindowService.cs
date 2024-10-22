@@ -15,6 +15,7 @@ using System.Threading;
 using System;
 using Avalonia.Controls.Notifications;
 using Hermes.Language;
+using Hermes.Models;
 using SukiUI.Toasts;
 
 namespace Hermes.Services;
@@ -42,7 +43,7 @@ public class WindowService : ObservableRecipient
     private StopView StopView => _stopView ??= (_viewLocator.BuildWindow(_stopViewModel) as StopView)!;
 
     private readonly ViewLocator _viewLocator;
-    private readonly ISettingsRepository _settingsRepository;
+    private readonly Session _session;
     private readonly SettingsViewModel _settingsViewModel;
     private readonly StopViewModel _stopViewModel;
     private readonly SuccessViewModel _successViewModel;
@@ -54,14 +55,14 @@ public class WindowService : ObservableRecipient
 
     public WindowService(
         ViewLocator viewLocator,
-        ISettingsRepository settingsRepository,
+        Session session,
         SettingsViewModel settingsViewModel,
         StopViewModel stopViewModel,
         SuccessViewModel successViewModel,
         ISukiToastManager toastManager)
     {
         this._viewLocator = viewLocator;
-        this._settingsRepository = settingsRepository;
+        this._session = session;
         this._successViewModel = successViewModel;
         this._stopViewModel = stopViewModel;
         this._stopViewModel.Restored += this.OnStopViewModelRestored;
@@ -105,7 +106,7 @@ public class WindowService : ObservableRecipient
             SetBottomCenterPosition(SuccessView);
             SuccessView.UpdateLayout();
             SuccessView.Show();
-            await Task.Delay(this._settingsRepository.Settings.UutSuccessWindowTimeoutSeconds * 1000,
+            await Task.Delay(this._session.Settings.UutSuccessWindowTimeoutSeconds * 1000,
                 _successViewCancellationTokenSource.Token);
             if (!_successViewCancellationTokenSource.Token.IsCancellationRequested)
             {

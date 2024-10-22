@@ -36,13 +36,14 @@ public partial class TokenViewModel : ViewModelBase, ITokenViewModel
     public event EventHandler? Unlocked;
 
     private readonly List<DepartmentType> _departments = [DepartmentType.All];
-    private readonly ISettingsRepository _settingsRepository;
+    private readonly Session _session;
 
-
-    public TokenViewModel(UserRemoteRepository userRemoteRepository, ISettingsRepository settingsRepository)
+    public TokenViewModel(
+        Session session,
+        UserRemoteRepository userRemoteRepository)
     {
         this._userRemoteRepository = userRemoteRepository;
-        this._settingsRepository = settingsRepository;
+        this._session = session;
     }
 
     [RelayCommand(CanExecute = nameof(CanExecuteUnlock))]
@@ -110,7 +111,7 @@ public partial class TokenViewModel : ViewModelBase, ITokenViewModel
             return Resources.msg_invalid_department;
         }
 
-        if (!user.HasPermission(FeatureTypeExtensions.GetFeatureType(_settingsRepository.Settings.Station)))
+        if (!user.HasPermission(FeatureTypeExtensions.GetFeatureType(_session.Settings.Station)))
         {
             return Resources.msg_user_without_permission;
         }
@@ -141,7 +142,7 @@ public partial class TokenViewModel : ViewModelBase, ITokenViewModel
 
     public TokenViewModel Clone()
     {
-        return new TokenViewModel(this._userRemoteRepository, this._settingsRepository)
+        return new TokenViewModel(this._session, this._userRemoteRepository)
         {
             ToastManager = this.ToastManager
         };

@@ -26,12 +26,11 @@ public class SettingsRepository : ISettingsRepository
         }
     }
 
-    private readonly AesEncryptor _aesEncryptor;
+    private readonly AesEncryptor _aesEncryptor = new();
     private Settings _settings = new();
 
-    public SettingsRepository(AesEncryptor aesEncryptor)
+    public SettingsRepository()
     {
-        this._aesEncryptor = aesEncryptor;
         this.Path = System.IO.Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             System.Reflection.Assembly.GetExecutingAssembly().GetName().Name!,

@@ -18,7 +18,7 @@ public class HermesRemoteContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<FeaturePermission> FeaturePermissions { get; set; }
 
-    public HermesRemoteContext(ISettingsRepository repository)
+    public HermesRemoteContext(Settings settings)
     {
 #if !DEBUG
         _server = repository.Settings.DatabaseServer;
