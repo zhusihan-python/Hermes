@@ -4,12 +4,13 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using DynamicData;
 using Hermes.Cipher.Types;
+using Hermes.Common.Extensions;
 using Hermes.Common.Messages;
 using Hermes.Features.Login;
 using Hermes.Language;
 using Hermes.Models;
-using Hermes.Repositories;
 using Hermes.Types;
+using Reactive.Bindings.Disposables;
 using SukiUI.Controls;
 using SukiUI.Dialogs;
 using SukiUI.Toasts;
@@ -17,6 +18,9 @@ using SukiUI;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive.Linq;
+using System.Threading;
+using System;
 
 namespace Hermes.Features
 {
@@ -35,11 +39,11 @@ namespace Hermes.Features
         [ObservableProperty] private bool _areSettingsVisible;
         [ObservableProperty] private bool _canExit;
         [ObservableProperty] private bool _isLoggedIn;
-        private readonly string _baseTitle;
 
         private readonly Session _session;
         private readonly Settings _settings;
         private readonly SukiTheme _theme;
+        private readonly CompositeDisposable _disposables = [];
 
         public MainWindowViewModel(
             IEnumerable<PageBase> pages,
@@ -50,38 +54,60 @@ namespace Hermes.Features
         {
             this._settings = settings;
             this._session = session;
-            this._session.UserChanged += this.OnUserChanged;
             this._theme = SukiTheme.GetInstance();
             this._theme.ChangeBaseTheme(ThemeVariant.Light);
             this.Pages = pages.ToList();
             this.TitleBarVisible = false;
             this.ToastManager = toastManager;
             this.DialogManager = dialogManager;
-            this.ConfigureBasedOnSettings();
+            this.ConfigurePages();
             this.UpdateBaseTheme();
-            this._baseTitle =
-                $"{Resources.txt_hermes} - {_settings.Station} - {_settings.Line}";
-            Title = this._baseTitle;
+            this.UpdateTitle(this._session.LoggedUser.Value);
+            this.IsActive = true;
             if (settings.AutostartUutProcessor)
             {
                 Messenger.Send(new StartUutProcessorMessage());
             }
         }
 
-        private void OnUserChanged(User user)
+        protected override void OnActivated()
         {
-            this.ConfigureBasedOnSettings();
+            base.OnActivated();
+            this.SetupReactiveObservers();
+        }
+
+        private void SetupReactiveObservers()
+        {
+            var userChangedDisposable = this._session
+                .LoggedUser
+                .ObserveOn(SynchronizationContext.Current!)
+                .Do(this.UpdateTitle)
+                .Do(_ => this.ConfigurePages())
+                .Subscribe();
+
+            this._disposables.Add(userChangedDisposable);
+        }
+
+        protected override void OnDeactivated()
+        {
+            base.OnDeactivated();
+            this._disposables.DisposeItems();
+        }
+
+        private void UpdateTitle(User user)
+        {
+            var baseTitle = $"{Resources.txt_hermes} - {_settings.Station} - {_settings.Line}";
             if (!user.IsNull)
             {
-                Title = $"{this._baseTitle}     (👤{user.Name})";
+                Title = $"{baseTitle}     (👤{user.Name})";
             }
             else
             {
-                Title = this._baseTitle;
+                Title = baseTitle;
             }
         }
 
-        private void ConfigureBasedOnSettings()
+        private void ConfigurePages()
         {
             var visiblePages = Pages
                 .Where(x =>

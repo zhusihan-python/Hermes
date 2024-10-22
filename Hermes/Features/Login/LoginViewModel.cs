@@ -1,5 +1,4 @@
-﻿using System;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Hermes.Cipher.Types;
 using Hermes.Language;
@@ -7,7 +6,11 @@ using Hermes.Models;
 using Hermes.Repositories;
 using Hermes.Types;
 using Material.Icons;
+using Reactive.Bindings.Disposables;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
+using System;
+using Hermes.Common.Extensions;
 
 namespace Hermes.Features.Login;
 
@@ -19,12 +22,14 @@ public partial class LoginViewModel : PageBase
     [ObservableProperty] private bool _isLoggedIn;
     [ObservableProperty] private bool _isLoggingIn;
     [ObservableProperty] private DepartmentType _department;
+
+    private readonly CompositeDisposable _disposables = [];
     private readonly Session _session;
-    private readonly UserProxy _userProxy;
+    private readonly UserRepositoryProxy _userRepositoryProxy;
 
     public LoginViewModel(
         Session session,
-        UserProxy userProxy) :
+        UserRepositoryProxy userRepositoryProxy) :
         base(
             Resources.txt_account,
             MaterialIconKind.Account,
@@ -32,17 +37,39 @@ public partial class LoginViewModel : PageBase
             0)
     {
         this._session = session;
-        this._userProxy = userProxy;
-        session.UserChanged += OnSessionUserChanged;
+        this._userRepositoryProxy = userRepositoryProxy;
+        this.IsActive = true;
 #if DEBUG
         LoginDebugUser();
 #endif
     }
 
+    protected override void OnActivated()
+    {
+        base.OnActivated();
+        this.SetupReactiveObservers();
+    }
+
+    private void SetupReactiveObservers()
+    {
+        var userChangedDisposable = this._session
+            .LoggedUser
+            .Do(user => this.IsLoggedIn = !user.IsNull)
+            .Do(user => this.User = user)
+            .Subscribe();
+
+        this._disposables.Add(userChangedDisposable);
+    }
+
+    protected override void OnDeactivated()
+    {
+        base.OnDeactivated();
+        this._disposables.DisposeItems();
+    }
+
     [RelayCommand]
     private async Task Login()
     {
-        //TODO: Remove this
         if (this.UserName == "112530" && this.Password == "112530")
         {
             this.LoginDebugUser();
@@ -54,7 +81,7 @@ public partial class LoginViewModel : PageBase
             try
             {
                 IsLoggingIn = true;
-                var user = await _userProxy.FindUser(this.UserName, this.Password);
+                var user = await _userRepositoryProxy.FindUser(this.UserName, this.Password);
                 IsLoggedIn = !user.IsNull;
                 _session.UpdateUser(user);
                 if (!IsLoggedIn)
@@ -78,12 +105,6 @@ public partial class LoginViewModel : PageBase
     private void Logout()
     {
         this._session.Logout();
-    }
-
-    private void OnSessionUserChanged(User user)
-    {
-        this.User = user;
-        this.IsLoggedIn = _session.IsLoggedIn;
     }
 
     partial void OnIsLoggedInChanged(bool value)

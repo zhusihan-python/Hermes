@@ -4,7 +4,10 @@ using Hermes.Common.Extensions;
 using Hermes.Common;
 using Hermes.Services;
 using Hermes.Types;
+using Reactive.Bindings.Disposables;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
+using System.Threading;
 using System;
 
 namespace Hermes.Features.UutProcessor;
@@ -18,6 +21,7 @@ public partial class ScannerViewModel : ViewModelBase
 
     private readonly ILogger _logger;
     private readonly SerialScanner _serialScanner;
+    protected readonly CompositeDisposable _disposables = [];
 
     public ScannerViewModel(
         ILogger logger,
@@ -25,9 +29,38 @@ public partial class ScannerViewModel : ViewModelBase
     {
         this._logger = logger;
         this._serialScanner = serialScanner;
-        this._serialScanner.StateChanged += OnSerialScannerStateChanged;
-        this._serialScanner.Scanned += OnSerialScannerScanned;
         this.ComPort = serialScanner.PortName;
+        this.IsActive = true;
+    }
+
+    protected override void OnActivated()
+    {
+        base.OnActivated();
+        this.SetupReactiveObservers();
+    }
+
+    private void SetupReactiveObservers()
+    {
+        var serialScannerStateChangedDisposable = this._serialScanner
+            .State
+            .ObserveOn(SynchronizationContext.Current!)
+            .Do(OnSerialScannerStateChanged)
+            .Subscribe();
+
+        var serialScannerScannedDisposable = this._serialScanner
+            .ScannedText
+            .ObserveOn(SynchronizationContext.Current!)
+            .Do(OnSerialScannerScanned)
+            .Subscribe();
+
+        this._disposables.Add(serialScannerStateChangedDisposable);
+        this._disposables.Add(serialScannerScannedDisposable);
+    }
+
+    protected override void OnDeactivated()
+    {
+        base.OnDeactivated();
+        this._disposables.DisposeItems();
     }
 
     private void OnSerialScannerScanned(string scannedText)

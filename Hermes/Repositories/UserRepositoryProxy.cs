@@ -6,11 +6,11 @@ using Hermes.Types;
 
 namespace Hermes.Repositories;
 
-public class UserProxy
+public class UserRepositoryProxy
 {
     private readonly UserRemoteRepository _userRemoteRepository;
 
-    public UserProxy(UserRemoteRepository userRemoteRepository)
+    public UserRepositoryProxy(UserRemoteRepository userRemoteRepository)
     {
         this._userRemoteRepository = userRemoteRepository;
     }

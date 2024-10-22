@@ -41,7 +41,7 @@ public partial class DummyViewModel : ViewModelBase
     private void SetupReactiveObservers()
     {
         var uutProcessorStateChangedDisposable = this._session
-            .UutProcessorCurrentState
+            .UutProcessorState
             .ObserveOn(SynchronizationContext.Current!)
             .Do(uutProcessorState =>
             {

@@ -14,19 +14,22 @@ using Hermes.Repositories;
 using Hermes.Services;
 using Hermes.Types;
 using Material.Icons;
+using Reactive.Bindings.Disposables;
 using SukiUI.Dialogs;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System;
+using Hermes.Common.Extensions;
 
 namespace Hermes.Features.UserAdmin;
 
 public partial class UserAdminViewModel : PageBase
 {
     public ObservableCollection<User> Users { get; set; } = [];
-    private readonly UserProxy _userProxy;
+    private readonly UserRepositoryProxy _userRepositoryProxy;
     private readonly Session _session;
     [ObservableProperty] private bool _canExportToCsv;
     [ObservableProperty] private bool _isDataLoading;
@@ -34,6 +37,7 @@ public partial class UserAdminViewModel : PageBase
     [ObservableProperty] private User _selectedUser = User.Null;
 
     private ManageUserDialogViewModel _manageUserDialogViewModel;
+    private readonly CompositeDisposable _disposables = [];
     private readonly FileService _fileService;
     private readonly ILogger _logger;
     private readonly ISukiDialogManager _dialogManager;
@@ -43,7 +47,7 @@ public partial class UserAdminViewModel : PageBase
         Session session,
         ISukiDialogManager dialogManager,
         FileService fileService,
-        UserProxy userProxy)
+        UserRepositoryProxy userRepositoryProxy)
         : base(
             "User Admin",
             MaterialIconKind.Users,
@@ -52,17 +56,34 @@ public partial class UserAdminViewModel : PageBase
             [StationType.Labeling]
         )
     {
-        _logger = logger;
-        _userProxy = userProxy;
-        _session = session;
-        _session.UserChanged += UserChanged;
+        this._logger = logger;
+        this._userRepositoryProxy = userRepositoryProxy;
+        this._session = session;
         this._dialogManager = dialogManager;
-        _fileService = fileService;
+        this._fileService = fileService;
+        this.IsActive = true;
     }
 
-    private void UserChanged(User user)
+    protected override void OnActivated()
     {
-        this.Users.Clear();
+        base.OnActivated();
+        this.SetupReactiveObservers();
+    }
+
+    private void SetupReactiveObservers()
+    {
+        var userChangedDisposable = this._session
+            .LoggedUser
+            .Do(user => this.Users.Clear())
+            .Subscribe();
+
+        this._disposables.Add(userChangedDisposable);
+    }
+
+    protected override void OnDeactivated()
+    {
+        base.OnDeactivated();
+        this._disposables.DisposeItems();
     }
 
     [RelayCommand]
@@ -100,10 +121,10 @@ public partial class UserAdminViewModel : PageBase
     {
         if (string.IsNullOrEmpty(SearchEmployeeId))
         {
-            return await _userProxy.FindAll(department, _session.UserLevel);
+            return await _userRepositoryProxy.FindAll(department, _session.UserLevel);
         }
 
-        return await _userProxy.FindById(SearchEmployeeId, department, _session.UserLevel);
+        return await _userRepositoryProxy.FindById(SearchEmployeeId, department, _session.UserLevel);
     }
 
 
@@ -126,7 +147,7 @@ public partial class UserAdminViewModel : PageBase
         try
         {
             this._manageUserDialogViewModel.IsLoading = true;
-            var affectedRows = await _userProxy.UpdateUser(user);
+            var affectedRows = await _userRepositoryProxy.UpdateUser(user);
             if (affectedRows == 0)
             {
                 throw new Exception(Resources.msg_user_not_found);
@@ -166,7 +187,7 @@ public partial class UserAdminViewModel : PageBase
         try
         {
             this._manageUserDialogViewModel.IsLoading = true;
-            await _userProxy.Add(user);
+            await _userRepositoryProxy.Add(user);
             this.ShowSuccessToast(Resources.msg_user_added);
             this._manageUserDialogViewModel.CloseDialog();
         }
@@ -198,7 +219,7 @@ public partial class UserAdminViewModel : PageBase
     {
         try
         {
-            _userProxy.Delete(user);
+            _userRepositoryProxy.Delete(user);
             this.ShowSuccessToast(Resources.msg_user_deleted);
             await this.FindAllUsers();
         }

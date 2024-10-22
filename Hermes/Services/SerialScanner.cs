@@ -1,4 +1,3 @@
-using Hermes.Repositories;
 using Hermes.Types;
 using System.Diagnostics;
 using System.IO.Ports;
@@ -8,6 +7,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System;
 using Hermes.Models;
+using Reactive.Bindings;
 
 namespace Hermes.Services;
 
@@ -18,8 +18,8 @@ public class SerialScanner
     public const string LineTerminator = "\r";
     private const int Timeout = 5000;
 
-    public event Action<StateType>? StateChanged;
-    public event Action<string>? Scanned;
+    public ReactiveProperty<StateType> State { get; } = new(StateType.Stopped);
+    public ReactiveProperty<string> ScannedText { get; } = new("");
 
     private SerialPort? _serialPort;
     private bool _isWaitingForData;
@@ -45,7 +45,7 @@ public class SerialScanner
                 StopBits.One);
             this._serialPort.DataReceived += Proxy;
             this._serialPort.Open();
-            this.StateChanged?.Invoke(StateType.Idle);
+            this.State.Value = StateType.Idle;
         }
         catch (Exception e)
         {
@@ -58,14 +58,14 @@ public class SerialScanner
     {
         this._serialPort?.Close();
         this._serialPort?.Dispose();
-        this.StateChanged?.Invoke(StateType.Stopped);
+        this.State.Value = StateType.Stopped;
     }
 
     public async Task<string> Scan()
     {
         if (_serialPort is not { IsOpen: true }) return "";
 
-        this.StateChanged?.Invoke(StateType.Processing);
+        this.State.Value = StateType.Processing;
 
         _serialPort.DiscardInBuffer();
         await WriteAsync(TriggerCommand + LineTerminator);
@@ -79,8 +79,8 @@ public class SerialScanner
             _serialPort.DiscardInBuffer();
         }
 
-        this.Scanned?.Invoke(scannedText);
-        this.StateChanged?.Invoke(StateType.Idle);
+        ScannedText.Value = scannedText;
+        this.State.Value = StateType.Idle;
         return scannedText;
     }
 

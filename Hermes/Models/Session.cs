@@ -1,39 +1,25 @@
-using System;
-using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Hermes.Cipher.Extensions;
 using Hermes.Cipher.Types;
-using Hermes.Repositories;
 using Hermes.Types;
 using Reactive.Bindings;
+using System.Linq;
 
 namespace Hermes.Models;
 
 public partial class Session : ObservableObject
 {
-    public ReactiveProperty<UutProcessorState> UutProcessorCurrentState { get; } = new(UutProcessorState.Stopped);
+    public ReactiveProperty<UutProcessorState> UutProcessorState { get; } = new(Types.UutProcessorState.Stopped);
+    public ReactiveProperty<User> LoggedUser { get; } = new(User.Null);
 
 
     [ObservableProperty] private string _path = string.Empty;
     public Stop Stop { get; set; } = Stop.Null;
 
-    private User User
-    {
-        get => _user;
-        set
-        {
-            _user = value;
-            this.UserChanged?.Invoke(value);
-        }
-    }
 
-    public event Action<User>? UserChanged;
-
-    private User _user = User.Null;
-
-    public bool IsLoggedIn => !_user.IsNull;
-    public DepartmentType UserDepartment => _user.Department;
-    public UserLevel UserLevel => _user.Level;
+    public bool IsLoggedIn => !LoggedUser.Value.IsNull;
+    public DepartmentType UserDepartment => LoggedUser.Value.Department;
+    public UserLevel UserLevel => LoggedUser.Value.Level;
 
     public void ResetStop()
     {
@@ -42,12 +28,12 @@ public partial class Session : ObservableObject
 
     public bool HasUserPermission(PermissionType permissionType)
     {
-        return this.User.HasPermission(permissionType);
+        return this.LoggedUser.Value.HasPermission(permissionType);
     }
 
     public void UpdateUser(User user)
     {
-        this.User = user;
+        this.LoggedUser.Value = user;
     }
 
     public bool CanUserExit()
@@ -57,7 +43,7 @@ public partial class Session : ObservableObject
 
     public void Logout()
     {
-        this.User = User.Null;
+        this.LoggedUser.Value = User.Null;
     }
 
     public UserLevel[] GetLevelsBelowLoggedUser()

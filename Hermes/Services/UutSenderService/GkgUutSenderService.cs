@@ -86,10 +86,23 @@ public class GkgUutSenderService : UutSenderService
                 _ => this.SendScanErrorUnitUnderTest(),
                 _ => this.Stop());
 
+        var serialScannerStateChangedDisposable = this._serialScanner
+            .State
+            .SkipWhile(x => x == StateType.Stopped)
+            .Do(x =>
+            {
+                if (x == StateType.Idle)
+                {
+                    this.Stop();
+                }
+            })
+            .Subscribe();
+
         this.Disposables.Add(scannedDisposable);
         this.Disposables.Add(sendDummyUnitUnderTestDisposable);
         this.Disposables.Add(validSerialNumberDisposable);
         this.Disposables.Add(notValidSerialNumberDisposable);
+        this.Disposables.Add(serialScannerStateChangedDisposable);
     }
 
     private Task<string> ScanSerialNumber()

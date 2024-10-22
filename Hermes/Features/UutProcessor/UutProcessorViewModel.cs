@@ -83,7 +83,7 @@ public partial class UutProcessorViewModel : PageBase
 
         var uutSenderServiceStateChangeDisposable = this._uutSenderService
             .State
-            .Do(x => this._session.UutProcessorCurrentState.Value = x)
+            .Do(x => this._session.UutProcessorState.Value = x)
             .Do(x => this.StateText = x.ToTranslatedString())
             .Subscribe();
 
