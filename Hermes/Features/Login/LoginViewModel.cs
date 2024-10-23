@@ -6,11 +6,10 @@ using Hermes.Models;
 using Hermes.Repositories;
 using Hermes.Types;
 using Material.Icons;
-using Reactive.Bindings.Disposables;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System;
-using Hermes.Common.Extensions;
 
 namespace Hermes.Features.Login;
 
@@ -23,7 +22,6 @@ public partial class LoginViewModel : PageBase
     [ObservableProperty] private bool _isLoggingIn;
     [ObservableProperty] private DepartmentType _department;
 
-    private readonly CompositeDisposable _disposables = [];
     private readonly Session _session;
     private readonly UserRepositoryProxy _userRepositoryProxy;
 
@@ -44,27 +42,14 @@ public partial class LoginViewModel : PageBase
 #endif
     }
 
-    protected override void OnActivated()
-    {
-        base.OnActivated();
-        this.SetupReactiveObservers();
-    }
-
-    private void SetupReactiveObservers()
+    protected override void SetupReactiveExtensions()
     {
         var userChangedDisposable = this._session
             .LoggedUser
             .Do(user => this.IsLoggedIn = !user.IsNull)
             .Do(user => this.User = user)
-            .Subscribe();
-
-        this._disposables.Add(userChangedDisposable);
-    }
-
-    protected override void OnDeactivated()
-    {
-        base.OnDeactivated();
-        this._disposables.DisposeItems();
+            .Subscribe()
+            .DisposeWith(Disposables);
     }
 
     [RelayCommand]

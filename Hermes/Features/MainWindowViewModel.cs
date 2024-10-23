@@ -70,13 +70,7 @@ namespace Hermes.Features
             }
         }
 
-        protected override void OnActivated()
-        {
-            base.OnActivated();
-            this.SetupReactiveObservers();
-        }
-
-        private void SetupReactiveObservers()
+        protected override void SetupReactiveExtensions()
         {
             var userChangedDisposable = this._session
                 .LoggedUser
@@ -86,12 +80,6 @@ namespace Hermes.Features
                 .Subscribe();
 
             this._disposables.Add(userChangedDisposable);
-        }
-
-        protected override void OnDeactivated()
-        {
-            base.OnDeactivated();
-            this._disposables.DisposeItems();
         }
 
         private void UpdateTitle(User user)

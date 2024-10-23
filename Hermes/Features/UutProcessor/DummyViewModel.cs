@@ -10,6 +10,7 @@ using Reactive.Bindings.Disposables;
 using System.Reactive.Linq;
 using System.Threading;
 using System;
+using System.Reactive.Disposables;
 
 namespace Hermes.Features.UutProcessor;
 
@@ -24,7 +25,6 @@ public partial class DummyViewModel : ViewModelBase
     private bool _canChangeStatus;
 
     private readonly Session _session;
-    private readonly CompositeDisposable _disposables = [];
 
     public DummyViewModel(Session session)
     {
@@ -32,33 +32,21 @@ public partial class DummyViewModel : ViewModelBase
         this.IsActive = true;
     }
 
-    protected override void OnActivated()
+    protected override void SetupReactiveExtensions()
     {
-        this.SetupReactiveObservers();
-        base.OnActivated();
-    }
-
-    private void SetupReactiveObservers()
-    {
-        var uutProcessorStateChangedDisposable = this._session
+        this._session
             .UutProcessorState
             .ObserveOn(SynchronizationContext.Current!)
             .Do(uutProcessorState =>
             {
-                if (uutProcessorState != UutProcessorState.Idle)
+                if (uutProcessorState != StateType.Idle)
                 {
                     this.IsWaitingForDummy = false;
                 }
             })
-            .Do(uutProcessorState => CanChangeStatus = uutProcessorState == UutProcessorState.Idle)
-            .Subscribe();
-
-        this._disposables.Add(uutProcessorStateChangedDisposable);
-    }
-
-    protected override void OnDeactivated()
-    {
-        this._disposables.DisposeItems();
+            .Do(uutProcessorState => CanChangeStatus = uutProcessorState == StateType.Idle)
+            .Subscribe()
+            .DisposeWith(Disposables);
     }
 
     [RelayCommand(CanExecute = nameof(CanChangeStatus))]

@@ -1,14 +1,30 @@
 ﻿using Avalonia.Controls.Notifications;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
+using Hermes.Common.Extensions;
 using Hermes.Common.Messages;
 using Hermes.Language;
+using System.Reactive.Disposables;
 
 namespace Hermes.Features;
 
 public abstract class ViewModelBase : ObservableRecipient
 {
-    protected ViewModelBase()
+    protected readonly CompositeDisposable Disposables = [];
+
+    protected override void OnActivated()
+    {
+        base.OnActivated();
+        this.SetupReactiveExtensions();
+    }
+
+    protected override void OnDeactivated()
+    {
+        base.OnDeactivated();
+        this.Disposables.DisposeItems();
+    }
+
+    protected virtual void SetupReactiveExtensions()
     {
     }
 

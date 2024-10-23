@@ -31,14 +31,13 @@ public partial class UutProcessorViewModel : PageBase
     public ScannerViewModel ScannerViewModel { get; }
     public DummyViewModel DummyViewModel { get; }
 
-    private UutSenderService? _uutSenderService;
     private readonly CompositeDisposable _disposables = [];
     private readonly FileService _fileService;
     private readonly ILogger _logger;
     private readonly Session _session;
     private readonly StopService _stopService;
     private readonly UnitUnderTestRepository _unitUnderTestRepository;
-    private readonly UutSenderServiceFactory _uutSenderServiceFactory;
+    private readonly UutSenderService _uutSenderService;
 
     public UutProcessorViewModel(
         ILogger logger,
@@ -62,29 +61,27 @@ public partial class UutProcessorViewModel : PageBase
         this._session = session;
         this._stopService = stopService;
         this._unitUnderTestRepository = unitUnderTestRepository;
-        this._uutSenderServiceFactory = uutSenderServiceFactory;
+        this._uutSenderService = uutSenderServiceFactory.Build();
         this.StationFilter = EnumExtensions.GetValues<StationType>()
             .Where(x => x != StationType.Labeling && x != StationType.None)
             .ToList();
         this.IsActive = true;
     }
 
-    private void SetupReactiveObservers()
+    protected override void SetupReactiveExtensions()
     {
-        this._uutSenderService = this._uutSenderServiceFactory.Build();
-        var uutSenderServiceIsRunningChangeDisposable = this._uutSenderService
-            .IsRunning
-            .SkipWhile(x => x == false)
-            .Do(isRunning =>
-            {
-                if (!isRunning) this.Stop();
-            })
-            .Subscribe();
-
         var uutSenderServiceStateChangeDisposable = this._uutSenderService
             .State
             .Do(x => this._session.UutProcessorState.Value = x)
             .Do(x => this.StateText = x.ToTranslatedString())
+            .SkipWhile(x => x == StateType.Stopped)
+            .Do(x =>
+            {
+                if (x == StateType.Stopped)
+                {
+                    this.Stop();
+                }
+            })
             .Subscribe();
 
         var uutCreatedDisposable = this._uutSenderService
@@ -107,7 +104,6 @@ public partial class UutProcessorViewModel : PageBase
             .Select(async _ => await this.PersistCurrentUnitUnderTest())
             .Subscribe();
 
-        this._disposables.Add(uutSenderServiceIsRunningChangeDisposable);
         this._disposables.Add(uutSenderServiceStateChangeDisposable);
         this._disposables.Add(uutCreatedDisposable);
         this._disposables.Add(uutResponseCreatedDisposable);
@@ -132,7 +128,7 @@ public partial class UutProcessorViewModel : PageBase
     protected override void OnDeactivated()
     {
         Messenger.UnregisterAll(this);
-        this._disposables.DisposeItems();
+        base.OnDeactivated();
     }
 
     [RelayCommand]
@@ -141,11 +137,11 @@ public partial class UutProcessorViewModel : PageBase
         try
         {
             if (this.IsRunning) return;
-            this.SetupReactiveObservers();
             this.IsRunning = true;
-            this.Path = this._uutSenderService?.Path ?? "";
-            this._uutSenderService?.Start();
+            this.Path = this._uutSenderService.Path ?? "";
+            this._uutSenderService.Start();
             this._stopService.Start();
+            this.SetupReactiveExtensions();
             this.ShowInfoToast(Resources.msg_uut_processor_started);
         }
         catch (Exception e)
@@ -166,7 +162,7 @@ public partial class UutProcessorViewModel : PageBase
             this.Path = this._uutSenderService?.Path ?? "";
             this._uutSenderService?.Stop();
             this._stopService.Stop();
-            this._disposables.DisposeItems();
+            this.Disposables.DisposeItems();
             this.ShowInfoToast(Resources.msg_uut_processor_stopped);
         }
         catch (Exception e)

@@ -8,6 +8,7 @@ using System.Threading;
 using System;
 using Hermes.Models;
 using Reactive.Bindings;
+using Reactive.Bindings.Extensions;
 
 namespace Hermes.Services;
 
@@ -47,7 +48,7 @@ public class SerialScanner
             this._serialPort.Open();
             this.State.Value = StateType.Idle;
         }
-        catch (Exception e)
+        catch (Exception)
         {
             this.Close();
             throw;
@@ -79,7 +80,15 @@ public class SerialScanner
             _serialPort.DiscardInBuffer();
         }
 
-        ScannedText.Value = scannedText;
+        if (ScannedText.Value == scannedText)
+        {
+            ScannedText.ForceNotify();
+        }
+        else
+        {
+            ScannedText.Value = scannedText;
+        }
+
         this.State.Value = StateType.Idle;
         return scannedText;
     }
@@ -120,7 +129,7 @@ public class SerialScanner
 
             return Encoding.ASCII.GetString(memoryStream.ToArray());
         }
-        catch (Exception e)
+        catch (Exception)
         {
             return string.Empty;
         }

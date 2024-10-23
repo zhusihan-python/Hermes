@@ -3,8 +3,8 @@ using Hermes.Common.Extensions;
 using Hermes.Common;
 using Hermes.Models;
 using Hermes.Types;
-using Reactive.Bindings.Disposables;
 using Reactive.Bindings;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
@@ -14,7 +14,7 @@ namespace Hermes.Services.UutSenderService;
 
 public abstract class UutSenderService
 {
-    public ReactiveProperty<UutProcessorState> State { get; } = new(UutProcessorState.Stopped);
+    public ReactiveProperty<StateType> State { get; } = new(StateType.Stopped);
     public ReactiveProperty<UnitUnderTest> UnitUnderTestCreated { get; } = new(UnitUnderTest.Null);
     public ReactiveProperty<SfcResponse> SfcResponseCreated { get; } = new(SfcResponse.Null);
     public ReactiveProperty<bool> IsRunning { get; } = new(false);
@@ -54,10 +54,10 @@ public abstract class UutSenderService
         try
         {
             if (IsRunning.Value) return;
-            this.SetupReactiveObservers();
-            this.StartService();
             this.IsRunning.Value = true;
-            this.State.Value = UutProcessorState.Idle;
+            this.State.Value = StateType.Idle;
+            this.StartService();
+            this.SetupReactiveObservers();
         }
         catch (Exception)
         {
@@ -72,8 +72,8 @@ public abstract class UutSenderService
     {
         if (!IsRunning.Value) return;
         this.IsRunning.Value = false;
+        this.State.Value = StateType.Stopped;
         this.StopService();
-        this.State.Value = UutProcessorState.Stopped;
         this.Disposables.DisposeItems();
     }
 

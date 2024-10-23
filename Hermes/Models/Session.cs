@@ -9,13 +9,11 @@ namespace Hermes.Models;
 
 public partial class Session : ObservableObject
 {
-    public ReactiveProperty<UutProcessorState> UutProcessorState { get; } = new(Types.UutProcessorState.Stopped);
+    public ReactiveProperty<StateType> UutProcessorState { get; } = new(StateType.Stopped);
     public ReactiveProperty<User> LoggedUser { get; } = new(User.Null);
-
 
     [ObservableProperty] private string _path = string.Empty;
     public Stop Stop { get; set; } = Stop.Null;
-
 
     public bool IsLoggedIn => !LoggedUser.Value.IsNull;
     public DepartmentType UserDepartment => LoggedUser.Value.Department;

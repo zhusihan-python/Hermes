@@ -14,15 +14,14 @@ using Hermes.Repositories;
 using Hermes.Services;
 using Hermes.Types;
 using Material.Icons;
-using Reactive.Bindings.Disposables;
 using SukiUI.Dialogs;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System;
-using Hermes.Common.Extensions;
 
 namespace Hermes.Features.UserAdmin;
 
@@ -37,7 +36,6 @@ public partial class UserAdminViewModel : PageBase
     [ObservableProperty] private User _selectedUser = User.Null;
 
     private ManageUserDialogViewModel _manageUserDialogViewModel;
-    private readonly CompositeDisposable _disposables = [];
     private readonly FileService _fileService;
     private readonly ILogger _logger;
     private readonly ISukiDialogManager _dialogManager;
@@ -64,26 +62,13 @@ public partial class UserAdminViewModel : PageBase
         this.IsActive = true;
     }
 
-    protected override void OnActivated()
+    protected override void SetupReactiveExtensions()
     {
-        base.OnActivated();
-        this.SetupReactiveObservers();
-    }
-
-    private void SetupReactiveObservers()
-    {
-        var userChangedDisposable = this._session
+        this._session
             .LoggedUser
             .Do(user => this.Users.Clear())
-            .Subscribe();
-
-        this._disposables.Add(userChangedDisposable);
-    }
-
-    protected override void OnDeactivated()
-    {
-        base.OnDeactivated();
-        this._disposables.DisposeItems();
+            .Subscribe()
+            .DisposeWith(Disposables);
     }
 
     [RelayCommand]

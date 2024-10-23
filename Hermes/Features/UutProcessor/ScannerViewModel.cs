@@ -4,11 +4,11 @@ using Hermes.Common.Extensions;
 using Hermes.Common;
 using Hermes.Services;
 using Hermes.Types;
-using Reactive.Bindings.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Threading;
 using System;
+using System.Reactive.Disposables;
 
 namespace Hermes.Features.UutProcessor;
 
@@ -21,7 +21,6 @@ public partial class ScannerViewModel : ViewModelBase
 
     private readonly ILogger _logger;
     private readonly SerialScanner _serialScanner;
-    protected readonly CompositeDisposable _disposables = [];
 
     public ScannerViewModel(
         ILogger logger,
@@ -33,49 +32,33 @@ public partial class ScannerViewModel : ViewModelBase
         this.IsActive = true;
     }
 
-    protected override void OnActivated()
+    protected override void SetupReactiveExtensions()
     {
-        base.OnActivated();
-        this.SetupReactiveObservers();
-    }
-
-    private void SetupReactiveObservers()
-    {
-        var serialScannerStateChangedDisposable = this._serialScanner
+        this._serialScanner
             .State
             .ObserveOn(SynchronizationContext.Current!)
             .Do(OnSerialScannerStateChanged)
-            .Subscribe();
+            .Subscribe()
+            .DisposeWith(Disposables);
 
-        var serialScannerScannedDisposable = this._serialScanner
+        this._serialScanner
             .ScannedText
             .ObserveOn(SynchronizationContext.Current!)
             .Do(OnSerialScannerScanned)
-            .Subscribe();
-
-        this._disposables.Add(serialScannerStateChangedDisposable);
-        this._disposables.Add(serialScannerScannedDisposable);
-    }
-
-    protected override void OnDeactivated()
-    {
-        base.OnDeactivated();
-        this._disposables.DisposeItems();
+            .Subscribe()
+            .DisposeWith(Disposables);
     }
 
     private void OnSerialScannerScanned(string scannedText)
     {
         this.ScannedText = string.IsNullOrEmpty(scannedText) ? "SCAN_ERROR" : scannedText;
+        _logger.Debug("Scanned: " + scannedText);
     }
 
     private void OnSerialScannerStateChanged(StateType state)
     {
         StatusText = state.ToTranslatedString();
         IsConnected = state != StateType.Stopped;
-        if (state == StateType.Processing)
-        {
-            this.ScannedText = "";
-        }
     }
 
     [RelayCommand]

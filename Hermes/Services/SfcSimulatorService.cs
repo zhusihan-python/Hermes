@@ -5,10 +5,10 @@ using Hermes.Common;
 using Hermes.Models;
 using Hermes.Types;
 using Reactive.Bindings;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System;
-using Reactive.Bindings.Disposables;
 
 namespace Hermes.Services;
 

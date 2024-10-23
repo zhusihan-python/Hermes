@@ -9,6 +9,7 @@ using System.Reactive.Subjects;
 using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
 using System;
+using System.Reactive.Disposables;
 
 namespace Hermes.Services.UutSenderService;
 
@@ -55,10 +56,11 @@ public class GkgUutSenderService : UutSenderService
     private void SetupReactiveObservers()
     {
         var serialNumberReceivedSubject = new Subject<string>();
-        var scannedDisposable = this._triggerReceived
+        TriggerReceived()
             .SelectMany(async _ => await ScanSerialNumber())
             .Do(_ => _logger.Debug("Serial number scanned"))
-            .Subscribe(serialNumber => serialNumberReceivedSubject.OnNext(serialNumber));
+            .Subscribe(serialNumber => serialNumberReceivedSubject.OnNext(serialNumber))
+            .DisposeWith(Disposables);
 
         var sendDummyUnitUnderTestDisposable = serialNumberReceivedSubject
             .Where(serialNumber => serialNumber == SerialScanner.DummySerialNumber)
@@ -91,18 +93,26 @@ public class GkgUutSenderService : UutSenderService
             .SkipWhile(x => x == StateType.Stopped)
             .Do(x =>
             {
-                if (x == StateType.Idle)
+                if (x == StateType.Stopped)
                 {
                     this.Stop();
                 }
             })
             .Subscribe();
 
-        this.Disposables.Add(scannedDisposable);
         this.Disposables.Add(sendDummyUnitUnderTestDisposable);
         this.Disposables.Add(validSerialNumberDisposable);
         this.Disposables.Add(notValidSerialNumberDisposable);
         this.Disposables.Add(serialScannerStateChangedDisposable);
+    }
+
+    private IObservable<string> TriggerReceived()
+    {
+        return this._serialPortRx
+            .DataReceived
+            .Where(x => x.Contains(SerialScanner.TriggerCommand))
+            .Do(_ => _logger.Debug($"Trigger received"))
+            .TakeFirstAndThrottle(TimeSpan.FromSeconds(5));
     }
 
     private Task<string> ScanSerialNumber()
@@ -110,7 +120,7 @@ public class GkgUutSenderService : UutSenderService
         return Observable
             .FromAsync(async () =>
             {
-                this.State.Value = UutProcessorState.Scanning;
+                this.State.Value = StateType.Scanning;
                 return await this._serialScanner.Scan();
             })
             .Select(x => x.Replace("ERROR", ""))
@@ -129,7 +139,7 @@ public class GkgUutSenderService : UutSenderService
 
     private async Task SendSerialNumber(string serialNumber)
     {
-        this.State.Value = UutProcessorState.Processing;
+        this.State.Value = StateType.Processing;
 
         var unitUnderTest = this.BuildUnitUnderTest(serialNumber);
         this.UnitUnderTestCreated.Value = unitUnderTest;
@@ -141,7 +151,7 @@ public class GkgUutSenderService : UutSenderService
 
         _logger.Debug($"Responded to trigger");
         this.SfcResponseCreated.Value = sfcResponse;
-        this.State.Value = UutProcessorState.Idle;
+        this.State.Value = StateType.Idle;
     }
 
     private void SendScanErrorUnitUnderTest()
@@ -149,22 +159,20 @@ public class GkgUutSenderService : UutSenderService
         this.SfcResponseCreated.Value = this._sfcResponseBuilder
             .SetScanError()
             .Build();
-        this.State.Value = UutProcessorState.Idle;
+        this.State.Value = StateType.Idle;
     }
 
     protected override void StartService()
     {
-        this.SetupReactiveObservers();
         this._serialPortRx.PortName = _settings.GkgTunnelComPort;
         this._serialPortRx.Open();
         this._serialScanner.Open();
-        this.IsRunning.Value = true;
-        this.State.Value = UutProcessorState.Idle;
+        this.SetupReactiveObservers();
     }
 
     private void SendDummyUnitUnderTest()
     {
-        this.State.Value = UutProcessorState.Processing;
+        this.State.Value = StateType.Processing;
 
         var unitUnderTest = this._unitUnderTestBuilder
             .Clone()
@@ -179,7 +187,7 @@ public class GkgUutSenderService : UutSenderService
 
         _serialPortRx.Write($"{UnitUnderTestBuilder.DummySerialNumber}{SerialScanner.LineTerminator}");
 
-        this.State.Value = UutProcessorState.Idle;
+        this.State.Value = StateType.Idle;
     }
 
     private UnitUnderTest BuildUnitUnderTest(string serialNumber)
