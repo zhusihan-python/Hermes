@@ -1,12 +1,12 @@
 ﻿using System.IO.Ports;
-using System.Reactive.Linq;
 using System;
+using R3;
 
 namespace Hermes.Common.Reactive;
 
 public class SerialPortRx : IDisposable
 {
-    public IObservable<string> DataReceived { get; private set; }
+    public Observable<string> DataReceived { get; private set; }
     public string PortName { get; set; } = "COM1";
     public int BaudRate { get; set; } = 9600;
     public int DataBits { get; set; } = 8;
@@ -21,11 +21,10 @@ public class SerialPortRx : IDisposable
     {
         this._serialPort = serialPort;
 
-        DataReceived = Observable
-            .FromEventPattern<SerialDataReceivedEventHandler, SerialDataReceivedEventArgs>(
+        DataReceived = Observable.FromEvent<SerialDataReceivedEventHandler, SerialDataReceivedEventArgs>(
+                h => (sender, e) => h(e),
                 x => serialPort.DataReceived += x,
                 x => serialPort.DataReceived -= x)
-            .Select(x => x.EventArgs)
             .Delay(TimeSpan.FromMilliseconds(20))
             .Select(x => this.SerialReadExisting());
     }

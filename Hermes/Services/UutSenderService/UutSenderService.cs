@@ -1,12 +1,10 @@
 using Hermes.Builders;
 using Hermes.Common.Extensions;
 using Hermes.Common;
+using Hermes.Language;
 using Hermes.Models;
 using Hermes.Types;
-using Reactive.Bindings;
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
-using System.Reactive.Threading.Tasks;
+using R3;
 using System.Threading.Tasks;
 using System;
 
@@ -25,7 +23,7 @@ public abstract class UutSenderService
     private readonly ILogger _logger;
     private readonly ISfcService _sfcService;
     private readonly SfcResponseBuilder _sfcResponseBuilder;
-    protected readonly CompositeDisposable Disposables = [];
+    protected DisposableBag Disposables;
     private readonly Settings _settings;
 
     protected UutSenderService(
@@ -42,11 +40,10 @@ public abstract class UutSenderService
 
     private void SetupReactiveObservers()
     {
-        var isRunningDisposable = IsRunning
+        IsRunning
             .SkipWhile(x => x == false)
-            .Subscribe(isRunning => _logger.Info($"UutSenderService {(isRunning ? "started" : "stopped")}"));
-
-        this.Disposables.Add(isRunningDisposable);
+            .Subscribe(isRunning => _logger.Info($"UutSenderService {(isRunning ? "started" : "stopped")}"))
+            .AddTo(ref Disposables);
     }
 
     public void Start()
@@ -74,30 +71,42 @@ public abstract class UutSenderService
         this.IsRunning.Value = false;
         this.State.Value = StateType.Stopped;
         this.StopService();
-        this.Disposables.DisposeItems();
+        this.Disposables.Clear();
     }
 
     protected abstract void StopService();
 
-    protected Task<SfcResponse> SendUnitUnderTest(UnitUnderTest unitUnderTest)
+    protected async Task<SfcResponse> SendUnitUnderTest(UnitUnderTest unitUnderTest)
     {
         if (!_settings.SendRepairFile && unitUnderTest.IsFail)
         {
-            return Task.FromResult(_sfcResponseBuilder
-                .SetOkSfcResponse()
-                .Build());
-
             // TODO: Move from here
-            //unitUnderTest.Message = _session.Settings.Machine is MachineType.Spi
-            //   ? Resources.msg_spi_repair
-            //   : "";
+            unitUnderTest.Message = _settings.Machine is MachineType.Spi
+                ? Resources.msg_spi_repair
+                : "";
+
+            return _sfcResponseBuilder
+                .SetOkSfcResponse()
+                .Build();
         }
 
-        return Observable
-            .FromAsync(async () => await _sfcService.SendAsync(unitUnderTest))
-            .Do(x => _logger.Debug($"SendUnitUnderTest {unitUnderTest.FileName}, SfcResponse: {x.ResponseType}"))
-            .Retry(this._settings.MaxSfcRetries)
-            .Catch<SfcResponse, Exception>(_ => Observable.Return(Models.SfcResponse.Null))
-            .ToTask();
+        // TODO: Is there a better way to do this?
+        var i = 0;
+        var sfcResponse = SfcResponse.Null;
+        do
+        {
+            try
+            {
+                sfcResponse = await _sfcService.SendAsync(unitUnderTest);
+            }
+            catch (Exception e)
+            {
+                _logger.Error(e.Message);
+                i++;
+            }
+        } while (i < _settings.MaxSfcRetries && sfcResponse.IsTimeout);
+
+        _logger.Debug($"SendUnitUnderTest {unitUnderTest.FileName}, SfcResponse: {sfcResponse.ResponseType}");
+        return sfcResponse;
     }
 }

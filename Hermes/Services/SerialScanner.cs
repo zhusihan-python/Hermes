@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System;
 using Hermes.Models;
-using Reactive.Bindings;
-using Reactive.Bindings.Extensions;
+using R3;
 
 namespace Hermes.Services;
 

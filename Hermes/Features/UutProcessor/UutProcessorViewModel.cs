@@ -11,12 +11,11 @@ using Hermes.Services.UutSenderService;
 using Hermes.Services;
 using Hermes.Types;
 using Material.Icons;
-using Reactive.Bindings.Disposables;
 using System.Linq;
-using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Threading;
 using System;
+using R3;
 
 namespace Hermes.Features.UutProcessor;
 
@@ -31,7 +30,6 @@ public partial class UutProcessorViewModel : PageBase
     public ScannerViewModel ScannerViewModel { get; }
     public DummyViewModel DummyViewModel { get; }
 
-    private readonly CompositeDisposable _disposables = [];
     private readonly FileService _fileService;
     private readonly ILogger _logger;
     private readonly Session _session;
@@ -70,7 +68,7 @@ public partial class UutProcessorViewModel : PageBase
 
     protected override void SetupReactiveExtensions()
     {
-        var uutSenderServiceStateChangeDisposable = this._uutSenderService
+        this._uutSenderService
             .State
             .Do(x => this._session.UutProcessorState.Value = x)
             .Do(x => this.StateText = x.ToTranslatedString())
@@ -82,31 +80,27 @@ public partial class UutProcessorViewModel : PageBase
                     this.Stop();
                 }
             })
-            .Subscribe();
+            .Subscribe()
+            .AddTo(ref Disposables);
 
-        var uutCreatedDisposable = this._uutSenderService
+        this._uutSenderService
             .UnitUnderTestCreated
-            .SubscribeOn(SynchronizationContext.Current!)
             .Where(unitUnderTest => !unitUnderTest.IsNull)
             .Do(unitUnderTest => this.CurrentUnitUnderTest = unitUnderTest)
-            .Subscribe();
+            .Subscribe()
+            .AddTo(ref Disposables);
 
-        var uutResponseCreatedDisposable = this._uutSenderService
+        this._uutSenderService
             .SfcResponseCreated
-            .SubscribeOn(SynchronizationContext.Current!)
             .Where(sfcResponse => !sfcResponse.IsNull)
             .Do(sfcResponse => this.CurrentSfcResponse = sfcResponse)
             .Do(sfcResponse => this.CurrentUnitUnderTest.SfcResponse = sfcResponse)
             .Select(async _ => await this._stopService.Calculate(CurrentUnitUnderTest))
-            .Concat()
             .Do(this.ShowResult)
             .Select(async _ => await this.MoveFilesToBackup())
             .Select(async _ => await this.PersistCurrentUnitUnderTest())
-            .Subscribe();
-
-        this._disposables.Add(uutSenderServiceStateChangeDisposable);
-        this._disposables.Add(uutCreatedDisposable);
-        this._disposables.Add(uutResponseCreatedDisposable);
+            .Subscribe()
+            .AddTo(ref Disposables);
     }
 
     protected override void OnActivated()
@@ -162,7 +156,7 @@ public partial class UutProcessorViewModel : PageBase
             this.Path = this._uutSenderService?.Path ?? "";
             this._uutSenderService?.Stop();
             this._stopService.Stop();
-            this.Disposables.DisposeItems();
+            this.Disposables.Clear();
             this.ShowInfoToast(Resources.msg_uut_processor_stopped);
         }
         catch (Exception e)

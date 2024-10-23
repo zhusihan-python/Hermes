@@ -55,10 +55,10 @@
         <PackageReference Include="Polly.Core" Version="8.4.1"/>
         <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2" />
         <PackageReference Include="QRCoder.Core" Version="1.0.3" />
-        <PackageReference Include="ReactiveProperty" Version="9.6.0" />
+        <PackageReference Include="R3" Version="1.2.9" />
+        <PackageReference Include="R3Extensions.Avalonia" Version="1.2.9" />
         <PackageReference Include="SukiUI" Version="6.0.0-beta8" />
         <PackageReference Include="System.IO.Ports" Version="9.0.0-rc.1.24431.7" />
-        <PackageReference Include="System.Reactive" Version="6.0.1" />
     </ItemGroup>
 
     <ItemGroup>

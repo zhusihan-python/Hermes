@@ -55,19 +55,19 @@
                     <TextBlock Classes="Caption">
                         <Run Text="{x:Static lang:Resources.txt_scanned}" />
                         <Run Text=":" />
-                        <Run Text="{Binding ScannedText}" />
+                        <Run Text="{Binding ScannedText.Value}" />
                     </TextBlock>
                 </StackPanel>
             </Grid>
 
             <Grid ColumnDefinitions="*,*">
-                
-                <Button  Grid.Column="0"
-                         Grid.ColumnSpan="2"
-                         Classes="Flat"
-                         Content="{x:Static lang:Resources.txt_connect}"
-                         Command="{Binding StartCommand}"
-                         IsVisible="{Binding !IsConnected}" />
+
+                <Button Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        Classes="Flat"
+                        Content="{x:Static lang:Resources.txt_connect}"
+                        Command="{Binding StartCommand}"
+                        IsVisible="{Binding !IsConnected}" />
 
                 <Button Grid.Column="0"
                         Margin="0 0 5 0"

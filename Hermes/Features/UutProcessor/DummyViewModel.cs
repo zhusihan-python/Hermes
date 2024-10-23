@@ -1,16 +1,11 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using Hermes.Common.Extensions;
 using Hermes.Common.Messages;
 using Hermes.Language;
 using Hermes.Models;
 using Hermes.Types;
-using Reactive.Bindings.Disposables;
-using System.Reactive.Linq;
-using System.Threading;
-using System;
-using System.Reactive.Disposables;
+using R3;
 
 namespace Hermes.Features.UutProcessor;
 
@@ -36,7 +31,6 @@ public partial class DummyViewModel : ViewModelBase
     {
         this._session
             .UutProcessorState
-            .ObserveOn(SynchronizationContext.Current!)
             .Do(uutProcessorState =>
             {
                 if (uutProcessorState != StateType.Idle)
@@ -46,7 +40,7 @@ public partial class DummyViewModel : ViewModelBase
             })
             .Do(uutProcessorState => CanChangeStatus = uutProcessorState == StateType.Idle)
             .Subscribe()
-            .DisposeWith(Disposables);
+            .AddTo(ref Disposables);
     }
 
     [RelayCommand(CanExecute = nameof(CanChangeStatus))]

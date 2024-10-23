@@ -5,12 +5,13 @@ using Hermes.Common.Extensions;
 using Hermes.Common.Messages;
 using Hermes.Language;
 using System.Reactive.Disposables;
+using R3;
 
 namespace Hermes.Features;
 
 public abstract class ViewModelBase : ObservableRecipient
 {
-    protected readonly CompositeDisposable Disposables = [];
+    protected DisposableBag Disposables;
 
     protected override void OnActivated()
     {
@@ -21,7 +22,7 @@ public abstract class ViewModelBase : ObservableRecipient
     protected override void OnDeactivated()
     {
         base.OnDeactivated();
-        this.Disposables.DisposeItems();
+        this.Disposables.Clear();
     }
 
     protected virtual void SetupReactiveExtensions()

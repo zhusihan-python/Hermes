@@ -1,11 +1,9 @@
 using Hermes.Builders;
-using Hermes.Common.Extensions;
 using Hermes.Common.Parsers;
 using Hermes.Common;
 using Hermes.Models;
 using Hermes.Types;
-using Reactive.Bindings;
-using System.Reactive.Disposables;
+using R3;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System;
@@ -22,7 +20,7 @@ public class SfcSimulatorService(
 {
     public SfcResponseType Mode { get; set; } = SfcResponseType.Ok;
 
-    private readonly CompositeDisposable _disposables = [];
+    private DisposableBag _disposables;
     public readonly ReactiveProperty<bool> IsRunning = new();
 
     public void Start()
@@ -45,17 +43,16 @@ public class SfcSimulatorService(
 
     private void SetupReactiveObservers()
     {
-        var textDocumentCreatedDisposable = folderWatcherService
+        folderWatcherService
             .TextDocumentCreated
             .Distinct(x => x.FullPath)
             .Select(SendSfcResponse)
-            .Subscribe();
+            .Subscribe()
+            .AddTo(ref _disposables);
 
-        var isRunningDisposable = IsRunning
-            .Subscribe(isRunning => { logger.Info($"Sfc simulator {(isRunning ? "started" : "stopped")}"); });
-
-        _disposables.Add(textDocumentCreatedDisposable);
-        _disposables.Add(isRunningDisposable);
+        IsRunning
+            .Subscribe(isRunning => { logger.Info($"Sfc simulator {(isRunning ? "started" : "stopped")}"); })
+            .AddTo(ref _disposables);
     }
 
     public void Stop()
@@ -63,7 +60,7 @@ public class SfcSimulatorService(
         if (!IsRunning.Value) return;
         IsRunning.Value = false;
         folderWatcherService.Stop();
-        _disposables.DisposeItems();
+        _disposables.Clear();
     }
 
     private async Task SendSfcResponse(TextDocument textDocument)

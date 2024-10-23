@@ -4,20 +4,22 @@ using Hermes.Common.Extensions;
 using Hermes.Common;
 using Hermes.Services;
 using Hermes.Types;
-using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Threading;
 using System;
 using System.Reactive.Disposables;
+using R3;
 
 namespace Hermes.Features.UutProcessor;
 
 public partial class ScannerViewModel : ViewModelBase
 {
+    public ReactiveProperty<string> ScannedText { get; }
+    public ReactiveProperty<StateType> State { get; }
+
     [ObservableProperty] private bool _isConnected;
     [ObservableProperty] private string _statusText = StateType.Stopped.ToTranslatedString();
     [ObservableProperty] private string _comPort;
-    [ObservableProperty] private string _scannedText = "";
 
     private readonly ILogger _logger;
     private readonly SerialScanner _serialScanner;
@@ -29,6 +31,11 @@ public partial class ScannerViewModel : ViewModelBase
         this._logger = logger;
         this._serialScanner = serialScanner;
         this.ComPort = serialScanner.PortName;
+        this.ScannedText = _serialScanner
+            .ScannedText
+            .Select(x => string.IsNullOrEmpty(x) ? "SCAN_ERROR" : x)
+            .ToBindableReactiveProperty<string>();
+        this.State = _serialScanner.State;
         this.IsActive = true;
     }
 
@@ -36,29 +43,13 @@ public partial class ScannerViewModel : ViewModelBase
     {
         this._serialScanner
             .State
-            .ObserveOn(SynchronizationContext.Current!)
-            .Do(OnSerialScannerStateChanged)
-            .Subscribe()
-            .DisposeWith(Disposables);
+            .Subscribe(x => IsConnected = x != StateType.Stopped)
+            .AddTo(ref Disposables);
 
         this._serialScanner
             .ScannedText
-            .ObserveOn(SynchronizationContext.Current!)
-            .Do(OnSerialScannerScanned)
-            .Subscribe()
-            .DisposeWith(Disposables);
-    }
-
-    private void OnSerialScannerScanned(string scannedText)
-    {
-        this.ScannedText = string.IsNullOrEmpty(scannedText) ? "SCAN_ERROR" : scannedText;
-        _logger.Debug("Scanned: " + scannedText);
-    }
-
-    private void OnSerialScannerStateChanged(StateType state)
-    {
-        StatusText = state.ToTranslatedString();
-        IsConnected = state != StateType.Stopped;
+            .Subscribe(x => _logger.Debug("Scanned: " + x))
+            .AddTo(ref Disposables);
     }
 
     [RelayCommand]

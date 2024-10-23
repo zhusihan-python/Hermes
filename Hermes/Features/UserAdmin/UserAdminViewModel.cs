@@ -14,12 +14,11 @@ using Hermes.Repositories;
 using Hermes.Services;
 using Hermes.Types;
 using Material.Icons;
+using R3;
 using SukiUI.Dialogs;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System;
 
@@ -68,7 +67,7 @@ public partial class UserAdminViewModel : PageBase
             .LoggedUser
             .Do(user => this.Users.Clear())
             .Subscribe()
-            .DisposeWith(Disposables);
+            .AddTo(ref Disposables);
     }
 
     [RelayCommand]

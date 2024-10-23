@@ -6,10 +6,8 @@ using Hermes.Models;
 using Hermes.Repositories;
 using Hermes.Types;
 using Material.Icons;
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
+using R3;
 using System.Threading.Tasks;
-using System;
 
 namespace Hermes.Features.Login;
 
@@ -31,8 +29,7 @@ public partial class LoginViewModel : PageBase
         base(
             Resources.txt_account,
             MaterialIconKind.Account,
-            PermissionType.FreeAccess,
-            0)
+            PermissionType.FreeAccess)
     {
         this._session = session;
         this._userRepositoryProxy = userRepositoryProxy;
@@ -44,12 +41,12 @@ public partial class LoginViewModel : PageBase
 
     protected override void SetupReactiveExtensions()
     {
-        var userChangedDisposable = this._session
+        this._session
             .LoggedUser
             .Do(user => this.IsLoggedIn = !user.IsNull)
             .Do(user => this.User = user)
             .Subscribe()
-            .DisposeWith(Disposables);
+            .AddTo(ref Disposables);
     }
 
     [RelayCommand]

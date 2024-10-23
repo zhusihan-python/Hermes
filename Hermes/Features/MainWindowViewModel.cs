@@ -4,13 +4,12 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using DynamicData;
 using Hermes.Cipher.Types;
-using Hermes.Common.Extensions;
 using Hermes.Common.Messages;
 using Hermes.Features.Login;
 using Hermes.Language;
 using Hermes.Models;
 using Hermes.Types;
-using Reactive.Bindings.Disposables;
+using R3;
 using SukiUI.Controls;
 using SukiUI.Dialogs;
 using SukiUI.Toasts;
@@ -18,9 +17,6 @@ using SukiUI;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Reactive.Linq;
-using System.Threading;
-using System;
 
 namespace Hermes.Features
 {
@@ -43,7 +39,6 @@ namespace Hermes.Features
         private readonly Session _session;
         private readonly Settings _settings;
         private readonly SukiTheme _theme;
-        private readonly CompositeDisposable _disposables = [];
 
         public MainWindowViewModel(
             IEnumerable<PageBase> pages,
@@ -74,12 +69,10 @@ namespace Hermes.Features
         {
             var userChangedDisposable = this._session
                 .LoggedUser
-                .ObserveOn(SynchronizationContext.Current!)
                 .Do(this.UpdateTitle)
                 .Do(_ => this.ConfigurePages())
-                .Subscribe();
-
-            this._disposables.Add(userChangedDisposable);
+                .Subscribe()
+                .AddTo(ref Disposables);
         }
 
         private void UpdateTitle(User user)
