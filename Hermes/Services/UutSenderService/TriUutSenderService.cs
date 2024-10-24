@@ -2,9 +2,8 @@ using Hermes.Builders;
 using Hermes.Common.Extensions;
 using Hermes.Common;
 using Hermes.Models;
-using System.Reactive.Linq;
+using R3;
 using System.Threading.Tasks;
-using System;
 
 namespace Hermes.Services.UutSenderService;
 

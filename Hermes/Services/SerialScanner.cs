@@ -79,15 +79,7 @@ public class SerialScanner
             _serialPort.DiscardInBuffer();
         }
 
-        if (ScannedText.Value == scannedText)
-        {
-            ScannedText.ForceNotify();
-        }
-        else
-        {
-            ScannedText.Value = scannedText;
-        }
-
+        ScannedText.OnNext(scannedText);
         this.State.Value = StateType.Idle;
         return scannedText;
     }

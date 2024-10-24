@@ -35,7 +35,9 @@ public partial class ScannerViewModel : ViewModelBase
             .ScannedText
             .Select(x => string.IsNullOrEmpty(x) ? "SCAN_ERROR" : x)
             .ToBindableReactiveProperty<string>();
-        this.State = _serialScanner.State;
+        this.State = _serialScanner
+            .State
+            .ToBindableReactiveProperty();
         this.IsActive = true;
     }
 

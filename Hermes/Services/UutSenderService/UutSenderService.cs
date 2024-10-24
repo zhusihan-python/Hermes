@@ -38,7 +38,7 @@ public abstract class UutSenderService
         _sfcService = sfcService;
     }
 
-    private void SetupReactiveObservers()
+    protected virtual void SetupReactiveExtensions()
     {
         IsRunning
             .SkipWhile(x => x == false)
@@ -54,7 +54,7 @@ public abstract class UutSenderService
             this.IsRunning.Value = true;
             this.State.Value = StateType.Idle;
             this.StartService();
-            this.SetupReactiveObservers();
+            this.SetupReactiveExtensions();
         }
         catch (Exception)
         {

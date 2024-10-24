@@ -95,10 +95,10 @@ public partial class UutProcessorViewModel : PageBase
             .Where(sfcResponse => !sfcResponse.IsNull)
             .Do(sfcResponse => this.CurrentSfcResponse = sfcResponse)
             .Do(sfcResponse => this.CurrentUnitUnderTest.SfcResponse = sfcResponse)
-            .Select(async _ => await this._stopService.Calculate(CurrentUnitUnderTest))
+            .SelectAwait(async (_, __) => await this._stopService.Calculate(CurrentUnitUnderTest))
             .Do(this.ShowResult)
-            .Select(async _ => await this.MoveFilesToBackup())
-            .Select(async _ => await this.PersistCurrentUnitUnderTest())
+            // TODO .Do(async (_) => await this.MoveFilesToBackup())
+            //.SelectAwait(async (_, __) => await this.PersistCurrentUnitUnderTest())
             .Subscribe()
             .AddTo(ref Disposables);
     }

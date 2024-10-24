@@ -43,7 +43,9 @@
                     <TextBlock Classes="Caption">
                         <Run Text="{x:Static lang:Resources.txt_status}" />
                         <Run Text=":" />
-                        <Run Text="{Binding StatusText}" />
+                        <Run
+                            Text="{Binding State.Value, 
+                            Converter={x:Static converters:EnumToTranslatedTextConverters.StateTypeTypeConverter}}" />
                     </TextBlock>
 
                     <TextBlock Classes="Caption">

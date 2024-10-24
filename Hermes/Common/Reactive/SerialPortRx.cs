@@ -56,6 +56,7 @@ public class SerialPortRx : IDisposable
         _serialPort.Handshake = Handshake;
         _serialPort.ReadTimeout = ReadTimeout;
         _serialPort.Open();
+        _serialPort.DiscardInBuffer();
     }
 
     public void Close()

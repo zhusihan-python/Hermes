@@ -17,7 +17,6 @@ public class GkgUutSenderService : UutSenderService
     private readonly Settings _settings;
     private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
     private readonly SfcResponseBuilder _sfcResponseBuilder;
-    private DisposableBag _disposables;
 
     public override string Path => _settings.GkgTunnelComPort;
 
@@ -39,23 +38,25 @@ public class GkgUutSenderService : UutSenderService
         this._unitUnderTestBuilder = unitUnderTestBuilder;
     }
 
-    private void SetupReactiveExtensions()
+    protected override void SetupReactiveExtensions()
     {
-        var serialNumberReceivedSubject = new Subject<string>();
-        TriggerReceived()
-            .Select(async _ => await ScanSerialNumber())
-            .Do(_ => _logger.Debug("Serial number scanned"))
-            .SubscribeAwait(async (serialNumber, _) => serialNumberReceivedSubject.OnNext(await serialNumber))
-            .AddTo(ref _disposables);
+        base.SetupReactiveExtensions();
 
-        serialNumberReceivedSubject
+        var serialNumberScannedSubject = new Subject<string>();
+        TriggerReceived()
+            .SelectAwait(async (_, __) => await ScanSerialNumber())
+            .Do(_ => _logger.Debug("Serial number scanned"))
+            .Subscribe(serialNumber => serialNumberScannedSubject.OnNext(serialNumber))
+            .AddTo(ref Disposables);
+
+        serialNumberScannedSubject
             .Where(serialNumber => serialNumber == SerialScanner.DummySerialNumber)
             .Do(_ => _logger.Debug($"Dummy enabled"))
             .Do(_ => this.IsWaitingForDummy = false)
             .Subscribe(_ => this.SendDummyUnitUnderTest())
-            .AddTo(ref _disposables);
+            .AddTo(ref Disposables);
 
-        serialNumberReceivedSubject
+        serialNumberScannedSubject
             .Where(serialNumber => serialNumber != SerialScanner.DummySerialNumber)
             .Where(serialNumber => !string.IsNullOrEmpty(serialNumber))
             .Select(async serialNumber =>
@@ -67,15 +68,15 @@ public class GkgUutSenderService : UutSenderService
             .Subscribe(
                 _ => { },
                 _ => this.Stop())
-            .AddTo(ref _disposables);
+            .AddTo(ref Disposables);
 
-        serialNumberReceivedSubject
+        serialNumberScannedSubject
             .Where(serialNumber => serialNumber != SerialScanner.DummySerialNumber)
             .Where(string.IsNullOrEmpty)
             .Subscribe(
                 _ => this.SendScanErrorUnitUnderTest(),
                 _ => this.Stop())
-            .AddTo(ref _disposables);
+            .AddTo(ref Disposables);
 
         this._serialScanner
             .State
@@ -87,7 +88,7 @@ public class GkgUutSenderService : UutSenderService
                 }
             })
             .Subscribe()
-            .AddTo(ref _disposables);
+            .AddTo(ref Disposables);
     }
 
     private Observable<string> TriggerReceived()
@@ -95,8 +96,7 @@ public class GkgUutSenderService : UutSenderService
         return this._serialPortRx
             .DataReceived
             .Where(x => x.Contains(SerialScanner.TriggerCommand))
-            .Do(_ => _logger.Debug($"Trigger received"))
-            .ThrottleFirst(TimeSpan.FromSeconds(5));
+            .Do(_ => _logger.Debug($"Trigger received"));
     }
 
     private Task<string> ScanSerialNumber()

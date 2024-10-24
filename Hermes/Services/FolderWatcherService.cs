@@ -1,15 +1,16 @@
 using Hermes.Common.Reactive;
 using Hermes.Models;
+using R3;
 using System.IO;
-using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System;
+using System.Threading;
 
 namespace Hermes.Services;
 
 public class FolderWatcherService : IDisposable
 {
-    public virtual IObservable<TextDocument> TextDocumentCreated { get; private set; } = null!;
+    public virtual Observable<TextDocument> TextDocumentCreated { get; private set; } = null!;
 
     private readonly FileService _fileService;
     private readonly FileSystemWatcherRx _fileSystemWatcherRx;
@@ -25,17 +26,18 @@ public class FolderWatcherService : IDisposable
     {
         this.TextDocumentCreated = this._fileSystemWatcherRx
             .Created
-            .Delay(TimeSpan.FromMilliseconds(10))
-            .SelectMany(this.ReadTextDocument);
+            .Delay(TimeSpan.FromMilliseconds(20))
+            .SelectAwait(ReadTextDocument);
     }
 
-    private async Task<TextDocument> ReadTextDocument(FileSystemEventArgs e)
+    private async ValueTask<TextDocument> ReadTextDocument(FileSystemEventArgs e, CancellationToken ct)
     {
-        return new TextDocument()
+        var textDocument = new TextDocument()
         {
             FullPath = e.FullPath,
             Content = await _fileService.TryReadAllTextAsync(e.FullPath)
         };
+        return textDocument;
     }
 
     public void Start(string path, string filter = "*.*")

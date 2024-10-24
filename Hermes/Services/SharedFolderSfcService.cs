@@ -1,8 +1,7 @@
 using Hermes.Cipher.Extensions;
 using Hermes.Models;
+using R3;
 using System.IO;
-using System.Reactive.Linq;
-using System.Reactive.Threading.Tasks;
 using System.Threading.Tasks;
 using System;
 
@@ -27,31 +26,35 @@ public class SharedFolderSfcService : ISfcService
 
     public Task<SfcResponse> SendAsync(UnitUnderTest unitUnderTest)
     {
-        this._folderWatcherService.Start(
-            this._settings.SfcPath);
+        // TODO : Verify if this is the correct way to do this
+        this._folderWatcherService.Start(this._settings.SfcPath);
 
         var responseCreated = this._folderWatcherService
             .TextDocumentCreated
-            .Delay(TimeSpan.FromMilliseconds(20))
             .Timeout(TimeSpan.FromSeconds(this._settings.SfcTimeoutSeconds))
             .Where(x => IsResponseFile(x, unitUnderTest))
-            .Select(GetResponseFileContent)
-            .Concat()
+            .SelectAwait(async (x, __) => await this.GetResponseFileContent(x))
+            .Catch<TextDocument, TimeoutException>(_ => Observable.Return(new TextDocument()))
             .Take(1);
 
-        return Observable
-            .FromAsync(_ => SendUnitUnderTest(unitUnderTest))
-            .Select(_ => responseCreated)
-            .Concat()
-            .Select(x => new SfcResponse(
+        var asd = Observable
+            .FromAsync(async _ => await SendUnitUnderTest(unitUnderTest))
+            .Timeout(TimeSpan.FromSeconds(this._settings.SfcTimeoutSeconds))
+            .Select(x => new SfcResponse())
+            .Catch<SfcResponse, TimeoutException>(_ => Observable.Return(SfcResponse.BuildTimeout()))
+            .AsObservable();
+
+        return asd.Zip(responseCreated, (_, x) => x)
+            .Timeout(TimeSpan.FromSeconds(this._settings.SfcTimeoutSeconds))
+            .Select((x) => new SfcResponse(
                 content: x.Content,
                 fullPath: x.FullPath,
                 additionalOkResponse: _settings.AdditionalOkSfcResponse
             ))
+            .Do(() => this._folderWatcherService.Stop())
             .Catch<SfcResponse, TimeoutException>(_ => Observable.Return(SfcResponse.BuildTimeout()))
             .Catch<SfcResponse, Exception>(_ => Observable.Return(SfcResponse.Null))
-            .Finally(() => this._folderWatcherService.Stop())
-            .ToTask();
+            .LastAsync();
     }
 
     private bool IsResponseFile(TextDocument textDocument, UnitUnderTest unitUnderTest)
@@ -62,7 +65,7 @@ public class SharedFolderSfcService : ISfcService
 
     private async Task<TextDocument> GetResponseFileContent(TextDocument textDocument)
     {
-        var responseFullPath = Path.Combine(Path.GetPathRoot(textDocument.FullPath)!,
+        var responseFullPath = Path.Combine(Path.GetDirectoryName(textDocument.FullPath)!,
             textDocument.FileNameWithoutExtension +
             this._settings.SfcResponseExtension.GetDescription());
         return new TextDocument()

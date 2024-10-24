@@ -45,7 +45,7 @@ public class SfcSimulatorService(
     {
         folderWatcherService
             .TextDocumentCreated
-            .Distinct(x => x.FullPath)
+            .DistinctBy(x => x.FullPath)
             .Select(SendSfcResponse)
             .Subscribe()
             .AddTo(ref _disposables);
