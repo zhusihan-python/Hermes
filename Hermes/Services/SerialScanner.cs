@@ -16,7 +16,7 @@ public class SerialScanner
     public const string DummySerialNumber = "Dummy";
     public const string TriggerCommand = "LOF";
     public const string LineTerminator = "\r";
-    private const int Timeout = 5000;
+    private const int Timeout = 2000;
 
     public ReactiveProperty<StateType> State { get; } = new(StateType.Stopped);
     public ReactiveProperty<string> ScannedText { get; } = new("");

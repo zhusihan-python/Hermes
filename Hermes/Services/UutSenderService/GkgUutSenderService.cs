@@ -3,20 +3,20 @@ using Hermes.Common.Reactive;
 using Hermes.Common;
 using Hermes.Models;
 using Hermes.Types;
+using R3;
 using System.Threading.Tasks;
 using System;
-using R3;
 
 namespace Hermes.Services.UutSenderService;
 
 public class GkgUutSenderService : UutSenderService
 {
     private readonly ILogger _logger;
-    private readonly SerialScanner _serialScanner;
     private readonly SerialPortRx _serialPortRx;
+    private readonly SerialScanner _serialScanner;
     private readonly Settings _settings;
-    private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
     private readonly SfcResponseBuilder _sfcResponseBuilder;
+    private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
 
     public override string Path => _settings.GkgTunnelComPort;
 
@@ -38,30 +38,29 @@ public class GkgUutSenderService : UutSenderService
         this._unitUnderTestBuilder = unitUnderTestBuilder;
     }
 
+    protected override void StartService()
+    {
+        this._serialPortRx.PortName = _settings.GkgTunnelComPort;
+        this._serialPortRx.Open();
+        this._serialScanner.Open();
+    }
+
+    protected override void StopService()
+    {
+        this._serialPortRx.Close();
+        this._serialScanner.Close();
+    }
+
     protected override void SetupReactiveExtensions()
     {
-        base.SetupReactiveExtensions();
-
         var serialNumberScannedSubject = new Subject<string>();
-        TriggerReceived()
-            .SelectAwait(async (_, __) => await ScanSerialNumber())
-            .Do(_ => _logger.Debug("Serial number scanned"))
+        this.SerialNumberReceived()
             .Subscribe(serialNumber => serialNumberScannedSubject.OnNext(serialNumber))
             .AddTo(ref Disposables);
 
-        serialNumberScannedSubject
-            .Where(serialNumber => serialNumber == SerialScanner.DummySerialNumber)
-            .Do(_ => _logger.Debug($"Dummy enabled"))
-            .Do(_ => this.IsWaitingForDummy = false)
-            .Subscribe(_ => this.SendDummyUnitUnderTest())
-            .AddTo(ref Disposables);
-
-        serialNumberScannedSubject
-            .Where(serialNumber => serialNumber != SerialScanner.DummySerialNumber)
-            .Where(serialNumber => !string.IsNullOrEmpty(serialNumber))
-            .Select(async serialNumber =>
+        this.ValidSerialNumberReceived(serialNumberScannedSubject)
+            .SelectAwait(async (serialNumber, _) =>
             {
-                _logger.Debug($"Send serial number: {serialNumber}");
                 await this.SendUnitUnderTest(serialNumber);
                 return serialNumber;
             })
@@ -70,39 +69,59 @@ public class GkgUutSenderService : UutSenderService
                 _ => this.Stop())
             .AddTo(ref Disposables);
 
-        serialNumberScannedSubject
-            .Where(serialNumber => serialNumber != SerialScanner.DummySerialNumber)
-            .Where(string.IsNullOrEmpty)
+        this.InvalidSerialNumberReceived(serialNumberScannedSubject)
             .Subscribe(
                 _ => this.SendScanErrorUnitUnderTest(),
                 _ => this.Stop())
             .AddTo(ref Disposables);
 
+        this.DummySerialNumberReceived(serialNumberScannedSubject)
+            .Do(_ => this.IsWaitingForDummy = false)
+            .Subscribe(_ => this.SendDummyUnitUnderTest())
+            .AddTo(ref Disposables);
+
         this._serialScanner
             .State
-            .Do(x =>
-            {
-                if (x == StateType.Stopped)
-                {
-                    this.Stop();
-                }
-            })
-            .Subscribe()
+            .Where(x => x == StateType.Stopped)
+            .Subscribe(_ => this.Stop())
             .AddTo(ref Disposables);
     }
 
-    private Observable<string> TriggerReceived()
+    private Observable<string> DummySerialNumberReceived(Subject<string> serialNumberScannedSubject)
+    {
+        return serialNumberScannedSubject
+            .Where(serialNumber => serialNumber == SerialScanner.DummySerialNumber)
+            .Do(_ => _logger.Debug($"Dummy enabled"));
+    }
+
+    private Observable<string> ValidSerialNumberReceived(Subject<string> serialNumberScannedSubject)
+    {
+        return serialNumberScannedSubject
+            .Where(serialNumber => serialNumber != SerialScanner.DummySerialNumber)
+            .Where(serialNumber => !string.IsNullOrEmpty(serialNumber));
+    }
+
+    private Observable<string> InvalidSerialNumberReceived(Subject<string> serialNumberScannedSubject)
+    {
+        return serialNumberScannedSubject
+            .Where(serialNumber => serialNumber != SerialScanner.DummySerialNumber)
+            .Where(string.IsNullOrEmpty);
+    }
+
+    private Observable<string> SerialNumberReceived()
     {
         return this._serialPortRx
             .DataReceived
             .Where(x => x.Contains(SerialScanner.TriggerCommand))
-            .Do(_ => _logger.Debug($"Trigger received"));
+            .Do(_ => _logger.Debug($"Trigger received"))
+            .SelectAwait(async (_, __) => await ScanSerialNumber())
+            .Do(_ => _logger.Debug("Serial number scanned"));
     }
 
     private Task<string> ScanSerialNumber()
     {
         return Observable
-            .FromAsync(async (_) =>
+            .FromAsync(async _ =>
             {
                 this.State.Value = StateType.Scanning;
                 return await this._serialScanner.Scan();
@@ -148,13 +167,6 @@ public class GkgUutSenderService : UutSenderService
         this.State.Value = StateType.Idle;
     }
 
-    protected override void StartService()
-    {
-        this._serialPortRx.PortName = _settings.GkgTunnelComPort;
-        this._serialPortRx.Open();
-        this._serialScanner.Open();
-    }
-
     private void SendDummyUnitUnderTest()
     {
         this.State.Value = StateType.Processing;
@@ -170,8 +182,7 @@ public class GkgUutSenderService : UutSenderService
             .SetOkSfcResponse()
             .Build();
 
-        _serialPortRx.Write($"{UnitUnderTestBuilder.DummySerialNumber}{SerialScanner.LineTerminator}");
-
+        this._serialPortRx.Write($"{UnitUnderTestBuilder.DummySerialNumber}{SerialScanner.LineTerminator}");
         this.UnitUnderTest.Value = unitUnderTest;
         this.State.Value = StateType.Idle;
     }
@@ -184,11 +195,5 @@ public class GkgUutSenderService : UutSenderService
             .FileNameWithoutExtension($"{serialNumber}_{DateTime.Now:yyMMddHHmmss}")
             .SerialNumber(serialNumber)
             .Build();
-    }
-
-    protected override void StopService()
-    {
-        this._serialPortRx.Close();
-        this._serialScanner.Close();
     }
 }

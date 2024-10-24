@@ -8,3 +8,11 @@ public enum StateType
     Processing,
     Blocked
 }
+
+static class StateTypeExtensions
+{
+    public static bool IsRunning(this StateType state)
+    {
+        return state is StateType.Processing or StateType.Scanning or StateType.Idle;
+    }
+}

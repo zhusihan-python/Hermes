@@ -1,5 +1,4 @@
 using Hermes.Builders;
-using Hermes.Common.Extensions;
 using Hermes.Common;
 using Hermes.Language;
 using Hermes.Models;
@@ -14,7 +13,6 @@ public abstract class UutSenderService
 {
     public ReactiveProperty<StateType> State { get; } = new(StateType.Stopped);
     public ReactiveProperty<UnitUnderTest> UnitUnderTest { get; } = new(Models.UnitUnderTest.Null);
-    public ReactiveProperty<bool> IsRunning { get; } = new(false);
 
     public abstract string Path { get; }
     public bool IsWaitingForDummy { get; set; }
@@ -37,23 +35,17 @@ public abstract class UutSenderService
         _sfcService = sfcService;
     }
 
-    protected virtual void SetupReactiveExtensions()
-    {
-        IsRunning
-            .SkipWhile(x => x == false)
-            .Subscribe(isRunning => _logger.Info($"UutSenderService {(isRunning ? "started" : "stopped")}"))
-            .AddTo(ref Disposables);
-    }
+    protected abstract void SetupReactiveExtensions();
 
     public void Start()
     {
         try
         {
-            if (IsRunning.Value) return;
-            this.IsRunning.Value = true;
+            if (this.State.Value.IsRunning()) return;
             this.State.Value = StateType.Idle;
             this.StartService();
             this.SetupReactiveExtensions();
+            _logger.Info($"UutSenderService started");
         }
         catch (Exception)
         {
@@ -66,11 +58,11 @@ public abstract class UutSenderService
 
     public void Stop()
     {
-        if (!IsRunning.Value) return;
-        this.IsRunning.Value = false;
+        if (!this.State.Value.IsRunning()) return;
         this.State.Value = StateType.Stopped;
         this.StopService();
         this.Disposables.Clear();
+        _logger.Info($"UutSenderService stopped");
     }
 
     protected abstract void StopService();
@@ -79,7 +71,6 @@ public abstract class UutSenderService
     {
         if (!_settings.SendRepairFile && unitUnderTest.IsFail)
         {
-            // TODO: Move from here
             unitUnderTest.Message = _settings.Machine is MachineType.Spi
                 ? Resources.msg_spi_repair
                 : "";
@@ -89,7 +80,6 @@ public abstract class UutSenderService
                 .Build();
         }
 
-        // TODO: Is there a better way to do this?
         var i = 0;
         var sfcResponse = SfcResponse.Null;
         do

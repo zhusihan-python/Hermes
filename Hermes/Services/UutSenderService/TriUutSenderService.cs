@@ -31,27 +31,29 @@ public class TriUutSenderService : UutSenderService
 
     public override string Path => _settings.InputPath;
 
-    private void SetupReactiveObservers()
-    {
-        var textDocumentCreatedDisposable = this._folderWatcherService
-            .TextDocumentCreated
-            .Select(this.SendUnitUnderTest)
-            .Subscribe();
-
-        this.Disposables.Add(textDocumentCreatedDisposable);
-    }
-
     protected override void StartService()
     {
-        this.SetupReactiveObservers();
         this._folderWatcherService.Start(
             _settings.InputPath,
             "*" + this._settings.InputFileExtension.GetDescription());
     }
 
+    protected override void StopService()
+    {
+        this._folderWatcherService.Stop();
+    }
+
+    protected override void SetupReactiveExtensions()
+    {
+        this._folderWatcherService
+            .TextDocumentCreated
+            .Select(this.SendUnitUnderTest)
+            .Subscribe()
+            .AddTo(ref Disposables);
+    }
+
     private async Task SendUnitUnderTest(TextDocument textDocument)
     {
-        this._logger.Debug($"Processing file: {textDocument.FileName}");
         var unitUnderTest = this._unitUnderTestBuilder.Build(textDocument);
         if (unitUnderTest.IsNull)
         {
@@ -61,10 +63,5 @@ public class TriUutSenderService : UutSenderService
 
         unitUnderTest.SfcResponse = await SendUnitUnderTest(unitUnderTest);
         this.UnitUnderTest.Value = unitUnderTest;
-    }
-
-    protected override void StopService()
-    {
-        this._folderWatcherService.Stop();
     }
 }
