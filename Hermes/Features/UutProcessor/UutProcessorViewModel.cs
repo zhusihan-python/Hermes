@@ -11,11 +11,10 @@ using Hermes.Services.UutSenderService;
 using Hermes.Services;
 using Hermes.Types;
 using Material.Icons;
+using R3;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Threading;
 using System;
-using R3;
 
 namespace Hermes.Features.UutProcessor;
 
@@ -25,8 +24,7 @@ public partial class UutProcessorViewModel : PageBase
     [ObservableProperty] private string _path = "";
     [ObservableProperty] private string _stateText = Resources.enum_stopped;
     [ObservableProperty] private bool _isWaitingForDummy;
-    [ObservableProperty] private UnitUnderTest _currentUnitUnderTest = UnitUnderTest.Null;
-    [ObservableProperty] private SfcResponse _currentSfcResponse = SfcResponse.Null;
+    public ReactiveProperty<UnitUnderTest> CurrentUnitUnderTest { get; } = new(Models.UnitUnderTest.Null);
     public ScannerViewModel ScannerViewModel { get; }
     public DummyViewModel DummyViewModel { get; }
 
@@ -63,6 +61,10 @@ public partial class UutProcessorViewModel : PageBase
         this.StationFilter = EnumExtensions.GetValues<StationType>()
             .Where(x => x != StationType.Labeling && x != StationType.None)
             .ToList();
+        this.CurrentUnitUnderTest = this._uutSenderService
+            .UnitUnderTest
+            .ToBindableReactiveProperty<UnitUnderTest>();
+        this.SetupReactiveExtensionsOnActivation = false;
         this.IsActive = true;
     }
 
@@ -84,22 +86,23 @@ public partial class UutProcessorViewModel : PageBase
             .AddTo(ref Disposables);
 
         this._uutSenderService
-            .UnitUnderTestCreated
+            .UnitUnderTest
             .Where(unitUnderTest => !unitUnderTest.IsNull)
-            .Do(unitUnderTest => this.CurrentUnitUnderTest = unitUnderTest)
+            .SelectAwait(async (unitUnderTest, _) =>
+                (stop: await this._stopService.Calculate(unitUnderTest), unitUnderTest))
+            .Do(x => this.ShowResult(x.stop, x.unitUnderTest))
             .Subscribe()
             .AddTo(ref Disposables);
 
         this._uutSenderService
-            .SfcResponseCreated
-            .Where(sfcResponse => !sfcResponse.IsNull)
-            .Do(sfcResponse => this.CurrentSfcResponse = sfcResponse)
-            .Do(sfcResponse => this.CurrentUnitUnderTest.SfcResponse = sfcResponse)
-            .SelectAwait(async (_, __) => await this._stopService.Calculate(CurrentUnitUnderTest))
-            .Do(this.ShowResult)
-            // TODO .Do(async (_) => await this.MoveFilesToBackup())
-            //.SelectAwait(async (_, __) => await this.PersistCurrentUnitUnderTest())
-            .Subscribe()
+            .UnitUnderTest
+            .Where(unitUnderTest => !unitUnderTest.IsNull)
+            .Distinct()
+            .SubscribeAwait(async (unitUnderTest, _) =>
+            {
+                await this.MoveFilesToBackup(unitUnderTest);
+                await this.Persist(unitUnderTest);
+            })
             .AddTo(ref Disposables);
     }
 
@@ -113,10 +116,7 @@ public partial class UutProcessorViewModel : PageBase
 
     private void OnWaitForDummyMessage(object recipient, WaitForDummyMessage message)
     {
-        if (this._uutSenderService != null)
-        {
-            this._uutSenderService.IsWaitingForDummy = message.Value;
-        }
+        this._uutSenderService.IsWaitingForDummy = message.Value;
     }
 
     protected override void OnDeactivated()
@@ -132,7 +132,7 @@ public partial class UutProcessorViewModel : PageBase
         {
             if (this.IsRunning) return;
             this.IsRunning = true;
-            this.Path = this._uutSenderService.Path ?? "";
+            this.Path = this._uutSenderService.Path;
             this._uutSenderService.Start();
             this._stopService.Start();
             this.SetupReactiveExtensions();
@@ -152,9 +152,8 @@ public partial class UutProcessorViewModel : PageBase
         {
             if (!this.IsRunning) return;
             this.IsRunning = false;
-            this.CurrentUnitUnderTest = UnitUnderTest.Null;
-            this.Path = this._uutSenderService?.Path ?? "";
-            this._uutSenderService?.Stop();
+            this.Path = this._uutSenderService.Path;
+            this._uutSenderService.Stop();
             this._stopService.Stop();
             this.Disposables.Clear();
             this.ShowInfoToast(Resources.msg_uut_processor_stopped);
@@ -166,11 +165,11 @@ public partial class UutProcessorViewModel : PageBase
         }
     }
 
-    private void ShowResult(Stop stop)
+    private void ShowResult(Stop stop, UnitUnderTest unitUnderTest)
     {
         if (stop.IsNull)
         {
-            Messenger.Send(new ShowSuccessMessage(CurrentUnitUnderTest));
+            Messenger.Send(new ShowSuccessMessage(unitUnderTest));
         }
         else
         {
@@ -179,16 +178,17 @@ public partial class UutProcessorViewModel : PageBase
         }
     }
 
-    private async Task MoveFilesToBackup()
+    private async Task MoveFilesToBackup(UnitUnderTest unitUnderTest)
     {
-        CurrentUnitUnderTest.FullPath = await this._fileService.MoveToBackupAsync(CurrentUnitUnderTest.FullPath);
-        CurrentSfcResponse.FullPath = await this._fileService.MoveToBackupAsync(CurrentSfcResponse.FullPath);
+        unitUnderTest.FullPath = await this._fileService
+            .MoveToBackupAsync(unitUnderTest.FullPath);
+        unitUnderTest.SfcResponseFullPath = await this._fileService
+            .MoveToBackupAsync(unitUnderTest.SfcResponseFullPath);
     }
 
-    private async Task PersistCurrentUnitUnderTest()
+    private async Task Persist(UnitUnderTest unitUnderTest)
     {
-        await this._unitUnderTestRepository.AddAndSaveAsync(CurrentUnitUnderTest);
-        await this._unitUnderTestRepository.SaveChangesAsync();
+        await this._unitUnderTestRepository.AddAndSaveAsync(unitUnderTest);
     }
 
     private void OnStartReceive(object recipient, StartUutProcessorMessage message)

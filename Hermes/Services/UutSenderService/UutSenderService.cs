@@ -13,8 +13,7 @@ namespace Hermes.Services.UutSenderService;
 public abstract class UutSenderService
 {
     public ReactiveProperty<StateType> State { get; } = new(StateType.Stopped);
-    public ReactiveProperty<UnitUnderTest> UnitUnderTestCreated { get; } = new(UnitUnderTest.Null);
-    public ReactiveProperty<SfcResponse> SfcResponseCreated { get; } = new(SfcResponse.Null);
+    public ReactiveProperty<UnitUnderTest> UnitUnderTest { get; } = new(Models.UnitUnderTest.Null);
     public ReactiveProperty<bool> IsRunning { get; } = new(false);
 
     public abstract string Path { get; }

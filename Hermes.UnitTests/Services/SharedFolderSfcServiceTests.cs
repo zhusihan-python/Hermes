@@ -1,4 +1,3 @@
-using System.Reactive.Linq;
 using Hermes.Builders;
 using Hermes.Common.Reactive;
 using Hermes.Models;
@@ -6,6 +5,7 @@ using Hermes.Repositories;
 using Hermes.Services;
 using Hermes.Types;
 using Moq;
+using R3;
 
 namespace HermesTests.Services;
 

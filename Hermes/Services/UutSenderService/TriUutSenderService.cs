@@ -35,7 +35,7 @@ public class TriUutSenderService : UutSenderService
     {
         var textDocumentCreatedDisposable = this._folderWatcherService
             .TextDocumentCreated
-            .Select(this.SendTextDocument)
+            .Select(this.SendUnitUnderTest)
             .Subscribe();
 
         this.Disposables.Add(textDocumentCreatedDisposable);
@@ -49,19 +49,18 @@ public class TriUutSenderService : UutSenderService
             "*" + this._settings.InputFileExtension.GetDescription());
     }
 
-    private async Task SendTextDocument(TextDocument textDocument)
+    private async Task SendUnitUnderTest(TextDocument textDocument)
     {
         this._logger.Debug($"Processing file: {textDocument.FileName}");
         var unitUnderTest = this._unitUnderTestBuilder.Build(textDocument);
-        this.UnitUnderTestCreated.Value = unitUnderTest;
         if (unitUnderTest.IsNull)
         {
             this._logger.Error($"Invalid file: {textDocument.FileName}");
             return;
         }
 
-        var sfcResponse = await SendUnitUnderTest(unitUnderTest);
-        this.SfcResponseCreated.Value = sfcResponse;
+        unitUnderTest.SfcResponse = await SendUnitUnderTest(unitUnderTest);
+        this.UnitUnderTest.Value = unitUnderTest;
     }
 
     protected override void StopService()

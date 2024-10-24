@@ -192,7 +192,7 @@ namespace Hermes.Features.Logs
                     Filename = unit.FileName,
                     TestStatus = unit.IsFail ? "Fail" : "Pass",
                     SfcResponse = unit.SfcResponse?.ResponseType.ToTranslatedString(),
-                    CreatedAt = unit.CreatedAt.ToString("dd/MM/yyyy"),
+                    CreatedAt = unit.CreatedAt.ToString("g"),
                     IconKind = unit.IsFail ? "AlertCircleOutline" : "CheckCircleOutline"
                 });
             }
@@ -201,7 +201,7 @@ namespace Hermes.Features.Logs
 
     public class LogEntry
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public string SerialNumber { get; set; }
         public string Filename { get; set; }
         public string TestStatus { get; set; }

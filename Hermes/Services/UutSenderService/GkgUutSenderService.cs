@@ -62,7 +62,7 @@ public class GkgUutSenderService : UutSenderService
             .Select(async serialNumber =>
             {
                 _logger.Debug($"Send serial number: {serialNumber}");
-                await this.SendSerialNumber(serialNumber);
+                await this.SendUnitUnderTest(serialNumber);
                 return serialNumber;
             })
             .Subscribe(
@@ -120,12 +120,11 @@ public class GkgUutSenderService : UutSenderService
             }).FirstAsync();
     }
 
-    private async Task SendSerialNumber(string serialNumber)
+    private async Task SendUnitUnderTest(string serialNumber)
     {
         this.State.Value = StateType.Processing;
 
         var unitUnderTest = this.BuildUnitUnderTest(serialNumber);
-        this.UnitUnderTestCreated.Value = unitUnderTest;
         var sfcResponse = await this.SendUnitUnderTest(unitUnderTest);
         if (sfcResponse.IsOk)
         {
@@ -133,15 +132,19 @@ public class GkgUutSenderService : UutSenderService
         }
 
         _logger.Debug($"Responded to trigger");
-        this.SfcResponseCreated.Value = sfcResponse;
+
+        unitUnderTest.SfcResponse = sfcResponse;
+        this.UnitUnderTest.Value = unitUnderTest;
         this.State.Value = StateType.Idle;
     }
 
     private void SendScanErrorUnitUnderTest()
     {
-        this.SfcResponseCreated.Value = this._sfcResponseBuilder
+        var unitUnderTest = this.BuildUnitUnderTest(UnitUnderTestBuilder.ScanErrorSerialNumber);
+        unitUnderTest.SfcResponse = this._sfcResponseBuilder
             .SetScanError()
             .Build();
+        this.UnitUnderTest.Value = unitUnderTest;
         this.State.Value = StateType.Idle;
     }
 
@@ -150,7 +153,6 @@ public class GkgUutSenderService : UutSenderService
         this._serialPortRx.PortName = _settings.GkgTunnelComPort;
         this._serialPortRx.Open();
         this._serialScanner.Open();
-        this.SetupReactiveExtensions();
     }
 
     private void SendDummyUnitUnderTest()
@@ -159,17 +161,18 @@ public class GkgUutSenderService : UutSenderService
 
         var unitUnderTest = this._unitUnderTestBuilder
             .Clone()
+            .CreatedAt(DateTime.Now)
             .FileNameWithoutExtension($"{UnitUnderTestBuilder.DummySerialNumber}_{DateTime.Now:yyMMddHHmmss}")
             .SerialNumber(UnitUnderTestBuilder.DummySerialNumber)
             .Build();
-        this.UnitUnderTestCreated.Value = unitUnderTest;
 
-        this.SfcResponseCreated.Value = this._sfcResponseBuilder
+        unitUnderTest.SfcResponse = this._sfcResponseBuilder
             .SetOkSfcResponse()
             .Build();
 
         _serialPortRx.Write($"{UnitUnderTestBuilder.DummySerialNumber}{SerialScanner.LineTerminator}");
 
+        this.UnitUnderTest.Value = unitUnderTest;
         this.State.Value = StateType.Idle;
     }
 
@@ -177,6 +180,7 @@ public class GkgUutSenderService : UutSenderService
     {
         return this._unitUnderTestBuilder
             .Clone()
+            .CreatedAt(DateTime.Now)
             .FileNameWithoutExtension($"{serialNumber}_{DateTime.Now:yyMMddHHmmss}")
             .SerialNumber(serialNumber)
             .Build();

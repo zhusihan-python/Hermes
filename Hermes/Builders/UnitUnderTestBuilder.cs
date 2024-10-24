@@ -13,12 +13,13 @@ namespace Hermes.Builders;
 
 public class UnitUnderTestBuilder
 {
-    public static string DummySerialNumber = "Dummy";
+    public static readonly string ScanErrorSerialNumber = "SCAN_ERROR";
+    public static readonly string DummySerialNumber = "Dummy";
 
     public string Content { get; private set; } = "";
     public List<Defect> Defects { get; } = [];
 
-    private string _serialNumber = "SCAN_ERROR";
+    private string _serialNumber = ScanErrorSerialNumber;
     private string _responseFailMessage = "";
     private string _fileNameWithoutExtension = "fileName";
     private bool _isPass = true;

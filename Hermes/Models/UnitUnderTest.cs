@@ -28,6 +28,16 @@ public class UnitUnderTest
     [NotMapped] public bool IsSfcFail => this.SfcResponse?.IsFail == true;
     [NotMapped] public string Message { get; set; } = "";
 
+    [NotMapped]
+    public string SfcResponseFullPath
+    {
+        get => this.SfcResponse?.FullPath ?? "";
+        set
+        {
+            if (SfcResponse != null) SfcResponse.FullPath = value;
+        }
+    }
+
     public UnitUnderTest(string fullPath, string content)
     {
         this.FullPath = fullPath;

@@ -56,7 +56,7 @@ public class FileService
             File.Delete(backupFullPath);
         }
 
-        return await TryMove(fullPath, backupFullPath);
+        return Path.GetFullPath(await TryMove(fullPath, backupFullPath));
     }
 
     public async Task<string> CopyFromBackupToInputAsync(string backupFullPath)
