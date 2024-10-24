@@ -26,34 +26,30 @@ public class SharedFolderSfcService : ISfcService
 
     public Task<SfcResponse> SendAsync(UnitUnderTest unitUnderTest)
     {
-        // TODO : Verify if this is the correct way to do this
         this._folderWatcherService.Start(this._settings.SfcPath);
+
+        var uutSent = Observable
+            .FromAsync(async _ => await SendUnitUnderTest(unitUnderTest))
+            .Select(x => TextDocument.Null);
 
         var responseCreated = this._folderWatcherService
             .TextDocumentCreated
-            .Timeout(TimeSpan.FromSeconds(this._settings.SfcTimeoutSeconds))
             .Where(x => IsResponseFile(x, unitUnderTest))
             .SelectAwait(async (x, __) => await this.GetResponseFileContent(x))
-            .Catch<TextDocument, TimeoutException>(_ => Observable.Return(new TextDocument()))
             .Take(1);
 
-        var asd = Observable
-            .FromAsync(async _ => await SendUnitUnderTest(unitUnderTest))
+        return uutSent
+            .Concat(responseCreated)
             .Timeout(TimeSpan.FromSeconds(this._settings.SfcTimeoutSeconds))
-            .Select(x => new SfcResponse())
-            .Catch<SfcResponse, TimeoutException>(_ => Observable.Return(SfcResponse.BuildTimeout()))
-            .AsObservable();
-
-        return asd.Zip(responseCreated, (_, x) => x)
-            .Timeout(TimeSpan.FromSeconds(this._settings.SfcTimeoutSeconds))
+            .Where(x => !x.IsNull)
             .Select((x) => new SfcResponse(
                 content: x.Content,
                 fullPath: x.FullPath,
                 additionalOkResponse: _settings.AdditionalOkSfcResponse
             ))
-            .Do(() => this._folderWatcherService.Stop())
             .Catch<SfcResponse, TimeoutException>(_ => Observable.Return(SfcResponse.BuildTimeout()))
             .Catch<SfcResponse, Exception>(_ => Observable.Return(SfcResponse.Null))
+            .Do(onCompleted: _ => this._folderWatcherService.Stop())
             .LastAsync();
     }
 

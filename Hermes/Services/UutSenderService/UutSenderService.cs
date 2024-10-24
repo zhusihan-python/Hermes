@@ -102,9 +102,10 @@ public abstract class UutSenderService
             catch (Exception e)
             {
                 _logger.Error(e.Message);
-                i++;
             }
-        } while (i < _settings.MaxSfcRetries && sfcResponse.IsTimeout);
+
+            i++;
+        } while (i <= _settings.MaxSfcRetries && sfcResponse.IsTimeout);
 
         _logger.Debug($"SendUnitUnderTest {unitUnderTest.FileName}, SfcResponse: {sfcResponse.ResponseType}");
         return sfcResponse;
