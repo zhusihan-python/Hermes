@@ -39,7 +39,7 @@
                          Text="{Binding SerialNumberFilter}" />
 
                 <ComboBox Width="150"
-                          ItemsSource="{Binding TestStatusOptions}"
+                          ItemsSource="{Binding StatusOptions}"
                           SelectedItem="{Binding SelectedTestStatus}"
                           PlaceholderText="Test status:" />
 

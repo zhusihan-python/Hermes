@@ -24,12 +24,12 @@ namespace Hermes.Features.Logs;
 public partial class UnitUnderTestLogViewModel : ViewModelBase
 {
     [ObservableProperty] private UnitUnderTest _selectedUnitUnderTest = UnitUnderTest.Null;
-    [ObservableProperty] private string _selectedSfcResponse = Resources.txt_all;
-    [ObservableProperty] private string _selectedTestStatus = Resources.txt_all;
+    [ObservableProperty] private AllEnum<SfcResponseType> _selectedSfcResponse = AllEnum<SfcResponseType>.All;
+    [ObservableProperty] private AllEnum<StatusType> _selectedTestStatus = AllEnum<StatusType>.All;
     [ObservableProperty] private string _serialNumberFilter = "";
     public ObservableCollection<UnitUnderTest> UnitsUnderTest { get; set; } = [];
     public ObservableCollection<AllEnum<SfcResponseType>> SfcResponseOptions { get; set; } = [];
-    public ObservableCollection<string> TestStatusOptions { get; set; } = [];
+    public ObservableCollection<AllEnum<StatusType>> StatusOptions { get; set; } = [];
 
     private readonly FileService _fileService;
     private readonly UnitUnderTestRepository _unitUnderTestRepository;
@@ -41,10 +41,8 @@ public partial class UnitUnderTestLogViewModel : ViewModelBase
         _fileService = fileService;
         _unitUnderTestRepository = unitUnderTestRepository;
 
-        TestStatusOptions.AddRange(EnumExtensions
-            .ValuesToTranslatedString<StatusType>(includeAllOption: true));
-        SfcResponseOptions.AddRange(EnumExtensions
-            .ValuesToTranslatedString<SfcResponseType>(includeAllOption: true));
+        StatusOptions.AddRange(AllEnum<StatusType>.GetValues());
+        SfcResponseOptions.AddRange(AllEnum<SfcResponseType>.GetValues());
 
         LoadLogsAsync().ConfigureAwait(false);
     }
@@ -106,7 +104,8 @@ public partial class UnitUnderTestLogViewModel : ViewModelBase
     private async Task Refresh()
     {
         SerialNumberFilter = "";
-        SelectedTestStatus = Resources.txt_all;
+        SelectedTestStatus = AllEnum<StatusType>.All;
+        SelectedSfcResponse = AllEnum<SfcResponseType>.All;
         await LoadLogsAsync();
     }
 
@@ -115,41 +114,35 @@ public partial class UnitUnderTestLogViewModel : ViewModelBase
     {
         var units = await _unitUnderTestRepository.GetFromLast24HrsUnits(
             string.IsNullOrWhiteSpace(SerialNumberFilter) ? null : SerialNumberFilter,
-            SelectedTestStatus.ToEnum<StatusType>(),
-            SelectedSfcResponse.ToEnum<SfcResponseType>());
+            SelectedTestStatus.Value,
+            SelectedSfcResponse.Value);
 
         UnitsUnderTest.Clear();
         UnitsUnderTest.AddRange(units);
     }
 }
 
-public class AllEnum<T> where T : Enum
+public class AllEnum<T> where T : struct, Enum
 {
-    public readonly T OriginValue;
-    private readonly bool _isAll;
+    public static readonly AllEnum<T> All = new(null);
+    public T? Value { get; }
 
-    private AllEnum(T originValue, bool isAll = false)
+    private AllEnum(T? originValue)
     {
-        this.OriginValue = originValue;
-        this._isAll = isAll;
+        this.Value = originValue;
     }
 
     public override string ToString()
     {
-        return _isAll ? Resources.txt_all : OriginValue.ToTranslatedString();
+        return Value?.ToTranslatedString() ?? Resources.txt_all;
     }
 
-    public static readonly List<AllEnum<T>> GetValues = EnumExtensions
-        .GetValues<T>()
-        .Select(x => new AllEnum<T>(x))
-        .Prepend(new AllEnum<T>(default!, isAll: true))
-        .ToList();
-
-    /*public static IEnumerable<string> GetValuesToTranslatedString()
+    public static IEnumerable<AllEnum<T>> GetValues()
     {
-        return GetValues.Select(x => _isAll
-                ? x.OriginValue.ToTranslatedString()
-                : Resources.txt_all)
-            .ToList();
-    }*/
+        return EnumExtensions
+            .GetValues<T>()
+            .Select(x => new AllEnum<T>(x))
+            .Prepend(All)
+            .ToArray();
+    }
 }
