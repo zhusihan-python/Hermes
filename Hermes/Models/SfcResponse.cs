@@ -9,7 +9,7 @@ namespace Hermes.Models;
 
 public class SfcResponse
 {
-    private readonly string _additionalOkResponse;
+    private readonly string _additionalOkResponse = "";
     public static readonly SfcResponse Null = new SfcResponseNull();
 
     private const RegexOptions RgxOptions = RegexOptions.IgnoreCase | RegexOptions.Multiline;

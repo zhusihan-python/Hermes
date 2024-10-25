@@ -34,7 +34,7 @@ public partial class UserAdminViewModel : PageBase
     [ObservableProperty] private string _searchEmployeeId = "";
     [ObservableProperty] private User _selectedUser = User.Null;
 
-    private ManageUserDialogViewModel _manageUserDialogViewModel;
+    private ManageUserDialogViewModel _manageUserDialogViewModel = null!;
     private readonly FileService _fileService;
     private readonly ILogger _logger;
     private readonly ISukiDialogManager _dialogManager;
@@ -231,9 +231,9 @@ public partial class UserAdminViewModel : PageBase
     {
         try
         {
-            var topLevel =
-                TopLevel.GetTopLevel(((IClassicDesktopStyleApplicationLifetime)Application.Current.ApplicationLifetime)
-                    .MainWindow);
+            var topLevel = TopLevel.GetTopLevel(((IClassicDesktopStyleApplicationLifetime)
+                    Application.Current?.ApplicationLifetime!)
+                .MainWindow);
 
             var file = await topLevel?.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions()
             {

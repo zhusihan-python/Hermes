@@ -63,7 +63,7 @@ public partial class TokenViewModel : ViewModelBase, ITokenViewModel
                 }
 #endif
 
-                Dispatcher.UIThread.InvokeAsync(() =>
+                await Dispatcher.UIThread.InvokeAsync(() =>
                 {
 #if !DEBUG
                     this.UserName = user.Name;

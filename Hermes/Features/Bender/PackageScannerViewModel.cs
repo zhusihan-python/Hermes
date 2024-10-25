@@ -1,5 +1,4 @@
 using Avalonia.Media.Imaging;
-using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Hermes.Common.Extensions;
@@ -8,6 +7,7 @@ using Hermes.Common;
 using Hermes.Language;
 using Hermes.Models;
 using Hermes.Repositories;
+using R3;
 using SukiUI.Dialogs;
 using System.Threading.Tasks;
 using System;
@@ -16,18 +16,16 @@ namespace Hermes.Features.Bender;
 
 public partial class PackageScannerViewModel : ViewModelBase
 {
-    public event Action<Package>? PackageScanned;
-    public event Action<string>? InstructionsChanged;
-
     [ObservableProperty] private Bitmap? _cover;
-    [ObservableProperty] private Package _package = Package.Null;
-    [ObservableProperty] private string _scannedCode = "";
-    [ObservableProperty] private bool _isCodeGenerated;
-    [ObservableProperty] private string _instructions = Resources.msg_change_wo;
-    [ObservableProperty] private WorkOrder _workOrder = WorkOrder.Null;
     [ObservableProperty] private Bitmap? _partNumberImage;
     [ObservableProperty] private Bitmap? _revisionImage;
     [ObservableProperty] private Bitmap? _workOrderImage;
+    [ObservableProperty] private Package _package = Package.Null;
+    [ObservableProperty] private WorkOrder _workOrder = WorkOrder.Null;
+    [ObservableProperty] private bool _isCodeGenerated;
+    [ObservableProperty] private string _scannedCode = "";
+    [ObservableProperty] private string _instructions = Resources.msg_change_wo;
+    [ObservableProperty] private string _packageScanned = Resources.msg_change_wo;
 
     private readonly ILogger _logger;
     private readonly ISfcRepository _sfcRepository;
@@ -96,7 +94,6 @@ public partial class PackageScannerViewModel : ViewModelBase
             }
 
             this.ShowSuccessToast(Resources.msg_package_added_to_hermes);
-            PackageScanned?.Invoke(Package);
         }
         catch (Exception e)
         {
@@ -130,10 +127,5 @@ public partial class PackageScannerViewModel : ViewModelBase
         this.RevisionImage = await this._qrGenerator.GenerateAvaloniaBitmap((this.WorkOrder.Revision), 50);
         this.WorkOrderImage = await this._qrGenerator.GenerateAvaloniaBitmap((this.WorkOrder.Id), 50);
         this.Instructions = Resources.msg_scan_2d_package;
-    }
-
-    partial void OnInstructionsChanged(string value)
-    {
-        Dispatcher.UIThread.Invoke(() => { this.InstructionsChanged?.Invoke(value); });
     }
 }

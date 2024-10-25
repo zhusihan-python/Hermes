@@ -29,7 +29,7 @@ namespace Hermes.Features
         public ObservableCollection<PageBase> ShownPages { get; set; } = [];
         [ObservableProperty] private ThemeVariant? _baseTheme;
         [ObservableProperty] private string _baseThemeText = "";
-        [ObservableProperty] private string _title;
+        [ObservableProperty] private string _title = "";
         [ObservableProperty] private bool _titleBarVisible;
         [ObservableProperty] private PageBase? _activePage;
         [ObservableProperty] private bool _areSettingsVisible;
@@ -67,7 +67,7 @@ namespace Hermes.Features
 
         protected override void SetupReactiveExtensions()
         {
-            var userChangedDisposable = this._session
+            this._session
                 .LoggedUser
                 .Do(this.UpdateTitle)
                 .Do(_ => this.ConfigurePages())

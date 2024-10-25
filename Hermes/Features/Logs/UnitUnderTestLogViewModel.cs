@@ -28,13 +28,10 @@ namespace Hermes.Features.Logs
         public ObservableCollection<string> TestStatusOptions { get; set; }
         public ObservableCollection<SfcResponseType> SfcResponseOptions { get; set; }
 
-        [ObservableProperty] private string _serialNumberFilter;
-
-        [ObservableProperty] private string _selectedTestStatus;
-
-        [ObservableProperty] private string _selectedSfcResponse;
-
-        [ObservableProperty] private LogEntry _selectedLogEntry;
+        [ObservableProperty] private string _serialNumberFilter = "";
+        [ObservableProperty] private string _selectedTestStatus = "";
+        [ObservableProperty] private string _selectedSfcResponse = "";
+        [ObservableProperty] private LogEntry _selectedLogEntry = new();
 
         public UnitUnderTestLogViewModel(
             UnitUnderTestRepository unitUnderTestRepository,
@@ -54,50 +51,37 @@ namespace Hermes.Features.Logs
                 "All"
             };
             SfcResponseOptions =
-                new ObservableCollection<SfcResponseType>(Enum.GetValues(typeof(SfcResponseType)) as SfcResponseType[]);
+                new ObservableCollection<SfcResponseType>(
+                    Enum.GetValues(typeof(SfcResponseType)) as SfcResponseType[] ?? Array.Empty<SfcResponseType>());
             LoadLogsAsync().ConfigureAwait(false);
         }
 
-        public async Task EditFile()
+        private void EditFile()
         {
             var fullPath = GetFullPathBySelectedFilename();
-            if (fullPath != null)
+            new Process
             {
-                new Process
+                StartInfo = new ProcessStartInfo(fullPath)
                 {
-                    StartInfo = new ProcessStartInfo(fullPath)
-                    {
-                        UseShellExecute = true
-                    }
-                }.Start();
-            }
+                    UseShellExecute = true
+                }
+            }.Start();
         }
 
-        public string GetFullPathBySelectedFilename()
+        private string GetFullPathBySelectedFilename()
         {
-            var filename = SelectedLogEntry?.Filename.ToString();
-            if (filename != null)
-            {
-                var fullpath = _fileService.GetBackupFullPathByName(filename);
-                return fullpath;
-            }
-            else
-            {
-                Debug.WriteLine("No se selecciono nada");
-            }
+            var filename = SelectedLogEntry.Filename;
 
-            return null;
+            var fullPath = _fileService.GetBackupFullPathByName(filename);
+            return fullPath;
         }
 
         private async Task ReSendFile()
         {
-            var fullpath = GetFullPathBySelectedFilename();
-            if (fullpath != null)
-            {
-                Debug.WriteLine($"Selected Filename: {fullpath}");
-                Debug.WriteLine("Try copy");
-                await _fileService.CopyFromBackupToInputAsync(fullpath);
-            }
+            var fullPath = GetFullPathBySelectedFilename();
+            Debug.WriteLine($"Selected Filename: {fullPath}");
+            Debug.WriteLine("Try copy");
+            await _fileService.CopyFromBackupToInputAsync(fullPath);
         }
 
         private async Task LoadLogsAsync()
@@ -142,9 +126,9 @@ namespace Hermes.Features.Logs
         }
 
         [RelayCommand]
-        private async Task Edit()
+        private void Edit()
         {
-            await EditFile();
+            EditFile();
         }
 
         [RelayCommand]
@@ -178,10 +162,7 @@ namespace Hermes.Features.Logs
                 units = units.Where(u => u.IsFail == isFail).ToList();
             }
 
-            if (SelectedSfcResponse != null)
-            {
-                units = units.Where(u => u.SfcResponse?.ResponseType.ToString() == SelectedSfcResponse).ToList();
-            }
+            units = units.Where(u => u.SfcResponse?.ResponseType.ToString() == SelectedSfcResponse).ToList();
 
             foreach (var unit in units)
             {
@@ -191,7 +172,7 @@ namespace Hermes.Features.Logs
                     SerialNumber = unit.SerialNumber,
                     Filename = unit.FileName,
                     TestStatus = unit.IsFail ? "Fail" : "Pass",
-                    SfcResponse = unit.SfcResponse?.ResponseType.ToTranslatedString(),
+                    SfcResponse = unit.SfcResponse?.ResponseType.ToTranslatedString() ?? "",
                     CreatedAt = unit.CreatedAt.ToString("g"),
                     IconKind = unit.IsFail ? "AlertCircleOutline" : "CheckCircleOutline"
                 });
@@ -202,11 +183,11 @@ namespace Hermes.Features.Logs
     public class LogEntry
     {
         public int? Id { get; set; }
-        public string SerialNumber { get; set; }
-        public string Filename { get; set; }
-        public string TestStatus { get; set; }
-        public string SfcResponse { get; set; }
-        public string CreatedAt { get; set; }
-        public string IconKind { get; set; }
+        public string SerialNumber { get; set; } = "";
+        public string Filename { get; set; } = "";
+        public string TestStatus { get; set; } = "";
+        public string SfcResponse { get; set; } = "";
+        public string CreatedAt { get; set; } = "";
+        public string IconKind { get; set; } = "";
     }
 }

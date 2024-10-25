@@ -1,14 +1,11 @@
-using System.Reflection;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using Hermes.Cipher.Types;
 using Hermes.Language;
 using Hermes.Types;
 using Material.Icons;
+using System.Reflection;
 
 namespace Hermes.Features.About;
 
-public partial class AboutViewModel()
+public class AboutViewModel()
     : PageBase(
         Resources.txt_about,
         MaterialIconKind.InfoOutline,
@@ -16,11 +13,4 @@ public partial class AboutViewModel()
         100)
 {
     public string Version { get; set; } = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "0.0.0";
-    [ObservableProperty] private bool _dashBoardVisited;
-
-    [RelayCommand]
-    private void OpenDashboard()
-    {
-        DashBoardVisited = true;
-    }
 }

@@ -170,6 +170,7 @@ public partial class SfcSimulatorViewModel : PageBase
         var uut = this._unitUnderTestBuilder.Clone()
             .IsPass(isPass)
             .Message(message)
+            .IsSfcFail(false)
             .Build();
         Messenger.Send(new ShowSuccessMessage(uut));
     }

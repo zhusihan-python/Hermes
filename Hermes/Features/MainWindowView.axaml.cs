@@ -8,10 +8,10 @@ namespace Hermes.Features;
 
 public partial class MainWindowView : SukiWindow
 {
-    public static readonly StyledProperty<bool> IsTitleBarVisibleProperty =
+    public new static readonly StyledProperty<bool> IsTitleBarVisibleProperty =
         AvaloniaProperty.Register<SukiWindow, bool>(nameof(IsTitleBarVisible), defaultValue: true);
 
-    public bool IsTitleBarVisible
+    public new bool IsTitleBarVisible
     {
         get => GetValue(IsTitleBarVisibleProperty);
         set => SetValue(IsTitleBarVisibleProperty, value);

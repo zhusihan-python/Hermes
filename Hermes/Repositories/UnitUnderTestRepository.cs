@@ -9,6 +9,8 @@ namespace Hermes.Repositories;
 
 public class UnitUnderTestRepository(HermesLocalContext db) : BaseRepository<UnitUnderTest, HermesLocalContext>(db)
 {
+    private readonly HermesLocalContext _db = db;
+
     public async Task<List<UnitUnderTest>> GetLastUnitsUnderTest(int qty)
     {
         return await Db
@@ -28,7 +30,7 @@ public class UnitUnderTestRepository(HermesLocalContext db) : BaseRepository<Uni
 
     public async Task<List<UnitUnderTest>> GetAllLast24HrsUnits()
     {
-        return await db.Set<UnitUnderTest>()
+        return await _db.Set<UnitUnderTest>()
             .Include(x => x.SfcResponse)
             .Where(x => x.CreatedAt >= DateTime.Now.AddDays(-1))
             .ToListAsync();
