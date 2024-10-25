@@ -44,7 +44,7 @@ public class SharedFolderSfcServiceTests
             SfcTimeoutSeconds = 0
         };
         var sut = BuildSut(fileServiceMock, settings);
-        Assert.Equal(SfcResponseType.Timeout, (await sut.SendAsync(UnitUnderTest.Null)).ResponseType);
+        Assert.Equal(SfcResponseType.Timeout, (await sut.SendAsync(UnitUnderTest.Null)).Type);
     }
 
     private SharedFolderSfcService BuildSut(FileService fileService, Settings? settings = null)

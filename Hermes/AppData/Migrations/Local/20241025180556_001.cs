@@ -17,7 +17,7 @@ namespace Hermes.AppData.Migrations.Local
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    ResponseType = table.Column<int>(type: "INTEGER", nullable: false),
+                    Type = table.Column<int>(type: "INTEGER", nullable: false),
                     Content = table.Column<string>(type: "TEXT", maxLength: 3000, nullable: false),
                     FullPath = table.Column<string>(type: "TEXT", maxLength: 512, nullable: false)
                 },

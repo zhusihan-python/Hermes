@@ -19,22 +19,22 @@ public class SfcResponse
     public const string TimeoutText = "Timeout";
     public const string ScanError = "ScanError";
 
-    [Key] public int? Id { get; init; }
+    [Key] public int Id { get; init; }
 
     public bool IsOk => !IsFail ||
                         (!string.IsNullOrEmpty(_additionalOkResponse) && Content.Contains(_additionalOkResponse));
 
-    public virtual bool IsFail => this.ResponseType != SfcResponseType.Ok;
-    public SfcResponseType ResponseType { get; init; }
+    public virtual bool IsFail => this.Type != SfcResponseType.Ok;
+    public SfcResponseType Type { get; init; }
     [MaxLength(3000)] public string Content { get; init; } = "";
     [MaxLength(512)] public string FullPath { get; set; } = "";
 
     [NotMapped]
     public string Details =>
-        IsFail ? $"{ResponseType.ToTranslatedString()} - {ResponseType.GetTranslatedDescription()}" : "";
+        IsFail ? $"{Type.ToTranslatedString()} - {Type.GetTranslatedDescription()}" : "";
 
     [NotMapped] public bool IsNull => this == Null;
-    [NotMapped] public bool IsTimeout => ResponseType == SfcResponseType.Timeout;
+    [NotMapped] public bool IsTimeout => Type == SfcResponseType.Timeout;
     public bool IsEndOfFileError => RegexIsEndOfFileError.IsMatch(Content);
 
     public SfcResponse()
@@ -46,7 +46,7 @@ public class SfcResponse
         this.FullPath = fullPath;
         this.Content = content;
         this._additionalOkResponse = additionalOkResponse;
-        this.ResponseType = ParseErrorType(content);
+        this.Type = ParseErrorType(content);
     }
 
     private static SfcResponseType ParseErrorType(string content)

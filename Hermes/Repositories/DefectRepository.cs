@@ -56,7 +56,7 @@ public sealed class DefectRepository(HermesLocalContext db)
     private IQueryable<Defect> GetFromLastUnitsUnderTest(int? qty = null, TimeSpan? fromHours = null)
     {
         var uutQuery = Db.UnitsUnderTest
-            .Where(x => x.SfcResponse != null && x.SfcResponse.ResponseType == SfcResponseType.Ok)
+            .Where(x => x.SfcResponse != null && x.SfcResponse.Type == SfcResponseType.Ok)
             .OrderByDescending(x => x.Id)
             .AsQueryable();
 

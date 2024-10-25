@@ -1,9 +1,4 @@
-using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
 using System;
-using System.Collections.Generic;
-using Hermes.Language;
 
 namespace Hermes.Common.Extensions;
 
@@ -17,5 +12,10 @@ public static class StringExtensions
         }
 
         return value.ToUpper();
+    }
+
+    public static T? ToEnum<T>(this string value) where T : struct
+    {
+        return Enum.TryParse<T>(value, out var result) ? result : null;
     }
 }

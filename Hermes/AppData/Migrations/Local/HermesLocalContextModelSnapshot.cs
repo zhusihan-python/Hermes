@@ -53,7 +53,7 @@ namespace Hermes.AppData.Migrations.Local
 
             modelBuilder.Entity("Hermes.Models.SfcResponse", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -67,7 +67,7 @@ namespace Hermes.AppData.Migrations.Local
                         .HasMaxLength(512)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("ResponseType")
+                    b.Property<int>("Type")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");

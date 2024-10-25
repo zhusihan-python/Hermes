@@ -15,6 +15,7 @@ public class UnitUnderTest
     [Key] public int Id { get; set; }
     [MaxLength(250)] public string SerialNumber { get; init; } = string.Empty;
     public virtual bool IsFail { get; init; }
+    public bool IsPass => !IsFail;
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public List<Defect> Defects { get; set; } = [];
     public Stop? Stop { get; set; }

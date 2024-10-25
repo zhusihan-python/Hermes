@@ -96,7 +96,7 @@ public abstract class UutSenderService
             i++;
         } while (i <= _settings.MaxSfcRetries && sfcResponse.IsTimeout);
 
-        _logger.Debug($"SendUnitUnderTest {unitUnderTest.FileName}, SfcResponse: {sfcResponse.ResponseType}");
+        _logger.Debug($"SendUnitUnderTest {unitUnderTest.FileName}, SfcResponse: {sfcResponse.Type}");
         return sfcResponse;
     }
 }

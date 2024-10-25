@@ -13,181 +13,143 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
+using System.Collections.Generic;
+using DynamicData;
+using Hermes.Language;
+using Hermes.Models;
+using Microsoft.Extensions.Logging.Abstractions;
 
-namespace Hermes.Features.Logs
+namespace Hermes.Features.Logs;
+
+public partial class UnitUnderTestLogViewModel : ViewModelBase
 {
-    public partial class UnitUnderTestLogViewModel : ViewModelBase
+    [ObservableProperty] private UnitUnderTest _selectedUnitUnderTest = UnitUnderTest.Null;
+    [ObservableProperty] private string _selectedSfcResponse = Resources.txt_all;
+    [ObservableProperty] private string _selectedTestStatus = Resources.txt_all;
+    [ObservableProperty] private string _serialNumberFilter = "";
+    public ObservableCollection<UnitUnderTest> UnitsUnderTest { get; set; } = [];
+    public ObservableCollection<AllEnum<SfcResponseType>> SfcResponseOptions { get; set; } = [];
+    public ObservableCollection<string> TestStatusOptions { get; set; } = [];
+
+    private readonly FileService _fileService;
+    private readonly UnitUnderTestRepository _unitUnderTestRepository;
+
+    public UnitUnderTestLogViewModel(
+        FileService fileService,
+        UnitUnderTestRepository unitUnderTestRepository)
     {
-        private readonly FileService _fileService;
+        _fileService = fileService;
+        _unitUnderTestRepository = unitUnderTestRepository;
 
-        private readonly UnitUnderTestRepository _unitUnderTestRepository;
+        TestStatusOptions.AddRange(EnumExtensions
+            .ValuesToTranslatedString<StatusType>(includeAllOption: true));
+        SfcResponseOptions.AddRange(EnumExtensions
+            .ValuesToTranslatedString<SfcResponseType>(includeAllOption: true));
 
-        private readonly UnitUnderTestLogView _view;
-
-        public ObservableCollection<LogEntry> Logs { get; set; }
-        public ObservableCollection<string> TestStatusOptions { get; set; }
-        public ObservableCollection<SfcResponseType> SfcResponseOptions { get; set; }
-
-        [ObservableProperty] private string _serialNumberFilter = "";
-        [ObservableProperty] private string _selectedTestStatus = "";
-        [ObservableProperty] private string _selectedSfcResponse = "";
-        [ObservableProperty] private LogEntry _selectedLogEntry = new();
-
-        public UnitUnderTestLogViewModel(
-            UnitUnderTestRepository unitUnderTestRepository,
-            FileService fileService,
-            UnitUnderTestLogView view)
-        {
-            _view = view;
-            SerialNumberFilter = "";
-            SelectedTestStatus = "All";
-            _fileService = fileService;
-            _unitUnderTestRepository = unitUnderTestRepository;
-            Logs = new ObservableCollection<LogEntry>();
-            TestStatusOptions = new ObservableCollection<string>
-            {
-                "Pass",
-                "Fail",
-                "All"
-            };
-            SfcResponseOptions =
-                new ObservableCollection<SfcResponseType>(
-                    Enum.GetValues(typeof(SfcResponseType)) as SfcResponseType[] ?? Array.Empty<SfcResponseType>());
-            LoadLogsAsync().ConfigureAwait(false);
-        }
-
-        private void EditFile()
-        {
-            var fullPath = GetFullPathBySelectedFilename();
-            new Process
-            {
-                StartInfo = new ProcessStartInfo(fullPath)
-                {
-                    UseShellExecute = true
-                }
-            }.Start();
-        }
-
-        private string GetFullPathBySelectedFilename()
-        {
-            var filename = SelectedLogEntry.Filename;
-
-            var fullPath = _fileService.GetBackupFullPathByName(filename);
-            return fullPath;
-        }
-
-        private async Task ReSendFile()
-        {
-            var fullPath = GetFullPathBySelectedFilename();
-            Debug.WriteLine($"Selected Filename: {fullPath}");
-            Debug.WriteLine("Try copy");
-            await _fileService.CopyFromBackupToInputAsync(fullPath);
-        }
-
-        private async Task LoadLogsAsync()
-        {
-            var units = await _unitUnderTestRepository.GetAllLast24HrsUnits();
-            foreach (var unit in units)
-            {
-                Logs.Add(new LogEntry
-                {
-                    Id = unit.Id,
-                    SerialNumber = unit.SerialNumber,
-                    Filename = unit.FileName,
-                    TestStatus = unit.IsFail ? "Fail" : "Pass",
-                    SfcResponse = (unit.SfcResponse?.ResponseType ?? SfcResponseType.Unknown).ToTranslatedString(),
-                    CreatedAt = unit.CreatedAt.ToString("g"),
-                    IconKind = unit.IsFail ? "AlertCircleOutline" : "CheckCircleOutline"
-                });
-            }
-        }
-
-        [RelayCommand]
-        private async Task Export()
-        {
-            string date = DateTime.Now.ToString("yyyy-MM-dd-HH-mm");
-            string name = $"{date} Report-List";
-            var path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            var subFolderPath = Path.Combine(path, "Exports");
-            Directory.CreateDirectory(subFolderPath);
-            var filePath = Path.Combine(subFolderPath, $"{name}.csv");
-            using (var writer = new StreamWriter(filePath))
-            {
-                await writer.WriteLineAsync("Id,SerialNumber,Filename,TestStatus,SfcResponse,CreatedAt");
-
-                foreach (var log in Logs)
-                {
-                    await writer.WriteLineAsync(
-                        $"{log.Id},{log.SerialNumber},{log.Filename},{log.TestStatus},{log.SfcResponse},{log.CreatedAt}");
-                }
-            }
-
-            Messenger.Send(new ShowToastMessage("Success", "Export Success: " + filePath, NotificationType.Success));
-        }
-
-        [RelayCommand]
-        private void Edit()
-        {
-            EditFile();
-        }
-
-        [RelayCommand]
-        private async Task ReSend()
-        {
-            await ReSendFile();
-        }
-
-        [RelayCommand]
-        private async Task Refresh()
-        {
-            Logs.Clear();
-            SerialNumberFilter = "";
-            SelectedTestStatus = "All";
-            await LoadLogsAsync();
-        }
-
-        [RelayCommand]
-        private async Task Search()
-        {
-            Logs.Clear();
-            var units = await _unitUnderTestRepository.GetAllLast24HrsUnits();
-            if (!string.IsNullOrWhiteSpace(SerialNumberFilter))
-            {
-                units = units.Where(u => u.SerialNumber.ToLower().Contains(SerialNumberFilter.ToLower())).ToList();
-            }
-
-            if (!string.IsNullOrWhiteSpace(SelectedTestStatus) && SelectedTestStatus != "All")
-            {
-                bool isFail = SelectedTestStatus == "Fail";
-                units = units.Where(u => u.IsFail == isFail).ToList();
-            }
-
-            units = units.Where(u => u.SfcResponse?.ResponseType.ToString() == SelectedSfcResponse).ToList();
-
-            foreach (var unit in units)
-            {
-                Logs.Add(new LogEntry
-                {
-                    Id = unit.Id,
-                    SerialNumber = unit.SerialNumber,
-                    Filename = unit.FileName,
-                    TestStatus = unit.IsFail ? "Fail" : "Pass",
-                    SfcResponse = unit.SfcResponse?.ResponseType.ToTranslatedString() ?? "",
-                    CreatedAt = unit.CreatedAt.ToString("g"),
-                    IconKind = unit.IsFail ? "AlertCircleOutline" : "CheckCircleOutline"
-                });
-            }
-        }
+        LoadLogsAsync().ConfigureAwait(false);
     }
 
-    public class LogEntry
+    private async Task ReSendFile()
     {
-        public int? Id { get; set; }
-        public string SerialNumber { get; set; } = "";
-        public string Filename { get; set; } = "";
-        public string TestStatus { get; set; } = "";
-        public string SfcResponse { get; set; } = "";
-        public string CreatedAt { get; set; } = "";
-        public string IconKind { get; set; } = "";
+        await _fileService.CopyFromBackupToInputAsync(
+            _fileService.GetBackupFullPathByName(SelectedUnitUnderTest.FileName));
     }
+
+    private async Task LoadLogsAsync()
+    {
+        UnitsUnderTest.Clear();
+        UnitsUnderTest.AddRange(await _unitUnderTestRepository.GetAllLast24HrsUnits());
+    }
+
+    [RelayCommand]
+    private async Task Export()
+    {
+        string date = DateTime.Now.ToString("yyyy-MM-dd-HH-mm");
+        string name = $"{date} Report-List";
+        var path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        var subFolderPath = Path.Combine(path, "Exports");
+        Directory.CreateDirectory(subFolderPath);
+        var filePath = Path.Combine(subFolderPath, $"{name}.csv");
+        using (var writer = new StreamWriter(filePath))
+        {
+            await writer.WriteLineAsync("Id,SerialNumber,Filename,TestStatus,SfcResponse,CreatedAt");
+
+            foreach (var uut in UnitsUnderTest)
+            {
+                await writer.WriteLineAsync(
+                    $"{uut.Id},{uut.SerialNumber},{uut.FileName},{uut.IsPass},{uut.SfcResponse},{uut.CreatedAt}");
+            }
+        }
+
+        Messenger.Send(new ShowToastMessage("Success", "Export Success: " + filePath, NotificationType.Success));
+    }
+
+    [RelayCommand]
+    private void Edit()
+    {
+        new Process
+        {
+            StartInfo = new ProcessStartInfo(_fileService.GetBackupFullPathByName(SelectedUnitUnderTest.FileName))
+            {
+                UseShellExecute = true
+            }
+        }.Start();
+    }
+
+    [RelayCommand]
+    private async Task ReSend()
+    {
+        await ReSendFile();
+    }
+
+    [RelayCommand]
+    private async Task Refresh()
+    {
+        SerialNumberFilter = "";
+        SelectedTestStatus = Resources.txt_all;
+        await LoadLogsAsync();
+    }
+
+    [RelayCommand]
+    private async Task Search()
+    {
+        var units = await _unitUnderTestRepository.GetFromLast24HrsUnits(
+            string.IsNullOrWhiteSpace(SerialNumberFilter) ? null : SerialNumberFilter,
+            SelectedTestStatus.ToEnum<StatusType>(),
+            SelectedSfcResponse.ToEnum<SfcResponseType>());
+
+        UnitsUnderTest.Clear();
+        UnitsUnderTest.AddRange(units);
+    }
+}
+
+public class AllEnum<T> where T : Enum
+{
+    public readonly T OriginValue;
+    private readonly bool _isAll;
+
+    private AllEnum(T originValue, bool isAll = false)
+    {
+        this.OriginValue = originValue;
+        this._isAll = isAll;
+    }
+
+    public override string ToString()
+    {
+        return _isAll ? Resources.txt_all : OriginValue.ToTranslatedString();
+    }
+
+    public static readonly List<AllEnum<T>> GetValues = EnumExtensions
+        .GetValues<T>()
+        .Select(x => new AllEnum<T>(x))
+        .Prepend(new AllEnum<T>(default!, isAll: true))
+        .ToList();
+
+    /*public static IEnumerable<string> GetValuesToTranslatedString()
+    {
+        return GetValues.Select(x => _isAll
+                ? x.OriginValue.ToTranslatedString()
+                : Resources.txt_all)
+            .ToList();
+    }*/
 }

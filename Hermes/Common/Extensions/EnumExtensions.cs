@@ -14,6 +14,15 @@ public static class EnumExtensions
         return value.ToString().ToUpper();
     }
 
+    public static IEnumerable<string> ValuesToTranslatedString<T>(bool includeAllOption = false) where T : Enum
+    {
+        return GetValues<T>()
+            .Select(x => x.ToTranslatedString())
+            .Prepend(includeAllOption ? Resources.txt_all : "")
+            .Where(x => !string.IsNullOrEmpty(x))
+            .ToArray();
+    }
+
     public static string ToTranslatedString(this Enum value)
     {
         return Resources.ResourceManager.GetString(value.ToResxString()) ?? value.ToString();
