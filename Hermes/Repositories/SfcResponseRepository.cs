@@ -1,5 +1,7 @@
 using Hermes.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hermes.Repositories;
 
-public class SfcResponseRepository(HermesLocalContext db) : BaseRepository<SfcResponse, HermesLocalContext>(db);
+public class SfcResponseRepository(IDbContextFactory<HermesLocalContext> context)
+    : BaseRepository<SfcResponse, HermesLocalContext>(context);

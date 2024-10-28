@@ -21,7 +21,7 @@ public class HermesRemoteContext : DbContext
     public HermesRemoteContext(Settings settings)
     {
 #if !DEBUG
-        _server = repository.Settings.DatabaseServer;
+        _server = settings.DatabaseServer;
 #endif
     }
 

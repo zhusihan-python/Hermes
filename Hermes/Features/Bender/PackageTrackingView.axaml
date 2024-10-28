@@ -192,7 +192,7 @@
                                                 Classes.NotInUse="{Binding !IsInUse}" />
 
                                             <TextBlock
-                                                Text="{Binding Status, Converter={x:Static converters:EnumToTranslatedTextConverters.PackageStatusTypeConverter}}" />
+                                                Text="{Binding Status, Converter={x:Static converters:EnumToTranslatedTextConverters.Generic}}" />
                                         </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>

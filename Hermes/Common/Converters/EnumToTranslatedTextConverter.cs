@@ -10,11 +10,7 @@ namespace Hermes.Common.Converters;
 
 public static class EnumToTranslatedTextConverters
 {
-    public static readonly EnumToTranslatedTextConverter<SfcResponseType> SfcResponseTypeConverter = new();
-    public static readonly EnumToTranslatedTextConverter<DepartmentType> DepartmentTypeConverter = new();
-    public static readonly EnumToTranslatedTextConverter<PackageStatusType> PackageStatusTypeConverter = new();
-    public static readonly EnumToTranslatedTextConverter<StateType> StateTypeTypeConverter = new();
-    public static readonly EnumToTranslatedTextConverter<StatusType> StatusTypeConverter = new();
+    public static readonly EnumToTranslatedTextConverter<Enum> Generic = new();
 }
 
 public class EnumToTranslatedTextConverter<T>() : IValueConverter where T : Enum

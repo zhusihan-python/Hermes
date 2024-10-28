@@ -59,13 +59,13 @@ public partial class App
 
     private static void ConfigureRepos(ServiceCollection services)
     {
+        services.AddDbContextFactory<HermesLocalContext>();
         services.AddDbContextFactory<HermesRemoteContext>();
         services.AddSingleton<FeaturePermissionRemoteRepository>();
         services.AddSingleton<ISettingsRepository, SettingsRepository>();
         services.AddSingleton<SerialScanner>();
-        services.AddSingleton<UserRepositoryProxy>();
         services.AddSingleton<UserRemoteRepository>();
-        services.AddTransient<HermesLocalContext>();
+        services.AddSingleton<UserRepositoryProxy>();
         services.AddTransient<HermesRemoteContext>();
         services.AddTransient<IDefectRepository, DefectRepository>();
         services.AddTransient<ISfcRepository, SfcOracleRepository>();

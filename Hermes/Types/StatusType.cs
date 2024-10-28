@@ -4,7 +4,7 @@ public enum StatusType
 {
     Failed,
     Passed,
-    NotRun,
+    NotRan,
     Unknown
 }
 

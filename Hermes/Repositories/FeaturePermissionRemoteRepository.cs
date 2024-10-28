@@ -6,14 +6,15 @@ using System.Threading.Tasks;
 
 namespace Hermes.Repositories;
 
-public class FeaturePermissionRemoteRepository(HermesRemoteContext db)
-    : BaseRepository<FeaturePermission, HermesRemoteContext>(db)
+public class FeaturePermissionRemoteRepository(IDbContextFactory<HermesRemoteContext> context)
+    : BaseRepository<FeaturePermission, HermesRemoteContext>(context)
 {
-    private readonly HermesRemoteContext _db = db;
+    private readonly IDbContextFactory<HermesRemoteContext> _context = context;
 
     public async Task<IEnumerable<FeaturePermission>> FindAll(User user)
     {
-        return await _db.FeaturePermissions
+        await using var ctx = await _context.CreateDbContextAsync();
+        return await ctx.FeaturePermissions
             .Where(x => x.Department <= user.Department && x.Level <= user.Level).ToListAsync();
     }
 }

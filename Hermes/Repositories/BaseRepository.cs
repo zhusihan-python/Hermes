@@ -5,41 +5,34 @@ using System.Threading.Tasks;
 
 namespace Hermes.Repositories;
 
-public class BaseRepository<T, TDbContext>(TDbContext db) : IRepository<T>
+public class BaseRepository<T, TDbContext>(IDbContextFactory<TDbContext> context) : IRepository<T>
     where T : class
     where TDbContext : DbContext
 {
-    protected readonly TDbContext Db = db;
-
     public virtual async Task AddAndSaveAsync(T entity)
     {
-        await this.Db.Set<T>().AddAsync(entity);
-        await this.SaveChangesAsync();
+        await using var ctx = await context.CreateDbContextAsync();
+        await ctx.Set<T>().AddAsync(entity);
+        await ctx.SaveChangesAsync();
     }
 
-    public void Delete(int id)
+    public async Task Delete(int id)
     {
-        var q = GetById(id);
-        if (q != null) this.Db.Set<T>().Remove(q);
+        await using var ctx = await context.CreateDbContextAsync();
+        var q = await GetById(id);
+        if (q != null) ctx.Set<T>().Remove(q);
+        await ctx.SaveChangesAsync();
     }
 
-    public void Edit(T entity)
+    public async Task<List<T>> GetAll()
     {
-        this.Db.Entry<T>(entity).State = EntityState.Modified;
+        await using var ctx = await context.CreateDbContextAsync();
+        return ctx.Set<T>().Select(a => a).ToList();
     }
 
-    public List<T> GetAll()
+    public async Task<T?> GetById(int id)
     {
-        return this.Db.Set<T>().Select(a => a).ToList();
-    }
-
-    public T? GetById(int id)
-    {
-        return this.Db.Set<T>().Find(id);
-    }
-
-    public async Task<int> SaveChangesAsync()
-    {
-        return await this.Db.SaveChangesAsync();
+        await using var ctx = await context.CreateDbContextAsync();
+        return ctx.Set<T>().Find(id);
     }
 }

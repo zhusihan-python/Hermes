@@ -45,7 +45,7 @@
                         <Run Text=":" />
                         <Run
                             Text="{Binding State.Value, 
-                            Converter={x:Static converters:EnumToTranslatedTextConverters.StateTypeTypeConverter}}" />
+                            Converter={x:Static converters:EnumToTranslatedTextConverters.Generic}}" />
                     </TextBlock>
 
                     <TextBlock Classes="Caption">

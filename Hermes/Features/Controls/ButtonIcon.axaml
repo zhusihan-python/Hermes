@@ -1,0 +1,21 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Name="Self"
+             x:Class="Hermes.Features.Controls.ButtonIcon">
+
+    <Button Name="ButtonSearch"
+            Width="{Binding #Self.Width}"
+            Height="{Binding #Self.Height}"
+            Padding="0"
+            Command="{Binding #Self.Command}">
+
+        <avalonia:MaterialIcon
+            Kind="{Binding #Self.Kind}"
+            Width="{Binding #Self.IconSize}"
+            Height="{Binding #Self.IconSize}" />
+    </Button>
+</UserControl>

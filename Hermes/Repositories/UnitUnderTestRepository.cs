@@ -1,20 +1,22 @@
-using System;
 using Hermes.Models;
+using Hermes.Types;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Hermes.Types;
+using System;
 
 namespace Hermes.Repositories;
 
-public class UnitUnderTestRepository(HermesLocalContext db) : BaseRepository<UnitUnderTest, HermesLocalContext>(db)
+public class UnitUnderTestRepository(IDbContextFactory<HermesLocalContext> context)
+    : BaseRepository<UnitUnderTest, HermesLocalContext>(context)
 {
-    private readonly HermesLocalContext _db = db;
+    private readonly IDbContextFactory<HermesLocalContext> _context = context;
 
     public async Task<List<UnitUnderTest>> GetLastUnitsUnderTest(int qty)
     {
-        return await Db
+        await using var ctx = await _context.CreateDbContextAsync();
+        return await ctx
             .UnitsUnderTest
             .OrderByDescending(x => x.Id)
             .Take(qty)
@@ -23,7 +25,8 @@ public class UnitUnderTestRepository(HermesLocalContext db) : BaseRepository<Uni
 
     public async Task<List<UnitUnderTest>> Find(string sn, string msg)
     {
-        return await Db
+        await using var ctx = await _context.CreateDbContextAsync();
+        return await ctx
             .UnitsUnderTest
             .Where(x => x.SerialNumber == sn && x.Content == msg)
             .ToListAsync();
@@ -34,7 +37,8 @@ public class UnitUnderTestRepository(HermesLocalContext db) : BaseRepository<Uni
         StatusType? statusType = null,
         SfcResponseType? sfcResponseType = null)
     {
-        var query = GetAllLast24HrsUnitsQuery();
+        var ctx = await _context.CreateDbContextAsync();
+        var query = GetAllLast24HrsUnitsQuery(ctx);
         if (serialNumber != null)
         {
             query = query.Where(x => x.SerialNumber
@@ -56,20 +60,22 @@ public class UnitUnderTestRepository(HermesLocalContext db) : BaseRepository<Uni
 
     public async Task<List<UnitUnderTest>> GetAllLast24HrsUnits()
     {
-        return await GetAllLast24HrsUnitsQuery()
+        await using var ctx = await _context.CreateDbContextAsync();
+        return await GetAllLast24HrsUnitsQuery(ctx)
             .ToListAsync();
     }
 
-    private IQueryable<UnitUnderTest> GetAllLast24HrsUnitsQuery()
+    private IQueryable<UnitUnderTest> GetAllLast24HrsUnitsQuery(HermesLocalContext ctx)
     {
-        return _db.Set<UnitUnderTest>()
+        return ctx.Set<UnitUnderTest>()
             .Include(x => x.SfcResponse)
             .Where(x => x.CreatedAt >= DateTime.Now.AddDays(-1));
     }
 
     public async Task<List<UnitUnderTest>> FindBySerialNumberAsync(string serialNumber)
     {
-        return await Db.Set<UnitUnderTest>()
+        await using var ctx = await _context.CreateDbContextAsync();
+        return await ctx.Set<UnitUnderTest>()
             .Where(u => u.SerialNumber.Contains(serialNumber.ToUpper()))
             .ToListAsync();
     }

@@ -614,4 +614,25 @@
     <data name="txt_cancel" xml:space="preserve">
         <value>Cancelar</value>
     </data>
+    <data name="txt_sfc_response" xml:space="preserve">
+        <value>Respuesta de Sfc</value>
+    </data>
+    <data name="txt_test_status" xml:space="preserve">
+        <value>Resultado de la prueba</value>
+    </data>
+    <data name="txt_sfc_response_content" xml:space="preserve">
+        <value>Contenido de respuesta Sfc</value>
+    </data>
+    <data name="txt_created_at" xml:space="preserve">
+        <value>Fecha y hora</value>
+    </data>
+    <data name="enum_failed" xml:space="preserve">
+        <value>Falla</value>
+    </data>
+    <data name="enum_notran" xml:space="preserve">
+        <value>No ejecutado</value>
+    </data>
+    <data name="enum_passed" xml:space="preserve">
+        <value>Pasa</value>
+    </data>
 </root>

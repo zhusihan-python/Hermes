@@ -27,6 +27,7 @@ public class BenderViewModel : PageBase
     {
         this.PackageScannerViewModel
             .ObservePropertyChanged(x => x.PackageScanned)
+            .Skip(1)
             .SubscribeAwait(async (_, _) => await this.PackageTrackingViewModel.DataReload())
             .AddTo(ref Disposables);
     }

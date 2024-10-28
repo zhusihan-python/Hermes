@@ -564,6 +564,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed.
+        /// </summary>
+        public static string enum_failed {
+            get {
+                return ResourceManager.GetString("enum_failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Idle.
         /// </summary>
         public static string enum_idle {
@@ -681,6 +690,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not ran.
+        /// </summary>
+        public static string enum_notran {
+            get {
+                return ResourceManager.GetString("enum_notran", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ok.
         /// </summary>
         public static string enum_ok {
@@ -695,6 +713,15 @@ namespace Hermes.Language {
         public static string enum_open {
             get {
                 return ResourceManager.GetString("enum_open", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Passed.
+        /// </summary>
+        public static string enum_passed {
+            get {
+                return ResourceManager.GetString("enum_passed", resourceCulture);
             }
         }
         
@@ -1172,6 +1199,15 @@ namespace Hermes.Language {
         public static string txt_connected {
             get {
                 return ResourceManager.GetString("txt_connected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Created at.
+        /// </summary>
+        public static string txt_created_at {
+            get {
+                return ResourceManager.GetString("txt_created_at", resourceCulture);
             }
         }
         
@@ -1662,6 +1698,24 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sfc response.
+        /// </summary>
+        public static string txt_sfc_response {
+            get {
+                return ResourceManager.GetString("txt_sfc_response", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sfc response content.
+        /// </summary>
+        public static string txt_sfc_response_content {
+            get {
+                return ResourceManager.GetString("txt_sfc_response_content", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sfc Simulator.
         /// </summary>
         public static string txt_sfc_simulator {
@@ -1730,6 +1784,15 @@ namespace Hermes.Language {
         public static string txt_success {
             get {
                 return ResourceManager.GetString("txt_success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test status.
+        /// </summary>
+        public static string txt_test_status {
+            get {
+                return ResourceManager.GetString("txt_test_status", resourceCulture);
             }
         }
         

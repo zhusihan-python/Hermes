@@ -7,7 +7,8 @@ using System.Linq;
 
 namespace Hermes.Models;
 
-public partial class Session : ObservableObject
+public partial class 
+    Session : ObservableObject
 {
     public ReactiveProperty<StateType> UutProcessorState { get; } = new(StateType.Stopped);
     public ReactiveProperty<User> LoggedUser { get; } = new(User.Null);

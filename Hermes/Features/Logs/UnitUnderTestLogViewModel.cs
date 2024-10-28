@@ -14,18 +14,21 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using System;
+using System.Collections.Generic;
 
 namespace Hermes.Features.Logs;
 
 public partial class UnitUnderTestLogViewModel : ViewModelBase
 {
-    [ObservableProperty] private UnitUnderTest _selectedUnitUnderTest = UnitUnderTest.Null;
+    [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(EditCommand))]
+    private UnitUnderTest _selectedUnitUnderTest = UnitUnderTest.Null;
+
     [ObservableProperty] private SfcResponseType? _selectedSfcResponse;
     [ObservableProperty] private StatusType? _selectedTestStatus;
     [ObservableProperty] private string _serialNumberFilter = "";
     public ObservableCollection<UnitUnderTest> UnitsUnderTest { get; set; } = [];
-    public ObservableCollection<SfcResponseType?> SfcResponseOptions { get; set; } = [];
-    public ObservableCollection<StatusType?> StatusOptions { get; set; } = [];
+    public static IEnumerable<SfcResponseType?> SfcResponseOptions => NullableExtensions.GetValues<SfcResponseType>();
+    public static IEnumerable<StatusType?> StatusOptions => NullableExtensions.GetValues<StatusType>();
 
     private readonly FileService _fileService;
     private readonly UnitUnderTestRepository _unitUnderTestRepository;
@@ -36,9 +39,6 @@ public partial class UnitUnderTestLogViewModel : ViewModelBase
     {
         _fileService = fileService;
         _unitUnderTestRepository = unitUnderTestRepository;
-
-        SfcResponseOptions.AddRange(NullableExtensions.GetValues<SfcResponseType>());
-        StatusOptions.AddRange(NullableExtensions.GetValues<StatusType>());
 
         LoadLogsAsync().ConfigureAwait(false);
     }
@@ -53,6 +53,12 @@ public partial class UnitUnderTestLogViewModel : ViewModelBase
     {
         UnitsUnderTest.Clear();
         UnitsUnderTest.AddRange(await _unitUnderTestRepository.GetAllLast24HrsUnits());
+    }
+
+    [RelayCommand]
+    private void UnitUnderTestSelected(UnitUnderTest? unitUnderTest)
+    {
+        this.SelectedUnitUnderTest = unitUnderTest ?? UnitUnderTest.Null;
     }
 
     [RelayCommand]
@@ -78,17 +84,20 @@ public partial class UnitUnderTestLogViewModel : ViewModelBase
         Messenger.Send(new ShowToastMessage("Success", "Export Success: " + filePath, NotificationType.Success));
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(CanExecuteEdit))]
     private void Edit()
     {
-        new Process
+        try
         {
-            StartInfo = new ProcessStartInfo(_fileService.GetBackupFullPathByName(SelectedUnitUnderTest.FileName))
-            {
-                UseShellExecute = true
-            }
-        }.Start();
+            Process.Start("notepad.exe", SelectedUnitUnderTest.FullPath);
+        }
+        catch (Exception e)
+        {
+            this.ShowErrorToast(e.Message);
+        }
     }
+
+    private bool CanExecuteEdit() => !string.IsNullOrEmpty(SelectedUnitUnderTest.FileName);
 
     [RelayCommand]
     private async Task ReSend()

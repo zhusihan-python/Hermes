@@ -23,7 +23,7 @@ public class HermesLocalContext : DbContext
     public void Migrate()
     {
 #if DEBUG
-        Database.EnsureDeleted();
+        //Database.EnsureDeleted();
 #endif
         if (Database.GetPendingMigrations().Any())
         {

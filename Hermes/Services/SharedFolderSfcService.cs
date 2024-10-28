@@ -73,8 +73,10 @@ public class SharedFolderSfcService : ISfcService
 
     private async Task SendUnitUnderTest(UnitUnderTest unitUnderTest)
     {
+        var fullPath = Path.Combine(this._settings.SfcPath, unitUnderTest.FileName);
+        await _fileService.DeleteFileIfExists(fullPath);
         await this._fileService.WriteAllTextAsync(
-            Path.Combine(this._settings.SfcPath, unitUnderTest.FileName),
+            fullPath,
             unitUnderTest.Content);
     }
 }
