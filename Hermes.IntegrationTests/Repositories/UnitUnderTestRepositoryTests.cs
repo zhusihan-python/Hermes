@@ -11,11 +11,13 @@ public class UnitUnderTestRepositoryTests
     private readonly HermesLocalContext _localContext;
     private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
 
-    public UnitUnderTestRepositoryTests(UnitUnderTestBuilder unitUnderTestBuilder, HermesLocalContext hermesLocalContext)
+    public UnitUnderTestRepositoryTests(
+        UnitUnderTestBuilder unitUnderTestBuilder,
+        IDbContextFactory<HermesLocalContext> contextFactory)
     {
         this._unitUnderTestBuilder = unitUnderTestBuilder;
-        this._localContext = hermesLocalContext;
-        this._sut = new UnitUnderTestRepository(_localContext);
+        this._localContext = contextFactory.CreateDbContext();
+        this._sut = new UnitUnderTestRepository(contextFactory);
     }
 
     [Fact]
@@ -23,7 +25,7 @@ public class UnitUnderTestRepositoryTests
     {
         var uut = _unitUnderTestBuilder.Build();
         await _sut.AddAndSaveAsync(uut);
-        var result = _sut.GetById(uut.Id);
+        var result = await _sut.GetById(uut.Id);
         Assert.NotNull(result);
         Assert.Equal(uut.Id, result.Id);
     }
@@ -33,18 +35,9 @@ public class UnitUnderTestRepositoryTests
     {
         var uut = _unitUnderTestBuilder.Build();
         await _sut.AddAndSaveAsync(uut);
-        _sut.Delete(uut.Id);
-        await _sut.SaveChangesAsync();
-        var result = _sut.GetById(uut.Id);
+        await _sut.Delete(uut.Id);
+        var result = await _sut.GetById(uut.Id);
         Assert.Null(result);
-    }
-
-    [Fact]
-    public void Edit_ValidUnitUnderTest_Edits()
-    {
-        var uut = _unitUnderTestBuilder.Build();
-        _sut.Edit(uut);
-        Assert.Equal(EntityState.Modified, _localContext.Entry(uut).State);
     }
 
     [Fact]
@@ -57,6 +50,6 @@ public class UnitUnderTestRepositoryTests
             await _sut.AddAndSaveAsync(uut);
         }
 
-        Assert.True(listLength <= _sut.GetAll().Count);
+        Assert.True(listLength <= (await _sut.GetAll()).Count);
     }
 }

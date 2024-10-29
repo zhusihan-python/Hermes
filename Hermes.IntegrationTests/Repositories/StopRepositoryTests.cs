@@ -2,6 +2,7 @@ using Hermes.Builders;
 using Hermes.Models;
 using Hermes.Repositories;
 using Hermes.Types;
+using Microsoft.EntityFrameworkCore;
 
 namespace HermesIntegrationTests.Repositories;
 
@@ -11,11 +12,13 @@ public class StopRepositoryTests
     private readonly HermesLocalContext _localContext;
     private readonly SfcResponseBuilder _sfcResponseBuilder;
 
-    public StopRepositoryTests(SfcResponseBuilder sfcResponseBuilder, HermesLocalContext hermesLocalContext)
+    public StopRepositoryTests(
+        SfcResponseBuilder sfcResponseBuilder,
+        IDbContextFactory<HermesLocalContext> contextFactory)
     {
         this._sfcResponseBuilder = sfcResponseBuilder;
-        this._localContext = hermesLocalContext;
-        this._sut = new StopRepository(_localContext);
+        this._localContext = contextFactory.CreateDbContext();
+        this._sut = new StopRepository(contextFactory);
     }
 
     [Fact]
@@ -27,7 +30,8 @@ public class StopRepositoryTests
         var stop = new Stop(StopType.Machine);
         await this._sut.AddAndSaveAsync(stop);
         await this._sut.RestoreAsync(stop);
-        Assert.True(stop.IsRestored);
-        Assert.NotEqual(0, stop.Id);
+        var result = await this._sut.GetById(stop.Id);
+        Assert.True(result?.IsRestored);
+        Assert.NotEqual(0, result?.Id);
     }
 }

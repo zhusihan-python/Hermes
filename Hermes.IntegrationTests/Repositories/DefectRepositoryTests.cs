@@ -2,6 +2,7 @@ using Hermes.Builders;
 using Hermes.Models;
 using Hermes.Repositories;
 using Hermes.Types;
+using Microsoft.EntityFrameworkCore;
 
 namespace HermesIntegrationTests.Repositories;
 
@@ -11,14 +12,14 @@ public class DefectRepositoryTests
     private readonly HermesLocalContext _localContext;
     private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
 
-    public DefectRepositoryTests(UnitUnderTestBuilder unitUnderTestBuilder, HermesLocalContext hermesLocalContext)
+    public DefectRepositoryTests(
+        UnitUnderTestBuilder unitUnderTestBuilder,
+        IDbContextFactory<HermesLocalContext> contextFactory)
     {
         this._unitUnderTestBuilder = unitUnderTestBuilder
             .IsSfcFail(false);
-        this._localContext = hermesLocalContext;
-        this._localContext.Database.EnsureDeleted();
-        this._localContext.Database.EnsureCreated();
-        this._sut = new DefectRepository(_localContext);
+        _localContext = contextFactory.CreateDbContext();
+        this._sut = new DefectRepository(contextFactory);
     }
 
     [Fact]
