@@ -807,6 +807,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Can&apos;t resend unit under test.
+        /// </summary>
+        public static string msg_can_not_resed_uut {
+            get {
+                return ResourceManager.GetString("msg_can_not_resed_uut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select the work order.
         /// </summary>
         public static string msg_change_wo {
@@ -1275,6 +1284,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        public static string txt_edit {
+            get {
+                return ResourceManager.GetString("txt_edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit user.
         /// </summary>
         public static string txt_edit_user {
@@ -1599,6 +1617,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Refresh.
+        /// </summary>
+        public static string txt_refresh {
+            get {
+                return ResourceManager.GetString("txt_refresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Remove user.
         /// </summary>
         public static string txt_remove_user {
@@ -1613,6 +1640,15 @@ namespace Hermes.Language {
         public static string txt_repair {
             get {
                 return ResourceManager.GetString("txt_repair", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Resend.
+        /// </summary>
+        public static string txt_resend {
+            get {
+                return ResourceManager.GetString("txt_resend", resourceCulture);
             }
         }
         

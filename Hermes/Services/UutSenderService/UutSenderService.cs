@@ -99,5 +99,7 @@ public abstract class UutSenderService
         _logger.Debug($"SendUnitUnderTest {unitUnderTest.FileName}, SfcResponse: {sfcResponse.Type}");
         return sfcResponse;
     }
-    // TODO: Add re send unit under test
+
+    public abstract Task ReSend(UnitUnderTest unitUnderTest);
+    public abstract bool CanReSend(UnitUnderTest unitUnderTest);
 }

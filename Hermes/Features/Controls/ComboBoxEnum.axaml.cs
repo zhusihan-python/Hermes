@@ -2,6 +2,8 @@ using System;
 using Avalonia.Controls;
 using Avalonia;
 using System.Collections;
+using System.Collections.Generic;
+using Avalonia.Input;
 
 namespace Hermes.Features.Controls;
 

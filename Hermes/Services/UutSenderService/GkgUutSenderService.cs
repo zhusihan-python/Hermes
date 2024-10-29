@@ -17,6 +17,7 @@ public class GkgUutSenderService : UutSenderService
     private readonly Settings _settings;
     private readonly SfcResponseBuilder _sfcResponseBuilder;
     private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
+    private Subject<string>? _serialNumberScannedSubject;
 
     public override string Path => _settings.GkgTunnelComPort;
 
@@ -51,14 +52,25 @@ public class GkgUutSenderService : UutSenderService
         this._serialScanner.Close();
     }
 
+    public override Task ReSend(UnitUnderTest unitUnderTest)
+    {
+        this._serialNumberScannedSubject?.OnNext(unitUnderTest.SerialNumber);
+        return Task.CompletedTask;
+    }
+
+    public override bool CanReSend(UnitUnderTest unitUnderTest)
+    {
+        return !string.IsNullOrEmpty(unitUnderTest.SerialNumber);
+    }
+
     protected override void SetupReactiveExtensions()
     {
-        var serialNumberScannedSubject = new Subject<string>();
+        this._serialNumberScannedSubject = new Subject<string>();
         this.SerialNumberReceived()
-            .Subscribe(serialNumber => serialNumberScannedSubject.OnNext(serialNumber))
+            .Subscribe(serialNumber => this._serialNumberScannedSubject.OnNext(serialNumber))
             .AddTo(ref Disposables);
 
-        this.ValidSerialNumberReceived(serialNumberScannedSubject)
+        this.ValidSerialNumberReceived(this._serialNumberScannedSubject)
             .SelectAwait(async (serialNumber, _) =>
             {
                 await this.SendUnitUnderTest(serialNumber);
@@ -69,13 +81,13 @@ public class GkgUutSenderService : UutSenderService
                 _ => this.Stop())
             .AddTo(ref Disposables);
 
-        this.InvalidSerialNumberReceived(serialNumberScannedSubject)
+        this.InvalidSerialNumberReceived(this._serialNumberScannedSubject)
             .Subscribe(
                 _ => this.SendScanErrorUnitUnderTest(),
                 _ => this.Stop())
             .AddTo(ref Disposables);
 
-        this.DummySerialNumberReceived(serialNumberScannedSubject)
+        this.DummySerialNumberReceived(this._serialNumberScannedSubject)
             .Do(_ => this.IsWaitingForDummy = false)
             .Subscribe(_ => this.SendDummyUnitUnderTest())
             .AddTo(ref Disposables);

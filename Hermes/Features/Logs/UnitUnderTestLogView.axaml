@@ -8,6 +8,7 @@
              xmlns:unitUnderTestLogView="clr-namespace:Hermes.Features.Logs"
              xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
              xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+             xmlns:converters="clr-namespace:Hermes.Common.Converters"
              Background="{DynamicResource SukiBackground}"
              mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
              x:Class="Hermes.Features.Logs.UnitUnderTestLogView"
@@ -33,10 +34,16 @@
                         Grid.Column="0"
                         Orientation="Horizontal">
 
-                <unitUnderTestLogView:TextBoxWithTitle Width="200"
+                <unitUnderTestLogView:TextBoxWithTitle Name="SerialNumberFilter"
+                                                       Width="200"
                                                        VerticalAlignment="Bottom"
+                                                       KeyBindings=""
                                                        Title="{x:Static lang:Resources.txt_serial_number}"
-                                                       Text="{Binding SerialNumberFilter}" />
+                                                       Text="{Binding SerialNumberFilter, Mode=TwoWay}">
+                    <unitUnderTestLogView:TextBoxWithTitle.KeyBindings>
+                        <KeyBinding Gesture="Enter" Command="{Binding SearchCommand}" />
+                    </unitUnderTestLogView:TextBoxWithTitle.KeyBindings>
+                </unitUnderTestLogView:TextBoxWithTitle>
 
 
                 <controls:ComboBoxEnum Width="200"
@@ -58,23 +65,27 @@
             <!-- Actions -->
             <StackPanel Grid.Row="0"
                         Grid.Column="1"
-                        Margin="0 0 0 5"
+                        Margin="20 0 0 5"
                         Orientation="Horizontal"
                         VerticalAlignment="Bottom"
                         HorizontalAlignment="Right"
                         Spacing="5">
 
                 <controls:ButtonIcon Kind="FileEdit"
-                                     Command="{Binding EditCommand}" />
+                                     Command="{Binding EditCommand}"
+                                     ToolTip.Tip="{x:Static lang:Resources.txt_edit}" />
 
                 <controls:ButtonIcon Kind="FileRefresh"
-                                     Command="{Binding ReSendCommand}" />
+                                     Command="{Binding ReSendCommand}"
+                                     ToolTip.Tip="{x:Static lang:Resources.txt_resend}" />
 
                 <controls:ButtonIcon Kind="DatabaseArrowRight"
-                                     Command="{Binding ExportCommand}" />
+                                     Command="{Binding ExportCommand}"
+                                     ToolTip.Tip="{x:Static lang:Resources.txt_export_table_to_csv}" />
 
                 <controls:ButtonIcon Kind="Refresh"
-                                     Command="{Binding RefreshCommand}" />
+                                     Command="{Binding RefreshCommand}"
+                                     ToolTip.Tip="{x:Static lang:Resources.txt_refresh}" />
             </StackPanel>
 
             <!-- Grid -->
@@ -89,28 +100,26 @@
                           ItemsSource="{Binding UnitsUnderTest}"
                           IsReadOnly="True"
                           HeadersVisibility="Column"
-                          HorizontalAlignment="Stretch"
-                          VerticalAlignment="Stretch"
                           CanUserResizeColumns="True">
 
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="{x:Static lang:Resources.txt_serial_number}"
                                             Binding="{Binding SerialNumber}" />
 
-                        <DataGridTextColumn Header="{x:Static lang:Resources.txt_file}"
-                                            Binding="{Binding FileName}" />
-
                         <DataGridTextColumn Header="{x:Static lang:Resources.txt_test_status}"
                                             Binding="{Binding IsPass}" />
 
                         <DataGridTextColumn Header="{x:Static lang:Resources.txt_sfc_response}"
-                                            Binding="{Binding SfcResponse.Type}" />
+                                            Binding="{Binding SfcResponse.Type,  Converter={x:Static converters:EnumToTranslatedTextConverters.Generic}}" />
 
                         <DataGridTextColumn Header="{x:Static lang:Resources.txt_sfc_response_content}"
                                             Binding="{Binding SfcResponse.Content}" />
 
                         <DataGridTextColumn Header="{x:Static lang:Resources.txt_created_at}"
                                             Binding="{Binding CreatedAt}" />
+
+                        <DataGridTextColumn Header="{x:Static lang:Resources.txt_file}"
+                                            Binding="{Binding FileName}" />
                     </DataGrid.Columns>
 
                     <i:Interaction.Behaviors>

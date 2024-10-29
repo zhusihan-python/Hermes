@@ -81,11 +81,6 @@ public class FileService
         return fileName;
     }
 
-    public string GetBackupFullPathByName(string fileName)
-    {
-        return this._settings.BackupPath + "\\" + fileName;
-    }
-
     private async Task<string> TryCopy(string source, string dest)
     {
         return await _retryPipeline.ExecuteAsync((_) =>

@@ -111,7 +111,20 @@ public partial class UutProcessorViewModel : PageBase
         Messenger.Register<StartUutProcessorMessage>(this, this.OnStartReceive);
         Messenger.Register<ExitMessage>(this, this.OnExitReceive);
         Messenger.Register<WaitForDummyMessage>(this, this.OnWaitForDummyMessage);
+        Messenger.Register<ReSendUnitUnderTestMessage>(this, this.OnReSendUnitUnderTestMessage);
         base.OnActivated();
+    }
+
+    private void OnReSendUnitUnderTestMessage(object recipient, ReSendUnitUnderTestMessage message)
+    {
+        if (this._uutSenderService.CanReSend(message.Value))
+        {
+            this._uutSenderService.ReSend(message.Value);
+        }
+        else
+        {
+            this.ShowErrorToast(Resources.msg_can_not_resed_uut);
+        }
     }
 
     private void OnWaitForDummyMessage(object recipient, WaitForDummyMessage message)

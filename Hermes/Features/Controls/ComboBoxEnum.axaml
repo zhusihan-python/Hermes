@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:converters="clr-namespace:Hermes.Common.Converters"
              xmlns:lang="clr-namespace:Hermes.Language;assembly=Hermes.Language"
-             xmlns:controls="clr-namespace:Hermes.Features.Controls"
              mc:Ignorable="d"
              x:Name="Self"
              x:Class="Hermes.Features.Controls.ComboBoxEnum">

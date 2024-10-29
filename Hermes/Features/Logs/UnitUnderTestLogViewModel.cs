@@ -20,7 +20,9 @@ namespace Hermes.Features.Logs;
 
 public partial class UnitUnderTestLogViewModel : ViewModelBase
 {
-    [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(EditCommand))]
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(EditCommand))]
+    [NotifyCanExecuteChangedFor(nameof(ReSendCommand))]
     private UnitUnderTest _selectedUnitUnderTest = UnitUnderTest.Null;
 
     [ObservableProperty] private SfcResponseType? _selectedSfcResponse;
@@ -41,12 +43,6 @@ public partial class UnitUnderTestLogViewModel : ViewModelBase
         _unitUnderTestRepository = unitUnderTestRepository;
 
         LoadLogsAsync().ConfigureAwait(false);
-    }
-
-    private async Task ReSendFile()
-    {
-        await _fileService.CopyFromBackupToInputAsync(
-            _fileService.GetBackupFullPathByName(SelectedUnitUnderTest.FileName));
     }
 
     private async Task LoadLogsAsync()
@@ -84,7 +80,7 @@ public partial class UnitUnderTestLogViewModel : ViewModelBase
         Messenger.Send(new ShowToastMessage("Success", "Export Success: " + filePath, NotificationType.Success));
     }
 
-    [RelayCommand(CanExecute = nameof(CanExecuteEdit))]
+    [RelayCommand(CanExecute = nameof(CanEdit))]
     private void Edit()
     {
         try
@@ -97,13 +93,16 @@ public partial class UnitUnderTestLogViewModel : ViewModelBase
         }
     }
 
-    private bool CanExecuteEdit() => !string.IsNullOrEmpty(SelectedUnitUnderTest.FileName);
+    private bool CanEdit() => !string.IsNullOrEmpty(SelectedUnitUnderTest.FullPath);
 
-    [RelayCommand]
-    private async Task ReSend()
+
+    [RelayCommand(CanExecute = nameof(CanResend))]
+    private void ReSend()
     {
-        await ReSendFile();
+        Messenger.Send(new ReSendUnitUnderTestMessage(SelectedUnitUnderTest));
     }
+
+    private bool CanResend() => !string.IsNullOrEmpty(SelectedUnitUnderTest.SerialNumber);
 
     [RelayCommand]
     private async Task Refresh()

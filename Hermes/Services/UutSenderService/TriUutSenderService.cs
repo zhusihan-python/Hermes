@@ -43,6 +43,16 @@ public class TriUutSenderService : UutSenderService
         this._folderWatcherService.Stop();
     }
 
+    public override async Task ReSend(UnitUnderTest unitUnderTest)
+    {
+        await this._folderWatcherService.ResendAsync(unitUnderTest);
+    }
+
+    public override bool CanReSend(UnitUnderTest unitUnderTest)
+    {
+        return this._folderWatcherService.FileExists(unitUnderTest.FullPath);
+    }
+
     protected override void SetupReactiveExtensions()
     {
         this._folderWatcherService

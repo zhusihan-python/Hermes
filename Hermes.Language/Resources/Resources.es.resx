@@ -635,4 +635,16 @@
     <data name="enum_passed" xml:space="preserve">
         <value>Pasa</value>
     </data>
+    <data name="msg_can_not_resed_uut" xml:space="preserve">
+        <value>No fue posible reenviar la unidad</value>
+    </data>
+    <data name="txt_edit" xml:space="preserve">
+        <value>Editar</value>
+    </data>
+    <data name="txt_refresh" xml:space="preserve">
+        <value>Refrescar</value>
+    </data>
+    <data name="txt_resend" xml:space="preserve">
+        <value>Reenviar</value>
+    </data>
 </root>

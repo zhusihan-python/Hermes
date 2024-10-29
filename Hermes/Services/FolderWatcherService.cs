@@ -54,4 +54,14 @@ public class FolderWatcherService : IDisposable
     {
         this._fileSystemWatcherRx.Dispose();
     }
+
+    public async Task ResendAsync(UnitUnderTest unitUnderTest)
+    {
+        await this._fileService.CopyFromBackupToInputAsync(unitUnderTest.FullPath);
+    }
+
+    public bool FileExists(string fullPath)
+    {
+        return this._fileService.FileExists(fullPath);
+    }
 }

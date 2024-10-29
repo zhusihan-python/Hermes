@@ -41,8 +41,7 @@ public class UnitUnderTestRepository(IDbContextFactory<HermesLocalContext> conte
         var query = GetAllLast24HrsUnitsQuery(ctx);
         if (serialNumber != null)
         {
-            query = query.Where(x => x.SerialNumber
-                .Contains(serialNumber, StringComparison.CurrentCultureIgnoreCase));
+            query = query.Where(x => EF.Functions.Like(x.SerialNumber, $"%{serialNumber}%"));
         }
 
         if (statusType != null)
@@ -69,7 +68,8 @@ public class UnitUnderTestRepository(IDbContextFactory<HermesLocalContext> conte
     {
         return ctx.Set<UnitUnderTest>()
             .Include(x => x.SfcResponse)
-            .Where(x => x.CreatedAt >= DateTime.Now.AddDays(-1));
+            .Where(x => x.CreatedAt >= DateTime.Now.AddDays(-1))
+            .OrderByDescending(x => x.CreatedAt);
     }
 
     public async Task<List<UnitUnderTest>> FindBySerialNumberAsync(string serialNumber)
