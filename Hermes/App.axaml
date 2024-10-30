@@ -3,6 +3,7 @@
              xmlns:sukiUi="clr-namespace:SukiUI;assembly=SukiUI"
              xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
              xmlns:sys="clr-namespace:System;assembly=System.Runtime"
+             xmlns:lang="clr-namespace:Hermes.Language;assembly=Hermes.Language"
              x:Class="Hermes.App"
              xmlns:common="clr-namespace:Hermes.Common">
 
@@ -42,9 +43,10 @@
                       ToolTipText="Hermes">
                 <TrayIcon.Menu>
                     <NativeMenu>
+                        <NativeMenuItem Header="{x:Static lang:Resources.txt_open_hermes_app}"
+                                        Click="NativeMenuItem_OnClick" />
                         <NativeMenuItem Header="Settings">
                             <NativeMenu>
-                                <NativeMenuItem Header="Option 1" />
                                 <NativeMenuItem Header="Option 2" />
                                 <NativeMenuItemSeparator />
                                 <NativeMenuItem Header="Option 3" />

@@ -8,7 +8,6 @@ namespace HermesIntegrationTests.Repositories;
 public class UnitUnderTestRepositoryTests
 {
     private readonly UnitUnderTestRepository _sut;
-    private readonly HermesLocalContext _localContext;
     private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
 
     public UnitUnderTestRepositoryTests(
@@ -16,7 +15,6 @@ public class UnitUnderTestRepositoryTests
         IDbContextFactory<HermesLocalContext> contextFactory)
     {
         this._unitUnderTestBuilder = unitUnderTestBuilder;
-        this._localContext = contextFactory.CreateDbContext();
         this._sut = new UnitUnderTestRepository(contextFactory);
     }
 

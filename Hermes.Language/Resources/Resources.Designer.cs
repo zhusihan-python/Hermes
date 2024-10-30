@@ -1590,6 +1590,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open Hermes app.
+        /// </summary>
+        public static string txt_open_hermes_app {
+            get {
+                return ResourceManager.GetString("txt_open_hermes_app", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password.
         /// </summary>
         public static string txt_password {

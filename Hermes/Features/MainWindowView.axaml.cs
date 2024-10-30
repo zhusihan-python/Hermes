@@ -1,6 +1,8 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using Hermes.Common.Messages;
 using SukiUI.Controls;
 
 
@@ -36,4 +38,20 @@ public partial class MainWindowView : SukiWindow
         WindowState = WindowState == WindowState.FullScreen ? WindowState.Normal : WindowState.FullScreen;
         IsTitleBarVisible = WindowState != WindowState.FullScreen;
     }
+
+    private void Window_OnClosing(object? sender, WindowClosingEventArgs e)
+    {
+        if (this.CanClose)
+        {
+            e.Cancel = false;
+        }
+        else
+        {
+            e.Cancel = true;
+            (this.DataContext as MainWindowViewModel)?.LogoutCommand.Execute(null);
+            this.Hide();
+        }
+    }
+
+    private bool CanClose => (this.DataContext as MainWindowViewModel)?.CanClose ?? true;
 }

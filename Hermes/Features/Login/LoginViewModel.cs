@@ -100,5 +100,7 @@ public partial class LoginViewModel : PageBase
     private void LoginDebugUser()
     {
         _session.UpdateUser(new DebugUser());
+        this.UserName = string.Empty;
+        this.Password = string.Empty;
     }
 }

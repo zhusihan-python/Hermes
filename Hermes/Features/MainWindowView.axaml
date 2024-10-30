@@ -17,16 +17,8 @@
                  WindowStartupLocation="CenterScreen"
                  Icon="avares://Hermes/AppData/Assets/logo-hermes.png"
                  Title="{Binding Title}"
-                 ClosingBehavior="OwnerAndChildWindows">
-
-    <i:Interaction.Behaviors>
-        <ia:EventTriggerBehavior EventName="Closing" SourceObject="Self">
-            <ia:InvokeCommandAction
-                Command="{Binding CloseCommand}"
-                CommandParameter="{Binding #Self}" />
-        </ia:EventTriggerBehavior>
-    </i:Interaction.Behaviors>
-
+                 ClosingBehavior="OwnerAndChildWindows"
+                 Closing="Window_OnClosing">
     <suki:SukiWindow.Hosts>
         <suki:SukiToastHost Manager="{Binding ToastManager}" />
         <suki:SukiDialogHost Manager="{Binding DialogManager}" />

@@ -654,4 +654,7 @@
     <data name="txt_refresh" xml:space="preserve">
         <value>Refresh</value>
     </data>
+    <data name="txt_open_hermes_app" xml:space="preserve">
+        <value>Open Hermes app</value>
+    </data>
 </root>

@@ -25,6 +25,7 @@ namespace Hermes.Features
         public List<PageBase> Pages { get; }
         public ISukiToastManager ToastManager { get; }
         public ISukiDialogManager DialogManager { get; }
+        public bool CanClose { get; private set; }
 
         public ObservableCollection<PageBase> ShownPages { get; set; } = [];
         [ObservableProperty] private ThemeVariant? _baseTheme;
@@ -154,13 +155,9 @@ namespace Hermes.Features
         [RelayCommand]
         private void Exit(SukiWindow window)
         {
-            window.Close();
-        }
-
-        [RelayCommand]
-        private void Close(SukiWindow window)
-        {
             Messenger.Send(new ExitMessage());
+            CanClose = true;
+            window.Close();
         }
 
         [RelayCommand]

@@ -647,4 +647,7 @@
     <data name="txt_resend" xml:space="preserve">
         <value>Reenviar</value>
     </data>
+    <data name="txt_open_hermes_app" xml:space="preserve">
+        <value>Abrir app Hermes</value>
+    </data>
 </root>

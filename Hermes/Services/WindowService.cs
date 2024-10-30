@@ -1,4 +1,5 @@
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Controls.Notifications;
 using Avalonia.Controls;
 using Avalonia.Threading;
 using Avalonia;
@@ -8,15 +9,12 @@ using Hermes.Common.Messages;
 using Hermes.Common;
 using Hermes.Features.SettingsConfig;
 using Hermes.Features.UutProcessor;
-using Hermes.Repositories;
-using SukiUI.Controls;
-using System.Threading.Tasks;
-using System.Threading;
-using System;
-using Avalonia.Controls.Notifications;
 using Hermes.Language;
 using Hermes.Models;
 using SukiUI.Toasts;
+using System.Threading.Tasks;
+using System.Threading;
+using System;
 
 namespace Hermes.Services;
 
@@ -87,7 +85,7 @@ public class WindowService : ObservableRecipient
     public void Stop()
     {
         Messenger.UnregisterAll(this);
-        this.SuccessView.Close();
+        this.SuccessView.ForceClose();
         this.StopView.ForceClose();
         this.SettingsView.ForceClose();
     }
