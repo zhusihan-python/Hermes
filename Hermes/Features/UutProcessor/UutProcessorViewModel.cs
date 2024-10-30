@@ -91,17 +91,11 @@ public partial class UutProcessorViewModel : PageBase
             .SelectAwait(async (unitUnderTest, _) =>
                 (stop: await this._stopService.Calculate(unitUnderTest), unitUnderTest))
             .Do(x => this.ShowResult(x.stop, x.unitUnderTest))
-            .Subscribe()
-            .AddTo(ref Disposables);
-
-        this._uutSenderService
-            .UnitUnderTest
-            .Where(unitUnderTest => !unitUnderTest.IsNull)
-            .Distinct()
-            .SubscribeAwait(async (unitUnderTest, _) =>
+            .SubscribeAwait(async (x, _) =>
             {
-                await this.MoveFilesToBackup(unitUnderTest);
-                await this.Persist(unitUnderTest);
+                x.unitUnderTest.Stop = x.stop.IsNull ? null : x.stop;
+                await this.MoveFilesToBackup(x.unitUnderTest);
+                await this.Persist(x.unitUnderTest);
             })
             .AddTo(ref Disposables);
     }

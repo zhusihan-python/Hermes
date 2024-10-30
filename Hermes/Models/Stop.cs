@@ -13,10 +13,12 @@ public class Stop
     [Key] public int Id { get; init; }
     public StopType Type { get; set; } = StopType.None;
     public bool IsRestored { get; set; }
+    public string Details { get; set; } = "";
+    public string Actions { get; set; } = "";
     public List<Defect> Defects { get; set; } = [];
+    public List<User> Users { get; set; } = [];
     [NotMapped] public bool IsNull => this == Null;
     [NotMapped] public bool IsMachineStop => this.Type == StopType.Machine;
-    [NotMapped] public string Details { get; set; } = "";
     [NotMapped] public string SerialNumber { get; set; } = "";
     [NotMapped] public bool IsFake { get; init; }
 

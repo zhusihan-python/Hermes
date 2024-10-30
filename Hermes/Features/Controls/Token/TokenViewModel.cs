@@ -53,8 +53,9 @@ public partial class TokenViewModel : ViewModelBase, ITokenViewModel
         {
             try
             {
+                var user = User.Null;
 #if !DEBUG
-                var user = await this._userRemoteRepository.FindUser(this.UserName, this.Password);
+                user = await this._userRemoteRepository.FindUser(this.UserName, this.Password);
                 var validation = this.Validate(user);
                 if (validation != null)
                 {
@@ -71,6 +72,7 @@ public partial class TokenViewModel : ViewModelBase, ITokenViewModel
                     this.IsUnlocked = true;
                     this.Password = "";
                     this.Unlocked?.Invoke(this, EventArgs.Empty);
+                    this.User = user;
                 });
             }
             catch (Exception e)
@@ -132,6 +134,8 @@ public partial class TokenViewModel : ViewModelBase, ITokenViewModel
 
     private bool CanExecuteUnlock =>
         this.CanUnlock && !string.IsNullOrEmpty(this.UserName) && !string.IsNullOrEmpty(this.Password);
+
+    public User User { get; private set; } = User.Null;
 
     public void Reset()
     {

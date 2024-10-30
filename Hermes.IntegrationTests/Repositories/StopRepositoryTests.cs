@@ -29,7 +29,7 @@ public class StopRepositoryTests
         await _localContext.SaveChangesAsync();
         var stop = new Stop(StopType.Machine);
         await this._sut.AddAndSaveAsync(stop);
-        await this._sut.RestoreAsync(stop);
+        await this._sut.RestoreAsync(stop, new List<User>());
         var result = await this._sut.GetById(stop.Id);
         Assert.True(result?.IsRestored);
         Assert.NotEqual(0, result?.Id);

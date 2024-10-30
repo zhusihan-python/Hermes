@@ -51,7 +51,7 @@ public partial class StopViewModel : ViewModelBase
             var cloneTokenViewModel = tokenViewModel.Clone();
             cloneTokenViewModel.ClearDepartments();
             cloneTokenViewModel.Add(department);
-            cloneTokenViewModel.Unlocked += this.OnTokenUnlocked;
+            cloneTokenViewModel.Unlocked += this.OnMultiUserTokenUnlocked;
             this.StopLineTokenViewModels.Add(cloneTokenViewModel);
             if (department == DepartmentType.Qa)
             {
@@ -61,7 +61,7 @@ public partial class StopViewModel : ViewModelBase
 
         this.Actions = string.Empty;
         this.StopMachineTokenViewModel = tokenViewModel;
-        this.StopMachineTokenViewModel.Unlocked += this.OnTokenUnlocked;
+        this.StopMachineTokenViewModel.Unlocked += this.OnSingleUserTokenUnlocked;
     }
 
     private bool CanUnlockQa()
@@ -72,30 +72,41 @@ public partial class StopViewModel : ViewModelBase
                this.Actions.Length > 5;
     }
 
-    private void OnTokenUnlocked(object? sender, EventArgs e)
+    private void OnSingleUserTokenUnlocked(object? sender, EventArgs e)
     {
-        if (
-            sender == StopMachineTokenViewModel ||
-            this.StopLineTokenViewModels.All(tokenViewModel => tokenViewModel.IsUnlocked))
+        var user = (sender as TokenViewModel)?.User;
+        this.RestoreStop(user == null ? [] : [user]);
+    }
+
+    private void OnMultiUserTokenUnlocked(object? sender, EventArgs e)
+    {
+        if (this.StopLineTokenViewModels.All(tokenViewModel => tokenViewModel.IsUnlocked))
         {
-            this.RestoreStop();
+            var users = this.StopLineTokenViewModels
+                .Select(tokenViewModel => tokenViewModel.User)
+                .ToList();
+            this.RestoreStop(users);
         }
     }
 
     partial void OnStopChanged(Stop value)
     {
         IsMachineStop = value.IsMachineStop;
-        if (value is { IsNull: false, IsFake: false })
-        {
-            Task.Run(() => this._stopRepository.AddAndSaveAsync(value));
-        }
     }
 
-    private async void RestoreStop()
+    private async void RestoreStop(List<User> users)
     {
-        if (this.Stop is { IsNull: false, IsFake: false })
+        try
         {
-            await this._stopRepository.RestoreAsync(this.Stop);
+            if (this.Stop is { IsNull: false, IsFake: false })
+            {
+                this.Stop.Actions = this.Actions;
+                await this._stopRepository.RestoreAsync(this.Stop, users);
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
         }
 
         this.Restored?.Invoke(this, EventArgs.Empty);

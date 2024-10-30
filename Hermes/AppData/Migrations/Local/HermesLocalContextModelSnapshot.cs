@@ -81,6 +81,10 @@ namespace Hermes.AppData.Migrations.Local
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Details")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<bool>("IsRestored")
                         .HasColumnType("INTEGER");
 
@@ -129,6 +133,53 @@ namespace Hermes.AppData.Migrations.Local
                     b.ToTable("UnitsUnderTest", (string)null);
                 });
 
+            modelBuilder.Entity("Hermes.Models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Department")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("EmployeeId")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Level")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users", (string)null);
+                });
+
+            modelBuilder.Entity("StopUser", b =>
+                {
+                    b.Property<int>("StopsId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UsersId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("StopsId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("StopUser");
+                });
+
             modelBuilder.Entity("Hermes.Models.Defect", b =>
                 {
                     b.HasOne("Hermes.Models.Stop", null)
@@ -155,6 +206,21 @@ namespace Hermes.AppData.Migrations.Local
                     b.Navigation("SfcResponse");
 
                     b.Navigation("Stop");
+                });
+
+            modelBuilder.Entity("StopUser", b =>
+                {
+                    b.HasOne("Hermes.Models.Stop", null)
+                        .WithMany()
+                        .HasForeignKey("StopsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Hermes.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Hermes.Models.Stop", b =>
