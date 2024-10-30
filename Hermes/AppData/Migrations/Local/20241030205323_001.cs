@@ -34,7 +34,8 @@ namespace Hermes.AppData.Migrations.Local
                         .Annotation("Sqlite:Autoincrement", true),
                     Type = table.Column<int>(type: "INTEGER", nullable: false),
                     IsRestored = table.Column<bool>(type: "INTEGER", nullable: false),
-                    Details = table.Column<string>(type: "TEXT", nullable: false)
+                    Details = table.Column<string>(type: "TEXT", nullable: false),
+                    Actions = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {

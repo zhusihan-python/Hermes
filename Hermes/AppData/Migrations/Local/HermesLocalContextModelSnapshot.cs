@@ -81,6 +81,10 @@ namespace Hermes.AppData.Migrations.Local
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Actions")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Details")
                         .IsRequired()
                         .HasColumnType("TEXT");

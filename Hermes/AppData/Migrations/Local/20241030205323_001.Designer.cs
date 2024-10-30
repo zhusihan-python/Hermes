@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hermes.AppData.Migrations.Local
 {
     [DbContext(typeof(HermesLocalContext))]
-    [Migration("20241030201943_001")]
+    [Migration("20241030205323_001")]
     partial class _001
     {
         /// <inheritdoc />
@@ -83,6 +83,10 @@ namespace Hermes.AppData.Migrations.Local
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("Actions")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Details")
                         .IsRequired()

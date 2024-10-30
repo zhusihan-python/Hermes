@@ -14,9 +14,11 @@ public class StopRepository(IDbContextFactory<HermesLocalContext> context)
     public async Task RestoreAsync(Stop stop, List<User> users)
     {
         await using var ctx = await _context.CreateDbContextAsync();
+        var dbStop = await ctx.Stops.Where(x => x.Id == stop.Id).FirstOrDefaultAsync();
+        if (dbStop == null) return;
         var dbUsers = await ctx.Users.Where(x => users.Contains(x)).ToListAsync();
-        stop.IsRestored = true;
-        stop.Users = dbUsers;
+        dbStop.IsRestored = true;
+        dbStop.Users = dbUsers;
         await ctx.SaveChangesAsync();
     }
 }

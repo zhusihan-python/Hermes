@@ -53,26 +53,21 @@ public partial class TokenViewModel : ViewModelBase, ITokenViewModel
         {
             try
             {
-                var user = User.Null;
-#if !DEBUG
-                user = await this._userRemoteRepository.FindUser(this.UserName, this.Password);
+                var user = await this._userRemoteRepository.FindUser(this.UserName, this.Password);
                 var validation = this.Validate(user);
                 if (validation != null)
                 {
                     ShowErrorToast(validation);
                     return;
                 }
-#endif
 
                 await Dispatcher.UIThread.InvokeAsync(() =>
                 {
-#if !DEBUG
                     this.UserName = user.Name;
-#endif
                     this.IsUnlocked = true;
                     this.Password = "";
-                    this.Unlocked?.Invoke(this, EventArgs.Empty);
                     this.User = user;
+                    this.Unlocked?.Invoke(this, EventArgs.Empty);
                 });
             }
             catch (Exception e)
