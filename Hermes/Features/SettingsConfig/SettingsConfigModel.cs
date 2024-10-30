@@ -344,5 +344,8 @@ public partial class SettingsConfigModel(
     {
         _comPorts.Clear();
         _comPorts.AddRange(SerialPort.GetPortNames());
+        List<string> a = [GkgTunnelComPort, ScannerComPort];
+        var ab = a.Except(_comPorts).ToList();
+        _comPorts.AddRange(ab);
     }
 }
