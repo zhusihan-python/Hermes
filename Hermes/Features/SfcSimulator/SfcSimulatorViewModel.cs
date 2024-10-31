@@ -14,6 +14,7 @@ using R3;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
+using System.Threading;
 
 namespace Hermes.Features.SfcSimulator;
 
@@ -42,9 +43,9 @@ public partial class SfcSimulatorViewModel : PageBase
         : base(
             Resources.txt_sfc_simulator,
             MaterialIconKind.BugPlay,
-            PermissionType.OpenSfcSimulator,
             100)
     {
+        Console.WriteLine("SfcSimulatorViewModel Created " + Thread.CurrentThread.ManagedThreadId);
         _logger = logger;
         _coreSettings = coreSettings;
         _fileService = fileService;

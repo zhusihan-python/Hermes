@@ -18,15 +18,15 @@ namespace Hermes
 {
     public partial class App : Application
     {
-        private readonly ServiceProvider _provider;
+        public static ServiceProvider _provider;
         private readonly ILogger? _logger;
         private WindowService? _windowService;
         private Window? _mainWindow;
 
         public App()
         {
-            this._provider = this.GetServiceProvider();
-            this._logger = this._provider.GetService<ILogger>()!;
+            _provider = this.GetServiceProvider();
+            this._logger = _provider.GetService<ILogger>()!;
         }
 
         public override void Initialize()
@@ -41,7 +41,9 @@ namespace Hermes
             {
                 _provider.GetRequiredService<HermesLocalContext>().Migrate();
                 _provider.GetRequiredService<HermesRemoteContext>().Migrate();
-                this._mainWindow = _provider.BuildWindow<MainWindowViewModel>(true);
+                _provider.GetRequiredService<PagePrototype>().Provider = _provider;
+
+                this._mainWindow = _provider.BuildWindow<MainWindowViewModel>(false);
                 desktop.MainWindow = this._mainWindow;
                 BrowserDialog.StorageProvider = desktop.MainWindow?.StorageProvider;
                 this._windowService = _provider.GetRequiredService<WindowService>();

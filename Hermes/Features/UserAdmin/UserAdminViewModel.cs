@@ -48,10 +48,7 @@ public partial class UserAdminViewModel : PageBase
         : base(
             "User Admin",
             MaterialIconKind.Users,
-            PermissionType.OpenUserAdmin,
-            1,
-            [StationType.Labeling]
-        )
+            1)
     {
         this._logger = logger;
         this._userRepositoryProxy = userRepositoryProxy;

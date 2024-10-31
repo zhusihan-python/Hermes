@@ -15,6 +15,7 @@ using R3;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
+using System.Threading;
 
 namespace Hermes.Features.UutProcessor;
 
@@ -47,9 +48,9 @@ public partial class UutProcessorViewModel : PageBase
         : base(
             Resources.txt_uut_processor,
             MaterialIconKind.FolderEye,
-            PermissionType.OpenUutProcessor,
             1)
     {
+        Console.WriteLine("UutProcessorViewModel Created " + Thread.CurrentThread.ManagedThreadId);
         this.DummyViewModel = dummyViewModel;
         this.ScannerViewModel = scannerViewModel;
         this._fileService = fileService;
@@ -58,9 +59,6 @@ public partial class UutProcessorViewModel : PageBase
         this._stopService = stopService;
         this._unitUnderTestRepository = unitUnderTestRepository;
         this._uutSenderService = uutSenderServiceFactory.Build();
-        this.StationFilter = EnumExtensions.GetValues<StationType>()
-            .Where(x => x != StationType.Labeling && x != StationType.None)
-            .ToList();
         this.CurrentUnitUnderTest = this._uutSenderService
             .UnitUnderTest
             .ToBindableReactiveProperty<UnitUnderTest>();

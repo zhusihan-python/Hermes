@@ -1,21 +1,15 @@
 using CommunityToolkit.Mvvm.ComponentModel;
-using Hermes.Types;
 using Material.Icons;
-using System.Collections.Generic;
 
 namespace Hermes.Features;
 
 public abstract partial class PageBase(
     string displayName,
     MaterialIconKind icon,
-    PermissionType permissionType,
-    int index = 0,
-    List<StationType>? stationFilter = null)
+    int index = 0)
     : ViewModelBase
 {
     [ObservableProperty] private string _displayName = displayName;
     [ObservableProperty] private MaterialIconKind _icon = icon;
     [ObservableProperty] private int _index = index;
-    [ObservableProperty] private PermissionType _permissionType = permissionType;
-    public List<StationType>? StationFilter { get; set; } = stationFilter;
 }

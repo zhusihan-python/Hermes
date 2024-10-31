@@ -28,8 +28,7 @@ public partial class LoginViewModel : PageBase
         UserRepositoryProxy userRepositoryProxy) :
         base(
             Resources.txt_account,
-            MaterialIconKind.Account,
-            PermissionType.FreeAccess)
+            MaterialIconKind.Account)
     {
         this._session = session;
         this._userRepositoryProxy = userRepositoryProxy;
@@ -87,14 +86,6 @@ public partial class LoginViewModel : PageBase
     private void Logout()
     {
         this._session.Logout();
-    }
-
-    partial void OnIsLoggedInChanged(bool value)
-    {
-        if (value)
-        {
-            LoginDebugUser();
-        }
     }
 
     private void LoginDebugUser()

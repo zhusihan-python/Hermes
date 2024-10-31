@@ -1,9 +1,8 @@
-﻿using Avalonia.Styling;
+﻿using System;
+using Avalonia.Styling;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using DynamicData;
-using Hermes.Cipher.Types;
 using Hermes.Common.Messages;
 using Hermes.Features.Login;
 using Hermes.Language;
@@ -17,6 +16,7 @@ using SukiUI;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 
 namespace Hermes.Features
 {
@@ -37,17 +37,21 @@ namespace Hermes.Features
         [ObservableProperty] private bool _canExit;
         [ObservableProperty] private bool _isLoggedIn;
 
+        private readonly PagePrototype _pagePrototype;
         private readonly Session _session;
         private readonly Settings _settings;
         private readonly SukiTheme _theme;
 
         public MainWindowViewModel(
+            PagePrototype pagePrototype,
             IEnumerable<PageBase> pages,
             ISukiDialogManager dialogManager,
             ISukiToastManager toastManager,
             Session session,
             Settings settings)
         {
+            Console.WriteLine("MainWindowViewModel Created " + Thread.CurrentThread.ManagedThreadId);
+            this._pagePrototype = pagePrototype;
             this._settings = settings;
             this._session = session;
             this._theme = SukiTheme.GetInstance();
@@ -56,7 +60,6 @@ namespace Hermes.Features
             this.TitleBarVisible = false;
             this.ToastManager = toastManager;
             this.DialogManager = dialogManager;
-            this.ConfigurePages();
             this.UpdateBaseTheme();
             this.UpdateTitle(this._session.LoggedUser.Value);
             this.IsActive = true;
@@ -71,7 +74,7 @@ namespace Hermes.Features
             this._session
                 .LoggedUser
                 .Do(this.UpdateTitle)
-                .Do(_ => this.ConfigurePages())
+                .Do(this.ConfigurePages)
                 .Subscribe()
                 .AddTo(ref Disposables);
         }
@@ -89,25 +92,34 @@ namespace Hermes.Features
             }
         }
 
-        private void ConfigurePages()
+        private void ConfigurePages(User user)
         {
-            var visiblePages = Pages
-                .Where(x =>
-                    this._session.UserDepartment == DepartmentType.Admin ||
-                    x.PermissionType == PermissionType.FreeAccess ||
-                    this._session.HasUserPermission(x.PermissionType))
-                .Where(x =>
-                    this._session.UserDepartment == DepartmentType.Admin ||
-                    x.StationFilter == null ||
-                    x.StationFilter.Contains(_settings.Station))
-                .OrderBy(x => x.Index)
-                .ThenBy(x => x.DisplayName)
-                .ToList();
-            this.ShownPages.Clear();
-            this.ShownPages.AddRange(visiblePages);
-            this.AreSettingsVisible = this._session.HasUserPermission(PermissionType.OpenSettingsConfig);
-            this.CanExit = this._session.CanUserExit();
-            this.IsLoggedIn = this._session.IsLoggedIn;
+            var visiblePages = this._pagePrototype.GetPages(user);
+            this.UpdatePages(visiblePages);
+            this.AreSettingsVisible = user.HasPermission(PermissionType.OpenSettingsConfig);
+            this.CanExit = user.HasPermission(PermissionType.Exit);
+            this.IsLoggedIn = !user.IsNull;
+        }
+
+        private void UpdatePages(List<PageBase> visiblePages)
+        {
+            this.ClearPages(visiblePages);
+            visiblePages
+                .Except(this.ShownPages)
+                .ToList()
+                .ForEach(x => this.ShownPages.Add(x));
+        }
+
+        private void ClearPages(List<PageBase> visiblePages)
+        {
+            this.ShownPages
+                .Except(visiblePages)
+                .ToList()
+                .ForEach(x =>
+                {
+                    x.IsActive = false;
+                    this.ShownPages.Remove(x);
+                });
         }
 
         [RelayCommand]

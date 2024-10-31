@@ -96,12 +96,14 @@ public partial class App
         services.AddSingleton<ISukiDialogManager, SukiDialogManager>();
         services.AddSingleton<ISukiToastManager, SukiToastManager>();
         services.AddSingleton<PageNavigationService>();
+        services.AddSingleton<PagePrototype>();
         services.AddSingleton<ViewLocator>();
         services.AddTransient<FileService>();
         services.AddTransient<FileSystemWatcherRx>();
         services.AddTransient<FolderWatcherService>();
         services.AddTransient<GkgUutSenderService>();
         services.AddTransient<ISfcService, SharedFolderSfcService>();
+        services.AddTransient<ServiceProvider>();
         services.AddTransient<SfcSimulatorService>();
         services.AddTransient<StopService>();
         services.AddTransient<TriUutSenderService>();
@@ -122,25 +124,24 @@ public partial class App
 
     private static void ConfigureFeatures(ServiceCollection services)
     {
-        services.AddSingleton<MainWindowViewModel>();
-        services.AddSingleton<SfcSimulatorViewModel>();
-        services.AddTransient<DummyViewModel>();
-        services.AddTransient<LoginViewModel>();
-        services.AddTransient<LoginViewModel>();
-        services.AddTransient<LogsView>();
-        services.AddTransient<PackageScannerViewModel>();
-        services.AddTransient<PackageTrackingViewModel>();
-        services.AddTransient<ScannerViewModel>();
-        services.AddTransient<SettingsView>();
-        services.AddTransient<SettingsViewModel>();
-        services.AddTransient<SettingsViewModel>();
-        services.AddTransient<StopView>();
-        services.AddTransient<StopViewModel>();
-        services.AddTransient<SuccessView>();
-        services.AddTransient<SuccessViewModel>();
-        services.AddTransient<TokenView>();
-        services.AddTransient<TokenViewModel>();
-        services.AddTransient<UnitUnderTestLogView>();
-        services.AddTransient<UnitUnderTestLogViewModel>();
+        Type[] singletonTypes =
+            [typeof(MainWindowViewModel), typeof(UutProcessorViewModel), typeof(SfcSimulatorViewModel)];
+        foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+        {
+            var viewModelTypes = assembly.GetTypes()
+                .Where(t => t.Name.EndsWith("ViewModel") && t is { IsClass: true, IsAbstract: false });
+
+            foreach (var viewModelType in viewModelTypes)
+            {
+                if (singletonTypes.Contains(viewModelType))
+                {
+                    services.AddSingleton(viewModelType);
+                }
+                else
+                {
+                    services.AddScoped(viewModelType);
+                }
+            }
+        }
     }
 }

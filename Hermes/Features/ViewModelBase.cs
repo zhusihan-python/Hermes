@@ -11,7 +11,7 @@ namespace Hermes.Features;
 
 public abstract class ViewModelBase : ObservableRecipient
 {
-    protected bool SetupReactiveExtensionsOnActivation { get; set; } = true;
+    protected bool SetupReactiveExtensionsOnActivation { get; init; } = true;
     protected DisposableBag Disposables;
 
     protected override void OnActivated()

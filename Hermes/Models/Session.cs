@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Hermes.Models;
 
-public partial class 
+public partial class
     Session : ObservableObject
 {
     public ReactiveProperty<StateType> UutProcessorState { get; } = new(StateType.Stopped);
@@ -16,7 +16,6 @@ public partial class
     [ObservableProperty] private string _path = string.Empty;
     public Stop Stop { get; set; } = Stop.Null;
 
-    public bool IsLoggedIn => !LoggedUser.Value.IsNull;
     public DepartmentType UserDepartment => LoggedUser.Value.Department;
     public UserLevel UserLevel => LoggedUser.Value.Level;
 
@@ -25,19 +24,9 @@ public partial class
         Stop = Stop.Null;
     }
 
-    public bool HasUserPermission(PermissionType permissionType)
-    {
-        return this.LoggedUser.Value.HasPermission(permissionType);
-    }
-
     public void UpdateUser(User user)
     {
         this.LoggedUser.Value = user;
-    }
-
-    public bool CanUserExit()
-    {
-        return this.HasUserPermission(PermissionType.Exit);
     }
 
     public void Logout()
