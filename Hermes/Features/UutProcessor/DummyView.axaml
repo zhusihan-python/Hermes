@@ -10,7 +10,7 @@
              x:Class="Hermes.Features.UutProcessor.DummyView"
              x:DataType="uutProcessor:DummyViewModel">
 
-    <controls:GlassCard Margin="40"
+    <controls:GlassCard Margin="{StaticResource DefaultMargin}"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center">
 

@@ -11,7 +11,8 @@
             Width="{Binding #Self.Width}"
             Height="{Binding #Self.Height}"
             Padding="0"
-            Command="{Binding #Self.Command}">
+            Command="{Binding #Self.Command}"
+            CommandParameter="{Binding #Self.CommandParameter}">
 
         <avalonia:MaterialIcon
             Kind="{Binding #Self.Kind}"

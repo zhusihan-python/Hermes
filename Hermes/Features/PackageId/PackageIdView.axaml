@@ -2,13 +2,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:theme="clr-namespace:SukiUI.Theme;assembly=SukiUI"
-             xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
-             xmlns:controls="clr-namespace:SukiUI.Controls;assembly=SukiUI"
-             xmlns:local="clr-namespace:Hermes.Features.PackageId"
-             xmlns:lang="clr-namespace:Hermes.Language;assembly=Hermes.Language"
              xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
-             xmlns:converters="clr-namespace:Hermes.Common.Converters"
+             xmlns:controls="clr-namespace:Hermes.Features.Controls"
+             xmlns:lang="clr-namespace:Hermes.Language;assembly=Hermes.Language"
+             xmlns:local="clr-namespace:Hermes.Features.PackageId"
+             xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+             xmlns:sukiUi="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+             xmlns:theme="clr-namespace:SukiUI.Theme;assembly=SukiUI"
              mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="450"
              x:Class="Hermes.Features.PackageId.PackageIdView"
              x:DataType="local:PackageIdViewModel">
@@ -20,9 +20,9 @@
                    Orientation="Horizontal">
 
             <!-- Work order pkgid search -->
-            <controls:GlassCard Margin="{StaticResource DefaultMargin}"
-                                Width="550"
-                                Height="500">
+            <sukiUi:GlassCard Margin="{StaticResource DefaultMargin}"
+                              Width="550"
+                              Height="500">
 
                 <suki:BusyArea BusyText="{x:Static lang:Resources.txt_logging_in}"
                                IsBusy="{Binding IsWorkOrderLoading}">
@@ -33,19 +33,14 @@
                                     Orientation="Horizontal"
                                     Margin="0 0 0 20"
                                     HorizontalAlignment="Center">
-                            <avalonia:MaterialIcon Kind="Search"
-                                                   Margin="0 0 0 3"
-                                                   VerticalAlignment="Bottom" />
-                            <Label
-                                Margin="0"
-                                Content="Search packages linked to the work order"
-                                VerticalAlignment="Bottom" />
+                            <Label Margin="0"
+                                   Content="Search packages linked to the work order"
+                                   VerticalAlignment="Bottom" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal"
                                     DockPanel.Dock="Top"
-                                    HorizontalAlignment="Center"
-                                    Spacing="{StaticResource DefaultSpacing}">
+                                    HorizontalAlignment="Center">
 
                             <TextBlock VerticalAlignment="Center"
                                        Text="Work order" />
@@ -58,15 +53,16 @@
                                 </TextBox.KeyBindings>
                             </TextBox>
 
-                            <Button VerticalAlignment="Center"
-                                    Content="Search"
-                                    Command="{Binding SearchByWorkOrderCommand}"
-                                    CommandParameter="{Binding #WorkOrderTextBox.Text}" />
+                            <controls:ButtonIcon VerticalAlignment="Bottom"
+                                                 Margin="0 0 0 5"
+                                                 Command="{Binding SearchByWorkOrderCommand}"
+                                                 CommandParameter="{Binding #WorkOrderTextBox.Text}"
+                                                 Kind="Search" />
 
-                            <Button VerticalAlignment="Center"
-                                    Command="{Binding WorkOrderReloadCommand }">
-                                <avalonia:MaterialIcon Kind="Reload" />
-                            </Button>
+                            <controls:ButtonIcon VerticalAlignment="Bottom"
+                                                 Margin="5 0 0 5"
+                                                 Command="{Binding WorkOrderReloadCommand}"
+                                                 Kind="Reload" />
                         </StackPanel>
 
                         <WrapPanel Orientation="Horizontal"
@@ -102,12 +98,12 @@
                         </DataGrid>
                     </DockPanel>
                 </suki:BusyArea>
-            </controls:GlassCard>
+            </sukiUi:GlassCard>
 
             <!-- Pkgid search -->
-            <controls:GlassCard Margin="{StaticResource DefaultMargin}"
-                                Width="550"
-                                Height="500">
+            <sukiUi:GlassCard Margin="{StaticResource DefaultMargin}"
+                              Width="550"
+                              Height="500">
 
                 <suki:BusyArea BusyText="{x:Static lang:Resources.txt_logging_in}"
                                IsBusy="{Binding IsLoadingPkgid}">
@@ -117,19 +113,14 @@
                                     Orientation="Horizontal"
                                     Margin="0 0 0 20"
                                     HorizontalAlignment="Center">
-                            <avalonia:MaterialIcon Kind="Search"
-                                                   Margin="0 0 0 3"
-                                                   VerticalAlignment="Bottom" />
-                            <Label
-                                Margin="0"
-                                Content="Search package id"
-                                VerticalAlignment="Bottom" />
+                            <Label Margin="0"
+                                   Content="Search package id"
+                                   VerticalAlignment="Bottom" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal"
                                     HorizontalAlignment="Center"
-                                    DockPanel.Dock="Top"
-                                    Spacing="{StaticResource DefaultSpacing}">
+                                    DockPanel.Dock="Top">
 
                             <TextBlock VerticalAlignment="Center"
                                        Text="PkgId" />
@@ -142,15 +133,16 @@
                                 </TextBox.KeyBindings>
                             </TextBox>
 
-                            <Button VerticalAlignment="Center"
-                                    Content="Search"
-                                    Command="{Binding SearchByPkgidCommand }"
-                                    CommandParameter="{Binding #PkgidTextBox.Text }" />
+                            <controls:ButtonIcon VerticalAlignment="Bottom"
+                                                 Margin="0 0 0 5"
+                                                 Command="{Binding SearchByPkgidCommand}"
+                                                 CommandParameter="{Binding #PkgidTextBox.Text}"
+                                                 Kind="Search" />
 
-                            <Button VerticalAlignment="Center"
-                                    Command="{Binding PkgidReloadCommand }">
-                                <avalonia:MaterialIcon Kind="Reload" />
-                            </Button>
+                            <controls:ButtonIcon VerticalAlignment="Bottom"
+                                                 Margin="5 0 0 5"
+                                                 Command="{Binding PkgidReloadCommand}"
+                                                 Kind="Reload" />
                         </StackPanel>
 
                         <Grid DockPanel.Dock="Top"
@@ -227,7 +219,7 @@
                         </DataGrid>
                     </DockPanel>
                 </suki:BusyArea>
-            </controls:GlassCard>
+            </sukiUi:GlassCard>
         </WrapPanel>
     </ScrollViewer>
 </UserControl>

@@ -7,21 +7,32 @@
              xmlns:controls="clr-namespace:SukiUI.Controls;assembly=SukiUI"
              xmlns:converters="clr-namespace:Hermes.Common.Converters"
              xmlns:lang="clr-namespace:Hermes.Language;assembly=Hermes.Language"
-             xmlns:suki="https://github.com/kikipoulet/SukiUI"
              mc:Ignorable="d"
-             d:DesignWidth="800"
+             d:DesignWidth="1250"
              d:DesignHeight="450"
              x:Class="Hermes.Features.UutProcessor.UutProcessorView"
              x:DataType="local:UutProcessorViewModel">
 
-    <ScrollViewer HorizontalAlignment="Center"
-                  VerticalScrollBarVisibility="Auto">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
 
-        <WrapPanel Margin="{StaticResource DefaultMargin}"
-                   suki:WrapPanelExtensions.AnimatedScroll="True"
-                   Orientation="Horizontal">
+        <Grid Margin="{StaticResource DefaultMargin}"
+              RowDefinitions="Auto,Auto"
+              ColumnDefinitions="Auto,Auto">
 
-            <controls:GlassCard Margin="40"
+            <!-- Scanner -->
+            <local:ScannerView Grid.Row="0"
+                               Grid.Column="1"
+                               DataContext="{Binding ScannerViewModel}" />
+
+            <!-- Dummy view-->
+            <local:DummyView Grid.Row="0"
+                             Grid.Column="0"
+                             DataContext="{Binding DummyViewModel}" />
+            
+             <!-- Uut processor -->
+            <controls:GlassCard Grid.Row="1"
+                                Grid.Column="0"
+                                Margin="{StaticResource DefaultMargin}"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center">
 
@@ -62,7 +73,10 @@
                                 <Run Text="{Binding CurrentUnitUnderTest.Value.SerialNumber}" />
                             </TextBlock>
 
-                            <TextBlock Classes="Caption">
+                            <TextBlock Classes="Caption"
+                                       HorizontalAlignment="Left"
+                                       MaxWidth="250"
+                                       TextWrapping="Wrap">
                                 <Run Text="{x:Static lang:Resources.txt_input}" />
                                 <Run Text=":" />
                                 <Run Text="{Binding Path}" />
@@ -84,10 +98,6 @@
                     </StackPanel>
                 </StackPanel>
             </controls:GlassCard>
-
-            <local:ScannerView DataContext="{Binding ScannerViewModel}" />
-
-            <local:DummyView DataContext="{Binding DummyViewModel}" />
-        </WrapPanel>
+        </Grid>
     </ScrollViewer>
 </UserControl>

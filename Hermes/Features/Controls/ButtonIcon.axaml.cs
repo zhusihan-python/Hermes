@@ -16,6 +16,16 @@ public partial class ButtonIcon : UserControl
         AvaloniaProperty.Register<ButtonIcon, MaterialIconKind>(
             nameof(Kind));
 
+    public static readonly StyledProperty<object?> CommandParameterProperty =
+        AvaloniaProperty.Register<ButtonIcon, object?>(
+            nameof(CommandParameter));
+
+    public object? CommandParameter
+    {
+        get => GetValue(CommandParameterProperty);
+        set => SetValue(CommandParameterProperty, value);
+    }
+
     public static readonly StyledProperty<double> IconSizeProperty = AvaloniaProperty.Register<ButtonIcon, double>(
         nameof(IconSize), defaultValue: 20);
 

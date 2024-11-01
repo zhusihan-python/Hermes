@@ -11,7 +11,7 @@
              x:Class="Hermes.Features.UutProcessor.ScannerView"
              x:DataType="uutProcessor:ScannerViewModel">
 
-    <controls:GlassCard Margin="40"
+    <controls:GlassCard Margin="{StaticResource DefaultMargin}"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center">
 

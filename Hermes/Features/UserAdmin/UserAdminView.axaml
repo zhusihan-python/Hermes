@@ -8,6 +8,7 @@
              xmlns:vm="clr-namespace:Hermes.Features.UserAdmin"
              xmlns:lang="clr-namespace:Hermes.Language;assembly=Hermes.Language"
              xmlns:suki="https://github.com/kikipoulet/SukiUI"
+             xmlns:controls="clr-namespace:Hermes.Features.Controls"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Hermes.Features.UserAdmin.UserAdminView"
              x:DataType="vm:UserAdminViewModel">
@@ -86,8 +87,7 @@
 
         <StackPanel Grid.Row="0"
                     Grid.Column="1"
-                    Orientation="Horizontal"
-                    Spacing="10">
+                    Orientation="Horizontal">
 
             <TextBlock VerticalAlignment="Center">
                 <Run Text="{x:Static lang:Resources.txt_employee}" />
@@ -102,11 +102,10 @@
                 </TextBox.KeyBindings>
             </TextBox>
 
-            <Button HorizontalAlignment="Left"
-                    Height="35"
-                    Classes="Flat Accent"
-                    Content="{x:Static lang:Resources.txt_search}"
-                    Command="{Binding FindUsersCommand}" />
+            <controls:ButtonIcon VerticalAlignment="Bottom"
+                                 Margin="0 0 0 5"
+                                 Command="{Binding FindUsersCommand}"
+                                 Kind="Search" />
         </StackPanel>
 
         <suki:BusyArea BusyText="{x:Static lang:Resources.txt_loading}"
