@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using Hermes.Features.AdminTools;
 
 namespace Hermes.Features;
 
@@ -44,7 +45,10 @@ public class PagePrototype(Settings settings)
 
         new(typeof(UutProcessorViewModel),
             PermissionType.OpenUutProcessor,
-            AllExcept([StationType.Labeling]))
+            AllExcept([StationType.Labeling])),
+
+        new(typeof(AdminToolsViewModel),
+            PermissionType.OpenAdminTools)
     ];
 
     public IServiceProvider? Provider { get; set; }

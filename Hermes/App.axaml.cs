@@ -17,7 +17,7 @@ namespace Hermes
 {
     public partial class App : Application
     {
-        public static ServiceProvider _provider;
+        private readonly ServiceProvider _provider;
         private readonly ILogger? _logger;
         private WindowService? _windowService;
         private Window? _mainWindow;

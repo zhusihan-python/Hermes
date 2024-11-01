@@ -21,8 +21,7 @@
         </Style>
     </UserControl.Styles>
 
-    <ScrollViewer HorizontalAlignment="Center"
-                  VerticalScrollBarVisibility="Auto">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
 
         <WrapPanel Margin="{StaticResource DefaultMargin}"
                    theme:WrapPanelExtensions.AnimatedScroll="True"

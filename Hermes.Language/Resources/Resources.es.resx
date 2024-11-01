@@ -324,7 +324,7 @@
         <value>Token no válido</value>
     </data>
     <data name="enum_aoi" xml:space="preserve">
-        <value>AOI </value>
+        <value>Ingeniería de aoi</value>
     </data>
     <data name="enum_ee" xml:space="preserve">
         <value>Ingeniería de equipos</value>
@@ -649,5 +649,101 @@
     </data>
     <data name="txt_open_hermes_app" xml:space="preserve">
         <value>Abrir app Hermes</value>
+    </data>
+    <data name="txt_add" xml:space="preserve">
+        <value>Agregar</value>
+    </data>
+    <data name="txt_delete" xml:space="preserve">
+        <value>Borrar</value>
+    </data>
+    <data name="txt_permission" xml:space="preserve">
+        <value>Permiso</value>
+    </data>
+    <data name="txt_admin_tools" xml:space="preserve">
+        <value>Herramientas admin</value>
+    </data>
+    <data name="msg_feature_permission_added" xml:space="preserve">
+        <value>Permiso de característica agregado correctamente</value>
+    </data>
+    <data name="msg_feature_permission_deleted" xml:space="preserve">
+        <value>Permiso de característica borrado correctamente.</value>
+    </data>
+    <data name="enum_automation" xml:space="preserve">
+        <value>Automatización</value>
+    </data>
+    <data name="enum_kitting" xml:space="preserve">
+        <value>Kitting </value>
+    </data>
+    <data name="enum_process" xml:space="preserve">
+        <value>Ingeniería de procesos</value>
+    </data>
+    <data name="enum_admin" xml:space="preserve">
+        <value>Administrador</value>
+    </data>
+    <data name="enum_engineer" xml:space="preserve">
+        <value>Ingeniero</value>
+    </data>
+    <data name="enum_operator" xml:space="preserve">
+        <value>Operador</value>
+    </data>
+    <data name="enum_operatorleader" xml:space="preserve">
+        <value>Operador líder</value>
+    </data>
+    <data name="enum_supervisor" xml:space="preserve">
+        <value>Supervisor </value>
+    </data>
+    <data name="enum_technician" xml:space="preserve">
+        <value>Técnico</value>
+    </data>
+    <data name="enum_engineerleader" xml:space="preserve">
+        <value>Ingeniero líder</value>
+    </data>
+    <data name="enum_freeaccess" xml:space="preserve">
+        <value>Acceso libre</value>
+    </data>
+    <data name="enum_exit" xml:space="preserve">
+        <value>Salir</value>
+    </data>
+    <data name="enum_openbender" xml:space="preserve">
+        <value>Abrir bender</value>
+    </data>
+    <data name="enum_opensettingsconfig" xml:space="preserve">
+        <value>Abrir configuración</value>
+    </data>
+    <data name="enum_opensfcsimulator" xml:space="preserve">
+        <value>Abrir simulador de sfc</value>
+    </data>
+    <data name="enum_openuutprocessor" xml:space="preserve">
+        <value>Abrir procesador de unidades</value>
+    </data>
+    <data name="enum_openuseradmin" xml:space="preserve">
+        <value>Abrir administrador de usuarios</value>
+    </data>
+    <data name="enum_restorespistop" xml:space="preserve">
+        <value>Cerrar ventana de paro en spi</value>
+    </data>
+    <data name="enum_restorescreenprinterstop" xml:space="preserve">
+        <value>Cerrar ventana de paro en impresora de pasta</value>
+    </data>
+    <data name="enum_restorelabelingmachinestop" xml:space="preserve">
+        <value>Cerrar ventana de paro en etiquetadora</value>
+    </data>
+    <data name="enum_restoreaoistop" xml:space="preserve">
+        <value>Cerrar ventana de paro en aoi</value>
+    </data>
+    <data name="enum_restoreaxistop" xml:space="preserve">
+        <value>Cerrar ventana de paro en axi</value>
+    </data>
+    <data name="enum_openlogs" xml:space="preserve">
+        <value>Abrir logs</value>
+    </data>
+    <data name="enum_openadmintools" xml:space="preserve">
+        <value>Abrir herramientas admin</value>
+    </data>
+    <data name="txt_minimum_level" xml:space="preserve">
+        <value>Nivel mínimo</value>
+    </data>
+    <data name="txt_features_permissions" xml:space="preserve">
+        <value>Permissions de características</value>
     </data>
 </root>

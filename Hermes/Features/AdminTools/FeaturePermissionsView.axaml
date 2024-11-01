@@ -1,0 +1,110 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:adminTools="clr-namespace:Hermes.Features.AdminTools"
+             xmlns:controls="clr-namespace:Hermes.Features.Controls"
+             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+             xmlns:lang="clr-namespace:Hermes.Language;assembly=Hermes.Language"
+             xmlns:sukiUi="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+             xmlns:converters="clr-namespace:Hermes.Common.Converters"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Name="Self"
+             x:DataType="adminTools:FeaturePermissionsViewModel"
+             x:Class="Hermes.Features.AdminTools.FeaturePermissionsView">
+
+    <sukiUi:GlassCard Margin="10"
+                      HorizontalAlignment="Stretch"
+                      Height="580"
+                      MaxHeight="500"
+                      MinWidth="500"
+                      MaxWidth="900">
+
+        <sukiUi:BusyArea BusyText="{x:Static lang:Resources.txt_logging_in}"
+                         IsBusy="{Binding IsLoading}">
+
+            <Grid RowDefinitions="Auto,Auto, *"
+                  ColumnDefinitions="*, Auto">
+
+                <TextBlock Grid.Row="0"
+                           Grid.Column="0"
+                           Grid.ColumnSpan="2"
+                           Margin="{StaticResource DefaultMargin}"
+                           Classes="h4"
+                           Foreground="{DynamicResource SukiLowText}"
+                           HorizontalAlignment="Center"
+                           Text="{x:Static lang:Resources.txt_features_permissions}" />
+
+                <!-- Filters -->
+                <StackPanel Grid.Row="1"
+                            Grid.Column="0"
+                            Orientation="Horizontal">
+
+                    <controls:ComboBoxEnum Width="200"
+                                           Title="{x:Static lang:Resources.txt_department}"
+                                           ItemsSource="{Binding DepartmentOptions}"
+                                           SelectedItem="{Binding SelectedDepartment, Mode=TwoWay}" />
+
+                    <controls:ButtonIcon VerticalAlignment="Bottom"
+                                         Margin="0 0 0 5"
+                                         Command="{Binding SearchCommand}"
+                                         Kind="Search" />
+                </StackPanel>
+
+                <!-- Actions -->
+                <StackPanel Grid.Row="1"
+                            Grid.Column="1"
+                            Margin="20 0 0 5"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Bottom"
+                            HorizontalAlignment="Right"
+                            Spacing="5">
+
+                    <controls:ButtonIcon Kind="Add"
+                                         Command="{Binding AddCommand}"
+                                         ToolTip.Tip="{x:Static lang:Resources.txt_add}" />
+
+                    <controls:ButtonIcon Kind="Delete"
+                                         Command="{Binding DeleteCommand}"
+                                         ToolTip.Tip="{x:Static lang:Resources.txt_delete}" />
+                </StackPanel>
+
+                <!-- Grid -->
+                <ScrollViewer Grid.Row="2"
+                              Grid.Column="0"
+                              Grid.ColumnSpan="2"
+                              HorizontalScrollBarVisibility="Auto"
+                              VerticalScrollBarVisibility="Auto">
+
+                    <DataGrid AutoGenerateColumns="False"
+                              Name="DataGridLogs"
+                              ItemsSource="{Binding FeaturePermissions}"
+                              IsReadOnly="True"
+                              HeadersVisibility="Column"
+                              CanUserResizeColumns="True">
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="{x:Static lang:Resources.txt_department}"
+                                                Binding="{Binding Department, Converter={x:Static converters:EnumToTranslatedTextConverters.Generic}}" />
+
+                            <DataGridTextColumn Header="{x:Static lang:Resources.txt_permission}"
+                                                Binding="{Binding Permission, Converter={x:Static converters:EnumToTranslatedTextConverters.Generic}}" />
+
+                            <DataGridTextColumn Header="{x:Static lang:Resources.txt_minimum_level}"
+                                                Binding="{Binding Level, Converter={x:Static converters:EnumToTranslatedTextConverters.Generic}}" />
+                        </DataGrid.Columns>
+
+                        <i:Interaction.Behaviors>
+                            <ia:EventTriggerBehavior EventName="SelectionChanged" SourceObject="DataGridLogs">
+                                <ia:InvokeCommandAction
+                                    Command="{Binding FeaturePermissionSelectedCommand}"
+                                    CommandParameter="{Binding #DataGridLogs.SelectedItem}" />
+                            </ia:EventTriggerBehavior>
+                        </i:Interaction.Behaviors>
+                    </DataGrid>
+                </ScrollViewer>
+            </Grid>
+        </sukiUi:BusyArea>
+    </sukiUi:GlassCard>
+</UserControl>

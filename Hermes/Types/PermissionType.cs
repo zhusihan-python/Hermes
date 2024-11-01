@@ -15,6 +15,7 @@ public enum PermissionType
     RestoreAoiStop,
     RestoreAxiStop,
     OpenLogs,
+    OpenAdminTools,
     Admin = 99
 }
 

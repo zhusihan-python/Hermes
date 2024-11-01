@@ -657,4 +657,100 @@
     <data name="txt_open_hermes_app" xml:space="preserve">
         <value>Open Hermes app</value>
     </data>
+    <data name="txt_add" xml:space="preserve">
+        <value>Add</value>
+    </data>
+    <data name="txt_delete" xml:space="preserve">
+        <value>Delete</value>
+    </data>
+    <data name="txt_permission" xml:space="preserve">
+        <value>Permission</value>
+    </data>
+    <data name="txt_admin_tools" xml:space="preserve">
+        <value>Amin tools</value>
+    </data>
+    <data name="msg_feature_permission_added" xml:space="preserve">
+        <value>Feature permission successfully added</value>
+    </data>
+    <data name="msg_feature_permission_deleted" xml:space="preserve">
+        <value>Feature permission successfully deleted</value>
+    </data>
+    <data name="enum_automation" xml:space="preserve">
+        <value>Automation</value>
+    </data>
+    <data name="enum_kitting" xml:space="preserve">
+        <value>Kitting</value>
+    </data>
+    <data name="enum_process" xml:space="preserve">
+        <value>Process engineering</value>
+    </data>
+    <data name="enum_admin" xml:space="preserve">
+        <value>Admin</value>
+    </data>
+    <data name="enum_operator" xml:space="preserve">
+        <value>Operator</value>
+    </data>
+    <data name="enum_operatorleader" xml:space="preserve">
+        <value>Operator leader</value>
+    </data>
+    <data name="enum_supervisor" xml:space="preserve">
+        <value>Supervisor</value>
+    </data>
+    <data name="enum_technician" xml:space="preserve">
+        <value>Technician</value>
+    </data>
+    <data name="enum_engineer" xml:space="preserve">
+        <value>Engineer</value>
+    </data>
+    <data name="enum_engineerleader" xml:space="preserve">
+        <value>Engineer Leader</value>
+    </data>
+    <data name="enum_freeaccess" xml:space="preserve">
+        <value>Free access</value>
+    </data>
+    <data name="enum_exit" xml:space="preserve">
+        <value>Exit</value>
+    </data>
+    <data name="enum_openbender" xml:space="preserve">
+        <value>Open bender</value>
+    </data>
+    <data name="enum_opensettingsconfig" xml:space="preserve">
+        <value>Open settings config</value>
+    </data>
+    <data name="enum_opensfcsimulator" xml:space="preserve">
+        <value>Open sfc simulator</value>
+    </data>
+    <data name="enum_openuutprocessor" xml:space="preserve">
+        <value>Open uut processor</value>
+    </data>
+    <data name="enum_openuseradmin" xml:space="preserve">
+        <value>Open user admin</value>
+    </data>
+    <data name="enum_restorespistop" xml:space="preserve">
+        <value>Restore spi stop</value>
+    </data>
+    <data name="enum_restorescreenprinterstop" xml:space="preserve">
+        <value>Restore screen printer stop</value>
+    </data>
+    <data name="enum_restorelabelingmachinestop" xml:space="preserve">
+        <value>Restore labeling machine stop</value>
+    </data>
+    <data name="enum_restoreaoistop" xml:space="preserve">
+        <value>Restore aoi stop</value>
+    </data>
+    <data name="enum_restoreaxistop" xml:space="preserve">
+        <value>Restore axi stop</value>
+    </data>
+    <data name="enum_openlogs" xml:space="preserve">
+        <value>Open logs</value>
+    </data>
+    <data name="enum_openadmintools" xml:space="preserve">
+        <value>Open admin tools</value>
+    </data>
+    <data name="txt_minimum_level" xml:space="preserve">
+        <value>Minimum level</value>
+    </data>
+    <data name="txt_features_permissions" xml:space="preserve">
+        <value>Feature Permissions</value>
+    </data>
 </root>

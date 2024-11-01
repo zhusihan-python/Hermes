@@ -32,9 +32,6 @@ public partial class LoginViewModel : PageBase
     {
         this._session = session;
         this._userRepositoryProxy = userRepositoryProxy;
-#if DEBUG
-        LoginDebugUser();
-#endif
         this.IsActive = true;
     }
 

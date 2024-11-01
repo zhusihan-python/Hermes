@@ -528,6 +528,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Admin.
+        /// </summary>
+        public static string enum_admin {
+            get {
+                return ResourceManager.GetString("enum_admin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Administrator.
         /// </summary>
         public static string enum_administrator {
@@ -542,6 +551,15 @@ namespace Hermes.Language {
         public static string enum_aoi {
             get {
                 return ResourceManager.GetString("enum_aoi", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automation.
+        /// </summary>
+        public static string enum_automation {
+            get {
+                return ResourceManager.GetString("enum_automation", resourceCulture);
             }
         }
         
@@ -564,11 +582,47 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Engineer.
+        /// </summary>
+        public static string enum_engineer {
+            get {
+                return ResourceManager.GetString("enum_engineer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Engineer Leader.
+        /// </summary>
+        public static string enum_engineerleader {
+            get {
+                return ResourceManager.GetString("enum_engineerleader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exit.
+        /// </summary>
+        public static string enum_exit {
+            get {
+                return ResourceManager.GetString("enum_exit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed.
         /// </summary>
         public static string enum_failed {
             get {
                 return ResourceManager.GetString("enum_failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Free access.
+        /// </summary>
+        public static string enum_freeaccess {
+            get {
+                return ResourceManager.GetString("enum_freeaccess", resourceCulture);
             }
         }
         
@@ -587,6 +641,15 @@ namespace Hermes.Language {
         public static string enum_inuse {
             get {
                 return ResourceManager.GetString("enum_inuse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kitting.
+        /// </summary>
+        public static string enum_kitting {
+            get {
+                return ResourceManager.GetString("enum_kitting", resourceCulture);
             }
         }
         
@@ -717,11 +780,101 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open admin tools.
+        /// </summary>
+        public static string enum_openadmintools {
+            get {
+                return ResourceManager.GetString("enum_openadmintools", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open bender.
+        /// </summary>
+        public static string enum_openbender {
+            get {
+                return ResourceManager.GetString("enum_openbender", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open logs.
+        /// </summary>
+        public static string enum_openlogs {
+            get {
+                return ResourceManager.GetString("enum_openlogs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open settings config.
+        /// </summary>
+        public static string enum_opensettingsconfig {
+            get {
+                return ResourceManager.GetString("enum_opensettingsconfig", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open sfc simulator.
+        /// </summary>
+        public static string enum_opensfcsimulator {
+            get {
+                return ResourceManager.GetString("enum_opensfcsimulator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open user admin.
+        /// </summary>
+        public static string enum_openuseradmin {
+            get {
+                return ResourceManager.GetString("enum_openuseradmin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open uut processor.
+        /// </summary>
+        public static string enum_openuutprocessor {
+            get {
+                return ResourceManager.GetString("enum_openuutprocessor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Operator.
+        /// </summary>
+        public static string enum_operator {
+            get {
+                return ResourceManager.GetString("enum_operator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Operator leader.
+        /// </summary>
+        public static string enum_operatorleader {
+            get {
+                return ResourceManager.GetString("enum_operatorleader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Passed.
         /// </summary>
         public static string enum_passed {
             get {
                 return ResourceManager.GetString("enum_passed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Process engineering.
+        /// </summary>
+        public static string enum_process {
+            get {
+                return ResourceManager.GetString("enum_process", resourceCulture);
             }
         }
         
@@ -740,6 +893,51 @@ namespace Hermes.Language {
         public static string enum_qa {
             get {
                 return ResourceManager.GetString("enum_qa", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restore aoi stop.
+        /// </summary>
+        public static string enum_restoreaoistop {
+            get {
+                return ResourceManager.GetString("enum_restoreaoistop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restore axi stop.
+        /// </summary>
+        public static string enum_restoreaxistop {
+            get {
+                return ResourceManager.GetString("enum_restoreaxistop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restore labeling machine stop.
+        /// </summary>
+        public static string enum_restorelabelingmachinestop {
+            get {
+                return ResourceManager.GetString("enum_restorelabelingmachinestop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restore screen printer stop.
+        /// </summary>
+        public static string enum_restorescreenprinterstop {
+            get {
+                return ResourceManager.GetString("enum_restorescreenprinterstop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restore spi stop.
+        /// </summary>
+        public static string enum_restorespistop {
+            get {
+                return ResourceManager.GetString("enum_restorespistop", resourceCulture);
             }
         }
         
@@ -767,6 +965,24 @@ namespace Hermes.Language {
         public static string enum_stopped {
             get {
                 return ResourceManager.GetString("enum_stopped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Supervisor.
+        /// </summary>
+        public static string enum_supervisor {
+            get {
+                return ResourceManager.GetString("enum_supervisor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Technician.
+        /// </summary>
+        public static string enum_technician {
+            get {
+                return ResourceManager.GetString("enum_technician", resourceCulture);
             }
         }
         
@@ -839,6 +1055,24 @@ namespace Hermes.Language {
         public static string msg_error_while_getting_info_from_db {
             get {
                 return ResourceManager.GetString("msg_error_while_getting_info_from_db", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Feature permission successfully added.
+        /// </summary>
+        public static string msg_feature_permission_added {
+            get {
+                return ResourceManager.GetString("msg_feature_permission_added", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Feature permission successfully deleted.
+        /// </summary>
+        public static string msg_feature_permission_deleted {
+            get {
+                return ResourceManager.GetString("msg_feature_permission_deleted", resourceCulture);
             }
         }
         
@@ -1149,6 +1383,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add.
+        /// </summary>
+        public static string txt_add {
+            get {
+                return ResourceManager.GetString("txt_add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add package.
         /// </summary>
         public static string txt_add_package {
@@ -1163,6 +1406,15 @@ namespace Hermes.Language {
         public static string txt_add_user {
             get {
                 return ResourceManager.GetString("txt_add_user", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Amin tools.
+        /// </summary>
+        public static string txt_admin_tools {
+            get {
+                return ResourceManager.GetString("txt_admin_tools", resourceCulture);
             }
         }
         
@@ -1244,6 +1496,15 @@ namespace Hermes.Language {
         public static string txt_defect {
             get {
                 return ResourceManager.GetString("txt_defect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string txt_delete {
+            get {
+                return ResourceManager.GetString("txt_delete", resourceCulture);
             }
         }
         
@@ -1352,6 +1613,15 @@ namespace Hermes.Language {
         public static string txt_export_table_to_csv {
             get {
                 return ResourceManager.GetString("txt_export_table_to_csv", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Feature Permissions.
+        /// </summary>
+        public static string txt_features_permissions {
+            get {
+                return ResourceManager.GetString("txt_features_permissions", resourceCulture);
             }
         }
         
@@ -1554,6 +1824,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Minimum level.
+        /// </summary>
+        public static string txt_minimum_level {
+            get {
+                return ResourceManager.GetString("txt_minimum_level", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         public static string txt_name {
@@ -1613,6 +1892,15 @@ namespace Hermes.Language {
         public static string txt_path {
             get {
                 return ResourceManager.GetString("txt_path", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Permission.
+        /// </summary>
+        public static string txt_permission {
+            get {
+                return ResourceManager.GetString("txt_permission", resourceCulture);
             }
         }
         

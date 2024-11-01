@@ -1,0 +1,49 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:Hermes.Features.AdminTools"
+             xmlns:suki="https://github.com/kikipoulet/SukiUI"
+             xmlns:lang="clr-namespace:Hermes.Language;assembly=Hermes.Language"
+             xmlns:controls="clr-namespace:Hermes.Features.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="700"
+             x:Class="Hermes.Features.AdminTools.ManageFeaturePermissionDialogView"
+             x:DataType="local:ManageFeaturePermissionDialogViewModel">
+
+    <suki:GroupBox Header="{x:Static lang:Resources.txt_permission}" MaxWidth="400" Padding="10">
+
+        <StackPanel Margin="{StaticResource DefaultMargin}"
+                    Spacing="{StaticResource DefaultSpacing}">
+
+            <controls:ComboBoxEnum Width="200"
+                                   Title="{x:Static lang:Resources.txt_department}"
+                                   ItemsSource="{Binding Departments}"
+                                   SelectedItem="{Binding DepartmentSelected, Mode=TwoWay}" />
+
+
+            <controls:ComboBoxEnum Width="200"
+                                   Title="{x:Static lang:Resources.txt_permission}"
+                                   ItemsSource="{Binding PermissionOptions}"
+                                   SelectedItem="{Binding PermissionSelected, Mode=TwoWay}" />
+
+            <controls:ComboBoxEnum Width="200"
+                                   Title="{x:Static lang:Resources.txt_minimum_level}"
+                                   ItemsSource="{Binding UserLevelOptions}"
+                                   SelectedItem="{Binding UserLevelSelected, Mode=TwoWay}" />
+
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Spacing="{StaticResource DefaultSpacing}">
+                <Button HorizontalContentAlignment="Center"
+                        Classes="Outlined"
+                        Command="{Binding AcceptCommand}"
+                        Content="Accept" />
+
+                <Button HorizontalContentAlignment="Center"
+                        Classes="Outlined Accent"
+                        Command="{Binding CloseDialogCommand}"
+                        Content="Cancel" />
+            </StackPanel>
+        </StackPanel>
+    </suki:GroupBox>
+</UserControl>

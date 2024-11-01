@@ -9,7 +9,8 @@
              x:Class="Hermes.Features.Controls.ComboBoxEnum">
 
     <StackPanel Margin="0">
-        <TextBlock Margin="10 0 0 0">
+        <TextBlock Margin="10 0 0 0"
+                   IsVisible="{Binding #Self.Title, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
             <Run Text="{Binding #Self.Title}" />
             <Run Text=":" />
         </TextBlock>

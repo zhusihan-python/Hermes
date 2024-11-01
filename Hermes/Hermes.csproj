@@ -94,6 +94,10 @@
             <DependentUpon>TokenView.axaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
+        <Compile Update="Features\AdminTools\ManageFeaturePermissionDialogView.axaml.cs">
+          <DependentUpon>ManageUserDialogView.axaml</DependentUpon>
+          <SubType>Code</SubType>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup>
