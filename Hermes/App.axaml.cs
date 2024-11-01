@@ -1,18 +1,17 @@
-using System;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 using Avalonia;
-using Avalonia.Controls;
 using ConfigFactory.Avalonia.Helpers;
 using Hermes.Common.Extensions;
 using Hermes.Common.Messages;
 using Hermes.Common;
 using Hermes.Features;
-using Hermes.Models;
 using Hermes.Repositories;
 using Hermes.Services;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Hermes
 {
@@ -43,7 +42,7 @@ namespace Hermes
                 _provider.GetRequiredService<HermesRemoteContext>().Migrate();
                 _provider.GetRequiredService<PagePrototype>().Provider = _provider;
 
-                this._mainWindow = _provider.BuildWindow<MainWindowViewModel>(false);
+                this._mainWindow = _provider.BuildWindow<MainWindowViewModel>(true);
                 desktop.MainWindow = this._mainWindow;
                 BrowserDialog.StorageProvider = desktop.MainWindow?.StorageProvider;
                 this._windowService = _provider.GetRequiredService<WindowService>();

@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
+using DynamicData;
 
 namespace Hermes.Features
 {
@@ -50,7 +51,6 @@ namespace Hermes.Features
             Session session,
             Settings settings)
         {
-            Console.WriteLine("MainWindowViewModel Created " + Thread.CurrentThread.ManagedThreadId);
             this._pagePrototype = pagePrototype;
             this._settings = settings;
             this._session = session;
@@ -63,10 +63,6 @@ namespace Hermes.Features
             this.UpdateBaseTheme();
             this.UpdateTitle(this._session.LoggedUser.Value);
             this.IsActive = true;
-            if (settings.AutostartUutProcessor)
-            {
-                Messenger.Send(new StartUutProcessorMessage());
-            }
         }
 
         protected override void SetupReactiveExtensions()
@@ -104,10 +100,9 @@ namespace Hermes.Features
         private void UpdatePages(List<PageBase> visiblePages)
         {
             this.ClearPages(visiblePages);
-            visiblePages
-                .Except(this.ShownPages)
-                .ToList()
-                .ForEach(x => this.ShownPages.Add(x));
+            this.ShownPages.AddRange(visiblePages
+                .OrderBy(x => x.Index)
+                .ToList());
         }
 
         private void ClearPages(List<PageBase> visiblePages)
@@ -115,11 +110,8 @@ namespace Hermes.Features
             this.ShownPages
                 .Except(visiblePages)
                 .ToList()
-                .ForEach(x =>
-                {
-                    x.IsActive = false;
-                    this.ShownPages.Remove(x);
-                });
+                .ForEach(x => { x.IsActive = false; });
+            this.ShownPages.Clear();
         }
 
         [RelayCommand]

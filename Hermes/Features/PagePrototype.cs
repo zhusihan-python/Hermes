@@ -58,7 +58,6 @@ public class PagePrototype(Settings settings)
 
     public List<PageBase> GetPages(User user)
     {
-        Console.WriteLine("GetPages " + (Provider == App._provider));
         return _pagePermissionResolvers
             .Where(x => x.HasPermission(user, settings))
             .Select(x => Provider?.GetRequiredService(x.PageType) as PageBase)

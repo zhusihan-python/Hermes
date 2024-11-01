@@ -35,7 +35,6 @@ public partial class App
         ConfigureRepos(services);
         ConfigureCommon(services);
         ConfigureServices(services);
-        ConfigurePages(services);
         ConfigureFeatures(services);
         return services.BuildServiceProvider();
     }
@@ -109,17 +108,6 @@ public partial class App
         services.AddTransient<TriUutSenderService>();
         services.AddTransient<UutSenderServiceFactory>();
         services.AddTransient<WindowService>();
-    }
-
-    private static void ConfigurePages(ServiceCollection services)
-    {
-        var types = AppDomain.CurrentDomain.GetAssemblies()
-            .SelectMany(s => s.GetTypes())
-            .Where(p => !p.IsAbstract && typeof(PageBase).IsAssignableFrom(p));
-        foreach (var type in types)
-        {
-            services.AddSingleton(typeof(PageBase), type);
-        }
     }
 
     private static void ConfigureFeatures(ServiceCollection services)

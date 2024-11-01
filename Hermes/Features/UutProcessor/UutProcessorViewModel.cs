@@ -39,6 +39,7 @@ public partial class UutProcessorViewModel : PageBase
     public UutProcessorViewModel(
         ILogger logger,
         Session session,
+        Settings settings,
         StopService stopService,
         FileService fileService,
         UutSenderServiceFactory uutSenderServiceFactory,
@@ -50,7 +51,6 @@ public partial class UutProcessorViewModel : PageBase
             MaterialIconKind.FolderEye,
             1)
     {
-        Console.WriteLine("UutProcessorViewModel Created " + Thread.CurrentThread.ManagedThreadId);
         this.DummyViewModel = dummyViewModel;
         this.ScannerViewModel = scannerViewModel;
         this._fileService = fileService;
@@ -64,6 +64,10 @@ public partial class UutProcessorViewModel : PageBase
             .ToBindableReactiveProperty<UnitUnderTest>();
         this.SetupReactiveExtensionsOnActivation = false;
         this.IsActive = true;
+        if (settings.AutostartUutProcessor)
+        {
+            this.Start();
+        }
     }
 
     protected override void SetupReactiveExtensions()
@@ -100,7 +104,6 @@ public partial class UutProcessorViewModel : PageBase
 
     protected override void OnActivated()
     {
-        Messenger.Register<StartUutProcessorMessage>(this, this.OnStartReceive);
         Messenger.Register<ExitMessage>(this, this.OnExitReceive);
         Messenger.Register<WaitForDummyMessage>(this, this.OnWaitForDummyMessage);
         Messenger.Register<ReSendUnitUnderTestMessage>(this, this.OnReSendUnitUnderTestMessage);
@@ -194,11 +197,6 @@ public partial class UutProcessorViewModel : PageBase
     private async Task Persist(UnitUnderTest unitUnderTest)
     {
         await this._unitUnderTestRepository.AddAndSaveAsync(unitUnderTest);
-    }
-
-    private void OnStartReceive(object recipient, StartUutProcessorMessage message)
-    {
-        this.Start();
     }
 
     private void OnExitReceive(object recipient, ExitMessage message)

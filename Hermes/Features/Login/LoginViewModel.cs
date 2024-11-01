@@ -32,10 +32,10 @@ public partial class LoginViewModel : PageBase
     {
         this._session = session;
         this._userRepositoryProxy = userRepositoryProxy;
-        this.IsActive = true;
 #if DEBUG
         LoginDebugUser();
 #endif
+        this.IsActive = true;
     }
 
     protected override void SetupReactiveExtensions()

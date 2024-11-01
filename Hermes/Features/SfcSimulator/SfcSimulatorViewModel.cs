@@ -45,7 +45,6 @@ public partial class SfcSimulatorViewModel : PageBase
             MaterialIconKind.BugPlay,
             100)
     {
-        Console.WriteLine("SfcSimulatorViewModel Created " + Thread.CurrentThread.ManagedThreadId);
         _logger = logger;
         _coreSettings = coreSettings;
         _fileService = fileService;
