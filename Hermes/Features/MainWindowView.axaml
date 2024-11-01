@@ -10,8 +10,6 @@
                  x:Name="Self"
                  x:Class="Hermes.Features.MainWindowView"
                  x:DataType="features:MainWindowViewModel"
-                 xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
-                 xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
                  Width="1260"
                  Height="650"
                  WindowStartupLocation="CenterScreen"

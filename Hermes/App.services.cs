@@ -5,10 +5,6 @@ using Hermes.Common.Parsers;
 using Hermes.Common.Reactive;
 using Hermes.Common.Validators;
 using Hermes.Common;
-using Hermes.Features.Bender;
-using Hermes.Features.Controls.Token;
-using Hermes.Features.Login;
-using Hermes.Features.Logs;
 using Hermes.Features.SettingsConfig;
 using Hermes.Features.SfcSimulator;
 using Hermes.Features.UutProcessor;
@@ -121,7 +117,7 @@ public partial class App
 
             foreach (var viewModelType in viewModelTypes)
             {
-                if (singletonTypes.Contains(viewModelType))
+                if (singletonTypes.Contains(viewModelType) || viewModelType.IsSubclassOf(typeof(PageBase)))
                 {
                     services.AddSingleton(viewModelType);
                 }

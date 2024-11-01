@@ -101,17 +101,18 @@ namespace Hermes.Features
         {
             this.ClearPages(visiblePages);
             this.ShownPages.AddRange(visiblePages
+                .Except(this.ShownPages)
                 .OrderBy(x => x.Index)
                 .ToList());
         }
 
         private void ClearPages(List<PageBase> visiblePages)
         {
-            this.ShownPages
+            var pagesToRemove = this.ShownPages
                 .Except(visiblePages)
-                .ToList()
-                .ForEach(x => { x.IsActive = false; });
-            this.ShownPages.Clear();
+                .ToList();
+            pagesToRemove.ForEach(x => { x.IsActive = false; });
+            this.ShownPages.RemoveMany(pagesToRemove);
         }
 
         [RelayCommand]
