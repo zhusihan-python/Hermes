@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace Hermes.Features.UserAdmin;
 
-public partial class ManageFeaturePermissionDialogView : UserControl
+public partial class ManageUserDialogView : UserControl
 {
-    public ManageFeaturePermissionDialogView()
+    public ManageUserDialogView()
     {
         InitializeComponent();
     }

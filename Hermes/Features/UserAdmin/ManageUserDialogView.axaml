@@ -7,7 +7,7 @@
              xmlns:lang="clr-namespace:Hermes.Language;assembly=Hermes.Language"
              xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="700"
-             x:Class="Hermes.Features.UserAdmin.ManageFeaturePermissionDialogView"
+             x:Class="Hermes.Features.UserAdmin.ManageUserDialogView"
              x:DataType="local:ManageUserDialogViewModel">
 
     <suki:GroupBox Header="User management" MaxWidth="400" Padding="10">

@@ -3,16 +3,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             xmlns:theme="clr-namespace:SukiUI.Theme;assembly=SukiUI"
              xmlns:local="clr-namespace:Hermes.Features.Logs"
              x:Class="Hermes.Features.Logs.LogsView"
              x:DataType="local:LogsViewModel">
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
 
-        <WrapPanel Margin="{StaticResource DefaultMargin}"
-                   theme:WrapPanelExtensions.AnimatedScroll="True"
-                   Orientation="Horizontal">
-            <local:UnitUnderTestLogView DataContext="{Binding UnitUnderTestLogViewModel}" />
-        </WrapPanel>
-    </ScrollViewer>
+    <Grid>
+
+        <local:UnitUnderTestLogView DataContext="{Binding UnitUnderTestLogViewModel}" />
+    </Grid>
 </UserControl>

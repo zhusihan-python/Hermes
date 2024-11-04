@@ -25,7 +25,7 @@ public partial class FeaturePermissionsViewModel : ViewModelBase
     public ObservableCollection<FeaturePermission> FeaturePermissions { get; set; } = [];
     public static IEnumerable<DepartmentType?> DepartmentOptions => NullableExtensions.GetValues<DepartmentType>();
 
-    private ManageFeaturePermissionDialogViewModel _manageFeatureDialogViewModel;
+    private ManageFeaturePermissionDialogViewModel? _manageFeatureDialogViewModel;
     private readonly FeaturePermissionRemoteRepository _featurePermissionRepository;
     private readonly ISukiDialogManager _dialogManager;
 

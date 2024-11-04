@@ -22,7 +22,7 @@ public class UserRemoteRepository(IDbContextFactory<HermesRemoteContext> context
     {
         await using var ctx = await context.CreateDbContextAsync();
         return await FindAllUsersQuery(ctx, department, sessionUserLevel)
-            .Where(x => x.EmployeeId == searchEmployeeId)
+            .Where(x => x.EmployeeId.Contains(searchEmployeeId))
             .ToListAsync();
     }
 
@@ -59,6 +59,7 @@ public class UserRemoteRepository(IDbContextFactory<HermesRemoteContext> context
     {
         using var ctx = context.CreateDbContext();
         ctx.Users.Remove(user);
+        ctx.SaveChanges();
     }
 
     public async Task<User> FindUser(string userName, string password)

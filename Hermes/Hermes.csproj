@@ -98,6 +98,10 @@
           <DependentUpon>ManageUserDialogView.axaml</DependentUpon>
           <SubType>Code</SubType>
         </Compile>
+        <Compile Update="Features\Controls\TextBoxWithTitle.axaml.cs">
+          <DependentUpon>TextBoxWithTitle.axaml</DependentUpon>
+          <SubType>Code</SubType>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup>

@@ -3,12 +3,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="clr-namespace:Hermes.Features.Controls"
+             xmlns:converters="clr-namespace:Hermes.Common.Converters"
+             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
              xmlns:lang="clr-namespace:Hermes.Language;assembly=Hermes.Language"
              xmlns:sukiUi="clr-namespace:SukiUI.Controls;assembly=SukiUI"
              xmlns:unitUnderTestLogView="clr-namespace:Hermes.Features.Logs"
-             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
-             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
-             xmlns:converters="clr-namespace:Hermes.Common.Converters"
              Background="{DynamicResource SukiBackground}"
              mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="600"
              x:Class="Hermes.Features.Logs.UnitUnderTestLogView"
@@ -21,12 +21,10 @@
     </UserControl.Styles>
 
     <sukiUi:GlassCard Margin="10"
-                      HorizontalAlignment="Stretch"
-                      Height="580"
-                      MaxHeight="500"
-                      MaxWidth="900">
+                      HorizontalAlignment="Stretch">
 
-        <Grid RowDefinitions="Auto, *"
+        <Grid Margin="0 20"
+              RowDefinitions="Auto, *"
               ColumnDefinitions="*, Auto">
 
             <!-- Filters -->
@@ -34,16 +32,16 @@
                         Grid.Column="0"
                         Orientation="Horizontal">
 
-                <unitUnderTestLogView:TextBoxWithTitle Name="SerialNumberFilter"
-                                                       Width="200"
-                                                       VerticalAlignment="Bottom"
-                                                       KeyBindings=""
-                                                       Title="{x:Static lang:Resources.txt_serial_number}"
-                                                       Text="{Binding SerialNumberFilter, Mode=TwoWay}">
-                    <unitUnderTestLogView:TextBoxWithTitle.KeyBindings>
+                <controls:TextBoxWithTitle Name="SerialNumberFilter"
+                                           Width="200"
+                                           VerticalAlignment="Bottom"
+                                           KeyBindings=""
+                                           Title="{x:Static lang:Resources.txt_serial_number}"
+                                           Text="{Binding SerialNumberFilter, Mode=TwoWay}">
+                    <controls:TextBoxWithTitle.KeyBindings>
                         <KeyBinding Gesture="Enter" Command="{Binding SearchCommand}" />
-                    </unitUnderTestLogView:TextBoxWithTitle.KeyBindings>
-                </unitUnderTestLogView:TextBoxWithTitle>
+                    </controls:TextBoxWithTitle.KeyBindings>
+                </controls:TextBoxWithTitle>
 
 
                 <controls:ComboBoxEnum Width="200"
