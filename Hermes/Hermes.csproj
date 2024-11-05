@@ -12,8 +12,8 @@
         <Copyright>Ingrasys</Copyright>
         <ApplicationIcon>AppData\Assets\logo-hermes.ico</ApplicationIcon>
         <PackageIcon>AppData\Assets\logo-hermes.ico</PackageIcon>
-        <AssemblyVersion>2024.10.22</AssemblyVersion>
-        <FileVersion>2024.10.22</FileVersion>
+        <AssemblyVersion>2024.11.05</AssemblyVersion>
+        <FileVersion>2024.11.05</FileVersion>
         <NeutralLanguage>en-US</NeutralLanguage>
     </PropertyGroup>
 
