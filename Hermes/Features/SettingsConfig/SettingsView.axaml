@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:ConfigFactory.Avalonia;assembly=ConfigFactory.Avalonia"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        Height="700"
+        Height="550"
         Width="750"
         x:Class="Hermes.Features.SettingsConfig.SettingsView"
         Title="General settings"

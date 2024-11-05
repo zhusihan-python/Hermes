@@ -604,7 +604,7 @@
         <value>Additional sfc ok response</value>
     </data>
     <data name="c_settings_description_additional_ok_sfc_response" xml:space="preserve">
-        <value>Respuesta ok adicional en sfc </value>
+        <value>When SFC response contains this text, it will be evaluated as ok</value>
     </data>
     <data name="txt_input_dummy" xml:space="preserve">
         <value>Input dummy board</value>
@@ -752,5 +752,34 @@
     </data>
     <data name="txt_features_permissions" xml:space="preserve">
         <value>Feature Permissions</value>
+    </data>
+    <data name="c_settings_header_enable_critical_location_stop" xml:space="preserve">
+        <value>Critical location stop</value>
+    </data>
+    <data name="c_settings_description_enable_critical_location_stop" xml:space="preserve">
+        <value>Show stop window when a failure is detected in a component listed in the "Critical Locations" setting.</value>
+    </data>
+    <data name="c_settings_group_features" xml:space="preserve">
+        <value>Features</value>
+    </data>
+    <data name="c_settings_header_enable_rule_three_five_ten" xml:space="preserve">
+        <value>Rule three five ten stop</value>
+    </data>
+    <data name="c_settings_description_enable_machine_stop" xml:space="preserve">
+        <value>Show stop window when an error occurs in sfc or when a flow error is detected.</value>
+    </data>
+    <data name="c_settings_header_enable_machine_stop" xml:space="preserve">
+        <value>Machine Sfc error stop</value>
+    </data>
+    <data name="c_settings_description_enable_rule_three_five_ten" xml:space="preserve">
+        <value>Show stop window when 3 consecutive same faults or 5 same faults in 1 hour or 10 different faults in 1 hour are detected.
+
+</value>
+    </data>
+    <data name="c_settings_header_critical_locations" xml:space="preserve">
+        <value>Critical locations</value>
+    </data>
+    <data name="c_settings_description_critical_locations" xml:space="preserve">
+        <value>Critical locations comma separated</value>
     </data>
 </root>

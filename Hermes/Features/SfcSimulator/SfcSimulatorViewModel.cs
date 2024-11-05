@@ -28,7 +28,7 @@ public partial class SfcSimulatorViewModel : PageBase
     public IEnumerable<SfcResponseType> SfcErrorTypes => EnumExtensions.GetValues<SfcResponseType>();
     public IEnumerable<ErrorFlag> ErrorFlags => EnumExtensions.GetValues<ErrorFlag>();
 
-    private readonly CoreSettings _coreSettings;
+    private readonly Settings _settings;
     private readonly FileService _fileService;
     private readonly ILogger _logger;
     private readonly SfcSimulatorService _sfcSimulatorService;
@@ -36,7 +36,7 @@ public partial class SfcSimulatorViewModel : PageBase
 
     public SfcSimulatorViewModel(
         ILogger logger,
-        CoreSettings coreSettings,
+        Settings settings,
         FileService fileService,
         SfcSimulatorService sfcSimulatorService,
         UnitUnderTestBuilder underTestBuilder)
@@ -46,7 +46,7 @@ public partial class SfcSimulatorViewModel : PageBase
             100)
     {
         _logger = logger;
-        _coreSettings = coreSettings;
+        _settings = settings;
         _fileService = fileService;
         _sfcSimulatorService = sfcSimulatorService;
         _unitUnderTestBuilder = underTestBuilder;
@@ -111,7 +111,7 @@ public partial class SfcSimulatorViewModel : PageBase
     [RelayCommand]
     private async Task CreateCriticalFailLogfile()
     {
-        this.DefectLocation = _coreSettings.GetFirstCriticalDefectLocation();
+        this.DefectLocation = _settings.GetFirstCriticalDefectLocation();
         this.DefectErrorCode = "CRITICAL_EC1";
         this.DefectErrorFlag = ErrorFlag.Bad;
         await this.CreateFailLogfileWithCustomDefect();

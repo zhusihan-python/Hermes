@@ -141,11 +141,49 @@ namespace Hermes.Language {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Respuesta ok adicional en sfc .
+        ///   Looks up a localized string similar to When SFC response contains this text, it will be evaluated as ok.
         /// </summary>
         public static string c_settings_description_additional_ok_sfc_response {
             get {
                 return ResourceManager.GetString("c_settings_description_additional_ok_sfc_response", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Critical locations comma separated.
+        /// </summary>
+        public static string c_settings_description_critical_locations {
+            get {
+                return ResourceManager.GetString("c_settings_description_critical_locations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show stop window when a failure is detected in a component listed in the &quot;Critical Locations&quot; setting..
+        /// </summary>
+        public static string c_settings_description_enable_critical_location_stop {
+            get {
+                return ResourceManager.GetString("c_settings_description_enable_critical_location_stop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show stop window when an error occurs in sfc or when a flow error is detected..
+        /// </summary>
+        public static string c_settings_description_enable_machine_stop {
+            get {
+                return ResourceManager.GetString("c_settings_description_enable_machine_stop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show stop window when 3 consecutive same faults or 5 same faults in 1 hour or 10 different faults in 1 hour are detected.
+        ///
+        ///.
+        /// </summary>
+        public static string c_settings_description_enable_rule_three_five_ten {
+            get {
+                return ResourceManager.GetString("c_settings_description_enable_rule_three_five_ten", resourceCulture);
             }
         }
         
@@ -191,6 +229,15 @@ namespace Hermes.Language {
         public static string c_settings_group_common {
             get {
                 return ResourceManager.GetString("c_settings_group_common", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Features.
+        /// </summary>
+        public static string c_settings_group_features {
+            get {
+                return ResourceManager.GetString("c_settings_group_features", resourceCulture);
             }
         }
         
@@ -249,11 +296,47 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Critical locations.
+        /// </summary>
+        public static string c_settings_header_critical_locations {
+            get {
+                return ResourceManager.GetString("c_settings_header_critical_locations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Database server.
         /// </summary>
         public static string c_settings_header_database_server {
             get {
                 return ResourceManager.GetString("c_settings_header_database_server", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Critical location stop.
+        /// </summary>
+        public static string c_settings_header_enable_critical_location_stop {
+            get {
+                return ResourceManager.GetString("c_settings_header_enable_critical_location_stop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Machine Sfc error stop.
+        /// </summary>
+        public static string c_settings_header_enable_machine_stop {
+            get {
+                return ResourceManager.GetString("c_settings_header_enable_machine_stop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rule three five ten stop.
+        /// </summary>
+        public static string c_settings_header_enable_rule_three_five_ten {
+            get {
+                return ResourceManager.GetString("c_settings_header_enable_rule_three_five_ten", resourceCulture);
             }
         }
         

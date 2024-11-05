@@ -596,9 +596,6 @@
     <data name="c_settings_description_additional_ok_sfc_response" xml:space="preserve">
         <value>Cuando la respuesta del SFC copntenga este texto, se evaluará como ok</value>
     </data>
-    <data name="c_settings_header_additional_ok_sfc_response" xml:space="preserve">
-        <value>When SFC response contains this text, it will be evaluated as ok</value>
-    </data>
     <data name="txt_input_dummy" xml:space="preserve">
         <value>Ingresar tarjeta dummy</value>
     </data>
@@ -745,5 +742,35 @@
     </data>
     <data name="txt_features_permissions" xml:space="preserve">
         <value>Permissions de características</value>
+    </data>
+    <data name="c_settings_group_features" xml:space="preserve">
+        <value>Características</value>
+    </data>
+    <data name="c_settings_header_enable_critical_location_stop" xml:space="preserve">
+        <value>Parar en falla crítica</value>
+    </data>
+    <data name="c_settings_header_enable_machine_stop" xml:space="preserve">
+        <value>Parar en falla de sfc</value>
+    </data>
+    <data name="c_settings_header_enable_rule_three_five_ten" xml:space="preserve">
+        <value>Parar con regla 3, 5, 10</value>
+    </data>
+    <data name="c_settings_description_enable_critical_location_stop" xml:space="preserve">
+        <value>Mostrar ventana de paro cuando se detecte una falla en un componente listado en la opción "Locaciones críticas".</value>
+    </data>
+    <data name="c_settings_description_enable_machine_stop" xml:space="preserve">
+        <value>Mostrar ventana de paro cuando ocurran un error en sfc o cuando se detecte un error de flujo.</value>
+    </data>
+    <data name="c_settings_description_enable_rule_three_five_ten" xml:space="preserve">
+        <value>Mostrar ventana de paro cuando se detecten 3 fallas iguales consecutivas o 5 fallas iguales en 1 hora o 10 fallas diferentes en 1 hora.</value>
+    </data>
+    <data name="c_settings_header_critical_locations" xml:space="preserve">
+        <value>Locaciones críticas</value>
+    </data>
+    <data name="c_settings_description_critical_locations" xml:space="preserve">
+        <value>Locaciones críticas separadas por coma</value>
+    </data>
+    <data name="c_settings_header_additional_ok_sfc_response" xml:space="preserve">
+        <value>Respuesta ok adicional en sfc</value>
     </data>
 </root>

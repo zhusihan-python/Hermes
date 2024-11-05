@@ -6,16 +6,16 @@ namespace Hermes.Common.Validators;
 
 public class CriticalLocationStopValidator : IStopValidator
 {
-    private readonly CoreSettings _coreSettings;
+    private readonly Settings _settings;
 
-    public CriticalLocationStopValidator(CoreSettings coreSettings)
+    public CriticalLocationStopValidator(Settings settings)
     {
-        this._coreSettings = coreSettings;
+        this._settings = settings;
     }
 
     public Task<Stop> ValidateAsync(UnitUnderTest unitUnderTest)
     {
-        var defect = unitUnderTest.GetDefectByLocation(this._coreSettings.CriticalLocations);
+        var defect = unitUnderTest.GetDefectByLocation(this._settings.CriticalLocations);
         if (defect.IsNull || unitUnderTest.IsSfcFail)
         {
             return Task.FromResult(Stop.Null);

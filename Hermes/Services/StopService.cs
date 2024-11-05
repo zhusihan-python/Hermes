@@ -9,14 +9,27 @@ public class StopService
     private readonly CompoundStopValidator _stopValidator;
 
     public StopService(
+        Settings settings,
         RuleThreeFiveTenValidator ruleThreeFiveTenValidator,
         MachineStopValidator machineStopValidator,
         CriticalLocationStopValidator criticalLocationStopValidator)
     {
-        this._stopValidator = new CompoundStopValidator()
-            .Add(criticalLocationStopValidator)
-            .Add(ruleThreeFiveTenValidator)
-            .Add(machineStopValidator);
+        this._stopValidator = new CompoundStopValidator();
+
+        if (settings.EnableCriticalLocationStop)
+        {
+            this._stopValidator.Add(criticalLocationStopValidator);
+        }
+
+        if (settings.EnableRuleThreeFiveTen)
+        {
+            this._stopValidator.Add(ruleThreeFiveTenValidator);
+        }
+
+        if (settings.EnableMachineStop)
+        {
+            this._stopValidator.Add(machineStopValidator);
+        }
     }
 
     public void Start()

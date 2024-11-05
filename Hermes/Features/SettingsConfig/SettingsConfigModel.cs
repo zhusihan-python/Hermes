@@ -119,25 +119,9 @@ public partial class SettingsConfigModel(
         Group = "c_settings_group_station")]
     private FileExtension _inputFileExtension = FileExtension.Ret;
 
-    [ObservableProperty]
-    [property: Config(
-        Header = "c_settings_header_send_repair_file",
-        Description = "c_settings_header_send_repair_file",
-        Category = "c_settings_category_general",
-        Group = "c_settings_group_station")]
-    private bool _sendRepairFile = true;
-
     #endregion
 
     #region UutProcessor
-
-    [ObservableProperty]
-    [property: Config(
-        Header = "c_settings_header_autostart_uut_processor",
-        Description = "c_settings_header_autostart_uut_processor",
-        Category = "c_settings_category_uut_processor",
-        Group = "c_settings_group_common")]
-    private bool _autostartUutProcessor;
 
     [ObservableProperty]
     [property: DropdownConfig(RuntimeItemsSourceMethodName = "GetPortNames")]
@@ -180,6 +164,54 @@ public partial class SettingsConfigModel(
         Category = "c_settings_category_uut_processor",
         Group = "c_settings_group_common")]
     private string _additionalOkSfcResponse = "";
+
+    [ObservableProperty]
+    [property: Config(
+        Header = "c_settings_header_autostart_uut_processor",
+        Description = "c_settings_header_autostart_uut_processor",
+        Category = "c_settings_category_uut_processor",
+        Group = "c_settings_group_features")]
+    private bool _autostartUutProcessor;
+
+    [ObservableProperty]
+    [property: Config(
+        Header = "c_settings_header_send_repair_file",
+        Description = "c_settings_header_send_repair_file",
+        Category = "c_settings_category_uut_processor",
+        Group = "c_settings_group_features")]
+    private bool _sendRepairFile = true;
+
+    [ObservableProperty]
+    [property: Config(
+        Header = "c_settings_header_enable_critical_location_stop",
+        Description = "c_settings_description_enable_critical_location_stop",
+        Category = "c_settings_category_uut_processor",
+        Group = "c_settings_group_features")]
+    private bool _enableCriticalLocationStop;
+
+    [ObservableProperty]
+    [property: Config(
+        Header = "c_settings_header_critical_locations",
+        Description = "c_settings_description_critical_locations",
+        Category = "c_settings_category_uut_processor",
+        Group = "c_settings_group_features")]
+    private string _criticalLocations = "";
+
+    [ObservableProperty]
+    [property: Config(
+        Header = "c_settings_header_enable_rule_three_five_ten",
+        Description = "c_settings_description_enable_rule_three_five_ten",
+        Category = "c_settings_category_uut_processor",
+        Group = "c_settings_group_features")]
+    private bool _enableRuleThreeFiveTen;
+
+    [ObservableProperty]
+    [property: Config(
+        Header = "c_settings_header_enable_machine_stop",
+        Description = "c_settings_description_enable_machine_stop",
+        Category = "c_settings_category_uut_processor",
+        Group = "c_settings_group_features")]
+    private bool _enableMachineStop;
 
     [ObservableProperty]
     [property: BrowserConfig(BrowserMode = BrowserMode.OpenFolder, Filter = "Folder:*.*")]
@@ -239,44 +271,67 @@ public partial class SettingsConfigModel(
                 SfcResponseExtension = FileExtension.Ret;
                 InputFileExtension = FileExtension.Rle;
                 SendRepairFile = true;
+                EnableMachineStop = true;
+                EnableRuleThreeFiveTen = true;
+                EnableCriticalLocationStop = true;
                 break;
             case MachineType.Spi:
                 LogfileType = LogfileType.TriDefault;
                 SfcResponseExtension = FileExtension.Log;
                 InputFileExtension = FileExtension._3dx;
                 SendRepairFile = false;
+                EnableMachineStop = true;
+                EnableRuleThreeFiveTen = false;
+                EnableCriticalLocationStop = false;
                 break;
             case MachineType.Aoi:
                 LogfileType = LogfileType.TriDefault;
                 SfcResponseExtension = FileExtension.Log;
                 InputFileExtension = FileExtension._3dx;
                 SendRepairFile = true;
+                EnableMachineStop = true;
+                EnableRuleThreeFiveTen = true;
+                EnableCriticalLocationStop = true;
                 break;
             case MachineType.Magic:
                 LogfileType = LogfileType.MagicDefault;
                 SfcResponseExtension = FileExtension.Log;
                 InputFileExtension = FileExtension.Txt;
                 SendRepairFile = true;
+                EnableMachineStop = true;
+                EnableRuleThreeFiveTen = true;
+                EnableCriticalLocationStop = true;
                 break;
             case MachineType.Labeling:
                 LogfileType = LogfileType.LabelingMachineDefault;
                 SfcResponseExtension = FileExtension.Log;
                 InputFileExtension = FileExtension.Res;
                 SendRepairFile = true;
+                EnableMachineStop = true;
+                EnableRuleThreeFiveTen = false;
+                EnableCriticalLocationStop = false;
                 break;
             case MachineType.ScreenPrinter:
                 LogfileType = LogfileType.GkgDefault;
                 SfcResponseExtension = FileExtension.Log;
                 InputFileExtension = FileExtension._3dx;
                 SendRepairFile = false;
+                EnableMachineStop = true;
+                EnableRuleThreeFiveTen = false;
+                EnableCriticalLocationStop = false;
                 break;
             default:
                 LogfileType = LogfileType.Default;
                 SfcResponseExtension = FileExtension.Res;
                 InputFileExtension = FileExtension.Txt;
                 SendRepairFile = true;
+                EnableMachineStop = true;
+                EnableRuleThreeFiveTen = true;
+                EnableCriticalLocationStop = true;
                 break;
         }
+
+        this.CalcStationId();
     }
 
     partial void OnStationChanged(StationType value)

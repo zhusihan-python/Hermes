@@ -37,7 +37,6 @@ public partial class App
 
     private static void ConfigureModels(ServiceCollection services)
     {
-        services.AddSingleton<CoreSettings>();
         services.AddSingleton<Session>();
         services.AddSingleton<Settings>(sp => sp.GetRequiredService<ISettingsRepository>().Read());
     }

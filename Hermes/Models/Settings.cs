@@ -36,6 +36,15 @@ public class Settings
     public string AdditionalOkSfcResponse { get; set; } = "";
     public string InputFileFilter => "*" + InputFileExtension.GetDescription();
     public string ResponseFileFilter => "*" + SfcResponseExtension.GetDescription();
+    public bool EnableCriticalLocationStop { get; set; } = true;
+    public bool EnableRuleThreeFiveTen { get; set; } = true;
+    public bool EnableMachineStop { get; set; } = true;
+    public string CriticalLocations { get; set; } = "U1";
 
     #endregion
+    
+    public string GetFirstCriticalDefectLocation()
+    {
+        return CriticalLocations.Split(',')[0];
+    }
 }

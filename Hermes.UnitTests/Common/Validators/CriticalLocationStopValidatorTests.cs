@@ -25,7 +25,7 @@ public class CriticalLocationStopValidatorTests
             Location = criticalLocation
         };
         var unitUnderTest = GetUnitUnderTestMock(defect);
-        var sut = new CriticalLocationStopValidator(new CoreSettings() { CriticalLocations = criticalLocation });
+        var sut = new CriticalLocationStopValidator(new Settings() { CriticalLocations = criticalLocation });
         var result = await sut.ValidateAsync(unitUnderTest);
         Assert.False(result.IsNull);
         Assert.Equal(defect, result.Defects.First());
@@ -40,7 +40,7 @@ public class CriticalLocationStopValidatorTests
             Location = criticalLocation
         };
         var unitUnderTest = GetUnitUnderTestMock(defect);
-        var sut = new CriticalLocationStopValidator(new CoreSettings() { CriticalLocations = criticalLocation });
+        var sut = new CriticalLocationStopValidator(new Settings() { CriticalLocations = criticalLocation });
         var result = await sut.ValidateAsync(unitUnderTest);
         Assert.False(result.IsNull);
         Assert.Equal(defect, result.Defects.First());
@@ -56,7 +56,7 @@ public class CriticalLocationStopValidatorTests
             Location = criticalLocation
         };
         var unitUnderTest = GetUnitUnderTestMock(defect, true);
-        var sut = new CriticalLocationStopValidator(new CoreSettings() { CriticalLocations = criticalLocation });
+        var sut = new CriticalLocationStopValidator(new Settings() { CriticalLocations = criticalLocation });
         Assert.Equal(StopType.Line, (await sut.ValidateAsync(unitUnderTest)).Type);
     }
 
@@ -65,7 +65,7 @@ public class CriticalLocationStopValidatorTests
     {
         var criticalLocation = "L0";
         var unitUnderTest = GetUnitUnderTestMock();
-        var sut = new CriticalLocationStopValidator(new CoreSettings() { CriticalLocations = criticalLocation });
+        var sut = new CriticalLocationStopValidator(new Settings() { CriticalLocations = criticalLocation });
         Assert.True((await sut.ValidateAsync(unitUnderTest)).IsNull);
     }
 

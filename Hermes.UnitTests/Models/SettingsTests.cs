@@ -2,25 +2,25 @@
 
 namespace HermesTests.Models;
 
-public class CoreSettingsTests
+public class SettingsTests
 {
     [Fact]
     public void GetFirstCriticalDefectLocation_WithCommaSeparatedLocations_ReturnsFirst()
     {
-        var coreSettings = new CoreSettings
+        var sut = new Settings
         {
             CriticalLocations = "a,b,c"
         };
-        Assert.Equal("a", coreSettings.GetFirstCriticalDefectLocation());
+        Assert.Equal("a", sut.GetFirstCriticalDefectLocation());
     }
 
     [Fact]
     public void GetFirstCriticalDefectLocation_SingleLocation_ReturnsSingleLocation()
     {
-        var coreSettings = new CoreSettings
+        var sut = new Settings
         {
             CriticalLocations = "a"
         };
-        Assert.Equal("a", coreSettings.GetFirstCriticalDefectLocation());
+        Assert.Equal("a", sut.GetFirstCriticalDefectLocation());
     }
 }
