@@ -12,6 +12,7 @@ using Hermes.Repositories;
 using Hermes.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Diagnostics;
 
 namespace Hermes
 {
@@ -40,6 +41,7 @@ namespace Hermes
             {
                 _provider.GetRequiredService<HermesLocalContext>().Migrate();
                 _provider.GetRequiredService<HermesRemoteContext>().Migrate();
+                _provider.GetRequiredService<ISettingsRepository>().Load();
                 _provider.GetRequiredService<PagePrototype>().Provider = _provider;
 
                 this._mainWindow = _provider.BuildWindow<MainWindowViewModel>(true);
@@ -50,6 +52,14 @@ namespace Hermes
             }
 
             base.OnFrameworkInitializationCompleted();
+        }
+
+        public static void Restart()
+        {
+            var exePath = Process.GetCurrentProcess().MainModule?.FileName;
+            if (string.IsNullOrEmpty(exePath)) return;
+            Process.Start(new ProcessStartInfo(exePath) { UseShellExecute = true });
+            Environment.Exit(0);
         }
 
         private void OnUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)

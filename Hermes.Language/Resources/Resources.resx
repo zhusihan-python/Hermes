@@ -782,4 +782,16 @@
     <data name="c_settings_description_critical_locations" xml:space="preserve">
         <value>Critical locations comma separated</value>
     </data>
+    <data name="txt_settings_changed" xml:space="preserve">
+        <value>Settings changed</value>
+    </data>
+    <data name="msg_settings_changed_needs_restart" xml:space="preserve">
+        <value>Please restart the application to apply the changes</value>
+    </data>
+    <data name="txt_later" xml:space="preserve">
+        <value>Later</value>
+    </data>
+    <data name="txt_restart" xml:space="preserve">
+        <value>Restart</value>
+    </data>
 </root>

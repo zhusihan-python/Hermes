@@ -1,8 +1,8 @@
-﻿using System;
-using Avalonia.Styling;
+﻿using Avalonia.Styling;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using DynamicData;
 using Hermes.Common.Messages;
 using Hermes.Features.Login;
 using Hermes.Language;
@@ -16,8 +16,6 @@ using SukiUI;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading;
-using DynamicData;
 
 namespace Hermes.Features
 {

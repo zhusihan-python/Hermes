@@ -773,4 +773,16 @@
     <data name="c_settings_header_additional_ok_sfc_response" xml:space="preserve">
         <value>Respuesta ok adicional en sfc</value>
     </data>
+    <data name="txt_settings_changed" xml:space="preserve">
+        <value>La configuración ha sido modificada</value>
+    </data>
+    <data name="msg_settings_changed_needs_restart" xml:space="preserve">
+        <value>Por favor reinicie la aplicación para aplicar los cambios</value>
+    </data>
+    <data name="txt_later" xml:space="preserve">
+        <value>Después</value>
+    </data>
+    <data name="txt_restart" xml:space="preserve">
+        <value>Reiniciar</value>
+    </data>
 </root>

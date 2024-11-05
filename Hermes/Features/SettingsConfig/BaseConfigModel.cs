@@ -10,6 +10,7 @@ using Hermes.Repositories;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System;
+using R3;
 
 namespace Hermes.Features.SettingsConfig;
 
@@ -20,7 +21,8 @@ public abstract class BaseConfigModel<TConfigModel> : ObservableObject, IConfigM
     public IValidationInterface? ValidationInterface { get; set; }
     public ConfigValidatorCollection Validators { get; } = new();
     public ConfigPropertyCollection Properties { get; }
-
+    public ReactiveProperty<Settings> SettingsSaved { get; } = new();
+ 
     private readonly ILogger _logger;
     private readonly ISettingsRepository _settingsRepository;
     private readonly IMapper _mapper;
@@ -91,6 +93,7 @@ public abstract class BaseConfigModel<TConfigModel> : ObservableObject, IConfigM
         {
             var settings = _mapper.Map<Settings>(this);
             this._settingsRepository.Save(settings);
+            this.SettingsSaved.Value = settings;
             this._logger.Debug($"Data saved from {LocalPath}");
         }
         catch (Exception ex)

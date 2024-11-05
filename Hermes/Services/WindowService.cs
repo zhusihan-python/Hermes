@@ -72,6 +72,7 @@ public class WindowService : ObservableRecipient
     {
         Messenger.Register<ExitMessage>(this, this.Stop);
         Messenger.Register<ShowSettingsMessage>(this, this.ShowSettings);
+        Messenger.Register<HideSettingsMessage>(this, this.HideSettings);
         Messenger.Register<ShowStopMessage>(this, this.ShowStop);
         Messenger.Register<ShowSuccessMessage>(this, this.ShowUutSuccess);
         Messenger.Register<ShowToastMessage>(this, this.ShowToast);
@@ -174,5 +175,10 @@ public class WindowService : ObservableRecipient
             this._settingsViewModel.Refresh();
             this.SettingsView.Show();
         });
+    }
+
+    private void HideSettings(object recipient, HideSettingsMessage message)
+    {
+        Dispatcher.UIThread.Invoke(() => { this.SettingsView.Hide(); });
     }
 }

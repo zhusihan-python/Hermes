@@ -1286,6 +1286,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please restart the application to apply the changes.
+        /// </summary>
+        public static string msg_settings_changed_needs_restart {
+            get {
+                return ResourceManager.GetString("msg_settings_changed_needs_restart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to SFC server not responding, please contact IT department.
         /// </summary>
         public static string msg_sfc_timeout {
@@ -1835,6 +1844,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Later.
+        /// </summary>
+        public static string txt_later {
+            get {
+                return ResourceManager.GetString("txt_later", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Level.
         /// </summary>
         public static string txt_level {
@@ -2033,6 +2051,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Restart.
+        /// </summary>
+        public static string txt_restart {
+            get {
+                return ResourceManager.GetString("txt_restart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Running.
         /// </summary>
         public static string txt_running {
@@ -2101,6 +2128,15 @@ namespace Hermes.Language {
         public static string txt_settings {
             get {
                 return ResourceManager.GetString("txt_settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings changed.
+        /// </summary>
+        public static string txt_settings_changed {
+            get {
+                return ResourceManager.GetString("txt_settings_changed", resourceCulture);
             }
         }
         
