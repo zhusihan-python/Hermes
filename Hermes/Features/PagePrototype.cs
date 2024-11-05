@@ -25,16 +25,16 @@ public class PagePrototype(Settings settings)
 
         new(typeof(BenderViewModel),
             PermissionType.OpenBender,
-            Only([StationType.Labeling, StationType.LabelingMachine])),
+            AllExcept([StationType.Labeling, StationType.LabelingMachine])),
 
         new(typeof(LoginViewModel)),
 
         new(typeof(LogsViewModel),
             PermissionType.OpenLogs,
-            AllExcept([StationType.Labeling])),
+            Only([StationType.Labeling])),
 
         new(typeof(PackageIdViewModel),
-            stationFilter: Only([StationType.Labeling, StationType.LabelingMachine])),
+            hideFromStation: AllExcept([StationType.Labeling, StationType.LabelingMachine])),
 
         new(typeof(SfcSimulatorViewModel),
             PermissionType.OpenSfcSimulator),
@@ -45,7 +45,7 @@ public class PagePrototype(Settings settings)
 
         new(typeof(UutProcessorViewModel),
             PermissionType.OpenUutProcessor,
-            AllExcept([StationType.Labeling])),
+            Only([StationType.Labeling])),
 
         new(typeof(AdminToolsViewModel),
             PermissionType.OpenAdminTools)
