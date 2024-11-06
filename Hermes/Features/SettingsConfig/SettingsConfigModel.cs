@@ -344,6 +344,7 @@ public partial class SettingsConfigModel(
 
     partial void OnStationChanged(StationType value)
     {
+        AdditionalOkSfcResponse = "";
         switch (value)
         {
             case StationType.Labeling:
@@ -377,6 +378,9 @@ public partial class SettingsConfigModel(
                 Machine = MachineType.ScreenPrinter;
                 SendRepairFile = false;
                 AutostartUutProcessor = true;
+                AdditionalOkSfcResponse = value == StationType.ScreenPrinterBottom
+                    ? "GO-SPI_B"
+                    : "GO-SPI_T";
                 break;
             case StationType.Aoi1:
             case StationType.Aoi2:
