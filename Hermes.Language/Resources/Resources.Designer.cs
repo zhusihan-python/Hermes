@@ -1169,6 +1169,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid employee id, it must be only numbers.
+        /// </summary>
+        public static string msg_invalid_employee_id {
+            get {
+                return ResourceManager.GetString("msg_invalid_employee_id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The token is invalid.
         /// </summary>
         public static string msg_invalid_token {
@@ -2308,6 +2317,15 @@ namespace Hermes.Language {
         public static string txt_user {
             get {
                 return ResourceManager.GetString("txt_user", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User management.
+        /// </summary>
+        public static string txt_user_management {
+            get {
+                return ResourceManager.GetString("txt_user_management", resourceCulture);
             }
         }
         

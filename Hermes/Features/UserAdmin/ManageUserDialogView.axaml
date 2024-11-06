@@ -10,7 +10,7 @@
              x:Class="Hermes.Features.UserAdmin.ManageUserDialogView"
              x:DataType="local:ManageUserDialogViewModel">
 
-    <suki:GroupBox Header="User management" MaxWidth="400" Padding="10">
+    <suki:GroupBox Header="{x:Static lang:Resources.txt_user_management}" MaxWidth="400" Padding="10">
 
         <suki:BusyArea BusyText="{x:Static lang:Resources.txt_logging_in}"
                        IsBusy="{Binding IsLoading}">

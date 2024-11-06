@@ -741,7 +741,7 @@
         <value>Nivel mínimo</value>
     </data>
     <data name="txt_features_permissions" xml:space="preserve">
-        <value>Permissions de características</value>
+        <value>Permisos de características</value>
     </data>
     <data name="c_settings_group_features" xml:space="preserve">
         <value>Características</value>
@@ -784,5 +784,11 @@
     </data>
     <data name="txt_restart" xml:space="preserve">
         <value>Reiniciar</value>
+    </data>
+    <data name="msg_invalid_employee_id" xml:space="preserve">
+        <value>Numero de empleado inválido, éste debe contener sólo numeros.</value>
+    </data>
+    <data name="txt_user_management" xml:space="preserve">
+        <value>Gestión de usuario</value>
     </data>
 </root>

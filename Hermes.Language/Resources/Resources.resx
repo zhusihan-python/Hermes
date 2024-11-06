@@ -794,4 +794,10 @@
     <data name="txt_restart" xml:space="preserve">
         <value>Restart</value>
     </data>
+    <data name="msg_invalid_employee_id" xml:space="preserve">
+        <value>Invalid employee id, it must be only numbers</value>
+    </data>
+    <data name="txt_user_management" xml:space="preserve">
+        <value>User management</value>
+    </data>
 </root>
