@@ -791,4 +791,22 @@
     <data name="txt_user_management" xml:space="preserve">
         <value>Gestión de usuario</value>
     </data>
+    <data name="msg_no_updates_available" xml:space="preserve">
+        <value>No existen actualizaciones disponibles</value>
+    </data>
+    <data name="txt_check_for_updates" xml:space="preserve">
+        <value>Buscar actualizaciones</value>
+    </data>
+    <data name="msg_update_available" xml:space="preserve">
+        <value>Actualización disponible</value>
+    </data>
+    <data name="txt_update_available" xml:space="preserve">
+        <value>Existe una versión más reciente disponible</value>
+    </data>
+    <data name="c_settings_header_update_manager_url" xml:space="preserve">
+        <value>Url de actualización Hermes</value>
+    </data>
+    <data name="txt_update" xml:space="preserve">
+        <value>Actualizar</value>
+    </data>
 </root>

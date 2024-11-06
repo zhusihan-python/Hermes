@@ -18,6 +18,7 @@ public class StopRepositoryTests
     {
         this._sfcResponseBuilder = sfcResponseBuilder;
         this._localContext = contextFactory.CreateDbContext();
+        _localContext.Database.EnsureCreated();
         this._sut = new StopRepository(contextFactory);
     }
 

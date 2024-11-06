@@ -50,6 +50,14 @@ public partial class SettingsConfigModel(
     private string _databaseServer = "10.12.204.48";
 
     [ObservableProperty]
+    [property: Config(
+        Header = "c_settings_header_update_manager_url",
+        Description = "c_settings_header_update_manager_url",
+        Category = "c_settings_category_general",
+        Group = "c_settings_group_common")]
+    private string _updateManagerUrl = "http://hermes.com/updates";
+
+    [ObservableProperty]
     [property: DropdownConfig(RuntimeItemsSourceMethodName = "LineType")]
     [property: Config(
         Header = "c_settings_header_line_name",

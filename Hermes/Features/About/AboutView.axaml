@@ -1,15 +1,16 @@
 <UserControl x:Class="Hermes.Features.About.AboutView"
              xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:about="clr-namespace:Hermes.Features.About"
              xmlns:controls="clr-namespace:SukiUI.Controls;assembly=SukiUI"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:lang="clr-namespace:Hermes.Language;assembly=Hermes.Language"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:splash="clr-namespace:Hermes.Features.About"
-             xmlns:about="clr-namespace:Hermes.Features.About"
              d:DesignHeight="450"
              d:DesignWidth="800"
              x:DataType="about:AboutViewModel"
              mc:Ignorable="d">
+    
     <controls:GlassCard Margin="40"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
@@ -17,6 +18,7 @@
         <Border
             Background="White"
             CornerRadius="5"
+            Height="360"
             Padding="{StaticResource DefaultPadding}">
             <StackPanel>
                 <Image Height="150"
@@ -51,6 +53,11 @@
                     <Run Text="Version: " />
                     <Run Text="{Binding Version}" />
                 </TextBlock>
+
+                <HyperlinkButton HorizontalAlignment="Center"
+                                 Margin="10 30 10 10"
+                                 Content="{x:Static lang:Resources.txt_check_for_updates}"
+                                 Command="{Binding CheckForUpdatesCommand}" />
             </StackPanel>
         </Border>
     </controls:GlassCard>

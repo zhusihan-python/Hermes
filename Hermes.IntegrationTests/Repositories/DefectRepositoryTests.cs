@@ -19,6 +19,7 @@ public class DefectRepositoryTests
         this._unitUnderTestBuilder = unitUnderTestBuilder
             .IsSfcFail(false);
         _localContext = contextFactory.CreateDbContext();
+        _localContext.Database.EnsureCreated();
         this._sut = new DefectRepository(contextFactory);
     }
 

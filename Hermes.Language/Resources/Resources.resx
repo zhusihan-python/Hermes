@@ -800,4 +800,22 @@
     <data name="txt_user_management" xml:space="preserve">
         <value>User management</value>
     </data>
+    <data name="msg_no_updates_available" xml:space="preserve">
+        <value>No updates available</value>
+    </data>
+    <data name="txt_check_for_updates" xml:space="preserve">
+        <value>Check for updates</value>
+    </data>
+    <data name="txt_update_available" xml:space="preserve">
+        <value>New version available</value>
+    </data>
+    <data name="msg_update_available" xml:space="preserve">
+        <value>Update available</value>
+    </data>
+    <data name="c_settings_header_update_manager_url" xml:space="preserve">
+        <value>Hermes update url</value>
+    </data>
+    <data name="txt_update" xml:space="preserve">
+        <value>Update</value>
+    </data>
 </root>

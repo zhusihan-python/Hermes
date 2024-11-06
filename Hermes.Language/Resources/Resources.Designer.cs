@@ -485,6 +485,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hermes update url.
+        /// </summary>
+        public static string c_settings_header_update_manager_url {
+            get {
+                return ResourceManager.GetString("c_settings_header_update_manager_url", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Wait delay (ms).
         /// </summary>
         public static string c_settings_header_wait_delay_ms {
@@ -1205,6 +1214,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No updates available.
+        /// </summary>
+        public static string msg_no_updates_available {
+            get {
+                return ResourceManager.GetString("msg_no_updates_available", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No users found.
         /// </summary>
         public static string msg_no_users_found {
@@ -1336,6 +1354,15 @@ namespace Hermes.Language {
         public static string msg_success_task {
             get {
                 return ResourceManager.GetString("msg_success_task", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update available.
+        /// </summary>
+        public static string msg_update_available {
+            get {
+                return ResourceManager.GetString("msg_update_available", resourceCulture);
             }
         }
         
@@ -1534,6 +1561,15 @@ namespace Hermes.Language {
         public static string txt_cancel {
             get {
                 return ResourceManager.GetString("txt_cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check for updates.
+        /// </summary>
+        public static string txt_check_for_updates {
+            get {
+                return ResourceManager.GetString("txt_check_for_updates", resourceCulture);
             }
         }
         
@@ -2290,6 +2326,24 @@ namespace Hermes.Language {
         public static string txt_trigger {
             get {
                 return ResourceManager.GetString("txt_trigger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update.
+        /// </summary>
+        public static string txt_update {
+            get {
+                return ResourceManager.GetString("txt_update", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New version available.
+        /// </summary>
+        public static string txt_update_available {
+            get {
+                return ResourceManager.GetString("txt_update_available", resourceCulture);
             }
         }
         

@@ -40,9 +40,10 @@ public class Settings
     public bool EnableRuleThreeFiveTen { get; set; } = true;
     public bool EnableMachineStop { get; set; } = true;
     public string CriticalLocations { get; set; } = "U1";
+    public string UpdateManagerUrl { get; set; } = @"http://hermes.com/updates";
 
     #endregion
-    
+
     public string GetFirstCriticalDefectLocation()
     {
         return CriticalLocations.Split(',')[0];

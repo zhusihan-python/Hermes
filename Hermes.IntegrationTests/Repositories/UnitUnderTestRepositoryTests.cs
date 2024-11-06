@@ -9,12 +9,15 @@ public class UnitUnderTestRepositoryTests
 {
     private readonly UnitUnderTestRepository _sut;
     private readonly UnitUnderTestBuilder _unitUnderTestBuilder;
+    private readonly HermesLocalContext _localContext;
 
     public UnitUnderTestRepositoryTests(
         UnitUnderTestBuilder unitUnderTestBuilder,
         IDbContextFactory<HermesLocalContext> contextFactory)
     {
         this._unitUnderTestBuilder = unitUnderTestBuilder;
+        this._localContext = contextFactory.CreateDbContext();
+        _localContext.Database.EnsureCreated();
         this._sut = new UnitUnderTestRepository(contextFactory);
     }
 
