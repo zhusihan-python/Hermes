@@ -17,7 +17,13 @@ public class UserRemoteRepository(IDbContextFactory<HermesRemoteContext> context
         return await FindAllUsersQuery(ctx, department, sessionUserLevel).ToListAsync();
     }
 
-    public async Task<IEnumerable<User>> FindById(string searchEmployeeId, DepartmentType department,
+    public async Task<User> FindById(string searchEmployeeId)
+    {
+        await using var ctx = await context.CreateDbContextAsync();
+        return await ctx.Users.FirstOrDefaultAsync(x => x.EmployeeId == searchEmployeeId) ?? User.Null;
+    }
+
+    public async Task<IEnumerable<User>> Find(string searchEmployeeId, DepartmentType department,
         UserLevel sessionUserLevel)
     {
         await using var ctx = await context.CreateDbContextAsync();

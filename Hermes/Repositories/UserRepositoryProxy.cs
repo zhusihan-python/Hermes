@@ -1,8 +1,10 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Hermes.Cipher.Types;
 using Hermes.Models;
 using Hermes.Types;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System;
+using Hermes.Language;
 
 namespace Hermes.Repositories;
 
@@ -23,7 +25,7 @@ public class UserRepositoryProxy
     public async Task<IEnumerable<User>> FindById(string searchEmployeeId, DepartmentType department,
         UserLevel sessionUserLevel)
     {
-        return await _userRemoteRepository.FindById(searchEmployeeId, department, sessionUserLevel);
+        return await _userRemoteRepository.Find(searchEmployeeId, department, sessionUserLevel);
     }
 
     public async Task<int> UpdateUser(User user)
@@ -33,6 +35,12 @@ public class UserRepositoryProxy
 
     public async Task Add(User user)
     {
+        var userExists = await _userRemoteRepository.FindById(user.EmployeeId);
+        if (!userExists.IsNull)
+        {
+            throw new Exception(Resources.msg_user_already_exists);
+        }
+
         await _userRemoteRepository.AddAndSaveAsync(user);
     }
 
