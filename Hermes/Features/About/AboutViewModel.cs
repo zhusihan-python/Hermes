@@ -26,6 +26,7 @@ public partial class AboutViewModel(
         var mgr = new UpdateManager(settings.UpdateManagerUrl);
 
         UpdateInfo newVersion = await mgr.CheckForUpdatesAsync();
+        
         if (newVersion == null)
         {
             this.ShowSuccessToast(Resources.msg_no_updates_available);
