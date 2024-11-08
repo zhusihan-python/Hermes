@@ -55,7 +55,7 @@ public partial class SettingsConfigModel(
         Description = "c_settings_header_update_manager_url",
         Category = "c_settings_category_general",
         Group = "c_settings_group_common")]
-    private string _updateManagerUrl = "10.12.204.48/hermes";
+    private string _updateManagerUrl = @"10.12.204.48/hermes/download";
 
     [ObservableProperty]
     [property: DropdownConfig(RuntimeItemsSourceMethodName = "LineType")]

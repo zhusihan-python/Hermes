@@ -1,5 +1,38 @@
 # Hermes 2.0
 
+## About this project
+
+Hermes is the central point for mediating communication between the various traceability systems and the
+custom applications of the AWS project to solve problems that arise in the different operations of the
+organization.
+
+The project was born due to the lack of APIs to carry out direct communications with the SFC traceability system and
+the slowness of the IT team to respond to the needs of the different users.
+
+## Nonfunctional requirements
+
+- [.Net 8](https://dot.net)
+- [Avalonia](https://avaloniaui.net/)
+- [R3](https://github.com/Cysharp/R3)
+- [SukiUI](https://github.com/kikipoulet/SukiUI)
+- [Velopack](https://docs.velopack.io/)
+- Log system
+- Communicate with SFC
+
+## Versioning convention
+
+The versioning convention is as follows:
+
+https://semver.org/
+
+Given a version number MAJOR.MINOR.PATCH, increment the:
+
+    MAJOR version when you make incompatible API changes
+    MINOR version when you add functionality in a backward compatible manner
+    PATCH version when you make backward compatible bug fixes
+
+Additional labels for pre-release and build metadata are available as extensions to the MAJOR.MINOR.PATCH format.
+
 ## Build new version
 
 If you want to build a new version, you can use the following script,
@@ -23,7 +56,7 @@ into the http server. We are currently using Apache-Xampp to do so.
 ```
 How to Setup a Local Static File Server in Windows by XAMPP
 
-1. create a folder for server root path in location [ D:\zfileserver ]
+1. create a folder for server root path in location [ D:/xampp/zfileserver ]
 
 2. Go to the path [D:\xampp\apache\conf\extra]
 Open the file [ httpd-vhosts.conf ]
