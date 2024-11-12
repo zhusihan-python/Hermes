@@ -262,7 +262,7 @@
         <value>Logging in...</value>
     </data>
     <data name="c_login_title" xml:space="preserve">
-        <value>Log-in to Hermes</value>
+        <value>Log-in to Pushi</value>
     </data>
     <data name="txt_token" xml:space="preserve">
         <value>Token</value>
@@ -655,7 +655,7 @@
         <value>Refresh</value>
     </data>
     <data name="txt_open_hermes_app" xml:space="preserve">
-        <value>Open Hermes app</value>
+        <value>Open Pushi app</value>
     </data>
     <data name="txt_add" xml:space="preserve">
         <value>Add</value>

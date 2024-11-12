@@ -31,20 +31,20 @@
                     Foreground="Black"
                     Margin=" 0"
                     HorizontalAlignment="Center"
-                    Text="HERMES" />
+                    Text="封片机" />
 
                 <TextBlock
                     Classes="Accent"
                     FontSize="12"
                     HorizontalAlignment="Center"
-                    Text="By Ingrasys" />
+                    Text="By SpecVT" />
 
                 <TextBlock
                     Classes="Caption"
                     Margin="0 35 0 5"
                     FontSize="12"
                     HorizontalAlignment="Center"
-                    Text="Authors: David Ascencio, Hesbon Torres." />
+                    Text="Authors: XXXX." />
 
                 <TextBlock
                     Classes="Caption"

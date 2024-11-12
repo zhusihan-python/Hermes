@@ -28,7 +28,8 @@ public partial class LoginViewModel : PageBase
         UserRepositoryProxy userRepositoryProxy) :
         base(
             Resources.txt_account,
-            MaterialIconKind.Account)
+            MaterialIconKind.Account,
+            99)
     {
         this._session = session;
         this._userRepositoryProxy = userRepositoryProxy;
