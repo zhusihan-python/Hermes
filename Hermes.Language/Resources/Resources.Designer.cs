@@ -675,6 +675,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Empty 的本地化字符串。
+        /// </summary>
+        public static string enum_empty {
+            get {
+                return ResourceManager.GetString("enum_empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Engineer 的本地化字符串。
         /// </summary>
         public static string enum_engineer {
@@ -846,6 +855,24 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Not recognized 的本地化字符串。
+        /// </summary>
+        public static string enum_not_recognized {
+            get {
+                return ResourceManager.GetString("enum_not_recognized", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Not sorted 的本地化字符串。
+        /// </summary>
+        public static string enum_not_sorted {
+            get {
+                return ResourceManager.GetString("enum_not_sorted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Not ran 的本地化字符串。
         /// </summary>
         public static string enum_notran {
@@ -990,6 +1017,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Recognized 的本地化字符串。
+        /// </summary>
+        public static string enum_recognized {
+            get {
+                return ResourceManager.GetString("enum_recognized", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Restore aoi stop 的本地化字符串。
         /// </summary>
         public static string enum_restoreaoistop {
@@ -1049,6 +1085,24 @@ namespace Hermes.Language {
         public static string enum_scanned {
             get {
                 return ResourceManager.GetString("enum_scanned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Slide blocked 的本地化字符串。
+        /// </summary>
+        public static string enum_slide_blocked {
+            get {
+                return ResourceManager.GetString("enum_slide_blocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Sorted 的本地化字符串。
+        /// </summary>
+        public static string enum_sorted {
+            get {
+                return ResourceManager.GetString("enum_sorted", resourceCulture);
             }
         }
         
