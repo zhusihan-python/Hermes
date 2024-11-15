@@ -11,7 +11,18 @@ namespace Hermes.Features.UutProcessor;
 
 public partial class SlideBoxViewModel : ViewModelBase
 {
-    public List<SlideState> SlideStates { get; }
+    private int _rowIndex = 1;
+    private int _columnIndex = 1;
+    public int RowIndex 
+    { 
+        get { return _rowIndex; }
+        set { SetProperty(ref _rowIndex, value); } 
+    }
+    public int ColumnIndex
+    { 
+        get { return _columnIndex; }
+        set { SetProperty(ref _columnIndex, value); }
+    }
     public List<SlideModel> ItemList { get; set; } = new List<SlideModel>();
     public SlideBoxViewModel()
     {

@@ -9,7 +9,7 @@
              xmlns:lang="clr-namespace:Hermes.Language;assembly=Hermes.Language"
              mc:Ignorable="d"
              d:DesignWidth="1250"
-             d:DesignHeight="800"
+             d:DesignHeight="900"
              x:Class="Hermes.Features.UutProcessor.UutProcessorView"
              x:DataType="local:UutProcessorViewModel">
 
@@ -168,13 +168,11 @@
 					</StackPanel>
 				</controls:GroupBox>
 			</controls:GlassCard>
-
 			<StackPanel Grid.Row="1" Grid.ColumnSpan="5">
-				<Grid RowDefinitions="20,Auto,Auto,Auto,Auto,Auto,20"
-					  ColumnDefinitions="Auto,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,Auto" >
-
-					<!-- Add row and column headers with a light blue background -->
+				<Grid RowDefinitions="*" ColumnDefinitions="20,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,20"
+					  Height="20">
 					<!-- Row headers -->
+					<Border Grid.Row="0" Grid.Column="0" Background="LightBlue"></Border>
 					<Border Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
 						<TextBlock Text="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
 					</Border>
@@ -220,95 +218,99 @@
 					<Border Grid.Row="0" Grid.Column="15" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
 						<TextBlock Text="15" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
 					</Border>
+					<Border Grid.Row="0" Grid.Column="16" Background="LightBlue"></Border>
+				</Grid>
+				<Grid RowDefinitions="*" ColumnDefinitions="20,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,20">
+					<!-- Column headers -->
+					<Grid RowDefinitions="*,*,*,*,*" ColumnDefinitions="*">
+						<Border Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Background="rgb(224,255,255)">
+							<TextBlock Text="A" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+						</Border>
+						<Border Grid.Row="1" Grid.RowSpan="1" Grid.Column="0" Background="rgb(224,255,255)">
+							<TextBlock Text="B" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+						</Border>
+						<Border Grid.Row="2" Grid.RowSpan="1" Grid.Column="0" Background="rgb(224,255,255)">
+							<TextBlock Text="C" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+						</Border>
+						<Border Grid.Row="3" Grid.RowSpan="1" Grid.Column="0" Background="rgb(224,255,255)">
+							<TextBlock Text="D" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+						</Border>
+						<Border Grid.Row="4" Grid.RowSpan="1" Grid.Column="0" Background="rgb(224,255,255)">
+							<TextBlock Text="E" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+						</Border>
+					</Grid>
 
-					<Border Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+					<local:SlideBoardView Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="15">
+					</local:SlideBoardView>
+
+					<Grid Grid.Row="0" Grid.Column="16" RowDefinitions="*,*,*,*,*" ColumnDefinitions="*">
+						<Border Grid.Row="0" Grid.RowSpan="1" Grid.Column="16" Background="rgb(224,255,255)">
+							<TextBlock Text="A" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+						</Border>
+						<Border Grid.Row="1" Grid.RowSpan="1" Grid.Column="16" Background="rgb(224,255,255)">
+							<TextBlock Text="B" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+						</Border>
+						<Border Grid.Row="2" Grid.RowSpan="1" Grid.Column="16" Background="rgb(224,255,255)">
+							<TextBlock Text="C" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+						</Border>
+						<Border Grid.Row="3" Grid.RowSpan="1" Grid.Column="16" Background="rgb(224,255,255)">
+							<TextBlock Text="D" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+						</Border>
+						<Border Grid.Row="4" Grid.RowSpan="1" Grid.Column="16" Background="rgb(224,255,255)">
+							<TextBlock Text="E" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+						</Border>
+					</Grid>
+				</Grid>
+				<Grid RowDefinitions="*" ColumnDefinitions="20,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,20"
+					  Height="20">
+					<!-- Bottom Row headers -->
+					<Border Grid.Row="0" Grid.Column="0" Background="LightBlue"></Border>
+					<Border Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
 						<TextBlock Text="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
 					</Border>
-					<Border Grid.Row="6" Grid.Column="2" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+					<Border Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
 						<TextBlock Text="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
 					</Border>
-					<Border Grid.Row="6" Grid.Column="3" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+					<Border Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
 						<TextBlock Text="3" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
 					</Border>
-					<Border Grid.Row="6" Grid.Column="4" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+					<Border Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
 						<TextBlock Text="4" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
 					</Border>
-					<Border Grid.Row="6" Grid.Column="5" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+					<Border Grid.Row="0" Grid.Column="5" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
 						<TextBlock Text="5" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
 					</Border>
-					<Border Grid.Row="6" Grid.Column="6" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+					<Border Grid.Row="0" Grid.Column="6" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
 						<TextBlock Text="6" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
 					</Border>
-					<Border Grid.Row="6" Grid.Column="7" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+					<Border Grid.Row="0" Grid.Column="7" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
 						<TextBlock Text="7" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
 					</Border>
-					<Border Grid.Row="6" Grid.Column="8" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+					<Border Grid.Row="0" Grid.Column="8" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
 						<TextBlock Text="8" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
 					</Border>
-					<Border Grid.Row="6" Grid.Column="9" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+					<Border Grid.Row="0" Grid.Column="9" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
 						<TextBlock Text="9" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
 					</Border>
-					<Border Grid.Row="6" Grid.Column="10" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+					<Border Grid.Row="0" Grid.Column="10" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
 						<TextBlock Text="10" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
 					</Border>
-					<Border Grid.Row="6" Grid.Column="11" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+					<Border Grid.Row="0" Grid.Column="11" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
 						<TextBlock Text="11" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
 					</Border>
-					<Border Grid.Row="6" Grid.Column="12" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+					<Border Grid.Row="0" Grid.Column="12" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
 						<TextBlock Text="12" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
 					</Border>
-					<Border Grid.Row="6" Grid.Column="13" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+					<Border Grid.Row="0" Grid.Column="13" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
 						<TextBlock Text="13" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
 					</Border>
-					<Border Grid.Row="6" Grid.Column="14" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+					<Border Grid.Row="0" Grid.Column="14" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
 						<TextBlock Text="14" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
 					</Border>
-					<Border Grid.Row="6" Grid.Column="15" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+					<Border Grid.Row="0" Grid.Column="15" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
 						<TextBlock Text="15" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
 					</Border>
-					<!-- Column headers -->
-					<Border Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Background="LightBlue"></Border>
-					<Border Grid.Row="0" Grid.RowSpan="1" Grid.Column="17" Background="LightBlue"></Border>
-					<Border Grid.Row="1" Grid.RowSpan="1" Grid.Column="0" Background="rgb(224,255,255)">
-						<TextBlock Text="A" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
-					</Border>
-					<Border Grid.Row="2" Grid.RowSpan="1" Grid.Column="0" Background="rgb(224,255,255)">
-						<TextBlock Text="B" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
-					</Border>
-					<Border Grid.Row="3" Grid.RowSpan="1" Grid.Column="0" Background="rgb(224,255,255)">
-						<TextBlock Text="C" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
-					</Border>
-					<Border Grid.Row="4" Grid.RowSpan="1" Grid.Column="0" Background="rgb(224,255,255)">
-						<TextBlock Text="D" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
-					</Border>
-					<Border Grid.Row="5" Grid.RowSpan="1" Grid.Column="0" Background="rgb(224,255,255)">
-						<TextBlock Text="E" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
-					</Border>
-					<Border Grid.Row="1" Grid.RowSpan="1" Grid.Column="16" Background="rgb(224,255,255)">
-						<TextBlock Text="A" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
-					</Border>
-					<Border Grid.Row="2" Grid.RowSpan="1" Grid.Column="16" Background="rgb(224,255,255)">
-						<TextBlock Text="B" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
-					</Border>
-					<Border Grid.Row="3" Grid.RowSpan="1" Grid.Column="16" Background="rgb(224,255,255)">
-						<TextBlock Text="C" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
-					</Border>
-					<Border Grid.Row="4" Grid.RowSpan="1" Grid.Column="16" Background="rgb(224,255,255)">
-						<TextBlock Text="D" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
-					</Border>
-					<Border Grid.Row="5" Grid.RowSpan="1" Grid.Column="16" Background="rgb(224,255,255)">
-						<TextBlock Text="E" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
-					</Border>
-					<Border Grid.Row="6" Grid.RowSpan="1" Grid.Column="0" Background="LightBlue"></Border>
-					<Border Grid.Row="6" Grid.RowSpan="1" Grid.Column="17" Background="LightBlue"></Border>
-					<!-- Content cells here, for example: -->
-					<local:SlideBoxView Grid.Row="1" Grid.Column="1" Margin="1"></local:SlideBoxView>
-					<local:SlideBoxView Grid.Row="2" Grid.Column="1" Margin="1"></local:SlideBoxView>
-					<local:SlideBoxView Grid.Row="3" Grid.Column="1" Margin="1"></local:SlideBoxView>
-					<local:SlideBoxView Grid.Row="4" Grid.Column="1" Margin="1"></local:SlideBoxView>
-					<local:SlideBoxView Grid.Row="5" Grid.Column="1" Margin="1"></local:SlideBoxView>
-					<!-- Add more content as needed -->
-
+					<Border Grid.Row="0" Grid.Column="16" Background="LightBlue"></Border>
 				</Grid>
 			</StackPanel>
 
