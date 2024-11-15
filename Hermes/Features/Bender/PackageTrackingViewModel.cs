@@ -1,7 +1,6 @@
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using DynamicData;
 using Hermes.Common.Extensions;
 using Hermes.Common;
 using Hermes.Language;
@@ -21,7 +20,7 @@ public partial class PackageTrackingViewModel : ViewModelBase
     private static readonly TimeSpan RefreshInterval = TimeSpan.FromMinutes(1);
     private static readonly TimeSpan TickInterval = TimeSpan.FromSeconds(1);
 
-    public ObservableCollection<Package> Packages { get; set; } = [];
+    public RangeObservableCollection<Package> Packages { get; set; } = [];
     public bool IsRowSelected => this.SelectedPackage != null;
 
     [ObservableProperty] private bool _isDateFilter = true;

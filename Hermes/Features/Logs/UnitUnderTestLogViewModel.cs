@@ -2,19 +2,19 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using DynamicData;
 using Hermes.Common.Extensions;
 using Hermes.Common.Messages;
 using Hermes.Models;
 using Hermes.Repositories;
 using Hermes.Services;
 using Hermes.Types;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using System;
-using System.Collections.Generic;
+using Hermes.Common;
 
 namespace Hermes.Features.Logs;
 
@@ -28,7 +28,7 @@ public partial class UnitUnderTestLogViewModel : ViewModelBase
     [ObservableProperty] private SfcResponseType? _selectedSfcResponse;
     [ObservableProperty] private StatusType? _selectedTestStatus;
     [ObservableProperty] private string _serialNumberFilter = "";
-    public ObservableCollection<UnitUnderTest> UnitsUnderTest { get; set; } = [];
+    public RangeObservableCollection<UnitUnderTest> UnitsUnderTest { get; set; } = [];
     public static IEnumerable<SfcResponseType?> SfcResponseOptions => NullableExtensions.GetValues<SfcResponseType>();
     public static IEnumerable<StatusType?> StatusOptions => NullableExtensions.GetValues<StatusType>();
 

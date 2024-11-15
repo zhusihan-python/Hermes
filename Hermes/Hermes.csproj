@@ -33,13 +33,13 @@
 
     <ItemGroup>
         <PackageReference Include="AutoMapper" Version="13.0.1" />
-        <PackageReference Include="Avalonia" Version="11.2.0-rc1" />
-        <PackageReference Include="Avalonia.Desktop" Version="11.2.0-rc1" />
-        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.0-rc1" />
-        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.0-rc1" />
+        <PackageReference Include="Avalonia" Version="11.2.1" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.2.1" />
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.1" />
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.1" />
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.2.0-rc1" />
-        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.2.1" />
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0-preview2" />
         <PackageReference Include="ConfigFactory" Version="0.4.2" />
         <PackageReference Include="ConfigFactory.Avalonia" Version="0.4.2" />
         <PackageReference Include="ConfigFactory.Core" Version="0.4.2" />
@@ -50,17 +50,17 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.8" />
-        <PackageReference Include="NLog" Version="5.3.3" />
+        <PackageReference Include="NLog" Version="5.3.4" />
         <PackageReference Include="ObservableCollections.R3" Version="3.3.2" />
-        <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="23.5.1" />
-        <PackageReference Include="Polly.Core" Version="8.4.1" />
+        <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="23.6.1" />
+        <PackageReference Include="Polly.Core" Version="8.5.0" />
         <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.2" />
         <PackageReference Include="QRCoder.Core" Version="1.0.3" />
         <PackageReference Include="R3" Version="1.2.9" />
         <PackageReference Include="R3Extensions.Avalonia" Version="1.2.9" />
-        <PackageReference Include="SukiUI" Version="6.0.0-beta8" />
-        <PackageReference Include="System.IO.Ports" Version="9.0.0-rc.2.24473.5" />
-        <PackageReference Include="Velopack" Version="0.0.869" />
+        <PackageReference Include="SukiUI" Version="6.0.0-rc" />
+        <PackageReference Include="System.IO.Ports" Version="9.0.0" />
+        <PackageReference Include="Velopack" Version="0.0.898-g95f44c6" />
     </ItemGroup>
 
     <ItemGroup>

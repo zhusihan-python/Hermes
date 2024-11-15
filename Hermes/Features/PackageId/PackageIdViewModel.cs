@@ -1,15 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using DynamicData;
 using Hermes.Language;
 using Hermes.Models;
 using Hermes.Repositories;
-using Hermes.Types;
 using Material.Icons;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
+using Hermes.Common;
 
 namespace Hermes.Features.PackageId;
 
@@ -25,7 +24,7 @@ public partial class PackageIdViewModel : PageBase
     [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(PkgidReloadCommand))]
     private Package _package = Package.Null;
 
-    public ObservableCollection<UnitUnderTest> UnitsUnderTest { get; set; } = [];
+    public RangeObservableCollection<UnitUnderTest> UnitsUnderTest { get; set; } = [];
 
     [ObservableProperty] private bool _isWorkOrderLoading;
 
@@ -35,7 +34,7 @@ public partial class PackageIdViewModel : PageBase
     [ObservableProperty] [NotifyCanExecuteChangedFor(nameof(WorkOrderReloadCommand))]
     private WorkOrder _workOrder = WorkOrder.Null;
 
-    public ObservableCollection<Package> Packages { get; set; } = [];
+    public RangeObservableCollection<Package> Packages { get; set; } = [];
 
     private readonly ISfcRepository _sfcRepository;
 

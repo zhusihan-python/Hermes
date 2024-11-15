@@ -5,15 +5,13 @@ using System.Threading.Tasks;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using DynamicData;
-using Hermes.Cipher.Extensions;
 using Hermes.Cipher.Types;
 using Hermes.Common.Extensions;
 using Hermes.Language;
 using Hermes.Models;
 using Hermes.Repositories;
-using Hermes.Types;
 using SukiUI.Dialogs;
+using Hermes.Common;
 
 namespace Hermes.Features.AdminTools;
 
@@ -22,7 +20,7 @@ public partial class FeaturePermissionsViewModel : ViewModelBase
     [ObservableProperty] private DepartmentType? _selectedDepartment;
     [ObservableProperty] private FeaturePermission? _selectedFeaturePermission;
     [ObservableProperty] private bool _isLoading;
-    public ObservableCollection<FeaturePermission> FeaturePermissions { get; set; } = [];
+    public RangeObservableCollection<FeaturePermission> FeaturePermissions { get; set; } = [];
     public static IEnumerable<DepartmentType?> DepartmentOptions => NullableExtensions.GetValues<DepartmentType>();
 
     private ManageFeaturePermissionDialogViewModel? _manageFeatureDialogViewModel;

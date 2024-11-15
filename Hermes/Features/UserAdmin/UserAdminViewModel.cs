@@ -5,14 +5,12 @@ using Avalonia.Threading;
 using Avalonia;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using DynamicData;
 using Hermes.Cipher.Types;
 using Hermes.Common;
 using Hermes.Language;
 using Hermes.Models;
 using Hermes.Repositories;
 using Hermes.Services;
-using Hermes.Types;
 using Material.Icons;
 using R3;
 using SukiUI.Dialogs;
@@ -26,7 +24,7 @@ namespace Hermes.Features.UserAdmin;
 
 public partial class UserAdminViewModel : PageBase
 {
-    public ObservableCollection<User> Users { get; set; } = [];
+    public RangeObservableCollection<User> Users { get; set; } = [];
     private readonly UserRepositoryProxy _userRepositoryProxy;
     private readonly Session _session;
     [ObservableProperty] private bool _canExportToCsv;

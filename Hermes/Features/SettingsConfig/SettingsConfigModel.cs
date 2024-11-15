@@ -4,7 +4,6 @@ using System.IO.Ports;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using ConfigFactory.Core.Attributes;
-using DynamicData;
 using Hermes.Common.Extensions;
 using Hermes.Common;
 using Hermes.Repositories;
@@ -149,9 +148,9 @@ public partial class SettingsConfigModel(
         Group = "c_settings_group_common")]
     private string _scannerComPort = "COM40";
 
-    private readonly ObservableCollection<string> _comPorts = [];
+    private readonly RangeObservableCollection<string> _comPorts = [];
 
-    public ObservableCollection<string> GetPortNames()
+    public RangeObservableCollection<string> GetPortNames()
     {
         return _comPorts;
     }

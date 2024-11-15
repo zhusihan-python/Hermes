@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using DynamicData;
 using Hermes.Common.Messages;
 using Hermes.Features.Login;
 using Hermes.Language;
@@ -16,6 +15,7 @@ using SukiUI;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Hermes.Common;
 
 namespace Hermes.Features
 {
@@ -26,7 +26,7 @@ namespace Hermes.Features
         public ISukiDialogManager DialogManager { get; }
         public bool CanClose { get; private set; }
 
-        public ObservableCollection<PageBase> ShownPages { get; set; } = [];
+        public RangeObservableCollection<PageBase> ShownPages { get; set; } = [];
         [ObservableProperty] private ThemeVariant? _baseTheme;
         [ObservableProperty] private string _baseThemeText = "";
         [ObservableProperty] private string _title = "";
@@ -110,7 +110,7 @@ namespace Hermes.Features
                 .Except(visiblePages)
                 .ToList();
             pagesToRemove.ForEach(x => { x.IsActive = false; });
-            this.ShownPages.RemoveMany(pagesToRemove);
+            this.ShownPages.RemoveRange(pagesToRemove);
         }
 
         [RelayCommand]
