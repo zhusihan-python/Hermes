@@ -1,0 +1,100 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+			 xmlns:objectModel="clr-namespace:System.Collections.ObjectModel;assembly=System.ObjectModel"
+			 xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="850"
+             x:Class="Hermes.Features.AdminTools.SystemSetTabView">
+	<Border Name="Root">
+		<Border.Transitions>
+			<Transitions>
+				<ThicknessTransition
+                    Easing="BounceEaseIn"
+                    Property="Margin"
+                    Duration="0:0:0.45" />
+			</Transitions>
+		</Border.Transitions>
+		<DockPanel>
+			<StackPanel>
+				<suki:SettingsLayout>
+					<suki:SettingsLayout.Items>
+						<objectModel:ObservableCollection x:TypeArguments="suki:SettingsLayoutItem">
+							<suki:SettingsLayoutItem Header="系统检测">
+								<suki:SettingsLayoutItem.Content>
+									<Border Background="LightGray" Height="300">
+										<Grid RowDefinitions="15,*,15,*,15,30" ColumnDefinitions="*">
+											<TextBlock Text="传感器检测" Grid.Row="0" Grid.Column="0"></TextBlock>
+											<Grid Grid.Row="1" Grid.Column="0" RowDefinitions="*,*" ColumnDefinitions="*,*,*,*,*,*">
+												<TextBlock Text="温度传感器" Grid.Row="0" Grid.Column="0"></TextBlock>
+												<TextBlock Text="22 ℃" Grid.Row="0" Grid.Column="1"></TextBlock>
+												<TextBlock Text="湿度传感器" Grid.Row="0" Grid.Column="2"></TextBlock>
+												<TextBlock Text="11 RH" Grid.Row="0" Grid.Column="3"></TextBlock>
+												<TextBlock Text="气罐压力" Grid.Row="0" Grid.Column="4"></TextBlock>
+												<TextBlock Text="11 bar" Grid.Row="0" Grid.Column="5"></TextBlock>
+												<TextBlock Text="吸盘压力" Grid.Row="1" Grid.Column="0"></TextBlock>
+												<TextBlock Text="11 bar" Grid.Row="1" Grid.Column="1"></TextBlock>
+											</Grid>
+											<TextBlock Text="摄像头检测" Grid.Row="2" Grid.Column="0"></TextBlock>
+											<StackPanel Grid.Row="3">
+												<StackPanel Orientation="Horizontal">
+													<TextBlock Text="摄像头列表"></TextBlock>
+													<Button Classes="Outlined" Margin="2" MaxHeight="34" MaxWidth="34">
+														<avalonia:MaterialIcon Kind="Refresh" Margin="-12,0,0,0"/>
+													</Button>
+												</StackPanel>
+												<ListBox x:Name="cameras" Grid.Row="1" Grid.Column="0"/>
+											</StackPanel>
+											<TextBlock Text="三维臂检测" Grid.Row="4" Grid.Column="0"></TextBlock>
+											<Grid Grid.Row="5" Grid.Column="0" RowDefinitions="*,*" ColumnDefinitions="*,*,*,*,*,*">
+												<TextBlock Text="三维臂状态" Grid.Row="0" Grid.Column="0"></TextBlock>
+												<TextBlock Text="气动爪手状态" Grid.Row="0" Grid.Column="2"></TextBlock>
+											</Grid>
+										</Grid>										
+									</Border>
+								</suki:SettingsLayoutItem.Content>
+							</suki:SettingsLayoutItem>
+
+							<suki:SettingsLayoutItem Header="医院接入">
+								<suki:SettingsLayoutItem.Content>
+									<Border Background="LightGray" Height="100">
+										<StackPanel>
+											<StackPanel Orientation="Horizontal">
+												<TextBlock Text="HIS接口"></TextBlock>
+											</StackPanel>
+											<StackPanel Orientation="Horizontal">
+												<TextBlock Text="LIS接口"></TextBlock>
+											</StackPanel>
+										</StackPanel>
+									</Border>
+								</suki:SettingsLayoutItem.Content>
+							</suki:SettingsLayoutItem>
+
+							<suki:SettingsLayoutItem Header="数据库备份">
+								<suki:SettingsLayoutItem.Content>
+									<Border Background="LightGray" Height="100">
+										<StackPanel>
+											<StackPanel Orientation="Horizontal">
+												<TextBlock Text="备份目录"></TextBlock>
+											</StackPanel>
+											<StackPanel Orientation="Horizontal">
+												<TextBlock Text="是否自动备份"></TextBlock>
+											</StackPanel>
+											<StackPanel Orientation="Horizontal">
+												<TextBlock Text="自动备份间隔"></TextBlock>
+											</StackPanel>
+											<StackPanel Orientation="Horizontal">
+												<TextBlock Text="最多备份数"></TextBlock>
+											</StackPanel>
+										</StackPanel>
+									</Border>
+								</suki:SettingsLayoutItem.Content>
+							</suki:SettingsLayoutItem>
+						</objectModel:ObservableCollection>
+					</suki:SettingsLayout.Items>
+				</suki:SettingsLayout>
+			</StackPanel>			
+		</DockPanel>
+	</Border>
+</UserControl>

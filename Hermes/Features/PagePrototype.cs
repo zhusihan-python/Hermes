@@ -48,7 +48,7 @@ public class PagePrototype(Settings settings)
             Only([StationType.Labeling])),
 
         new(typeof(AdminToolsViewModel),
-            PermissionType.OpenAdminTools)
+            PermissionType.FreeAccess)
     ];
 
     public IServiceProvider? Provider { get; set; }
