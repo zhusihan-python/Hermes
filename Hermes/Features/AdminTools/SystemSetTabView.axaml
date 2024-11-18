@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
 			 xmlns:objectModel="clr-namespace:System.Collections.ObjectModel;assembly=System.ObjectModel"
+			 xmlns:controls="clr-namespace:Hermes.Features.Controls"
 			 xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="850"
              x:Class="Hermes.Features.AdminTools.SystemSetTabView">
@@ -40,9 +41,7 @@
 											<StackPanel Grid.Row="3">
 												<StackPanel Orientation="Horizontal">
 													<TextBlock Text="摄像头列表"></TextBlock>
-													<Button Classes="Outlined" Margin="2" MaxHeight="34" MaxWidth="34">
-														<avalonia:MaterialIcon Kind="Refresh" Margin="-12,0,0,0"/>
-													</Button>
+													<controls:ButtonIcon Kind="Refresh" Margin="2"/>
 												</StackPanel>
 												<ListBox x:Name="cameras" Grid.Row="1" Grid.Column="0"/>
 											</StackPanel>
