@@ -1,0 +1,15 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:converters="clr-namespace:Hermes.Common.Converters"
+             mc:Ignorable="d" d:DesignWidth="25" d:DesignHeight="25"
+			 x:Name="Self"
+             x:Class="Hermes.Features.Controls.LEDControl">
+	<UserControl.Resources>
+		<converters:LEDStateToImageConverter x:Key="StateConverter" />
+	</UserControl.Resources>
+	<Grid RowDefinitions="*" ColumnDefinitions="*">
+		<Image Source="{Binding #Self.State, Converter={StaticResource StateConverter}}" Stretch="Uniform"/>
+	</Grid>
+</UserControl>

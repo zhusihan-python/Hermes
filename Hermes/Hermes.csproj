@@ -20,7 +20,15 @@
     <ItemGroup>
         <AvaloniaResource Include="Assets\**" />
         <None Remove="AppData\Assets\hermes-splash.png" />
+        <None Remove="AppData\Assets\LED_Disconnect.png" />
+        <None Remove="AppData\Assets\LED_Error.png" />
+        <None Remove="AppData\Assets\LED_Normal.png" />
+        <None Remove="AppData\Assets\LED_Warning.png" />
         <None Remove="AppData\Assets\logo-hermes.png" />
+        <AvaloniaResource Include="AppData\Assets\LED_Disconnect.png" />
+        <AvaloniaResource Include="AppData\Assets\LED_Error.png" />
+        <AvaloniaResource Include="AppData\Assets\LED_Normal.png" />
+        <AvaloniaResource Include="AppData\Assets\LED_Warning.png" />
         <AvaloniaResource Include="AppData\Assets\logo-hermes.png">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </AvaloniaResource>

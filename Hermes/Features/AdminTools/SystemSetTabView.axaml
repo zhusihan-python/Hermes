@@ -48,7 +48,9 @@
 											<TextBlock Text="三维臂检测" Grid.Row="4" Grid.Column="0"></TextBlock>
 											<Grid Grid.Row="5" Grid.Column="0" RowDefinitions="*,*" ColumnDefinitions="*,*,*,*,*,*">
 												<TextBlock Text="三维臂状态" Grid.Row="0" Grid.Column="0"></TextBlock>
+												<controls:LEDControl Grid.Row="0" Grid.Column="1" Width="20" Height="20"></controls:LEDControl>
 												<TextBlock Text="气动爪手状态" Grid.Row="0" Grid.Column="2"></TextBlock>
+												<controls:LEDControl Grid.Row="0" Grid.Column="3" Width="20" Height="20"></controls:LEDControl>
 											</Grid>
 										</Grid>										
 									</Border>
