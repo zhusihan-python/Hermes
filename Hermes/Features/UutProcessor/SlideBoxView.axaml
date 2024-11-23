@@ -7,7 +7,7 @@
              x:Class="Hermes.Features.UutProcessor.SlideBoxView"
 			 x:DataType="vm:SlideBoxViewModel">
 
-	<Border BorderBrush="#e6b113" BorderThickness="2" Background="White">
+	<Border BorderBrush="Gainsboro" BorderThickness="2" Background="White" Margin="3,2,3,2">
 		<ItemsControl ItemsSource="{Binding ItemList}" MinWidth="80" MinHeight="120">
 			<ItemsControl.ItemsPanel>
 				<ItemsPanelTemplate>

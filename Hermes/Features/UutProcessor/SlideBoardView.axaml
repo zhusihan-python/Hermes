@@ -11,8 +11,8 @@
 		<ItemsControl.ItemsPanel>
 			<ItemsPanelTemplate>
 				<Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto"
-					ColumnDefinitions="*,*,*,*,*,*,*,*,*,*,*,*,*,*,*"
-					ShowGridLines="True">
+					  ColumnDefinitions="*,*,*,*,*,*,*,*,*,*,*,*,*,*,*"
+					  >
 				</Grid>
 			</ItemsPanelTemplate>
 		</ItemsControl.ItemsPanel>
