@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,20 +20,36 @@ public class BaseRepository<T, TDbContext>(IDbContextFactory<TDbContext> context
     public async Task Delete(int id)
     {
         await using var ctx = await context.CreateDbContextAsync();
-        var q = await GetById(id);
-        if (q != null) ctx.Set<T>().Remove(q);
-        await ctx.SaveChangesAsync();
+        var entity = await ctx.Set<T>().FindAsync(id);
+        if (entity != null)
+        {
+            ctx.Set<T>().Remove(entity);
+            await ctx.SaveChangesAsync();
+        }
     }
 
     public async Task<List<T>> GetAll()
     {
         await using var ctx = await context.CreateDbContextAsync();
-        return ctx.Set<T>().Select(a => a).ToList();
+        return await ctx.Set<T>().ToListAsync();
+    }
+
+    public async Task<List<T>> GetAll(Func<IQueryable<T>, IQueryable<T>>? filter = null)
+    {
+        await using var ctx = await context.CreateDbContextAsync();
+        IQueryable<T> query = ctx.Set<T>();
+
+        if (filter != null)
+        {
+            query = filter(query);
+        }
+
+        return await query.ToListAsync();
     }
 
     public async Task<T?> GetById(int id)
     {
         await using var ctx = await context.CreateDbContextAsync();
-        return ctx.Set<T>().Find(id);
+        return await ctx.Set<T>().FindAsync(id);
     }
 }
