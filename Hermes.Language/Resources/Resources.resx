@@ -935,4 +935,28 @@
   <data name="enum_sorted" xml:space="preserve">
     <value>Sorted</value>
   </data>
+  <data name="enum_eighthours" xml:space="preserve">
+    <value>Eight hours</value>
+  </data>
+  <data name="enum_oneday" xml:space="preserve">
+    <value>One day</value>
+  </data>
+  <data name="enum_onehour" xml:space="preserve">
+    <value>One hour</value>
+  </data>
+  <data name="enum_sevendays" xml:space="preserve">
+    <value>Seven days</value>
+  </data>
+  <data name="msg_limited_to_500_logs" xml:space="preserve">
+    <value>To improve performance, only the last 500 records will be displayed</value>
+  </data>
+  <data name="txt_failed" xml:space="preserve">
+    <value>Failed</value>
+  </data>
+  <data name="txt_passed" xml:space="preserve">
+    <value>Passed</value>
+  </data>
+  <data name="txt_time_span" xml:space="preserve">
+    <value>Time span</value>
+  </data>
 </root>

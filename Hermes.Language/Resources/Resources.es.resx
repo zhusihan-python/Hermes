@@ -1,812 +1,960 @@
+<?xml version="1.0" encoding="utf-8"?>
 <root>
-    <resheader name="resmimetype">
-        <value>text/microsoft-resx</value>
-    </resheader>
-    <resheader name="version">
-        <value>1.3</value>
-    </resheader>
-    <resheader name="reader">
-        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-    </resheader>
-    <resheader name="writer">
-        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-    </resheader>
-    <data name="c_token_unlock_button" xml:space="preserve">
-        <value>Desbloquear</value>
-    </data>
-    <data name="c_token_watermark" xml:space="preserve">
-        <value>Token </value>
-    </data>
-    <data name="txt_start" xml:space="preserve">
-        <value>Iniciar</value>
-    </data>
-    <data name="txt_stop" xml:space="preserve">
-        <value>Detener</value>
-    </data>
-    <data name="txt_running" xml:space="preserve">
-        <value>Corriendo</value>
-    </data>
-    <data name="txt_stopped" xml:space="preserve">
-        <value>Detenido</value>
-    </data>
-    <data name="txt_status" xml:space="preserve">
-        <value>Estado</value>
-    </data>
-    <data name="c_sfc_simulator_response_mode" xml:space="preserve">
-        <value>Modo de respuesta</value>
-    </data>
-    <data name="c_main_window_tooltip_fullscreen" xml:space="preserve">
-        <value>Cambiar a modo pantalla completa</value>
-    </data>
-    <data name="c_main_window_tooltip_toggle_top_menu" xml:space="preserve">
-        <value>Click para mostrar u ocultar el menú superior</value>
-    </data>
-    <data name="txt_exit" xml:space="preserve">
-        <value>Salir</value>
-    </data>
-    <data name="txt_file" xml:space="preserve">
-        <value>Archivo</value>
-    </data>
-    <data name="txt_fullscreen" xml:space="preserve">
-        <value>Pantalla completa</value>
-    </data>
-    <data name="txt_general_settings" xml:space="preserve">
-        <value>Configuración general</value>
-    </data>
-    <data name="txt_settings" xml:space="preserve">
-        <value>Configuraciones</value>
-    </data>
-    <data name="txt_view" xml:space="preserve">
-        <value>Vista</value>
-    </data>
-    <data name="txt_hidden" xml:space="preserve">
-        <value>Ocultado</value>
-    </data>
-    <data name="txt_shown" xml:space="preserve">
-        <value>Mostrado</value>
-    </data>
-    <data name="txt_title_bar" xml:space="preserve">
-        <value>Barra de título</value>
-    </data>
-    <data name="txt_visible" xml:space="preserve">
-        <value>Visible </value>
-    </data>
-    <data name="c_main_window_title_bar_hidden" xml:space="preserve">
-        <value>Barra de tíitulos ocultada</value>
-    </data>
-    <data name="c_main_window_title_bar_hidden_msg" xml:space="preserve">
-        <value>La barra de tíitulos ha sido ocultada</value>
-    </data>
-    <data name="c_main_window_title_bar_visible_msg" xml:space="preserve">
-        <value>La barra de títulos ha sido mostrada</value>
-    </data>
-    <data name="c_main_window_title_bar_vissible" xml:space="preserve">
-        <value>Barra de títulos mostrada</value>
-    </data>
-    <data name="txt_dark_theme" xml:space="preserve">
-        <value>Tema oscuro</value>
-    </data>
-    <data name="txt_light_theme" xml:space="preserve">
-        <value>Tema claro</value>
-    </data>
-    <data name="txt_uut_processor" xml:space="preserve">
-        <value>Procesador de unidades</value>
-    </data>
-    <data name="txt_serial_number" xml:space="preserve">
-        <value>Número de serie</value>
-    </data>
-    <data name="txt_path" xml:space="preserve">
-        <value>Ruta</value>
-    </data>
-    <data name="enum_blocked" xml:space="preserve">
-        <value>Bloqueado</value>
-    </data>
-    <data name="enum_idle" xml:space="preserve">
-        <value>Idle </value>
-    </data>
-    <data name="enum_processing" xml:space="preserve">
-        <value>Procesando</value>
-    </data>
-    <data name="enum_stopped" xml:space="preserve">
-        <value>Detenido</value>
-    </data>
-    <data name="txt_repair" xml:space="preserve">
-        <value>Reparación</value>
-    </data>
-    <data name="txt_ok" xml:space="preserve">
-        <value>Ok </value>
-    </data>
-    <data name="txt_actions" xml:space="preserve">
-        <value>Acciones</value>
-    </data>
-    <data name="enum_ok" xml:space="preserve">
-        <value>Ok </value>
-    </data>
-    <data name="enum_timeout" xml:space="preserve">
-        <value>Timeout </value>
-    </data>
-    <data name="enum_wrongstation" xml:space="preserve">
-        <value>Estación incorrecta</value>
-    </data>
-    <data name="enum_unknown" xml:space="preserve">
-        <value>Desconocido</value>
-    </data>
-    <data name="c_sfc_sim_create_log_critical_fail" xml:space="preserve">
-        <value>Crear logfile de falla crítica </value>
-    </data>
-    <data name="c_sfc_sim_create_log_fail" xml:space="preserve">
-        <value>Crear logfile de falla</value>
-    </data>
-    <data name="c_sfc_sim_create_log_fail_with_custom_defect" xml:space="preserve">
-        <value>Crear logfile de falla con defecto personalizado</value>
-    </data>
-    <data name="c_sfc_sim_create_log_pass" xml:space="preserve">
-        <value>Crear logfile pass</value>
-    </data>
-    <data name="c_sfc_sim_create_log_pass_with_defect" xml:space="preserve">
-        <value>Crear logfile pass con defecto personalizado</value>
-    </data>
-    <data name="c_sfc_sim_show_pass" xml:space="preserve">
-        <value>Mostrar ventana de pass</value>
-    </data>
-    <data name="c_sfc_sim_show_repair" xml:space="preserve">
-        <value>Mostrar ventana de reparación</value>
-    </data>
-    <data name="c_sfc_sim_show_stop_machine" xml:space="preserve">
-        <value>Mostrar ventana paro de máquina</value>
-    </data>
-    <data name="c_sfc_sim_show_top_line" xml:space="preserve">
-        <value>Mostrar ventana paro de línea</value>
-    </data>
-    <data name="txt_defect" xml:space="preserve">
-        <value>Defecto</value>
-    </data>
-    <data name="txt_error_code" xml:space="preserve">
-        <value>Error code </value>
-    </data>
-    <data name="txt_error_flag" xml:space="preserve">
-        <value>Error flag </value>
-    </data>
-    <data name="txt_location" xml:space="preserve">
-        <value>Location </value>
-    </data>
-    <data name="c_settings_category_general" xml:space="preserve">
-        <value>General </value>
-    </data>
-    <data name="c_settings_group_common" xml:space="preserve">
-        <value>Común</value>
-    </data>
-    <data name="c_settings_category_uut_processor" xml:space="preserve">
-        <value>Procesador de unidades</value>
-    </data>
-    <data name="c_settings_description_language" xml:space="preserve">
-        <value>Idioma de la interfáz</value>
-    </data>
-    <data name="c_settings_group_paths" xml:space="preserve">
-        <value>Rutas</value>
-    </data>
-    <data name="c_settings_group_station" xml:space="preserve">
-        <value>Estación</value>
-    </data>
-    <data name="c_settings_group_time" xml:space="preserve">
-        <value>Tiempo</value>
-    </data>
-    <data name="c_settings_header_autostart_uut_processor" xml:space="preserve">
-        <value>Auto-iniciar procesador de unidades</value>
-    </data>
-    <data name="c_settings_header_backup_path" xml:space="preserve">
-        <value>Ruta de respaldos</value>
-    </data>
-    <data name="c_settings_header_input_file_ext" xml:space="preserve">
-        <value>Extensión del archivo de entrada</value>
-    </data>
-    <data name="c_settings_header_input_path" xml:space="preserve">
-        <value>Ruta de entrada</value>
-    </data>
-    <data name="c_settings_header_language" xml:space="preserve">
-        <value>Lenguaje</value>
-    </data>
-    <data name="c_settings_header_line_name" xml:space="preserve">
-        <value>Nombre de línea</value>
-    </data>
-    <data name="c_settings_header_logfile_type" xml:space="preserve">
-        <value>Tipo de logfile</value>
-    </data>
-    <data name="c_settings_header_machine_type" xml:space="preserve">
-        <value>Tipo de máquina</value>
-    </data>
-    <data name="c_settings_header_max_retries" xml:space="preserve">
-        <value>Reintentos máximos</value>
-    </data>
-    <data name="c_settings_header_send_repair_file" xml:space="preserve">
-        <value>Enviar unidad a reparación</value>
-    </data>
-    <data name="c_settings_header_sfc_path" xml:space="preserve">
-        <value>Ruta de Sfc</value>
-    </data>
-    <data name="c_settings_header_sfc_response_ext" xml:space="preserve">
-        <value>Extensión del archivo de respuesta</value>
-    </data>
-    <data name="c_settings_header_sfc_timeout" xml:space="preserve">
-        <value>Timeout de Sfc</value>
-    </data>
-    <data name="c_settings_header_station" xml:space="preserve">
-        <value>Estación</value>
-    </data>
-    <data name="c_settings_header_success_window_timeout" xml:space="preserve">
-        <value>Timeout de ventana ok o repair</value>
-    </data>
-    <data name="c_settings_header_wait_delay_ms" xml:space="preserve">
-        <value>Delay de espera (ms)</value>
-    </data>
-    <data name="c_settings_description_wait_delay_ms" xml:space="preserve">
-        <value>Delay general para esperar a que las acciones se ejecuten</value>
-    </data>
-    <data name="c_settings_description_max_retries" xml:space="preserve">
-        <value>Reintentos máximos al fallar el Sfc</value>
-    </data>
-    <data name="c_settings_description_success_window_timeout" xml:space="preserve">
-        <value>Cerrar ventana ok o reparación cuando transcurra este tiempo</value>
-    </data>
-    <data name="txt_account" xml:space="preserve">
-        <value>Cuenta</value>
-    </data>
-    <data name="txt_logging_in" xml:space="preserve">
-        <value>Ingresando...</value>
-    </data>
-    <data name="c_login_title" xml:space="preserve">
-        <value>Ingresar a Hermes</value>
-    </data>
-    <data name="txt_token" xml:space="preserve">
-        <value>Token </value>
-    </data>
-    <data name="txt_login" xml:space="preserve">
-        <value>Ingresar</value>
-    </data>
-    <data name="txt_logout" xml:space="preserve">
-        <value>Cerrar sesión</value>
-    </data>
-    <data name="txt_welcome" xml:space="preserve">
-        <value>Bienvenido</value>
-    </data>
-    <data name="enum_administrator" xml:space="preserve">
-        <value>Administrador</value>
-    </data>
-    <data name="enum_level1" xml:space="preserve">
-        <value>Nivel 1</value>
-    </data>
-    <data name="enum_level2" xml:space="preserve">
-        <value>Nivel 2</value>
-    </data>
-    <data name="enum_level3" xml:space="preserve">
-        <value>Nivel 3</value>
-    </data>
-    <data name="enum_level4" xml:space="preserve">
-        <value>Nivel 4</value>
-    </data>
-    <data name="enum_level5" xml:space="preserve">
-        <value>Nivel 5</value>
-    </data>
-    <data name="enum_level6" xml:space="preserve">
-        <value>Nivel 6</value>
-    </data>
-    <data name="enum_level7" xml:space="preserve">
-        <value>Nivel 7</value>
-    </data>
-    <data name="enum_level8" xml:space="preserve">
-        <value>Nivel 8</value>
-    </data>
-    <data name="enum_level9" xml:space="preserve">
-        <value>Nivel 9</value>
-    </data>
-    <data name="txt_employee" xml:space="preserve">
-        <value>Empleado</value>
-    </data>
-    <data name="txt_id" xml:space="preserve">
-        <value>Identificador</value>
-    </data>
-    <data name="txt_name" xml:space="preserve">
-        <value>Nombre</value>
-    </data>
-    <data name="txt_update_level" xml:space="preserve">
-        <value>Nivel de actualización</value>
-    </data>
-    <data name="txt_view_level" xml:space="preserve">
-        <value>Nivel de visualización</value>
-    </data>
-    <data name="txt_department" xml:space="preserve">
-        <value>Departamento</value>
-    </data>
-    <data name="msg_invalid_token" xml:space="preserve">
-        <value>El token ingresado no es válido</value>
-    </data>
-    <data name="txt_invalid_token" xml:space="preserve">
-        <value>Token no válido</value>
-    </data>
-    <data name="enum_aoi" xml:space="preserve">
-        <value>Ingeniería de aoi</value>
-    </data>
-    <data name="enum_ee" xml:space="preserve">
-        <value>Ingeniería de equipos</value>
-    </data>
-    <data name="enum_mfg" xml:space="preserve">
-        <value>Manufactura</value>
-    </data>
-    <data name="enum_qa" xml:space="preserve">
-        <value>Calidad</value>
-    </data>
-    <data name="msg_spi_repair" xml:space="preserve">
-        <value>Por favor barra la tarjeta e ingresela de nuevo a la impresora de pasta</value>
-    </data>
-    <data name="c_sfc_sim_show_repair_with_message" xml:space="preserve">
-        <value>Mostrar ventana de reparación con mensaje</value>
-    </data>
-    <data name="txt_loading" xml:space="preserve">
-        <value>Cargando...</value>
-    </data>
-    <data name="msg_change_wo" xml:space="preserve">
-        <value>Selecciona la work order</value>
-    </data>
-    <data name="msg_scan_2d_package" xml:space="preserve">
-        <value>Escanea el código 2D del paquete</value>
-    </data>
-    <data name="msg_scan_vendor" xml:space="preserve">
-        <value>Escanea el "vendor"</value>
-    </data>
-    <data name="txt_select_work_order" xml:space="preserve">
-        <value>Seleccionar work order</value>
-    </data>
-    <data name="txt_work_order" xml:space="preserve">
-        <value>Work order </value>
-    </data>
-    <data name="txt_add_package" xml:space="preserve">
-        <value>Agregar paquete</value>
-    </data>
-    <data name="txt_date" xml:space="preserve">
-        <value>Fecha</value>
-    </data>
-    <data name="txt_filter" xml:space="preserve">
-        <value>Filtro</value>
-    </data>
-    <data name="txt_from" xml:space="preserve">
-        <value>Desde</value>
-    </data>
-    <data name="txt_pkgid" xml:space="preserve">
-        <value>Pkgid</value>
-    </data>
-    <data name="txt_to" xml:space="preserve">
-        <value>Hasta</value>
-    </data>
-    <data name="txt_in_use" xml:space="preserve">
-        <value>En uso</value>
-    </data>
-    <data name="txt_loaded" xml:space="preserve">
-        <value>Cargado</value>
-    </data>
-    <data name="txt_scanned" xml:space="preserve">
-        <value>Escaneado</value>
-    </data>
-    <data name="txt_sfc_open" xml:space="preserve">
-        <value>SFC abierto </value>
-    </data>
-    <data name="txt_used" xml:space="preserve">
-        <value>Usado</value>
-    </data>
-    <data name="txt_last_refresh" xml:space="preserve">
-        <value>Última recarga</value>
-    </data>
-    <data name="enum_inuse" xml:space="preserve">
-        <value>En uso</value>
-    </data>
-    <data name="enum_open" xml:space="preserve">
-        <value>Abierto</value>
-    </data>
-    <data name="enum_scanned" xml:space="preserve">
-        <value>Escaneado</value>
-    </data>
-    <data name="enum_used" xml:space="preserve">
-        <value>Consumido</value>
-    </data>
-    <data name="enum_loaded" xml:space="preserve">
-        <value>Cargado</value>
-    </data>
-    <data name="msg_delete_package_from_hermes" xml:space="preserve">
-        <value>Eliminar paquete de Hermes</value>
-    </data>
-    <data name="msg_remove_package_load" xml:space="preserve">
-        <value>Remover paquete de cargadora</value>
-    </data>
-    <data name="msg_invalid_user_password" xml:space="preserve">
-        <value>Usuario/contraseña inválidos</value>
-    </data>
-    <data name="txt_error" xml:space="preserve">
-        <value>Error </value>
-    </data>
-    <data name="txt_level" xml:space="preserve">
-        <value>Nivel</value>
-    </data>
-    <data name="txt_password" xml:space="preserve">
-        <value>Contraseña</value>
-    </data>
-    <data name="txt_user" xml:space="preserve">
-        <value>Usuario</value>
-    </data>
-    <data name="txt_hermes" xml:space="preserve">
-        <value>Hermes </value>
-    </data>
-    <data name="txt_search_pkgid" xml:space="preserve">
-        <value>Buscar Pkgid</value>
-    </data>
-    <data name="txt_about" xml:space="preserve">
-        <value>Acerca de</value>
-    </data>
-    <data name="txt_sfc_simulator" xml:space="preserve">
-        <value>Simulador Sfc</value>
-    </data>
-    <data name="txt_search" xml:space="preserve">
-        <value>Buscar</value>
-    </data>
-    <data name="txt_all" xml:space="preserve">
-        <value>Todos</value>
-    </data>
-    <data name="msg_no_users_found" xml:space="preserve">
-        <value>No se encontraron usuarios</value>
-    </data>
-    <data name="txt_edit_user" xml:space="preserve">
-        <value>Editar usuario</value>
-    </data>
-    <data name="txt_add_user" xml:space="preserve">
-        <value>Agregar usuario</value>
-    </data>
-    <data name="txt_export_table_to_csv" xml:space="preserve">
-        <value>Exportar tabla a csv</value>
-    </data>
-    <data name="txt_remove_user" xml:space="preserve">
-        <value>Remover usuario</value>
-    </data>
-    <data name="txt_show_password" xml:space="preserve">
-        <value>Mostrar contraseña</value>
-    </data>
-    <data name="msg_user_added" xml:space="preserve">
-        <value>Usuario agregado</value>
-    </data>
-    <data name="msg_user_deleted" xml:space="preserve">
-        <value>Usuario borrado</value>
-    </data>
-    <data name="msg_user_not_found" xml:space="preserve">
-        <value>Usuario no encontrado</value>
-    </data>
-    <data name="msg_user_updated" xml:space="preserve">
-        <value>Usuario actualizado</value>
-    </data>
-    <data name="txt_success" xml:space="preserve">
-        <value>Éxito</value>
-    </data>
-    <data name="msg_user_already_exists" xml:space="preserve">
-        <value>El usuario ya se encuentra registrado</value>
-    </data>
-    <data name="msg_remove_user" xml:space="preserve">
-        <value>¿Realmente desea eliminar al usuario?</value>
-    </data>
-    <data name="txt_yes" xml:space="preserve">
-        <value>Sí</value>
-    </data>
-    <data name="txt_no" xml:space="preserve">
-        <value>No </value>
-    </data>
-    <data name="msg_invalid_department" xml:space="preserve">
-        <value>El usuario pertenece a un departamento diferente</value>
-    </data>
-    <data name="c_settings_header_station_id" xml:space="preserve">
-        <value>Id de la estación</value>
-    </data>
-    <data name="c_settings_header_database_server" xml:space="preserve">
-        <value>Servidor de la base de datos</value>
-    </data>
-    <data name="msg_user_without_permission" xml:space="preserve">
-        <value>El usuario no cuenta con permisos para realizar la acción.</value>
-    </data>
-    <data name="c_settings_header_scanner_com_port" xml:space="preserve">
-        <value>Escáner puerto com</value>
-    </data>
-    <data name="txt_com_port" xml:space="preserve">
-        <value>Puerto com</value>
-    </data>
-    <data name="txt_connected" xml:space="preserve">
-        <value>Conectado</value>
-    </data>
-    <data name="txt_disconnected" xml:space="preserve">
-        <value>Desconectado</value>
-    </data>
-    <data name="txt_scanner" xml:space="preserve">
-        <value>Escáner</value>
-    </data>
-    <data name="txt_trigger" xml:space="preserve">
-        <value>Trigger </value>
-    </data>
-    <data name="c_settings_header_gkg_tunnel_com_port" xml:space="preserve">
-        <value>Gkg puerto com túnel</value>
-    </data>
-    <data name="txt_connect" xml:space="preserve">
-        <value>Conectar</value>
-    </data>
-    <data name="txt_disconnect" xml:space="preserve">
-        <value>Desconectar</value>
-    </data>
-    <data name="txt_input" xml:space="preserve">
-        <value>Entrada</value>
-    </data>
-    <data name="txt_warning" xml:space="preserve">
-        <value>Advertencia</value>
-    </data>
-    <data name="txt_info" xml:space="preserve">
-        <value>Información</value>
-    </data>
-    <data name="msg_package_added_to_hermes" xml:space="preserve">
-        <value>Paquete agregado a Hermes</value>
-    </data>
-    <data name="msg_error_while_getting_info_from_db" xml:space="preserve">
-        <value>Ocurrió un error mientras se obtenía la información desde la base de datos</value>
-    </data>
-    <data name="msg_invalid_user_info" xml:space="preserve">
-        <value>Información de usuario inválido</value>
-    </data>
-    <data name="msg_package_not_found" xml:space="preserve">
-        <value>Paquete no encontrado</value>
-    </data>
-    <data name="msg_package_removed" xml:space="preserve">
-        <value>Paquete eliminado</value>
-    </data>
-    <data name="msg_package_removed_from_loaded" xml:space="preserve">
-        <value>Paquete eliminado de "cargados"</value>
-    </data>
-    <data name="msg_users_exported_to_csv" xml:space="preserve">
-        <value>Se han exportado todos los usuarios al archivo CSV</value>
-    </data>
-    <data name="msg_uut_processor_started" xml:space="preserve">
-        <value>Procesador de unidades iniciado</value>
-    </data>
-    <data name="msg_uut_processor_stopped" xml:space="preserve">
-        <value>Procesador de unidades detenido</value>
-    </data>
-    <data name="msg_work_order_not_found" xml:space="preserve">
-        <value>Workorder no encontrada</value>
-    </data>
-    <data name="txt_not_found" xml:space="preserve">
-        <value>No encontrado</value>
-    </data>
-    <data name="msg_success_task" xml:space="preserve">
-        <value>Tarea ejecutada con exito</value>
-    </data>
-    <data name="msg_sfc_timeout" xml:space="preserve">
-        <value>El servidor de SFC no responde, por favor contacte al departameto de IT</value>
-    </data>
-    <data name="msg_wrong_station" xml:space="preserve">
-        <value>El flujo de la unidad no corresponde a esta estación</value>
-    </data>
-    <data name="msg_sfc_unkown_error" xml:space="preserve">
-        <value>Error de SFC no identificado</value>
-    </data>
-    <data name="msg_scan_error" xml:space="preserve">
-        <value>Error al escanear el número de serie</value>
-    </data>
-    <data name="enum_scanerror" xml:space="preserve">
-        <value>Error de escaneo</value>
-    </data>
-    <data name="c_settings_description_additional_ok_sfc_response" xml:space="preserve">
-        <value>Cuando la respuesta del SFC copntenga este texto, se evaluará como ok</value>
-    </data>
-    <data name="txt_input_dummy" xml:space="preserve">
-        <value>Ingresar tarjeta dummy</value>
-    </data>
-    <data name="msg_wait_for_dummy_error" xml:space="preserve">
-        <value>Ocurrió un error al intentar ingresar la tarjeta dummy</value>
-    </data>
-    <data name="txt_dummy_board" xml:space="preserve">
-        <value>Tarjeta dummy</value>
-    </data>
-    <data name="msg_waiting_dummy_board" xml:space="preserve">
-        <value>Esperando tarjeta dummy</value>
-    </data>
-    <data name="txt_cancel" xml:space="preserve">
-        <value>Cancelar</value>
-    </data>
-    <data name="txt_sfc_response" xml:space="preserve">
-        <value>Respuesta de Sfc</value>
-    </data>
-    <data name="txt_test_status" xml:space="preserve">
-        <value>Resultado de la prueba</value>
-    </data>
-    <data name="txt_sfc_response_content" xml:space="preserve">
-        <value>Contenido de respuesta Sfc</value>
-    </data>
-    <data name="txt_created_at" xml:space="preserve">
-        <value>Fecha y hora</value>
-    </data>
-    <data name="enum_failed" xml:space="preserve">
-        <value>Falla</value>
-    </data>
-    <data name="enum_notran" xml:space="preserve">
-        <value>No ejecutado</value>
-    </data>
-    <data name="enum_passed" xml:space="preserve">
-        <value>Pasa</value>
-    </data>
-    <data name="msg_can_not_resed_uut" xml:space="preserve">
-        <value>No fue posible reenviar la unidad</value>
-    </data>
-    <data name="txt_edit" xml:space="preserve">
-        <value>Editar</value>
-    </data>
-    <data name="txt_refresh" xml:space="preserve">
-        <value>Refrescar</value>
-    </data>
-    <data name="txt_resend" xml:space="preserve">
-        <value>Reenviar</value>
-    </data>
-    <data name="txt_open_hermes_app" xml:space="preserve">
-        <value>Abrir app Hermes</value>
-    </data>
-    <data name="txt_add" xml:space="preserve">
-        <value>Agregar</value>
-    </data>
-    <data name="txt_delete" xml:space="preserve">
-        <value>Borrar</value>
-    </data>
-    <data name="txt_permission" xml:space="preserve">
-        <value>Permiso</value>
-    </data>
-    <data name="txt_admin_tools" xml:space="preserve">
-        <value>Herramientas admin</value>
-    </data>
-    <data name="msg_feature_permission_added" xml:space="preserve">
-        <value>Permiso de característica agregado correctamente</value>
-    </data>
-    <data name="msg_feature_permission_deleted" xml:space="preserve">
-        <value>Permiso de característica borrado correctamente.</value>
-    </data>
-    <data name="enum_automation" xml:space="preserve">
-        <value>Automatización</value>
-    </data>
-    <data name="enum_kitting" xml:space="preserve">
-        <value>Kitting </value>
-    </data>
-    <data name="enum_process" xml:space="preserve">
-        <value>Ingeniería de procesos</value>
-    </data>
-    <data name="enum_admin" xml:space="preserve">
-        <value>Administrador</value>
-    </data>
-    <data name="enum_engineer" xml:space="preserve">
-        <value>Ingeniero</value>
-    </data>
-    <data name="enum_operator" xml:space="preserve">
-        <value>Operador</value>
-    </data>
-    <data name="enum_operatorleader" xml:space="preserve">
-        <value>Operador líder</value>
-    </data>
-    <data name="enum_supervisor" xml:space="preserve">
-        <value>Supervisor </value>
-    </data>
-    <data name="enum_technician" xml:space="preserve">
-        <value>Técnico</value>
-    </data>
-    <data name="enum_engineerleader" xml:space="preserve">
-        <value>Ingeniero líder</value>
-    </data>
-    <data name="enum_freeaccess" xml:space="preserve">
-        <value>Acceso libre</value>
-    </data>
-    <data name="enum_exit" xml:space="preserve">
-        <value>Salir</value>
-    </data>
-    <data name="enum_openbender" xml:space="preserve">
-        <value>Abrir bender</value>
-    </data>
-    <data name="enum_opensettingsconfig" xml:space="preserve">
-        <value>Abrir configuración</value>
-    </data>
-    <data name="enum_opensfcsimulator" xml:space="preserve">
-        <value>Abrir simulador de sfc</value>
-    </data>
-    <data name="enum_openuutprocessor" xml:space="preserve">
-        <value>Abrir procesador de unidades</value>
-    </data>
-    <data name="enum_openuseradmin" xml:space="preserve">
-        <value>Abrir administrador de usuarios</value>
-    </data>
-    <data name="enum_restorespistop" xml:space="preserve">
-        <value>Cerrar ventana de paro en spi</value>
-    </data>
-    <data name="enum_restorescreenprinterstop" xml:space="preserve">
-        <value>Cerrar ventana de paro en impresora de pasta</value>
-    </data>
-    <data name="enum_restorelabelingmachinestop" xml:space="preserve">
-        <value>Cerrar ventana de paro en etiquetadora</value>
-    </data>
-    <data name="enum_restoreaoistop" xml:space="preserve">
-        <value>Cerrar ventana de paro en aoi</value>
-    </data>
-    <data name="enum_restoreaxistop" xml:space="preserve">
-        <value>Cerrar ventana de paro en axi</value>
-    </data>
-    <data name="enum_openlogs" xml:space="preserve">
-        <value>Abrir logs</value>
-    </data>
-    <data name="enum_openadmintools" xml:space="preserve">
-        <value>Abrir herramientas admin</value>
-    </data>
-    <data name="txt_minimum_level" xml:space="preserve">
-        <value>Nivel mínimo</value>
-    </data>
-    <data name="txt_features_permissions" xml:space="preserve">
-        <value>Permisos de características</value>
-    </data>
-    <data name="c_settings_group_features" xml:space="preserve">
-        <value>Características</value>
-    </data>
-    <data name="c_settings_header_enable_critical_location_stop" xml:space="preserve">
-        <value>Parar en falla crítica</value>
-    </data>
-    <data name="c_settings_header_enable_machine_stop" xml:space="preserve">
-        <value>Parar en falla de sfc</value>
-    </data>
-    <data name="c_settings_header_enable_rule_three_five_ten" xml:space="preserve">
-        <value>Parar con regla 3, 5, 10</value>
-    </data>
-    <data name="c_settings_description_enable_critical_location_stop" xml:space="preserve">
-        <value>Mostrar ventana de paro cuando se detecte una falla en un componente listado en la opción "Locaciones críticas".</value>
-    </data>
-    <data name="c_settings_description_enable_machine_stop" xml:space="preserve">
-        <value>Mostrar ventana de paro cuando ocurran un error en sfc o cuando se detecte un error de flujo.</value>
-    </data>
-    <data name="c_settings_description_enable_rule_three_five_ten" xml:space="preserve">
-        <value>Mostrar ventana de paro cuando se detecten 3 fallas iguales consecutivas o 5 fallas iguales en 1 hora o 10 fallas diferentes en 1 hora.</value>
-    </data>
-    <data name="c_settings_header_critical_locations" xml:space="preserve">
-        <value>Locaciones críticas</value>
-    </data>
-    <data name="c_settings_description_critical_locations" xml:space="preserve">
-        <value>Locaciones críticas separadas por coma</value>
-    </data>
-    <data name="c_settings_header_additional_ok_sfc_response" xml:space="preserve">
-        <value>Respuesta ok adicional en sfc</value>
-    </data>
-    <data name="txt_settings_changed" xml:space="preserve">
-        <value>La configuración ha sido modificada</value>
-    </data>
-    <data name="msg_settings_changed_needs_restart" xml:space="preserve">
-        <value>Por favor reinicie la aplicación para aplicar los cambios</value>
-    </data>
-    <data name="txt_later" xml:space="preserve">
-        <value>Después</value>
-    </data>
-    <data name="txt_restart" xml:space="preserve">
-        <value>Reiniciar</value>
-    </data>
-    <data name="msg_invalid_employee_id" xml:space="preserve">
-        <value>Numero de empleado inválido, éste debe contener sólo numeros.</value>
-    </data>
-    <data name="txt_user_management" xml:space="preserve">
-        <value>Gestión de usuario</value>
-    </data>
-    <data name="msg_no_updates_available" xml:space="preserve">
-        <value>No existen actualizaciones disponibles</value>
-    </data>
-    <data name="txt_check_for_updates" xml:space="preserve">
-        <value>Buscar actualizaciones</value>
-    </data>
-    <data name="msg_update_available" xml:space="preserve">
-        <value>Actualización disponible</value>
-    </data>
-    <data name="txt_update_available" xml:space="preserve">
-        <value>Existe una versión más reciente disponible</value>
-    </data>
-    <data name="c_settings_header_update_manager_url" xml:space="preserve">
-        <value>Url de actualización Hermes</value>
-    </data>
-    <data name="txt_update" xml:space="preserve">
-        <value>Actualizar</value>
-    </data>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="c_token_unlock_button" xml:space="preserve">
+    <value>Desbloquear</value>
+  </data>
+  <data name="c_token_watermark" xml:space="preserve">
+    <value>Token </value>
+  </data>
+  <data name="txt_start" xml:space="preserve">
+    <value>Iniciar</value>
+  </data>
+  <data name="txt_stop" xml:space="preserve">
+    <value>Detener</value>
+  </data>
+  <data name="txt_running" xml:space="preserve">
+    <value>Corriendo</value>
+  </data>
+  <data name="txt_stopped" xml:space="preserve">
+    <value>Detenido</value>
+  </data>
+  <data name="txt_status" xml:space="preserve">
+    <value>Estado</value>
+  </data>
+  <data name="c_sfc_simulator_response_mode" xml:space="preserve">
+    <value>Modo de respuesta</value>
+  </data>
+  <data name="txt_file" xml:space="preserve">
+    <value>Archivo</value>
+  </data>
+  <data name="txt_view" xml:space="preserve">
+    <value>Vista</value>
+  </data>
+  <data name="txt_exit" xml:space="preserve">
+    <value>Salir</value>
+  </data>
+  <data name="txt_fullscreen" xml:space="preserve">
+    <value>Pantalla completa</value>
+  </data>
+  <data name="txt_settings" xml:space="preserve">
+    <value>Configuraciones</value>
+  </data>
+  <data name="txt_general_settings" xml:space="preserve">
+    <value>Configuración general</value>
+  </data>
+  <data name="c_main_window_tooltip_fullscreen" xml:space="preserve">
+    <value>Cambiar a modo pantalla completa</value>
+  </data>
+  <data name="c_main_window_tooltip_toggle_top_menu" xml:space="preserve">
+    <value>Click para mostrar u ocultar el menú superior</value>
+  </data>
+  <data name="txt_title_bar" xml:space="preserve">
+    <value>Barra de título</value>
+  </data>
+  <data name="c_main_window_title_bar_vissible" xml:space="preserve">
+    <value>Barra de títulos mostrada</value>
+  </data>
+  <data name="txt_visible" xml:space="preserve">
+    <value>Visible </value>
+  </data>
+  <data name="txt_hidden" xml:space="preserve">
+    <value>Ocultado</value>
+  </data>
+  <data name="txt_shown" xml:space="preserve">
+    <value>Mostrado</value>
+  </data>
+  <data name="c_main_window_title_bar_hidden" xml:space="preserve">
+    <value>Barra de tíitulos ocultada</value>
+  </data>
+  <data name="c_main_window_title_bar_hidden_msg" xml:space="preserve">
+    <value>La barra de tíitulos ha sido ocultada</value>
+  </data>
+  <data name="c_main_window_title_bar_visible_msg" xml:space="preserve">
+    <value>La barra de títulos ha sido mostrada</value>
+  </data>
+  <data name="txt_dark_theme" xml:space="preserve">
+    <value>Tema oscuro</value>
+  </data>
+  <data name="txt_light_theme" xml:space="preserve">
+    <value>Tema claro</value>
+  </data>
+  <data name="txt_uut_processor" xml:space="preserve">
+    <value>Procesador de unidades</value>
+  </data>
+  <data name="txt_serial_number" xml:space="preserve">
+    <value>Número de serie</value>
+  </data>
+  <data name="txt_path" xml:space="preserve">
+    <value>Ruta</value>
+  </data>
+  <data name="enum_stopped" xml:space="preserve">
+    <value>Detenido</value>
+  </data>
+  <data name="enum_idle" xml:space="preserve">
+    <value>Idle </value>
+  </data>
+  <data name="enum_processing" xml:space="preserve">
+    <value>Procesando</value>
+  </data>
+  <data name="enum_blocked" xml:space="preserve">
+    <value>Bloqueado</value>
+  </data>
+  <data name="txt_repair" xml:space="preserve">
+    <value>Reparación</value>
+  </data>
+  <data name="txt_ok" xml:space="preserve">
+    <value>Ok </value>
+  </data>
+  <data name="txt_actions" xml:space="preserve">
+    <value>Acciones</value>
+  </data>
+  <data name="enum_ok" xml:space="preserve">
+    <value>Ok </value>
+  </data>
+  <data name="enum_timeout" xml:space="preserve">
+    <value>Timeout </value>
+  </data>
+  <data name="enum_wrongstation" xml:space="preserve">
+    <value>Estación incorrecta</value>
+  </data>
+  <data name="enum_unknown" xml:space="preserve">
+    <value>Desconocido</value>
+  </data>
+  <data name="c_sfc_sim_create_log_pass" xml:space="preserve">
+    <value>Crear logfile pass</value>
+  </data>
+  <data name="c_sfc_sim_create_log_pass_with_defect" xml:space="preserve">
+    <value>Crear logfile pass con defecto personalizado</value>
+  </data>
+  <data name="c_sfc_sim_create_log_fail" xml:space="preserve">
+    <value>Crear logfile de falla</value>
+  </data>
+  <data name="c_sfc_sim_create_log_critical_fail" xml:space="preserve">
+    <value>Crear logfile de falla crítica </value>
+  </data>
+  <data name="c_sfc_sim_create_log_fail_with_custom_defect" xml:space="preserve">
+    <value>Crear logfile de falla con defecto personalizado</value>
+  </data>
+  <data name="txt_defect" xml:space="preserve">
+    <value>Defecto</value>
+  </data>
+  <data name="txt_error_flag" xml:space="preserve">
+    <value>Error flag </value>
+  </data>
+  <data name="txt_location" xml:space="preserve">
+    <value>Location </value>
+  </data>
+  <data name="txt_error_code" xml:space="preserve">
+    <value>Error code </value>
+  </data>
+  <data name="c_sfc_sim_show_pass" xml:space="preserve">
+    <value>Mostrar ventana de pass</value>
+  </data>
+  <data name="c_sfc_sim_show_repair" xml:space="preserve">
+    <value>Mostrar ventana de reparación</value>
+  </data>
+  <data name="c_sfc_sim_show_stop_machine" xml:space="preserve">
+    <value>Mostrar ventana paro de máquina</value>
+  </data>
+  <data name="c_sfc_sim_show_top_line" xml:space="preserve">
+    <value>Mostrar ventana paro de línea</value>
+  </data>
+  <data name="c_settings_category_general" xml:space="preserve">
+    <value>General </value>
+  </data>
+  <data name="c_settings_group_common" xml:space="preserve">
+    <value>Común</value>
+  </data>
+  <data name="c_settings_header_language" xml:space="preserve">
+    <value>Lenguaje</value>
+  </data>
+  <data name="c_settings_description_language" xml:space="preserve">
+    <value>Idioma de la interfáz</value>
+  </data>
+  <data name="c_settings_category_uut_processor" xml:space="preserve">
+    <value>Procesador de unidades</value>
+  </data>
+  <data name="c_settings_group_station" xml:space="preserve">
+    <value>Estación</value>
+  </data>
+  <data name="c_settings_group_paths" xml:space="preserve">
+    <value>Rutas</value>
+  </data>
+  <data name="c_settings_group_time" xml:space="preserve">
+    <value>Tiempo</value>
+  </data>
+  <data name="c_settings_header_wait_delay_ms" xml:space="preserve">
+    <value>Delay de espera (ms)</value>
+  </data>
+  <data name="c_settings_header_station" xml:space="preserve">
+    <value>Estación</value>
+  </data>
+  <data name="c_settings_header_machine_type" xml:space="preserve">
+    <value>Tipo de máquina</value>
+  </data>
+  <data name="c_settings_header_line_name" xml:space="preserve">
+    <value>Nombre de línea</value>
+  </data>
+  <data name="c_settings_header_logfile_type" xml:space="preserve">
+    <value>Tipo de logfile</value>
+  </data>
+  <data name="c_settings_header_sfc_response_ext" xml:space="preserve">
+    <value>Extensión del archivo de respuesta</value>
+  </data>
+  <data name="c_settings_header_input_file_ext" xml:space="preserve">
+    <value>Extensión del archivo de entrada</value>
+  </data>
+  <data name="c_settings_header_send_repair_file" xml:space="preserve">
+    <value>Enviar unidad a reparación</value>
+  </data>
+  <data name="c_settings_header_autostart_uut_processor" xml:space="preserve">
+    <value>Auto-iniciar procesador de unidades</value>
+  </data>
+  <data name="c_settings_header_max_retries" xml:space="preserve">
+    <value>Reintentos máximos</value>
+  </data>
+  <data name="c_settings_header_input_path" xml:space="preserve">
+    <value>Ruta de entrada</value>
+  </data>
+  <data name="c_settings_header_backup_path" xml:space="preserve">
+    <value>Ruta de respaldos</value>
+  </data>
+  <data name="c_settings_header_sfc_path" xml:space="preserve">
+    <value>Ruta de Sfc</value>
+  </data>
+  <data name="c_settings_header_sfc_timeout" xml:space="preserve">
+    <value>Timeout de Sfc</value>
+  </data>
+  <data name="c_settings_header_success_window_timeout" xml:space="preserve">
+    <value>Timeout de ventana ok o repair</value>
+  </data>
+  <data name="c_settings_description_wait_delay_ms" xml:space="preserve">
+    <value>Delay general para esperar a que las acciones se ejecuten</value>
+  </data>
+  <data name="c_settings_description_max_retries" xml:space="preserve">
+    <value>Reintentos máximos al fallar el Sfc</value>
+  </data>
+  <data name="c_settings_description_success_window_timeout" xml:space="preserve">
+    <value>Cerrar ventana ok o reparación cuando transcurra este tiempo</value>
+  </data>
+  <data name="txt_account" xml:space="preserve">
+    <value>Cuenta</value>
+  </data>
+  <data name="txt_logging_in" xml:space="preserve">
+    <value>Ingresando...</value>
+  </data>
+  <data name="c_login_title" xml:space="preserve">
+    <value>Ingresar a Hermes</value>
+  </data>
+  <data name="txt_token" xml:space="preserve">
+    <value>Token </value>
+  </data>
+  <data name="txt_login" xml:space="preserve">
+    <value>Ingresar</value>
+  </data>
+  <data name="txt_logout" xml:space="preserve">
+    <value>Cerrar sesión</value>
+  </data>
+  <data name="txt_welcome" xml:space="preserve">
+    <value>Bienvenido</value>
+  </data>
+  <data name="txt_employee" xml:space="preserve">
+    <value>Empleado</value>
+  </data>
+  <data name="txt_id" xml:space="preserve">
+    <value>Identificador</value>
+  </data>
+  <data name="txt_name" xml:space="preserve">
+    <value>Nombre</value>
+  </data>
+  <data name="txt_view_level" xml:space="preserve">
+    <value>Nivel de visualización</value>
+  </data>
+  <data name="txt_update_level" xml:space="preserve">
+    <value>Nivel de actualización</value>
+  </data>
+  <data name="enum_level1" xml:space="preserve">
+    <value>Nivel 1</value>
+  </data>
+  <data name="enum_level2" xml:space="preserve">
+    <value>Nivel 2</value>
+  </data>
+  <data name="enum_level3" xml:space="preserve">
+    <value>Nivel 3</value>
+  </data>
+  <data name="enum_level4" xml:space="preserve">
+    <value>Nivel 4</value>
+  </data>
+  <data name="enum_level5" xml:space="preserve">
+    <value>Nivel 5</value>
+  </data>
+  <data name="enum_level6" xml:space="preserve">
+    <value>Nivel 6</value>
+  </data>
+  <data name="enum_level7" xml:space="preserve">
+    <value>Nivel 7</value>
+  </data>
+  <data name="enum_level8" xml:space="preserve">
+    <value>Nivel 8</value>
+  </data>
+  <data name="enum_level9" xml:space="preserve">
+    <value>Nivel 9</value>
+  </data>
+  <data name="enum_administrator" xml:space="preserve">
+    <value>Administrador</value>
+  </data>
+  <data name="txt_department" xml:space="preserve">
+    <value>Departamento</value>
+  </data>
+  <data name="msg_invalid_token" xml:space="preserve">
+    <value>El token ingresado no es válido</value>
+  </data>
+  <data name="txt_invalid_token" xml:space="preserve">
+    <value>Token no válido</value>
+  </data>
+  <data name="enum_ee" xml:space="preserve">
+    <value>Ingeniería de equipos</value>
+  </data>
+  <data name="enum_mfg" xml:space="preserve">
+    <value>Manufactura</value>
+  </data>
+  <data name="enum_qa" xml:space="preserve">
+    <value>Calidad</value>
+  </data>
+  <data name="enum_aoi" xml:space="preserve">
+    <value>Ingeniería de aoi</value>
+  </data>
+  <data name="msg_spi_repair" xml:space="preserve">
+    <value>Por favor barra la tarjeta e ingresela de nuevo a la impresora de pasta</value>
+  </data>
+  <data name="c_sfc_sim_show_repair_with_message" xml:space="preserve">
+    <value>Mostrar ventana de reparación con mensaje</value>
+  </data>
+  <data name="txt_loading" xml:space="preserve">
+    <value>Cargando...</value>
+  </data>
+  <data name="msg_change_wo" xml:space="preserve">
+    <value>Selecciona la work order</value>
+  </data>
+  <data name="msg_scan_2d_package" xml:space="preserve">
+    <value>Escanea el código 2D del paquete</value>
+  </data>
+  <data name="msg_scan_vendor" xml:space="preserve">
+    <value>Escanea el "vendor"</value>
+  </data>
+  <data name="txt_select_work_order" xml:space="preserve">
+    <value>Seleccionar work order</value>
+  </data>
+  <data name="txt_work_order" xml:space="preserve">
+    <value>Work order </value>
+  </data>
+  <data name="txt_add_package" xml:space="preserve">
+    <value>Agregar paquete</value>
+  </data>
+  <data name="txt_date" xml:space="preserve">
+    <value>Fecha</value>
+  </data>
+  <data name="txt_filter" xml:space="preserve">
+    <value>Filtro</value>
+  </data>
+  <data name="txt_pkgid" xml:space="preserve">
+    <value>Pkgid</value>
+  </data>
+  <data name="txt_from" xml:space="preserve">
+    <value>Desde</value>
+  </data>
+  <data name="txt_to" xml:space="preserve">
+    <value>Hasta</value>
+  </data>
+  <data name="txt_scanned" xml:space="preserve">
+    <value>Escaneado</value>
+  </data>
+  <data name="txt_sfc_open" xml:space="preserve">
+    <value>SFC abierto </value>
+  </data>
+  <data name="txt_loaded" xml:space="preserve">
+    <value>Cargado</value>
+  </data>
+  <data name="txt_used" xml:space="preserve">
+    <value>Usado</value>
+  </data>
+  <data name="txt_in_use" xml:space="preserve">
+    <value>En uso</value>
+  </data>
+  <data name="txt_last_refresh" xml:space="preserve">
+    <value>Última recarga</value>
+  </data>
+  <data name="enum_scanned" xml:space="preserve">
+    <value>Escaneado</value>
+  </data>
+  <data name="enum_open" xml:space="preserve">
+    <value>Abierto</value>
+  </data>
+  <data name="enum_inuse" xml:space="preserve">
+    <value>En uso</value>
+  </data>
+  <data name="enum_used" xml:space="preserve">
+    <value>Consumido</value>
+  </data>
+  <data name="enum_loaded" xml:space="preserve">
+    <value>Cargado</value>
+  </data>
+  <data name="msg_remove_package_load" xml:space="preserve">
+    <value>Remover paquete de cargadora</value>
+  </data>
+  <data name="msg_delete_package_from_hermes" xml:space="preserve">
+    <value>Eliminar paquete de Hermes</value>
+  </data>
+  <data name="txt_user" xml:space="preserve">
+    <value>Usuario</value>
+  </data>
+  <data name="txt_password" xml:space="preserve">
+    <value>Contraseña</value>
+  </data>
+  <data name="msg_invalid_user_password" xml:space="preserve">
+    <value>Usuario/contraseña inválidos</value>
+  </data>
+  <data name="txt_error" xml:space="preserve">
+    <value>Error </value>
+  </data>
+  <data name="txt_level" xml:space="preserve">
+    <value>Nivel</value>
+  </data>
+  <data name="txt_hermes" xml:space="preserve">
+    <value>Hermes </value>
+  </data>
+  <data name="txt_search_pkgid" xml:space="preserve">
+    <value>Buscar Pkgid</value>
+  </data>
+  <data name="txt_about" xml:space="preserve">
+    <value>Acerca de</value>
+  </data>
+  <data name="txt_sfc_simulator" xml:space="preserve">
+    <value>Simulador Sfc</value>
+  </data>
+  <data name="txt_search" xml:space="preserve">
+    <value>Buscar</value>
+  </data>
+  <data name="txt_all" xml:space="preserve">
+    <value>Todos</value>
+  </data>
+  <data name="msg_no_users_found" xml:space="preserve">
+    <value>No se encontraron usuarios</value>
+  </data>
+  <data name="txt_edit_user" xml:space="preserve">
+    <value>Editar usuario</value>
+  </data>
+  <data name="txt_add_user" xml:space="preserve">
+    <value>Agregar usuario</value>
+  </data>
+  <data name="txt_remove_user" xml:space="preserve">
+    <value>Remover usuario</value>
+  </data>
+  <data name="txt_export_table_to_csv" xml:space="preserve">
+    <value>Exportar tabla a csv</value>
+  </data>
+  <data name="txt_show_password" xml:space="preserve">
+    <value>Mostrar contraseña</value>
+  </data>
+  <data name="txt_success" xml:space="preserve">
+    <value>Éxito</value>
+  </data>
+  <data name="msg_user_updated" xml:space="preserve">
+    <value>Usuario actualizado</value>
+  </data>
+  <data name="msg_user_added" xml:space="preserve">
+    <value>Usuario agregado</value>
+  </data>
+  <data name="msg_user_not_found" xml:space="preserve">
+    <value>Usuario no encontrado</value>
+  </data>
+  <data name="msg_user_deleted" xml:space="preserve">
+    <value>Usuario borrado</value>
+  </data>
+  <data name="msg_user_already_exists" xml:space="preserve">
+    <value>El usuario ya se encuentra registrado</value>
+  </data>
+  <data name="msg_remove_user" xml:space="preserve">
+    <value>¿Realmente desea eliminar al usuario?</value>
+  </data>
+  <data name="txt_yes" xml:space="preserve">
+    <value>Sí</value>
+  </data>
+  <data name="txt_no" xml:space="preserve">
+    <value>No </value>
+  </data>
+  <data name="msg_invalid_department" xml:space="preserve">
+    <value>El usuario pertenece a un departamento diferente</value>
+  </data>
+  <data name="c_settings_header_station_id" xml:space="preserve">
+    <value>Id de la estación</value>
+  </data>
+  <data name="c_settings_header_database_server" xml:space="preserve">
+    <value>Servidor de la base de datos</value>
+  </data>
+  <data name="msg_user_without_permission" xml:space="preserve">
+    <value>El usuario no cuenta con permisos para realizar la acción.</value>
+  </data>
+  <data name="c_settings_header_scanner_com_port" xml:space="preserve">
+    <value>Escáner puerto com</value>
+  </data>
+  <data name="txt_connected" xml:space="preserve">
+    <value>Conectado</value>
+  </data>
+  <data name="txt_disconnected" xml:space="preserve">
+    <value>Desconectado</value>
+  </data>
+  <data name="txt_com_port" xml:space="preserve">
+    <value>Puerto com</value>
+  </data>
+  <data name="txt_trigger" xml:space="preserve">
+    <value>Trigger </value>
+  </data>
+  <data name="txt_scanner" xml:space="preserve">
+    <value>Escáner</value>
+  </data>
+  <data name="c_settings_header_gkg_tunnel_com_port" xml:space="preserve">
+    <value>Gkg puerto com túnel</value>
+  </data>
+  <data name="txt_connect" xml:space="preserve">
+    <value>Conectar</value>
+  </data>
+  <data name="txt_disconnect" xml:space="preserve">
+    <value>Desconectar</value>
+  </data>
+  <data name="txt_input" xml:space="preserve">
+    <value>Entrada</value>
+  </data>
+  <data name="txt_warning" xml:space="preserve">
+    <value>Advertencia</value>
+  </data>
+  <data name="txt_info" xml:space="preserve">
+    <value>Información</value>
+  </data>
+  <data name="msg_package_added_to_hermes" xml:space="preserve">
+    <value>Paquete agregado a Hermes</value>
+  </data>
+  <data name="msg_package_not_found" xml:space="preserve">
+    <value>Paquete no encontrado</value>
+  </data>
+  <data name="txt_not_found" xml:space="preserve">
+    <value>No encontrado</value>
+  </data>
+  <data name="msg_package_removed_from_loaded" xml:space="preserve">
+    <value>Paquete eliminado de "cargados"</value>
+  </data>
+  <data name="msg_package_removed" xml:space="preserve">
+    <value>Paquete eliminado</value>
+  </data>
+  <data name="msg_error_while_getting_info_from_db" xml:space="preserve">
+    <value>Ocurrió un error mientras se obtenía la información desde la base de datos</value>
+  </data>
+  <data name="msg_work_order_not_found" xml:space="preserve">
+    <value>Workorder no encontrada</value>
+  </data>
+  <data name="msg_invalid_user_info" xml:space="preserve">
+    <value>Información de usuario inválido</value>
+  </data>
+  <data name="msg_users_exported_to_csv" xml:space="preserve">
+    <value>Se han exportado todos los usuarios al archivo CSV</value>
+  </data>
+  <data name="msg_uut_processor_started" xml:space="preserve">
+    <value>Procesador de unidades iniciado</value>
+  </data>
+  <data name="msg_uut_processor_stopped" xml:space="preserve">
+    <value>Procesador de unidades detenido</value>
+  </data>
+  <data name="msg_success_task" xml:space="preserve">
+    <value>Tarea ejecutada con exito</value>
+  </data>
+  <data name="msg_sfc_timeout" xml:space="preserve">
+    <value>El servidor de SFC no responde, por favor contacte al departameto de IT</value>
+  </data>
+  <data name="msg_wrong_station" xml:space="preserve">
+    <value>El flujo de la unidad no corresponde a esta estación</value>
+  </data>
+  <data name="msg_sfc_unkown_error" xml:space="preserve">
+    <value>Error de SFC no identificado</value>
+  </data>
+  <data name="msg_scan_error" xml:space="preserve">
+    <value>Error al escanear el número de serie</value>
+  </data>
+  <data name="enum_scanerror" xml:space="preserve">
+    <value>Error de escaneo</value>
+  </data>
+  <data name="c_settings_header_additional_ok_sfc_response" xml:space="preserve">
+    <value>Respuesta ok adicional en sfc</value>
+  </data>
+  <data name="c_settings_description_additional_ok_sfc_response" xml:space="preserve">
+    <value>Cuando la respuesta del SFC copntenga este texto, se evaluará como ok</value>
+  </data>
+  <data name="txt_input_dummy" xml:space="preserve">
+    <value>Ingresar tarjeta dummy</value>
+  </data>
+  <data name="msg_wait_for_dummy_error" xml:space="preserve">
+    <value>Ocurrió un error al intentar ingresar la tarjeta dummy</value>
+  </data>
+  <data name="txt_dummy_board" xml:space="preserve">
+    <value>Tarjeta dummy</value>
+  </data>
+  <data name="msg_waiting_dummy_board" xml:space="preserve">
+    <value>Esperando tarjeta dummy</value>
+  </data>
+  <data name="txt_cancel" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="txt_sfc_response" xml:space="preserve">
+    <value>Respuesta de Sfc</value>
+  </data>
+  <data name="txt_test_status" xml:space="preserve">
+    <value>Resultado de la prueba</value>
+  </data>
+  <data name="txt_sfc_response_content" xml:space="preserve">
+    <value>Contenido de respuesta Sfc</value>
+  </data>
+  <data name="txt_created_at" xml:space="preserve">
+    <value>Fecha y hora</value>
+  </data>
+  <data name="enum_failed" xml:space="preserve">
+    <value>Falla</value>
+  </data>
+  <data name="enum_passed" xml:space="preserve">
+    <value>Pasa</value>
+  </data>
+  <data name="enum_notran" xml:space="preserve">
+    <value>No ejecutado</value>
+  </data>
+  <data name="msg_can_not_resed_uut" xml:space="preserve">
+    <value>No fue posible reenviar la unidad</value>
+  </data>
+  <data name="txt_edit" xml:space="preserve">
+    <value>Editar</value>
+  </data>
+  <data name="txt_resend" xml:space="preserve">
+    <value>Reenviar</value>
+  </data>
+  <data name="txt_refresh" xml:space="preserve">
+    <value>Refrescar</value>
+  </data>
+  <data name="txt_open_hermes_app" xml:space="preserve">
+    <value>Abrir app Hermes</value>
+  </data>
+  <data name="txt_add" xml:space="preserve">
+    <value>Agregar</value>
+  </data>
+  <data name="txt_delete" xml:space="preserve">
+    <value>Borrar</value>
+  </data>
+  <data name="txt_permission" xml:space="preserve">
+    <value>Permiso</value>
+  </data>
+  <data name="txt_admin_tools" xml:space="preserve">
+    <value>Herramientas admin</value>
+  </data>
+  <data name="msg_feature_permission_added" xml:space="preserve">
+    <value>Permiso de característica agregado correctamente</value>
+  </data>
+  <data name="msg_feature_permission_deleted" xml:space="preserve">
+    <value>Permiso de característica borrado correctamente.</value>
+  </data>
+  <data name="enum_automation" xml:space="preserve">
+    <value>Automatización</value>
+  </data>
+  <data name="enum_kitting" xml:space="preserve">
+    <value>Kitting </value>
+  </data>
+  <data name="enum_process" xml:space="preserve">
+    <value>Ingeniería de procesos</value>
+  </data>
+  <data name="enum_admin" xml:space="preserve">
+    <value>Administrador</value>
+  </data>
+  <data name="enum_operator" xml:space="preserve">
+    <value>Operador</value>
+  </data>
+  <data name="enum_operatorleader" xml:space="preserve">
+    <value>Operador líder</value>
+  </data>
+  <data name="enum_supervisor" xml:space="preserve">
+    <value>Supervisor </value>
+  </data>
+  <data name="enum_technician" xml:space="preserve">
+    <value>Técnico</value>
+  </data>
+  <data name="enum_engineer" xml:space="preserve">
+    <value>Ingeniero</value>
+  </data>
+  <data name="enum_engineerleader" xml:space="preserve">
+    <value>Ingeniero líder</value>
+  </data>
+  <data name="enum_freeaccess" xml:space="preserve">
+    <value>Acceso libre</value>
+  </data>
+  <data name="enum_exit" xml:space="preserve">
+    <value>Salir</value>
+  </data>
+  <data name="enum_openbender" xml:space="preserve">
+    <value>Abrir bender</value>
+  </data>
+  <data name="enum_opensettingsconfig" xml:space="preserve">
+    <value>Abrir configuración</value>
+  </data>
+  <data name="enum_opensfcsimulator" xml:space="preserve">
+    <value>Abrir simulador de sfc</value>
+  </data>
+  <data name="enum_openuutprocessor" xml:space="preserve">
+    <value>Abrir procesador de unidades</value>
+  </data>
+  <data name="enum_openuseradmin" xml:space="preserve">
+    <value>Abrir administrador de usuarios</value>
+  </data>
+  <data name="enum_restorespistop" xml:space="preserve">
+    <value>Cerrar ventana de paro en spi</value>
+  </data>
+  <data name="enum_restorescreenprinterstop" xml:space="preserve">
+    <value>Cerrar ventana de paro en impresora de pasta</value>
+  </data>
+  <data name="enum_restorelabelingmachinestop" xml:space="preserve">
+    <value>Cerrar ventana de paro en etiquetadora</value>
+  </data>
+  <data name="enum_restoreaoistop" xml:space="preserve">
+    <value>Cerrar ventana de paro en aoi</value>
+  </data>
+  <data name="enum_restoreaxistop" xml:space="preserve">
+    <value>Cerrar ventana de paro en axi</value>
+  </data>
+  <data name="enum_openlogs" xml:space="preserve">
+    <value>Abrir logs</value>
+  </data>
+  <data name="enum_openadmintools" xml:space="preserve">
+    <value>Abrir herramientas admin</value>
+  </data>
+  <data name="txt_minimum_level" xml:space="preserve">
+    <value>Nivel mínimo</value>
+  </data>
+  <data name="txt_features_permissions" xml:space="preserve">
+    <value>Permisos de características</value>
+  </data>
+  <data name="c_settings_header_enable_critical_location_stop" xml:space="preserve">
+    <value>Parar en falla crítica</value>
+  </data>
+  <data name="c_settings_description_enable_critical_location_stop" xml:space="preserve">
+    <value>Mostrar ventana de paro cuando se detecte una falla en un componente listado en la opción "Locaciones críticas".</value>
+  </data>
+  <data name="c_settings_group_features" xml:space="preserve">
+    <value>Características</value>
+  </data>
+  <data name="c_settings_header_enable_rule_three_five_ten" xml:space="preserve">
+    <value>Parar con regla 3, 5, 10</value>
+  </data>
+  <data name="c_settings_description_enable_machine_stop" xml:space="preserve">
+    <value>Mostrar ventana de paro cuando ocurran un error en sfc o cuando se detecte un error de flujo.</value>
+  </data>
+  <data name="c_settings_header_enable_machine_stop" xml:space="preserve">
+    <value>Parar en falla de sfc</value>
+  </data>
+  <data name="c_settings_description_enable_rule_three_five_ten" xml:space="preserve">
+    <value>Mostrar ventana de paro cuando se detecten 3 fallas iguales consecutivas o 5 fallas iguales en 1 hora o 10 fallas diferentes en 1 hora.</value>
+  </data>
+  <data name="c_settings_header_critical_locations" xml:space="preserve">
+    <value>Locaciones críticas</value>
+  </data>
+  <data name="c_settings_description_critical_locations" xml:space="preserve">
+    <value>Locaciones críticas separadas por coma</value>
+  </data>
+  <data name="txt_settings_changed" xml:space="preserve">
+    <value>La configuración ha sido modificada</value>
+  </data>
+  <data name="msg_settings_changed_needs_restart" xml:space="preserve">
+    <value>Por favor reinicie la aplicación para aplicar los cambios</value>
+  </data>
+  <data name="txt_later" xml:space="preserve">
+    <value>Después</value>
+  </data>
+  <data name="txt_restart" xml:space="preserve">
+    <value>Reiniciar</value>
+  </data>
+  <data name="msg_invalid_employee_id" xml:space="preserve">
+    <value>Numero de empleado inválido, éste debe contener sólo numeros.</value>
+  </data>
+  <data name="txt_user_management" xml:space="preserve">
+    <value>Gestión de usuario</value>
+  </data>
+  <data name="msg_no_updates_available" xml:space="preserve">
+    <value>No existen actualizaciones disponibles</value>
+  </data>
+  <data name="txt_check_for_updates" xml:space="preserve">
+    <value>Buscar actualizaciones</value>
+  </data>
+  <data name="txt_update_available" xml:space="preserve">
+    <value>Existe una versión más reciente disponible</value>
+  </data>
+  <data name="msg_update_available" xml:space="preserve">
+    <value>Actualización disponible</value>
+  </data>
+  <data name="c_settings_header_update_manager_url" xml:space="preserve">
+    <value>Url de actualización Hermes</value>
+  </data>
+  <data name="txt_update" xml:space="preserve">
+    <value>Actualizar</value>
+  </data>
+  <data name="enum_empty" xml:space="preserve">
+    <value>Vacío</value>
+  </data>
+  <data name="enum_not_recognized" xml:space="preserve">
+    <value>No se puede identificar</value>
+  </data>
+  <data name="enum_not_sorted" xml:space="preserve">
+    <value>No ordenado</value>
+  </data>
+  <data name="enum_recognized" xml:space="preserve">
+    <value>Identificación</value>
+  </data>
+  <data name="enum_slide_blocked" xml:space="preserve">
+    <value>Bloqueo deslizante</value>
+  </data>
+  <data name="enum_sorted" xml:space="preserve">
+    <value>Ordenado</value>
+  </data>
+  <data name="enum_eighthours" xml:space="preserve">
+    <value>Ocho horas</value>
+  </data>
+  <data name="enum_oneday" xml:space="preserve">
+    <value>Un día</value>
+  </data>
+  <data name="enum_onehour" xml:space="preserve">
+    <value>Una hora</value>
+  </data>
+  <data name="enum_sevendays" xml:space="preserve">
+    <value>Siete días</value>
+  </data>
+  <data name="msg_limited_to_500_logs" xml:space="preserve">
+    <value>Para mejorar el rendimiento sólo se mostrarán los últimos 500 registros</value>
+  </data>
+  <data name="txt_failed" xml:space="preserve">
+    <value>Falló</value>
+  </data>
+  <data name="txt_passed" xml:space="preserve">
+    <value>Pasó</value>
+  </data>
+  <data name="txt_time_span" xml:space="preserve">
+    <value>Periodo de tiempo</value>
+  </data>
 </root>

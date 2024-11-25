@@ -675,6 +675,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Eight hours 的本地化字符串。
+        /// </summary>
+        public static string enum_eighthours {
+            get {
+                return ResourceManager.GetString("enum_eighthours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Empty 的本地化字符串。
         /// </summary>
         public static string enum_empty {
@@ -891,6 +900,24 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 One day 的本地化字符串。
+        /// </summary>
+        public static string enum_oneday {
+            get {
+                return ResourceManager.GetString("enum_oneday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 One hour 的本地化字符串。
+        /// </summary>
+        public static string enum_onehour {
+            get {
+                return ResourceManager.GetString("enum_onehour", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Open 的本地化字符串。
         /// </summary>
         public static string enum_open {
@@ -1089,6 +1116,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Seven days 的本地化字符串。
+        /// </summary>
+        public static string enum_sevendays {
+            get {
+                return ResourceManager.GetString("enum_sevendays", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Slide blocked 的本地化字符串。
         /// </summary>
         public static string enum_slide_blocked {
@@ -1265,6 +1301,15 @@ namespace Hermes.Language {
         public static string msg_invalid_user_password {
             get {
                 return ResourceManager.GetString("msg_invalid_user_password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 To improve performance, only the last 500 records will be displayed 的本地化字符串。
+        /// </summary>
+        public static string msg_limited_to_500_logs {
+            get {
+                return ResourceManager.GetString("msg_limited_to_500_logs", resourceCulture);
             }
         }
         
@@ -1809,6 +1854,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Failed 的本地化字符串。
+        /// </summary>
+        public static string txt_failed {
+            get {
+                return ResourceManager.GetString("txt_failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Feature Permissions 的本地化字符串。
         /// </summary>
         public static string txt_features_permissions {
@@ -2079,6 +2133,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Passed 的本地化字符串。
+        /// </summary>
+        public static string txt_passed {
+            get {
+                return ResourceManager.GetString("txt_passed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Password 的本地化字符串。
         /// </summary>
         public static string txt_password {
@@ -2345,6 +2408,15 @@ namespace Hermes.Language {
         public static string txt_test_status {
             get {
                 return ResourceManager.GetString("txt_test_status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Time span 的本地化字符串。
+        /// </summary>
+        public static string txt_time_span {
+            get {
+                return ResourceManager.GetString("txt_time_span", resourceCulture);
             }
         }
         

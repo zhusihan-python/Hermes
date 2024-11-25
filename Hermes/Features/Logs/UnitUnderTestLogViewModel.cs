@@ -9,7 +9,6 @@ using Hermes.Repositories;
 using Hermes.Services;
 using Hermes.Types;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
@@ -27,10 +26,13 @@ public partial class UnitUnderTestLogViewModel : ViewModelBase
 
     [ObservableProperty] private SfcResponseType? _selectedSfcResponse;
     [ObservableProperty] private StatusType? _selectedTestStatus;
+    [ObservableProperty] private TimeSpanType? _selectedTimeSpan = TimeSpanType.OneDay;
     [ObservableProperty] private string _serialNumberFilter = "";
+    [ObservableProperty] private string _sfcResponseContentFilter = "";
     public RangeObservableCollection<UnitUnderTest> UnitsUnderTest { get; set; } = [];
     public static IEnumerable<SfcResponseType?> SfcResponseOptions => NullableExtensions.GetValues<SfcResponseType>();
     public static IEnumerable<StatusType?> StatusOptions => NullableExtensions.GetValues<StatusType>();
+    public static IEnumerable<TimeSpanType?> TimeSpanOptions => NullableExtensions.GetValues<TimeSpanType>();
 
     private readonly FileService _fileService;
     private readonly UnitUnderTestRepository _unitUnderTestRepository;
@@ -41,8 +43,6 @@ public partial class UnitUnderTestLogViewModel : ViewModelBase
     {
         _fileService = fileService;
         _unitUnderTestRepository = unitUnderTestRepository;
-
-        LoadLogsAsync().ConfigureAwait(false);
     }
 
     private async Task LoadLogsAsync()
@@ -110,16 +110,20 @@ public partial class UnitUnderTestLogViewModel : ViewModelBase
         SerialNumberFilter = "";
         SelectedTestStatus = null;
         SelectedSfcResponse = null;
+        SfcResponseContentFilter = "";
+        SelectedTimeSpan = TimeSpanType.OneDay;
         await LoadLogsAsync();
     }
 
     [RelayCommand]
     private async Task Search()
     {
-        var units = await _unitUnderTestRepository.GetFromLast24HrsUnits(
-            string.IsNullOrWhiteSpace(SerialNumberFilter) ? null : SerialNumberFilter,
+        var units = await _unitUnderTestRepository.GetLastUnits(
+            SerialNumberFilter,
             SelectedTestStatus,
-            SelectedSfcResponse);
+            SelectedSfcResponse,
+            SfcResponseContentFilter,
+            SelectedTimeSpan == null ? null : TimeSpan.FromHours((int)SelectedTimeSpan));
 
         UnitsUnderTest.Clear();
         UnitsUnderTest.AddRange(units);

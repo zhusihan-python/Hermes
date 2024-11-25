@@ -32,13 +32,24 @@ public class UnitUnderTestRepository(IDbContextFactory<HermesLocalContext> conte
             .ToListAsync();
     }
 
-    public async Task<List<UnitUnderTest>> GetFromLast24HrsUnits(
+    public async Task<List<UnitUnderTest>> GetLastUnits(
         string? serialNumber = null,
         StatusType? statusType = null,
-        SfcResponseType? sfcResponseType = null)
+        SfcResponseType? sfcResponseType = null,
+        string? sfcResponseContent = null,
+        TimeSpan? lastTimeSpan = null,
+        int limit = 500)
     {
+        if (!string.IsNullOrWhiteSpace(serialNumber) || !string.IsNullOrWhiteSpace(sfcResponseContent))
+        {
+            lastTimeSpan = null;
+        }
+
         var ctx = await _context.CreateDbContextAsync();
-        var query = GetAllLast24HrsUnitsQuery(ctx);
+        var query = GetAllUnitsFromLastTimeStanQuery(
+            ctx,
+            lastTimeSpan,
+            limit);
         if (serialNumber != null)
         {
             query = query.Where(x => EF.Functions.Like(x.SerialNumber, $"%{serialNumber}%"));
@@ -54,22 +65,39 @@ public class UnitUnderTestRepository(IDbContextFactory<HermesLocalContext> conte
             query = query.Where(x => x.SfcResponse != null && x.SfcResponse.Type == sfcResponseType);
         }
 
+        if (sfcResponseContent != null)
+        {
+            query = query.Where(x =>
+                x.SfcResponse != null && EF.Functions.Like(x.SfcResponse.Content, $"%{sfcResponseContent}%"));
+        }
+
         return await query.ToListAsync();
     }
 
     public async Task<List<UnitUnderTest>> GetAllLast24HrsUnits()
     {
         await using var ctx = await _context.CreateDbContextAsync();
-        return await GetAllLast24HrsUnitsQuery(ctx)
+        return await GetAllUnitsFromLastTimeStanQuery(ctx, TimeSpan.FromHours(24))
             .ToListAsync();
     }
 
-    private IQueryable<UnitUnderTest> GetAllLast24HrsUnitsQuery(HermesLocalContext ctx)
+    private IQueryable<UnitUnderTest> GetAllUnitsFromLastTimeStanQuery(
+        HermesLocalContext ctx,
+        TimeSpan? lastTimeSpan = null,
+        int limit = 500)
     {
-        return ctx.Set<UnitUnderTest>()
+        var query = ctx.Set<UnitUnderTest>()
             .Include(x => x.SfcResponse)
-            .Where(x => x.CreatedAt >= DateTime.Now.AddDays(-1))
-            .OrderByDescending(x => x.CreatedAt);
+            .OrderByDescending(x => x.CreatedAt)
+            .Take(limit);
+
+        if (lastTimeSpan != null)
+        {
+            var minDatetime = DateTime.Now - lastTimeSpan.Value;
+            query = query.Where(x => x.CreatedAt >= minDatetime);
+        }
+
+        return query;
     }
 
     public async Task<List<UnitUnderTest>> FindBySerialNumberAsync(string serialNumber)
