@@ -41,12 +41,12 @@
 
     <ItemGroup>
         <PackageReference Include="AutoMapper" Version="13.0.1" />
-        <PackageReference Include="Avalonia" Version="11.2.1" />
-        <PackageReference Include="Avalonia.Desktop" Version="11.2.1" />
-        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.1" />
-        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.1" />
+        <PackageReference Include="Avalonia" Version="11.2.2" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.2.2" />
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.2" />
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.2" />
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.2.1" />
+        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.2.2" />
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0-preview2" />
         <PackageReference Include="ConfigFactory" Version="0.4.2" />
         <PackageReference Include="ConfigFactory.Avalonia" Version="0.4.2" />
@@ -68,7 +68,7 @@
         <PackageReference Include="R3Extensions.Avalonia" Version="1.2.9" />
         <PackageReference Include="SukiUI" Version="6.0.0-rc" />
         <PackageReference Include="System.IO.Ports" Version="9.0.0" />
-        <PackageReference Include="Velopack" Version="0.0.898-g95f44c6" />
+        <PackageReference Include="Velopack" Version="0.0.942" />
     </ItemGroup>
 
     <ItemGroup>
@@ -91,6 +91,9 @@
         <Compile Update="Features\MainWindowView.axaml.cs">
             <DependentUpon>MainWindowView.axaml</DependentUpon>
             <SubType>Code</SubType>
+        </Compile>
+        <Compile Update="Features\UutProcessor\SlideBoxDetailView.axaml.cs">
+          <DependentUpon>SlideBoxDetailView.axaml</DependentUpon>
         </Compile>
         <Compile Update="Features\UutProcessor\StopView.axaml.cs">
             <DependentUpon>StopView.axaml</DependentUpon>
