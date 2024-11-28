@@ -1,0 +1,109 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:controls="clr-namespace:Hermes.Features.Controls"
+			 xmlns:converters="clr-namespace:Hermes.Common.Converters"
+			 xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+             mc:Ignorable="d" d:DesignWidth="1300" d:DesignHeight="600"
+			 xmlns:sukiUi="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+			 xmlns:local="clr-namespace:Hermes.Features.Logs"
+             x:Class="Hermes.Features.Logs.SystemLogTabView"
+			 x:DataType="local:SystemLogTabViewModel">
+	<UserControl.Styles>
+		<Style Selector="DataGridColumnHeader">
+			<Setter Property="HorizontalContentAlignment" Value="Center" />
+		</Style>
+	</UserControl.Styles>
+
+	<sukiUi:GlassCard Margin="10"
+                      HorizontalAlignment="Stretch">
+
+		<Grid Margin="0 20"
+              RowDefinitions="Auto, *, Auto"
+              ColumnDefinitions="*, Auto">
+
+			<!-- Filters -->
+			<WrapPanel Grid.Row="0"
+                        Grid.Column="0"
+                        Orientation="Horizontal">
+
+				<controls:TextBoxWithTitle Name="SerialNumberFilter"
+                                           Width="200"
+                                           VerticalAlignment="Bottom"
+                                           KeyBindings=""
+                                           Title="内容"
+                                           Text="{Binding SerialNumberFilter, Mode=TwoWay}">
+					<controls:TextBoxWithTitle.KeyBindings>
+						<KeyBinding Gesture="Enter" Command="{Binding SearchCommand}" />
+					</controls:TextBoxWithTitle.KeyBindings>
+				</controls:TextBoxWithTitle>
+
+				<controls:ComboBoxEnum Width="200"
+                                       Title="日志级别"
+                                       ItemsSource="{Binding SfcResponseOptions}"
+                                       SelectedItem="{Binding SelectedSfcResponse, Mode=TwoWay}" />
+
+				<controls:ComboBoxEnum Width="200"
+                                       Title="日期"
+                                       ItemsSource="{Binding TimeSpanOptions}"
+                                       SelectedItem="{Binding SelectedTimeSpan, Mode=TwoWay}" />
+
+				<controls:ButtonIcon VerticalAlignment="Bottom"
+                                     Margin="0 0 0 5"
+                                     Command="{Binding SearchCommand}"
+                                     Kind="Search" />
+			</WrapPanel>
+
+			<!-- Actions -->
+			<StackPanel Grid.Row="0"
+                        Grid.Column="1"
+                        Margin="20 0 0 5"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Bottom"
+                        HorizontalAlignment="Right"
+                        Spacing="5">
+
+				<controls:ButtonIcon Kind="Refresh"
+                                     Command="{Binding RefreshCommand}"
+                                     ToolTip.Tip="刷新" />
+			</StackPanel>
+
+			<!-- Grid -->
+			<ScrollViewer Grid.Row="1"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          HorizontalScrollBarVisibility="Auto"
+                          VerticalScrollBarVisibility="Auto">
+
+				<DataGrid AutoGenerateColumns="False"
+                          Name="DataGridLogs"
+                          ItemsSource="{Binding UnitsUnderTest}"
+                          IsReadOnly="True"
+                          HeadersVisibility="Column"
+                          CanUserResizeColumns="True">
+
+					<DataGrid.Columns>
+						<DataGridTextColumn Header="日志级别"
+                                            Binding="{Binding SerialNumber}" />
+
+						<DataGridTextColumn Header="内容"
+                                            Binding="{Binding IsPass,  Converter={x:Static converters:BoolToTextConverters.PassFail}}" />
+
+						<DataGridTextColumn Header="创建日期"
+                                            Binding="{Binding CreatedAt}" />
+					</DataGrid.Columns>
+
+					<i:Interaction.Behaviors>
+						<ia:EventTriggerBehavior EventName="SelectionChanged" SourceObject="DataGridLogs">
+							<ia:InvokeCommandAction
+                                Command="{Binding UnitUnderTestSelectedCommand}"
+                                CommandParameter="{Binding #DataGridLogs.SelectedItem}" />
+						</ia:EventTriggerBehavior>
+					</i:Interaction.Behaviors>
+				</DataGrid>
+			</ScrollViewer>
+		</Grid>
+	</sukiUi:GlassCard>
+</UserControl>

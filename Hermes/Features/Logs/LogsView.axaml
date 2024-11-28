@@ -6,9 +6,16 @@
              xmlns:local="clr-namespace:Hermes.Features.Logs"
              x:Class="Hermes.Features.Logs.LogsView"
              x:DataType="local:LogsViewModel">
+	<TabControl>
+		<TabItem Header="历史记录">
+			<local:UnitUnderTestLogView DataContext="{Binding UnitUnderTestLogViewModel}" />
+		</TabItem>
+		<TabItem Header="系统日志">
+			<local:SystemLogTabView DataContext="{Binding SystemLogTabViewModel}" />
+		</TabItem>
+		<TabItem Header="系统报警">
+			<local:SystemAlarmTabView DataContext="{Binding SystemAlarmTabViewModel}" />
+		</TabItem>
+	</TabControl>
 
-    <Grid>
-
-        <local:UnitUnderTestLogView DataContext="{Binding UnitUnderTestLogViewModel}" />
-    </Grid>
 </UserControl>

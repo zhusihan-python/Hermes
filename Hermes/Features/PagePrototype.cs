@@ -24,14 +24,12 @@ public class PagePrototype(Settings settings)
         new(typeof(AboutViewModel)),
 
         new(typeof(BenderViewModel),
-            PermissionType.OpenBender,
-            AllExcept([StationType.Labeling, StationType.LabelingMachine])),
+            PermissionType.FreeAccess),
 
         new(typeof(LoginViewModel)),
 
         new(typeof(LogsViewModel),
-            PermissionType.OpenLogs,
-            Only([StationType.Labeling])),
+            PermissionType.FreeAccess),
 
         new(typeof(PackageIdViewModel),
             hideFromStation: AllExcept([StationType.Labeling, StationType.LabelingMachine])),
@@ -44,8 +42,7 @@ public class PagePrototype(Settings settings)
             Only([StationType.Labeling])),
 
         new(typeof(UutProcessorViewModel),
-            PermissionType.OpenUutProcessor,
-            Only([StationType.Labeling])),
+            PermissionType.FreeAccess),
 
         new(typeof(AdminToolsViewModel),
             PermissionType.FreeAccess)
