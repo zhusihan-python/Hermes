@@ -1,0 +1,207 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:vm="clr-namespace:Hermes.Features.Bender"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="450"
+			 xmlns:local="clr-namespace:Hermes.Features.Controls"
+			 xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+			 xmlns:sukiEx="https://github.com/kikipoulet/SukiUI"
+			 x:Class="Hermes.Features.Bender.OtherTabView"
+			 x:DataType="vm:OtherTabViewModel">
+
+	<Border Margin="1"
+			Padding="1"
+			Background="LightGray"
+			BorderBrush="Transparent"
+			BorderThickness="3"
+			BoxShadow="0 0 10 4 #ccc"
+			CornerRadius="15">
+		<Border.Styles>
+			<Style Selector="Border.textHover">
+				<Setter Property="Background" Value="Blue" />
+			</Style>
+			<Style Selector="Border.notTextHover">
+				<Setter Property="Background" Value="Gray" />
+			</Style>
+		</Border.Styles>
+		<StackPanel Spacing="3">
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="150" />
+					<ColumnDefinition Width="30" />
+					<ColumnDefinition Width="120" />
+				</Grid.ColumnDefinitions>
+				<Border Classes.textHover="{Binding #NumericUpDown1.IsPointerOver }"
+						Classes.notTextHover="{Binding !#NumericUpDown1.IsPointerOver }"
+					    Grid.RowSpan="2"
+						Grid.Column="0"
+						Width="2"
+						Margin="0,0,5,0"
+						CornerRadius="1" >
+				</Border>
+				<StackPanel Grid.RowSpan="2" Grid.Column="1">
+					<TextBlock FontSize="15"
+								Text="{Binding BakeTempHeader}"
+								TextWrapping="WrapWithOverflow" />
+					<TextBlock FontSize="12"
+								FontWeight="Light"
+								Opacity="0.7"
+								Text="{Binding BakeTempDescription}"
+								TextWrapping="Wrap" />
+				</StackPanel>
+				<NumericUpDown Name="NumericUpDown1"
+							   sukiEx:NumericUpDownExtensions.Unit="℃"
+							   Increment="1"
+							   Minimum="0"
+							   Maximum="200"
+							   Grid.RowSpan="2"
+							   Grid.Column="3"
+							   Value="{Binding BakeTempValue}">
+				</NumericUpDown>
+			</Grid>
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="150" />
+					<ColumnDefinition Width="30" />
+					<ColumnDefinition Width="120" />
+				</Grid.ColumnDefinitions>
+				<Border Classes.textHover="{Binding #NumericUpDown2.IsPointerOver }"
+						Classes.notTextHover="{Binding !#NumericUpDown2.IsPointerOver }"
+					    Grid.RowSpan="2"
+						Grid.Column="0"
+						Width="2"
+						Margin="0,0,5,0"
+						CornerRadius="1" >
+				</Border>
+				<StackPanel Grid.RowSpan="2" Grid.Column="1">
+					<TextBlock FontSize="15"
+								Text="{Binding BakeDurationHeader}"
+								TextWrapping="WrapWithOverflow" />
+					<TextBlock FontSize="12"
+								FontWeight="Light"
+								Opacity="0.7"
+								Text="{Binding BakeDurationDescription}"
+								TextWrapping="Wrap" />
+				</StackPanel>
+				<NumericUpDown Name="NumericUpDown2"
+							   sukiEx:NumericUpDownExtensions.Unit="Mins"
+							   Increment="1"
+							   Minimum="0"
+							   Maximum="360"
+							   Grid.RowSpan="2"
+							   Grid.Column="3"
+							   Value="{Binding BakeDurationValue}">
+				</NumericUpDown>
+			</Grid>
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="150" />
+					<ColumnDefinition Width="30" />
+					<ColumnDefinition Width="120" />
+				</Grid.ColumnDefinitions>
+				<Border Classes.textHover="{Binding #NumericUpDown3.IsPointerOver }"
+						Classes.notTextHover="{Binding !#NumericUpDown3.IsPointerOver }"
+					    Grid.RowSpan="2"
+						Grid.Column="0"
+						Width="2"
+						Margin="0,0,5,0"
+						CornerRadius="1" >
+				</Border>
+				<StackPanel Grid.RowSpan="2" Grid.Column="1">
+					<TextBlock FontSize="15"
+								Text="{Binding SuckerOnePressureHeader}"
+								TextWrapping="WrapWithOverflow" />
+					<TextBlock FontSize="12"
+								FontWeight="Light"
+								Opacity="0.7"
+								Text="{Binding SuckerOneDescription}"
+								TextWrapping="Wrap" />
+				</StackPanel>
+				<NumericUpDown Name="NumericUpDown3"
+							   sukiEx:NumericUpDownExtensions.Unit="Kpa"
+							   Increment="1"
+							   Minimum="-100"
+							   Maximum="0"
+							   Grid.RowSpan="2"
+							   Grid.Column="3"
+							   Value="{Binding SuckerOnePressureValue}">
+				</NumericUpDown>
+			</Grid>
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="150" />
+					<ColumnDefinition Width="30" />
+					<ColumnDefinition Width="120" />
+				</Grid.ColumnDefinitions>
+				<Border Classes.textHover="{Binding #NumericUpDown4.IsPointerOver }"
+						Classes.notTextHover="{Binding !#NumericUpDown4.IsPointerOver }"
+					    Grid.RowSpan="2"
+						Grid.Column="0"
+						Width="2"
+						Margin="0,0,5,0"
+						CornerRadius="1" >
+				</Border>
+				<StackPanel Grid.RowSpan="2" Grid.Column="1">
+					<TextBlock FontSize="15"
+								Text="{Binding SuckerTwoPressureHeader}"
+								TextWrapping="WrapWithOverflow" />
+					<TextBlock FontSize="12"
+								FontWeight="Light"
+								Opacity="0.7"
+								Text="{Binding SuckerTwoDescription}"
+								TextWrapping="Wrap" />
+				</StackPanel>
+				<NumericUpDown Name="NumericUpDown4"
+							   sukiEx:NumericUpDownExtensions.Unit="Kpa"
+							   Increment="1"
+							   Minimum="-100"
+							   Maximum="0"
+							   Grid.RowSpan="2"
+							   Grid.Column="3"
+							   Value="{Binding SuckerTwoPressureValue}">
+				</NumericUpDown>
+			</Grid>
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto" />
+					<ColumnDefinition Width="150" />
+					<ColumnDefinition Width="30" />
+					<ColumnDefinition Width="120" />
+				</Grid.ColumnDefinitions>
+				<Border Classes.textHover="{Binding #NumericUpDown5.IsPointerOver }"
+						Classes.notTextHover="{Binding !#NumericUpDown5.IsPointerOver }"
+					    Grid.RowSpan="2"
+						Grid.Column="0"
+						Width="2"
+						Margin="0,0,5,0"
+						CornerRadius="1" >
+				</Border>
+				<StackPanel Grid.RowSpan="2" Grid.Column="1">
+					<TextBlock FontSize="15"
+								Text="{Binding GasTankPressureHeader}"
+								TextWrapping="WrapWithOverflow" />
+					<TextBlock FontSize="12"
+								FontWeight="Light"
+								Opacity="0.7"
+								Text="{Binding GasTankPressureDescription}"
+								TextWrapping="Wrap" />
+				</StackPanel>
+				<NumericUpDown Name="NumericUpDown5"
+							   sukiEx:NumericUpDownExtensions.Unit="Kpa"
+							   Increment="10"
+							   Minimum="0"
+							   Maximum="1000"
+							   Grid.RowSpan="2"
+							   Grid.Column="3"
+							   Value="{Binding GasTankPressureValue}">
+				</NumericUpDown>
+			</Grid>
+		</StackPanel>
+	</Border>
+
+</UserControl>
