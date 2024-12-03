@@ -47,7 +47,7 @@ public partial class UutProcessorViewModel : PageBase
         ScannerViewModel scannerViewModel,
         DummyViewModel dummyViewModel)
         : base(
-            Resources.txt_uut_processor,
+            "Ö÷½çÃæ",
             MaterialIconKind.FolderEye,
             1)
     {

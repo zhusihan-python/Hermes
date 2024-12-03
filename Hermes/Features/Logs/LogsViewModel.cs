@@ -5,7 +5,7 @@ namespace Hermes.Features.Logs;
 
 public partial class LogsViewModel(UnitUnderTestLogViewModel underTestLogViewModel, 
     SystemLogTabViewModel systemLogTabViewModel, SystemAlarmTabViewModel systemAlarmTabViewModel) : PageBase(
-    Resources.txt_uut_processor,
+    "历史",
     MaterialIconKind.History,
     96)
 {

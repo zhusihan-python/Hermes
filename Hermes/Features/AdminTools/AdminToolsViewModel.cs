@@ -4,7 +4,7 @@ using Material.Icons;
 namespace Hermes.Features.AdminTools;
 
 public class AdminToolsViewModel(FeaturePermissionsViewModel featurePermissionsViewModel) : PageBase(
-    Resources.txt_admin_tools,
+    "°ïÖú",
     MaterialIconKind.HelpCircle,
     98)
 {

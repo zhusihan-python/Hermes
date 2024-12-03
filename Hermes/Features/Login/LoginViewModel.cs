@@ -27,7 +27,7 @@ public partial class LoginViewModel : PageBase
         Session session,
         UserRepositoryProxy userRepositoryProxy) :
         base(
-            Resources.txt_account,
+            "用户",
             MaterialIconKind.Account,
             99)
     {

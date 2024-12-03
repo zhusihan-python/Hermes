@@ -14,7 +14,7 @@ public partial class AboutViewModel(
     Settings settings,
     ISukiToastManager toastManager)
     : PageBase(
-        Resources.txt_about,
+        "¹ØÓÚ",
         MaterialIconKind.InfoOutline,
         100)
 {
