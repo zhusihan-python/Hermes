@@ -142,20 +142,6 @@ namespace Hermes.Features
         }
 
         [RelayCommand]
-        private void ToggleTitleBar()
-        {
-            TitleBarVisible = !TitleBarVisible;
-            this.ShowInfoToast(
-                TitleBarVisible
-                    ? Resources.c_main_window_title_bar_vissible
-                    : Resources.c_main_window_title_bar_hidden,
-                TitleBarVisible
-                    ? Resources.c_main_window_title_bar_visible_msg
-                    : Resources.c_main_window_title_bar_hidden_msg
-            );
-        }
-
-        [RelayCommand]
         private void Exit(SukiWindow window)
         {
             Messenger.Send(new ExitMessage());
