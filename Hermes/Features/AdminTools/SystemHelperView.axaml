@@ -10,14 +10,11 @@
 		<TabItem Header="系统配置">
 			<adminTools:SystemSetTabView></adminTools:SystemSetTabView>
 		</TabItem>
-		<TabItem Header="系统日志">
-			<!-- Content -->
-		</TabItem>
-		<TabItem Header="系统报警">
-			<!-- Content -->
-		</TabItem>
 		<TabItem Header="操作手册">
 			<!-- Content -->
+		</TabItem>
+		<TabItem Header="软件详情">
+			<adminTools:AboutTabView></adminTools:AboutTabView>
 		</TabItem>
 	</TabControl>
 </UserControl>

@@ -1,0 +1,56 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:lang="clr-namespace:Hermes.Language;assembly=Hermes.Language"
+			 xmlns:adminTools="clr-namespace:Hermes.Features.AdminTools"
+			 xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+			 x:DataType="adminTools:AboutTabViewModel"
+             x:Class="Hermes.Features.AdminTools.AboutTabView">
+	<suki:GlassCard Margin="40"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Background="White">
+		<Border
+            Background="White"
+            CornerRadius="5"
+            Height="360"
+            Padding="{StaticResource DefaultPadding}">
+			<StackPanel>
+				<Image Height="150"
+                       Margin="20 20 20 0"
+                       HorizontalAlignment="Center"
+                       Source="avares://Hermes/AppData/Assets/splash-hermes.png" />
+
+				<TextBlock
+                    Classes="h3"
+                    Foreground="Black"
+                    Margin=" 0"
+                    HorizontalAlignment="Center"
+                    Text="封片机" />
+
+				<TextBlock
+                    Classes="Accent"
+                    FontSize="12"
+                    HorizontalAlignment="Center"
+                    Text="By SpecVT" />
+
+				<TextBlock
+                    Classes="Caption"
+                    Margin="0 35 0 5"
+                    FontSize="12"
+                    HorizontalAlignment="Center"
+                    Text="Authors: XXXX." />
+
+				<TextBlock
+                    Classes="Caption"
+                    FontSize="12"
+                    HorizontalAlignment="Center">
+					<Run Text="Version: " />
+					<Run Text="{Binding Version}" />
+				</TextBlock>
+			</StackPanel>
+		</Border>
+	</suki:GlassCard>
+</UserControl>

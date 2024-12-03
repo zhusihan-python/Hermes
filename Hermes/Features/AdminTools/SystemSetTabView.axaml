@@ -6,6 +6,7 @@
 			 xmlns:objectModel="clr-namespace:System.Collections.ObjectModel;assembly=System.ObjectModel"
 			 xmlns:controls="clr-namespace:Hermes.Features.Controls"
 			 xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+			 xmlns:sukiEx="https://github.com/kikipoulet/SukiUI"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="850"
              x:Class="Hermes.Features.AdminTools.SystemSetTabView">
 	<Border Name="Root">
@@ -74,19 +75,29 @@
 
 							<suki:SettingsLayoutItem Header="数据库备份">
 								<suki:SettingsLayoutItem.Content>
-									<Border Background="LightGray" Height="100">
-										<StackPanel>
-											<StackPanel Orientation="Horizontal">
-												<TextBlock Text="备份目录"></TextBlock>
+									<Border Background="LightGray" Height="150"  Margin="0,0,0,0">
+										<StackPanel Spacing="5">
+											<StackPanel Orientation="Horizontal" Spacing="60" Margin="5,0,0,0">
+												<TextBlock Text="备份目录" VerticalAlignment="Center"></TextBlock>
+												
 											</StackPanel>
-											<StackPanel Orientation="Horizontal">
-												<TextBlock Text="是否自动备份"></TextBlock>
+											<StackPanel Orientation="Horizontal" Spacing="60" Margin="5,0,0,0">
+												<TextBlock Text="是否自动备份" VerticalAlignment="Center"></TextBlock>
+												<ToggleSwitch IsChecked="True" />
 											</StackPanel>
-											<StackPanel Orientation="Horizontal">
-												<TextBlock Text="自动备份间隔"></TextBlock>
+											<StackPanel Orientation="Horizontal" Spacing="48" Margin="5,0,0,0">
+												<TextBlock Text="自动备份间隔" VerticalAlignment="Center"></TextBlock>
+												<NumericUpDown sukiEx:NumericUpDownExtensions.Unit="天"
+												   Increment="1"
+												   Minimum="1"
+												   Maximum="7" Value="1" />
 											</StackPanel>
-											<StackPanel Orientation="Horizontal">
-												<TextBlock Text="最多备份数"></TextBlock>
+											<StackPanel Orientation="Horizontal" Spacing="60" Margin="5,0,0,0">
+												<TextBlock Text="最多备份数" VerticalAlignment="Center"></TextBlock>
+												<NumericUpDown sukiEx:NumericUpDownExtensions.Unit="份"
+															   Increment="1"
+															   Minimum="1"
+															   Maximum="10" Value="1" />
 											</StackPanel>
 										</StackPanel>
 									</Border>

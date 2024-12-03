@@ -21,7 +21,8 @@ public class PagePrototype(Settings settings)
 {
     private readonly List<PagePermissionResolver> _pagePermissionResolvers =
     [
-        new(typeof(AboutViewModel)),
+        new(typeof(AboutViewModel),
+            PermissionType.OpenSfcSimulator),
 
         new(typeof(BenderViewModel),
             PermissionType.FreeAccess),
