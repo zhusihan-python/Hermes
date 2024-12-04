@@ -25,7 +25,7 @@ public class PagePrototype(Settings settings)
             PermissionType.OpenSfcSimulator),
 
         new(typeof(BenderViewModel),
-            PermissionType.FreeAccess),
+            PermissionType.OpenSfcSimulator),
 
         new(typeof(LoginViewModel)),
 

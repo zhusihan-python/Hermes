@@ -10,9 +10,6 @@
 		<TabItem Header="系统配置">
 			<adminTools:SystemSetTabView></adminTools:SystemSetTabView>
 		</TabItem>
-		<TabItem Header="操作手册">
-			<!-- Content -->
-		</TabItem>
 		<TabItem Header="软件详情">
 			<adminTools:AboutTabView></adminTools:AboutTabView>
 		</TabItem>

@@ -9,13 +9,5 @@
              x:DataType="local:BenderViewModel">
     
     <ScrollViewer VerticalScrollBarVisibility="Auto">
-        <WrapPanel Margin="{StaticResource DefaultMargin}"
-                   theme:WrapPanelExtensions.AnimatedScroll="True"
-                   Orientation="Horizontal">
-
-            <local:PackageScannerView DataContext="{Binding PackageScannerViewModel}" />
-
-            <local:PackageTrackingView DataContext="{Binding PackageTrackingViewModel}" />
-        </WrapPanel>
     </ScrollViewer>
 </UserControl>
