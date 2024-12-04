@@ -7,6 +7,9 @@
              x:Class="Hermes.Features.Logs.LogsView"
              x:DataType="local:LogsViewModel">
 	<TabControl>
+		<TabItem Header="玻片管理">
+			<local:SlideManageTabView DataContext="{Binding SlideManageTabViewModel}" />
+		</TabItem>
 		<TabItem Header="历史记录">
 			<local:UnitUnderTestLogView DataContext="{Binding UnitUnderTestLogViewModel}" />
 		</TabItem>

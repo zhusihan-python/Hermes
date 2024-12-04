@@ -1,0 +1,147 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+			 xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+			 xmlns:local="clr-namespace:Hermes.Features.Logs"
+			 xmlns:controls="clr-namespace:Hermes.Features.Controls"
+			 xmlns:converters="clr-namespace:Hermes.Common.Converters"
+			 xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+			 xmlns:lang="clr-namespace:Hermes.Language;assembly=Hermes.Language"
+			 xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
+             x:Class="Hermes.Features.Logs.SlideManageTabView"
+			 x:DataType="local:SlideManageTabViewModel">
+	<suki:GlassCard Margin="10"
+                      HorizontalAlignment="Stretch">
+
+		<Grid Margin="0 20"
+              RowDefinitions="Auto, *, Auto"
+              ColumnDefinitions="*, Auto">
+			<!-- Filters -->
+			<WrapPanel Grid.Row="0"
+                        Grid.Column="0"
+                        Orientation="Horizontal">
+
+				<controls:TextBoxWithTitle Name="SerialNumberFilter"
+                                           Width="200"
+                                           VerticalAlignment="Bottom"
+                                           KeyBindings=""
+                                           Title="玻片号"
+                                           Text="{Binding SerialNumberFilter, Mode=TwoWay}">
+					<controls:TextBoxWithTitle.KeyBindings>
+						<KeyBinding Gesture="Enter" Command="{Binding SearchCommand}" />
+					</controls:TextBoxWithTitle.KeyBindings>
+				</controls:TextBoxWithTitle>
+
+				<controls:ComboBoxEnum Width="200"
+                                       Title="医生"
+                                       ItemsSource="{Binding StatusOptions}"
+                                       SelectedItem="{Binding SelectedTestStatus, Mode=TwoWay}" />
+
+				<controls:ComboBoxEnum Width="200"
+                                       Title="封片状态"
+                                       ItemsSource="{Binding SfcResponseOptions}"
+                                       SelectedItem="{Binding SelectedSfcResponse, Mode=TwoWay}" />
+
+				<controls:TextBoxWithTitle Name="SfcResponseContentFilterTextBox"
+                                           Width="200"
+                                           VerticalAlignment="Bottom"
+                                           KeyBindings=""
+                                           Title="病理号"
+                                           Text="{Binding SfcResponseContentFilter, Mode=TwoWay}">
+					<controls:TextBoxWithTitle.KeyBindings>
+						<KeyBinding Gesture="Enter" Command="{Binding SearchCommand}" />
+					</controls:TextBoxWithTitle.KeyBindings>
+				</controls:TextBoxWithTitle>
+
+				<controls:ComboBoxEnum Width="200"
+                                       Title="创建日期"
+                                       ItemsSource="{Binding TimeSpanOptions}"
+                                       SelectedItem="{Binding SelectedTimeSpan, Mode=TwoWay}" />
+				<controls:ComboBoxEnum Width="200"
+									   Title="理片状态"
+									   ItemsSource="{Binding TimeSpanOptions}"
+									   SelectedItem="{Binding SelectedTimeSpan, Mode=TwoWay}" />
+
+				<controls:ButtonIcon VerticalAlignment="Bottom"
+                                     Margin="0 0 0 5"
+                                     Command="{Binding SearchCommand}"
+                                     Kind="Search" 
+									 ToolTip.Tip="查询"/>
+			</WrapPanel>
+
+			<!-- Actions -->
+			<StackPanel Grid.Row="0"
+                        Grid.Column="1"
+                        Margin="20 0 0 5"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Bottom"
+                        HorizontalAlignment="Right"
+                        Spacing="5">
+
+				<controls:ButtonIcon Kind="FileEdit"
+                                     Command="{Binding EditCommand}"
+                                     ToolTip.Tip="编辑" />
+
+				<controls:ButtonIcon Kind="Refresh"
+                                     Command="{Binding RefreshCommand}"
+                                     ToolTip.Tip="刷新" />
+			</StackPanel>
+
+			<!-- Grid -->
+			<ScrollViewer Grid.Row="1"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          HorizontalScrollBarVisibility="Auto"
+                          VerticalScrollBarVisibility="Auto">
+
+				<DataGrid AutoGenerateColumns="False"
+                          Name="DataGridLogs"
+                          ItemsSource="{Binding UnitsUnderTest}"
+                          IsReadOnly="True"
+                          HeadersVisibility="Column"
+                          CanUserResizeColumns="True">
+
+					<DataGrid.Columns>
+						<DataGridTextColumn Header="玻片号"
+                                            Binding="{Binding SerialNumber}" />
+
+						<DataGridTextColumn Header="姓名"
+                                            Binding="{Binding IsPass,  Converter={x:Static converters:BoolToTextConverters.PassFail}}" />
+
+						<DataGridTextColumn Header="病理号"
+                                            Binding="{Binding SfcResponse.Type,  Converter={x:Static converters:EnumToTranslatedTextConverters.Generic}}" />
+
+						<DataGridTextColumn Header="医生"
+                                            Binding="{Binding SfcResponse.Content}" />
+
+						<DataGridTextColumn Header="创建日期"
+                                            Binding="{Binding CreatedAt}" />
+
+						<DataGridTextColumn Header="已封片"
+                                            Binding="{Binding FileName}" />
+
+						<DataGridTextColumn Header="封片日期"
+					                        Binding="{Binding FileName}" />
+
+						<DataGridTextColumn Header="已理片"
+					                        Binding="{Binding FileName}" />
+
+						<DataGridTextColumn Header="理片日期"
+					                        Binding="{Binding FileName}" />
+					</DataGrid.Columns>
+
+					<i:Interaction.Behaviors>
+						<ia:EventTriggerBehavior EventName="SelectionChanged" SourceObject="DataGridLogs">
+							<ia:InvokeCommandAction
+                                Command="{Binding UnitUnderTestSelectedCommand}"
+                                CommandParameter="{Binding #DataGridLogs.SelectedItem}" />
+						</ia:EventTriggerBehavior>
+					</i:Interaction.Behaviors>
+				</DataGrid>
+			</ScrollViewer>
+		</Grid>
+	</suki:GlassCard>
+</UserControl>
