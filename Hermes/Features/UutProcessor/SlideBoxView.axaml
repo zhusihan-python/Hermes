@@ -2,27 +2,43 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
+             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
 			 xmlns:vm="using:Hermes.Features.UutProcessor"
              mc:Ignorable="d" d:DesignWidth="80" d:DesignHeight="120"
              x:Class="Hermes.Features.UutProcessor.SlideBoxView"
 			 x:DataType="vm:SlideBoxViewModel">
 
-	<Border BorderBrush="Gainsboro" BorderThickness="2" Background="White" Margin="3,2,3,2">
-		<ItemsControl ItemsSource="{Binding ItemList}" MinWidth="80" MinHeight="120">
+	<Border BorderBrush="#263238" BorderThickness="2" Background="White">
+		<ItemsControl Name="ParentControl" ItemsSource="{Binding ItemList}" MinWidth="60" MinHeight="100">
 			<ItemsControl.ItemsPanel>
 				<ItemsPanelTemplate>
-					<UniformGrid Columns="1"/>
+					<UniformGrid Columns="1" Margin="2,0,2,0"/>
 				</ItemsPanelTemplate>
 			</ItemsControl.ItemsPanel>
 
 			<ItemsControl.ItemTemplate>
 				<DataTemplate>
-					<Border BorderBrush="#e6b113" BorderThickness="1" CornerRadius="1">
-						<Rectangle RadiusX="3" RadiusY="3">
-							<Rectangle.Fill>
-								<SolidColorBrush Color="{Binding BackColor}"/>
-							</Rectangle.Fill>
-						</Rectangle>
+					<Border BorderBrush="LightGray" BorderThickness="1">
+						<Panel>
+							<Rectangle Margin="1,0,1,0">
+								<Rectangle.Fill>
+									<SolidColorBrush Color="{Binding BackColor}"/>
+								</Rectangle.Fill>
+								<i:Interaction.Behaviors>
+									<ia:EventTriggerBehavior EventName="PointerPressed">
+										<ia:InvokeCommandAction
+											Command="{Binding #ParentControl.((vm:SlideBoxViewModel)DataContext).ChangeRowIndexCommand }"
+											CommandParameter="{Binding RowIndex}"/>
+									</ia:EventTriggerBehavior>
+								</i:Interaction.Behaviors>
+							</Rectangle>
+							<Rectangle RadiusX="5"
+									   RadiusY="5"
+									   Fill="Black"
+									   Opacity="0.3"
+									   IsVisible="{Binding IsSelected}"/>
+						</Panel>
 					</Border>
 				</DataTemplate>
 			</ItemsControl.ItemTemplate>
