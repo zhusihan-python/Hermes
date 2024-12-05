@@ -1,4 +1,11 @@
-﻿namespace Hermes.Features.AdminTools;
+﻿using Avalonia.Controls;
+using Avalonia.Platform.Storage;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using System;
+using System.Threading.Tasks;
+
+namespace Hermes.Features.AdminTools;
 
 public partial class SystemSetTabViewModel: ViewModelBase
 {
@@ -26,6 +33,12 @@ public partial class SystemSetTabViewModel: ViewModelBase
     public string BackupCountHeader { get; set; }
     public string BackupDescription { get; set; }
     public string BackupCountValue { get; set; }
+    [ObservableProperty]
+    private string defaultDir = System.IO.Path.Combine(AppContext.BaseDirectory, "Backups");
+    [ObservableProperty]
+    private string hisInterface = "http://192.168.0.1";
+    [ObservableProperty]
+    private string pisInterface = "http://192.168.0.2";
 
     public SystemSetTabViewModel()
     {
@@ -60,5 +73,23 @@ public partial class SystemSetTabViewModel: ViewModelBase
         BackupCountHeader = "备份数目";
         BackupDescription = "最多保存备份数目";
         BackupCountValue = "4";
+    }
+
+    [RelayCommand]
+    public async Task OpenFolderAsync(Control control)
+    {
+        if (control == null)
+            return;
+
+        var folder = TopLevel.GetTopLevel(control)?.StorageProvider
+            .OpenFolderPickerAsync(new FolderPickerOpenOptions()
+            {
+                AllowMultiple = false
+            });
+
+        if (folder?.Result.Count >= 1)
+        {
+            DefaultDir = folder.Result[0].Path.LocalPath;
+        }
     }
 }

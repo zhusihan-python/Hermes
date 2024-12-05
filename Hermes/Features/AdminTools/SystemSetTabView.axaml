@@ -19,7 +19,7 @@
                     Duration="0:0:0.45" />
 			</Transitions>
 		</Border.Transitions>
-		<Grid RowDefinitions="*,100,*" ColumnDefinitions="450,8,*">
+		<Grid RowDefinitions="*,130,*" ColumnDefinitions="450,8,*">
 			<suki:GroupBox Header="系统检测" Grid.Row="0" Grid.Column="0">
 				<Grid RowDefinitions="*,*,40" ColumnDefinitions="*" Margin="12,0,0,0">
 					<Grid Grid.Row="0" Grid.Column="0" RowDefinitions="*,*" ColumnDefinitions="*,*,*,*,*,*">
@@ -49,19 +49,24 @@
 			</suki:GroupBox>
 			<suki:GroupBox Header="医院接入" Grid.Row="1" Grid.Column="0">
 				<StackPanel Spacing="5" Margin="12,0,0,0">
-					<StackPanel Orientation="Horizontal">
-						<TextBlock Text="HIS接口" FontSize="18"></TextBlock>
+					<StackPanel Orientation="Horizontal" Spacing="20">
+						<TextBlock Text="HIS接口" FontSize="18"  VerticalAlignment="Center"></TextBlock>
+						<TextBox Text="{Binding HisInterface}" Width="240"/>
 					</StackPanel>
-					<StackPanel Orientation="Horizontal">
-						<TextBlock Text="LIS接口" FontSize="18"></TextBlock>
+					<StackPanel Orientation="Horizontal" Spacing="20">
+						<TextBlock Text="LIS接口" FontSize="18"  VerticalAlignment="Center"></TextBlock>
+						<TextBox Text="{Binding PisInterface}" Width="240"/>
 					</StackPanel>
 				</StackPanel>
 			</suki:GroupBox>
 			<suki:GroupBox Header="数据库备份" Grid.Row="2" Grid.Column="0">
 				<StackPanel Spacing="5">
-					<StackPanel Orientation="Horizontal" Spacing="60" Margin="12,0,0,0">
+					<StackPanel Orientation="Horizontal" Spacing="10" Margin="12,0,0,0">
 						<TextBlock Text="备份目录" FontSize="18" VerticalAlignment="Center"></TextBlock>
-
+						<!-- TextBox to display the folder path -->
+						<TextBox Text="{Binding DefaultDir}" Width="240" IsReadOnly="True" HorizontalAlignment="Left" />
+						<!-- Button to open folder picker -->
+						<Button Content="选择" Command="{Binding OpenFolderCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
 					</StackPanel>
 					<StackPanel Orientation="Horizontal" Spacing="120" Margin="12,0,0,0">
 						<TextBlock Text="自动备份" FontSize="18" VerticalAlignment="Center"></TextBlock>
