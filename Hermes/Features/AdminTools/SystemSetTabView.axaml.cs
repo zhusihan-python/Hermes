@@ -16,8 +16,6 @@ public partial class SystemSetTabView : UserControl
         cameras.ItemsSource = new string[]
             {"HKVision", "Nikon" }
         .OrderBy(x => x);
-        consumable.ItemsSource = new List<string>() { "a", "b", "c", "d" };
-        plate.ItemsSource = new List<string>() { "a", "b", "c" };
         this.DataContext = viewModel;
     }
 }

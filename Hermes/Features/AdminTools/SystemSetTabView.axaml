@@ -80,187 +80,9 @@
 						<TextBlock Text="自动备份" FontSize="18" VerticalAlignment="Center"></TextBlock>
 						<ToggleSwitch IsChecked="True" />
 					</StackPanel>
-					<StackPanel Orientation="Horizontal" Spacing="48" Margin="5,0,0,0">
-						<Grid>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="Auto" />
-								<ColumnDefinition Width="150" />
-								<ColumnDefinition Width="30" />
-								<ColumnDefinition Width="150" />
-							</Grid.ColumnDefinitions>
-							<Border Classes.textHover="{Binding #NumericUpDown6.IsPointerOver }"
-									Classes.notTextHover="{Binding !#NumericUpDown6.IsPointerOver }"
-									Grid.RowSpan="2"
-									Grid.Column="0"
-									Width="2"
-									Margin="0,0,5,0"
-									CornerRadius="1" >
-							</Border>
-							<StackPanel Grid.RowSpan="2" Grid.Column="1">
-								<TextBlock FontSize="18"
-											Text="{Binding BackupIntervalHeader}"
-											TextWrapping="WrapWithOverflow" />
-								<TextBlock FontSize="14"
-											FontWeight="Light"
-											Opacity="0.7"
-											Text="{Binding BackupIntervalDescription}"
-											TextWrapping="Wrap" />
-							</StackPanel>
-							<NumericUpDown Name="NumericUpDown6"
-										   sukiEx:NumericUpDownExtensions.Unit="天"
-										   Increment="1"
-										   Minimum="1"
-										   Maximum="7"
-										   Grid.RowSpan="2"
-										   Grid.Column="3"
-										   Value="{Binding BackupIntervalValue}">
-							</NumericUpDown>
-						</Grid>
-					</StackPanel>
-					<StackPanel Orientation="Horizontal" Spacing="60" Margin="5,0,0,0">
-						<Grid>
-							<Grid.ColumnDefinitions>
-								<ColumnDefinition Width="Auto" />
-								<ColumnDefinition Width="150" />
-								<ColumnDefinition Width="30" />
-								<ColumnDefinition Width="150" />
-							</Grid.ColumnDefinitions>
-							<Border Classes.textHover="{Binding #NumericUpDown7.IsPointerOver }"
-									Classes.notTextHover="{Binding !#NumericUpDown7.IsPointerOver }"
-									Grid.RowSpan="2"
-									Grid.Column="0"
-									Width="2"
-									Margin="0,0,5,0"
-									CornerRadius="1" >
-							</Border>
-							<StackPanel Grid.RowSpan="2" Grid.Column="1">
-								<TextBlock FontSize="18"
-											Text="{Binding BackupCountHeader}"
-											TextWrapping="WrapWithOverflow" />
-								<TextBlock FontSize="14"
-											FontWeight="Light"
-											Opacity="0.7"
-											Text="{Binding BackupDescription}"
-											TextWrapping="Wrap" />
-							</StackPanel>
-							<NumericUpDown Name="NumericUpDown7"
-										   sukiEx:NumericUpDownExtensions.Unit="份"
-										   Increment="1"
-										   Minimum="1"
-										   Maximum="7"
-										   Grid.RowSpan="2"
-										   Grid.Column="3"
-										   Value="{Binding BackupCountValue}">
-							</NumericUpDown>
-						</Grid>
-					</StackPanel>
 				</StackPanel>
 			</suki:GroupBox>
-			<suki:GroupBox Header="关键词" Grid.Row="0" Grid.Column="2">
-				<Grid ColumnDefinitions="*,60,*" RowDefinitions="40,*">
-					<!-- ListBox A -->
-					<TextBlock Margin="0 5" FontSize="16">选择关键词:</TextBlock>
-					<ListBox
-					   x:Name="consumable"
-					   Margin="5"
-					   SelectionMode="Single"
-					   Grid.Row="1">
-						<ListBox.ItemTemplate>
-							<DataTemplate>
-								<StackPanel Margin="5,5,5,0">
-									<Border
-										Width="120"
-										Height="30"
-										Margin="0,0,0,5"
-										HorizontalAlignment="Center"
-										Background="LightCyan"
-										CornerRadius="5">
-										<TextBlock HorizontalAlignment="Center" Text="{Binding}" VerticalAlignment="Center"/>
-									</Border>
-
-								</StackPanel>
-							</DataTemplate>
-						</ListBox.ItemTemplate>
-					</ListBox>
-
-					<StackPanel Grid.Row="1" Grid.Column="1" Spacing="20">
-						<controls:ButtonIcon Kind="ArrowRightBoldOutline"
-											 Command=""
-											 ToolTip.Tip="添加" Margin="0,20,0,0"/>
-						<controls:ButtonIcon Kind="ArrowLeftBoldOutline"
-											 Command=""
-											 ToolTip.Tip="移除" Margin="0,20,0,0"/>
-					</StackPanel>
-					<!-- ListBox B -->
-					<TextBlock Margin="0 5" FontSize="16" Grid.Column="2">已选关键词:</TextBlock>
-					<ListBox
-						x:Name="plate"
-						Margin="5"
-						SelectionMode="Single"
-						Grid.Row="1"
-						Grid.Column="2">
-						<ListBox.ItemTemplate>
-							<DataTemplate>
-								<StackPanel Margin="5,5,5,0">
-									<Border
-										Width="120"
-										Height="30"
-										Margin="0,0,0,5"
-										HorizontalAlignment="Center"
-										Background="LightCyan"
-										CornerRadius="5" >
-										<TextBlock HorizontalAlignment="Center"  VerticalAlignment="Center" Text="{Binding}" />
-									</Border>
-								</StackPanel>
-							</DataTemplate>
-						</ListBox.ItemTemplate>
-					</ListBox>
-				</Grid>
-			</suki:GroupBox>
-			<suki:GroupBox Header="封片" Grid.Row="1" Grid.Column="2">
-				<StackPanel Spacing="3">
-					<Grid>
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="Auto" />
-							<ColumnDefinition Width="150" />
-							<ColumnDefinition Width="30" />
-							<ColumnDefinition Width="150" />
-						</Grid.ColumnDefinitions>
-						<Border Classes.textHover="{Binding #NumericUpDown0.IsPointerOver }"
-								Classes.notTextHover="{Binding !#NumericUpDown0.IsPointerOver }"
-								Grid.RowSpan="2"
-								Grid.Column="0"
-								Width="2"
-								Margin="0,0,5,0"
-								CornerRadius="1" >
-						</Border>
-						<StackPanel Grid.RowSpan="2" Grid.Column="1" Spacing="5">
-							<TextBlock FontSize="18"
-										Text="{Binding SealMediumHeader}"
-										TextWrapping="WrapWithOverflow" />
-							<TextBlock FontSize="14"
-										FontWeight="Light"
-										Opacity="0.7"
-										Text="{Binding SealMediumDescription}"
-										TextWrapping="Wrap" />
-						</StackPanel>
-						<NumericUpDown Name="NumericUpDown0"
-									   sukiEx:NumericUpDownExtensions.Unit="μL"
-									   Increment="1"
-									   Minimum="0"
-									   Maximum="200"
-									   Grid.RowSpan="1"
-									   Grid.Column="3"
-									   Value="{Binding SealMediumValue}">
-						</NumericUpDown>
-					</Grid>
-					<StackPanel Orientation="Horizontal" Spacing="120" Margin="12,0,0,0">
-						<TextBlock Text="是否烘片" FontSize="18" VerticalAlignment="Center"></TextBlock>
-						<ToggleSwitch IsChecked="True" />
-					</StackPanel>
-				</StackPanel>
-			</suki:GroupBox>
-			<suki:GroupBox Grid.Row="2" Grid.Column="2" Header="其他">
+			<suki:GroupBox Grid.Row="0" Grid.Column="2" Header="其他">
 				<StackPanel Spacing="5">
 					<Grid>
 						<Grid.ColumnDefinitions>
@@ -437,6 +259,49 @@
 									   Value="{Binding GasTankPressureValue}">
 						</NumericUpDown>
 					</Grid>
+				</StackPanel>
+			</suki:GroupBox>
+			<suki:GroupBox Header="封片" Grid.Row="1" Grid.Column="2">
+				<StackPanel Spacing="3">
+					<Grid>
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="150" />
+							<ColumnDefinition Width="30" />
+							<ColumnDefinition Width="150" />
+						</Grid.ColumnDefinitions>
+						<Border Classes.textHover="{Binding #NumericUpDown0.IsPointerOver }"
+								Classes.notTextHover="{Binding !#NumericUpDown0.IsPointerOver }"
+								Grid.RowSpan="2"
+								Grid.Column="0"
+								Width="2"
+								Margin="0,0,5,0"
+								CornerRadius="1" >
+						</Border>
+						<StackPanel Grid.RowSpan="2" Grid.Column="1" Spacing="5">
+							<TextBlock FontSize="18"
+										Text="{Binding SealMediumHeader}"
+										TextWrapping="WrapWithOverflow" />
+							<TextBlock FontSize="14"
+										FontWeight="Light"
+										Opacity="0.7"
+										Text="{Binding SealMediumDescription}"
+										TextWrapping="Wrap" />
+						</StackPanel>
+						<NumericUpDown Name="NumericUpDown0"
+									   sukiEx:NumericUpDownExtensions.Unit="μL"
+									   Increment="1"
+									   Minimum="0"
+									   Maximum="200"
+									   Grid.RowSpan="1"
+									   Grid.Column="3"
+									   Value="{Binding SealMediumValue}">
+						</NumericUpDown>
+					</Grid>
+					<StackPanel Orientation="Horizontal" Spacing="120" Margin="12,0,0,0">
+						<TextBlock Text="是否烘片" FontSize="18" VerticalAlignment="Center"></TextBlock>
+						<ToggleSwitch IsChecked="True" />
+					</StackPanel>
 				</StackPanel>
 			</suki:GroupBox>
 		</Grid>

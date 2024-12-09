@@ -27,12 +27,6 @@ public partial class SystemSetTabViewModel: ViewModelBase
     public string GasTankPressureHeader { get; set; }
     public string GasTankPressureDescription { get; set; }
     public string GasTankPressureValue { get; set; }
-    public string BackupIntervalHeader { get; set; }
-    public string BackupIntervalDescription { get; set; }
-    public string BackupIntervalValue { get; set; }
-    public string BackupCountHeader { get; set; }
-    public string BackupDescription { get; set; }
-    public string BackupCountValue { get; set; }
     [ObservableProperty]
     private string defaultDir = System.IO.Path.Combine(AppContext.BaseDirectory, "Backups");
     [ObservableProperty]
@@ -65,14 +59,6 @@ public partial class SystemSetTabViewModel: ViewModelBase
         GasTankPressureHeader = "气罐压力";
         GasTankPressureDescription = "气罐压力 0到1000 Kpa";
         GasTankPressureValue = "200";
-
-        BackupIntervalHeader = "备份间隔";
-        BackupIntervalDescription = "备份间隔天数";
-        BackupIntervalValue = "3";
-
-        BackupCountHeader = "备份数目";
-        BackupDescription = "最多保存备份数目";
-        BackupCountValue = "4";
     }
 
     [RelayCommand]
