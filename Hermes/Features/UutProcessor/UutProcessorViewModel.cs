@@ -16,6 +16,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System;
 using System.Threading;
+using Avalonia.Controls;
+using Avalonia.Interactivity;
 
 namespace Hermes.Features.UutProcessor;
 
@@ -25,10 +27,11 @@ public partial class UutProcessorViewModel : PageBase
     [ObservableProperty] private string _path = "";
     [ObservableProperty] private string _stateText = Resources.enum_stopped;
     [ObservableProperty] private bool _isWaitingForDummy;
+    [ObservableProperty] private bool _isOptionVisible;
     public ReactiveProperty<UnitUnderTest> CurrentUnitUnderTest { get; } = new(Models.UnitUnderTest.Null);
     public ScannerViewModel ScannerViewModel { get; }
     public DummyViewModel DummyViewModel { get; }
-
+    private readonly Subject<Unit> _borderClicks = new();
     private readonly FileService _fileService;
     private readonly ILogger _logger;
     private readonly Session _session;
@@ -100,6 +103,9 @@ public partial class UutProcessorViewModel : PageBase
                 await this.Persist(x.unitUnderTest);
             })
             .AddTo(ref Disposables);
+
+
+
     }
 
     protected override void OnActivated()
@@ -171,6 +177,17 @@ public partial class UutProcessorViewModel : PageBase
             _logger.Error(e.Message);
             this.ShowErrorToast(e.Message);
         }
+    }
+
+    [RelayCommand]
+    private void ToggleBorderClick()
+    {
+        SetupBorderClickObservable();
+    }
+
+    private void SetupBorderClickObservable()
+    {
+
     }
 
     private void ShowResult(Stop stop, UnitUnderTest unitUnderTest)
