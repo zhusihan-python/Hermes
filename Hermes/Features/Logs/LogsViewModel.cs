@@ -4,9 +4,7 @@ using Material.Icons;
 namespace Hermes.Features.Logs;
 
 public partial class LogsViewModel(UnitUnderTestLogViewModel underTestLogViewModel,
-                                   SlideManageTabViewModel slideManageTabViewModel,
-                                   SystemLogTabViewModel systemLogTabViewModel, 
-                                   SystemAlarmTabViewModel systemAlarmTabViewModel) : 
+                                   SlideManageTabViewModel slideManageTabViewModel) : 
     PageBase(
         "历史",
         MaterialIconKind.History,
@@ -14,6 +12,4 @@ public partial class LogsViewModel(UnitUnderTestLogViewModel underTestLogViewMod
 {
     public UnitUnderTestLogViewModel UnitUnderTestLogViewModel { get; set; } = underTestLogViewModel;
     public SlideManageTabViewModel SlideManageTabViewModel { get; set; } = slideManageTabViewModel;
-    public SystemLogTabViewModel SystemLogTabViewModel { get; set; } = systemLogTabViewModel;
-    public SystemAlarmTabViewModel SystemAlarmTabViewModel { get; set; } = systemAlarmTabViewModel;
 }

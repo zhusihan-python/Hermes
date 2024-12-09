@@ -36,7 +36,7 @@
                                            Width="200"
                                            VerticalAlignment="Bottom"
                                            KeyBindings=""
-                                           Title="{x:Static lang:Resources.txt_serial_number}"
+                                           Title="关键词"
                                            Text="{Binding SerialNumberFilter, Mode=TwoWay}">
                     <controls:TextBoxWithTitle.KeyBindings>
                         <KeyBinding Gesture="Enter" Command="{Binding SearchCommand}" />
@@ -44,12 +44,12 @@
                 </controls:TextBoxWithTitle>
 
                 <controls:ComboBoxEnum Width="200"
-                                       Title="{x:Static lang:Resources.txt_test_status}"
+                                       Title="搜索类型"
                                        ItemsSource="{Binding StatusOptions}"
                                        SelectedItem="{Binding SelectedTestStatus, Mode=TwoWay}" />
 
                 <controls:ComboBoxEnum Width="200"
-                                       Title="{x:Static lang:Resources.txt_sfc_response}"
+                                       Title="操作类型"
                                        ItemsSource="{Binding SfcResponseOptions}"
                                        SelectedItem="{Binding SelectedSfcResponse, Mode=TwoWay}" />
 
@@ -57,7 +57,7 @@
                                            Width="200"
                                            VerticalAlignment="Bottom"
                                            KeyBindings=""
-                                           Title="{x:Static lang:Resources.txt_sfc_response_content}"
+                                           Title="玻片二维码"
                                            Text="{Binding SfcResponseContentFilter, Mode=TwoWay}">
                     <controls:TextBoxWithTitle.KeyBindings>
                         <KeyBinding Gesture="Enter" Command="{Binding SearchCommand}" />
@@ -65,7 +65,7 @@
                 </controls:TextBoxWithTitle>
 
                 <controls:ComboBoxEnum Width="200"
-                                       Title="{x:Static lang:Resources.txt_time_span}"
+                                       Title="日期"
                                        ItemsSource="{Binding TimeSpanOptions}"
                                        SelectedItem="{Binding SelectedTimeSpan, Mode=TwoWay}" />
 
@@ -83,14 +83,6 @@
                         VerticalAlignment="Bottom"
                         HorizontalAlignment="Right"
                         Spacing="5">
-
-                <controls:ButtonIcon Kind="FileEdit"
-                                     Command="{Binding EditCommand}"
-                                     ToolTip.Tip="{x:Static lang:Resources.txt_edit}" />
-
-                <controls:ButtonIcon Kind="FileRefresh"
-                                     Command="{Binding ReSendCommand}"
-                                     ToolTip.Tip="{x:Static lang:Resources.txt_resend}" />
 
                 <controls:ButtonIcon Kind="DatabaseArrowRight"
                                      Command="{Binding ExportCommand}"
@@ -116,22 +108,22 @@
                           CanUserResizeColumns="True">
 
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="{x:Static lang:Resources.txt_serial_number}"
+                        <DataGridTextColumn Header="操作类型"
                                             Binding="{Binding SerialNumber}" />
 
-                        <DataGridTextColumn Header="{x:Static lang:Resources.txt_test_status}"
+                        <DataGridTextColumn Header="状态"
                                             Binding="{Binding IsPass,  Converter={x:Static converters:BoolToTextConverters.PassFail}}" />
 
-                        <DataGridTextColumn Header="{x:Static lang:Resources.txt_sfc_response}"
+                        <DataGridTextColumn Header="玻片盒数量"
                                             Binding="{Binding SfcResponse.Type,  Converter={x:Static converters:EnumToTranslatedTextConverters.Generic}}" />
 
-                        <DataGridTextColumn Header="{x:Static lang:Resources.txt_sfc_response_content}"
+                        <DataGridTextColumn Header="玻片数量"
                                             Binding="{Binding SfcResponse.Content}" />
 
-                        <DataGridTextColumn Header="{x:Static lang:Resources.txt_created_at}"
+                        <DataGridTextColumn Header="创建日期"
                                             Binding="{Binding CreatedAt}" />
 
-                        <DataGridTextColumn Header="{x:Static lang:Resources.txt_file}"
+                        <DataGridTextColumn Header="详情"
                                             Binding="{Binding FileName}" />
                     </DataGrid.Columns>
 
@@ -144,15 +136,6 @@
                     </i:Interaction.Behaviors>
                 </DataGrid>
             </ScrollViewer>
-
-            <TextBlock Grid.Row="2"
-                       Grid.Column="0"
-                       Grid.ColumnSpan="2"
-                       Margin="0 10 0 0"
-                       Classes="caption">
-                <Run Text="* " />
-                <Run Text="{x:Static lang:Resources.msg_limited_to_500_logs}" />
-            </TextBlock>
         </Grid>
     </sukiUi:GlassCard>
 </UserControl>

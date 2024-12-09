@@ -1,19 +1,23 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using Avalonia.Controls.Notifications;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Hermes.Common.Extensions;
-using Hermes.Common;
+using Hermes.Common.Messages;
 using Hermes.Models;
 using Hermes.Repositories;
+using Hermes.Services;
 using Hermes.Types;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
+using System;
+using Hermes.Common;
 
-namespace Hermes.Features.Logs;
+namespace Hermes.Features.AdminTools;
 
-public partial class SystemAlarmTabViewModel : ViewModelBase
+public partial class SystemLogTabViewModel : ViewModelBase
 {
     [ObservableProperty]
     private UnitUnderTest _selectedUnitUnderTest = UnitUnderTest.Null;
@@ -27,18 +31,14 @@ public partial class SystemAlarmTabViewModel : ViewModelBase
     public static IEnumerable<SfcResponseType?> SfcResponseOptions => NullableExtensions.GetValues<SfcResponseType>();
     public static IEnumerable<TimeSpanType?> TimeSpanOptions => NullableExtensions.GetValues<TimeSpanType>();
 
-    private readonly UnitUnderTestRepository _unitUnderTestRepository;
-
-    public SystemAlarmTabViewModel(
-        UnitUnderTestRepository unitUnderTestRepository)
+    public SystemLogTabViewModel()
     {
-        _unitUnderTestRepository = unitUnderTestRepository;
+
     }
 
     private async Task LoadLogsAsync()
     {
-        UnitsUnderTest.Clear();
-        UnitsUnderTest.AddRange(await _unitUnderTestRepository.GetAllLast24HrsUnits());
+        await Task.Delay(200);
     }
 
     [RelayCommand]
@@ -59,16 +59,8 @@ public partial class SystemAlarmTabViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private async Task Search()
+    private void Search()
     {
-        var units = await _unitUnderTestRepository.GetLastUnits(
-            SerialNumberFilter,
-            SelectedTestStatus,
-            SelectedSfcResponse,
-            SfcResponseContentFilter,
-            SelectedTimeSpan == null ? null : TimeSpan.FromHours((int)SelectedTimeSpan));
 
-        UnitsUnderTest.Clear();
-        UnitsUnderTest.AddRange(units);
     }
 }

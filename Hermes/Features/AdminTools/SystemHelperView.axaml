@@ -5,10 +5,17 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="850"
 			 xmlns:adminTools="clr-namespace:Hermes.Features.AdminTools"
 			 xmlns:sukiUi="clr-namespace:SukiUI.Controls;assembly=SukiUI"
-             x:Class="Hermes.Features.AdminTools.SystemHelperView">
+             x:Class="Hermes.Features.AdminTools.SystemHelperView"
+			 x:DataType="adminTools:AdminToolsViewModel">
 	<TabControl>
 		<TabItem Header="系统配置">
 			<adminTools:SystemSetTabView></adminTools:SystemSetTabView>
+		</TabItem>
+		<TabItem Header="系统日志">
+			<adminTools:SystemLogTabView></adminTools:SystemLogTabView>
+		</TabItem>
+		<TabItem Header="系统报警">
+			<adminTools:SystemAlarmTabView></adminTools:SystemAlarmTabView>
 		</TabItem>
 		<TabItem Header="软件详情">
 			<adminTools:AboutTabView></adminTools:AboutTabView>

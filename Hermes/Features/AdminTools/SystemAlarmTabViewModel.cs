@@ -1,23 +1,19 @@
-﻿using Avalonia.Controls.Notifications;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
 using Hermes.Common.Extensions;
-using Hermes.Common.Messages;
+using Hermes.Common;
 using Hermes.Models;
 using Hermes.Repositories;
-using Hermes.Services;
 using Hermes.Types;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Threading.Tasks;
 using System;
-using Hermes.Common;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Hermes.Features.Logs;
+namespace Hermes.Features.AdminTools;
 
-public partial class SystemLogTabViewModel : ViewModelBase
+public partial class SystemAlarmTabViewModel : ViewModelBase
 {
     [ObservableProperty]
     private UnitUnderTest _selectedUnitUnderTest = UnitUnderTest.Null;
@@ -31,21 +27,15 @@ public partial class SystemLogTabViewModel : ViewModelBase
     public static IEnumerable<SfcResponseType?> SfcResponseOptions => NullableExtensions.GetValues<SfcResponseType>();
     public static IEnumerable<TimeSpanType?> TimeSpanOptions => NullableExtensions.GetValues<TimeSpanType>();
 
-    private readonly FileService _fileService;
-    private readonly UnitUnderTestRepository _unitUnderTestRepository;
 
-    public SystemLogTabViewModel(
-        FileService fileService,
-        UnitUnderTestRepository unitUnderTestRepository)
+    public SystemAlarmTabViewModel()
     {
-        _fileService = fileService;
-        _unitUnderTestRepository = unitUnderTestRepository;
+
     }
 
     private async Task LoadLogsAsync()
     {
-        UnitsUnderTest.Clear();
-        UnitsUnderTest.AddRange(await _unitUnderTestRepository.GetAllLast24HrsUnits());
+        await Task.Delay(200);
     }
 
     [RelayCommand]
@@ -66,16 +56,8 @@ public partial class SystemLogTabViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private async Task Search()
+    private void Search()
     {
-        var units = await _unitUnderTestRepository.GetLastUnits(
-            SerialNumberFilter,
-            SelectedTestStatus,
-            SelectedSfcResponse,
-            SfcResponseContentFilter,
-            SelectedTimeSpan == null ? null : TimeSpan.FromHours((int)SelectedTimeSpan));
 
-        UnitsUnderTest.Clear();
-        UnitsUnderTest.AddRange(units);
     }
 }
