@@ -1,0 +1,191 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:lang="clr-namespace:Hermes.Language;assembly=Hermes.Language"
+			 xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+			 xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+			 xmlns:system="clr-namespace:System;assembly=System.Runtime"
+             mc:Ignorable="d" d:DesignWidth="950" d:DesignHeight="650"
+			 xmlns:helpers="clr-namespace:SukiUI.Helpers;assembly=SukiUI"
+			 xmlns:vm="using:Hermes.Features.UutProcessor"
+			 x:DataType="vm:SlideBoxViewModel"
+             x:Class="Hermes.Features.UutProcessor.SlideDetailsView">
+
+	<suki:GlassCard Classes="Primary" Grid.Row="0">
+		<suki:GroupBox>
+			<suki:GroupBox.Header>
+				<TextBlock Text="玻片盒详情" FontSize="18" FontWeight="SemiBold">
+				</TextBlock>
+			</suki:GroupBox.Header>
+			<SplitView IsPaneOpen="True"
+					   DisplayMode="Inline"
+					   PanePlacement="Right"
+					   OpenPaneLength="250">
+				<SplitView.Pane>
+					<StackPanel Spacing="5" Margin="0,0,0,0">
+						<StackPanel.Background>
+							<LinearGradientBrush StartPoint="0% 100%" EndPoint="100% 0%">
+								<GradientStop Offset="0.25" Color="#ECEFF1" />
+								<GradientStop Offset="0.5" Color="#CFD8DC" />
+								<GradientStop Offset="0.75" Color="#B0BEC5" />
+								<GradientStop Offset="1" Color="#90A4AE" />
+							</LinearGradientBrush>
+						</StackPanel.Background>
+						<Border Height="10"/>
+						<TextBlock Text="玻片信息" FontSize="20" HorizontalAlignment="Center"/>
+						<Grid RowDefinitions="*,*,*,*,*,*,*" ColumnDefinitions="10,*,*">
+							<TextBlock FontSize="18" Grid.Row="0" Grid.Column="1">
+								<Run Text="序号" />
+								<Run Text=":" />
+							</TextBlock>
+							<TextBlock FontSize="18" Grid.Row="0" Grid.Column="2">
+								<Run Text="{Binding SelectedSlideIndex}" />
+							</TextBlock>
+							<TextBlock FontSize="18" Grid.Row="1" Grid.Column="1">
+								<Run Text="项目名" />
+								<Run Text=":" />						
+							</TextBlock>
+							<TextBlock FontSize="18" Grid.Row="1" Grid.Column="2">
+								<Run Text="{Binding ProgramId}" />
+							</TextBlock>
+							<TextBlock FontSize="18" Grid.Row="2" Grid.Column="1">
+								<Run Text="病理号" />
+								<Run Text=":" />
+							</TextBlock>
+							<TextBlock FontSize="18" Grid.Row="2" Grid.Column="2">
+								<Run Text="{Binding PathologyId}" />
+							</TextBlock>
+							<TextBlock FontSize="18" Grid.Row="3" Grid.Column="1">
+								<Run Text="玻片号" />
+								<Run Text=":" />
+							</TextBlock>
+							<TextBlock FontSize="18" Grid.Row="3" Grid.Column="2">
+								<Run Text="{Binding SlideId}" />
+							</TextBlock>
+							<TextBlock FontSize="18" Grid.Row="4" Grid.Column="1">
+								<Run Text="姓名" />
+								<Run Text=":" />
+							</TextBlock>
+							<TextBlock FontSize="18" Grid.Row="4" Grid.Column="2">
+								<Run Text="{Binding PatientName}" />
+							</TextBlock>
+							<TextBlock FontSize="18" Grid.Row="5" Grid.Column="1">
+								<Run Text="医生" />
+								<Run Text=":" />
+							</TextBlock>
+							<TextBlock FontSize="18" Grid.Row="5" Grid.Column="2">
+								<Run Text="{Binding DoctorName}" />
+							</TextBlock>
+							<TextBlock FontSize="18" Grid.Row="6" Grid.Column="1">
+								<Run Text="日期" />
+								<Run Text=":" />
+							</TextBlock>
+							<TextBlock FontSize="18" Grid.Row="6" Grid.Column="2">
+								<Run Text="{Binding EntryDate}" />
+							</TextBlock>						
+						</Grid>
+
+						<suki:GroupBox Header="理片程序" Margin="4,4,2,2">
+							<Grid RowDefinitions="Auto, Auto" ColumnDefinitions="Auto, Auto">
+								<RadioButton Grid.Row="0" Grid.Column="0" GroupName="Sort Group" Content="按项目"/>
+								<RadioButton Grid.Row="0" Grid.Column="1" GroupName="Sort Group" Content="按诊断医生"/>
+								<RadioButton Grid.Row="1" Grid.Column="0" GroupName="Sort Group" Content="按病理号"/>
+								<RadioButton Grid.Row="1" Grid.Column="1" GroupName="Sort Group" Content="按玻片号"/>
+							</Grid>
+						</suki:GroupBox>
+						<suki:GroupBox Header="烘片程序" Margin="4,4,2,2">
+							<StackPanel>
+								<RadioButton GroupName="Bake Group"
+										  Content="无需烘片"/>
+								<RadioButton GroupName="Bake Group"
+										  Content="烘片"/>
+							</StackPanel>
+						</suki:GroupBox>
+						<StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
+							<Button Classes="Outlined" MaxWidth="88">
+								<StackPanel Orientation="Horizontal" Spacing="12">
+									<avalonia:MaterialIcon Kind="CloseBoxOutline" Margin="-5,0,0,0"/>
+									<TextBlock Text="封片"/>
+								</StackPanel>
+							</Button>
+							<Button Classes="Outlined" MaxWidth="88">
+								<StackPanel Orientation="Horizontal" Spacing="12">
+									<avalonia:MaterialIcon Kind="SortDescending" Margin="-5,0,0,0"/>
+									<TextBlock Text="理片"/>
+								</StackPanel>
+							</Button>
+						</StackPanel>
+					</StackPanel>
+				</SplitView.Pane>
+				<Grid RowDefinitions="*" ColumnDefinitions="26,*">
+					<Grid Grid.Row="0" Grid.Column="0" RowDefinitions="*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*" ColumnDefinitions="*">
+						<Border Grid.Row="0" Background="rgb(224,255,255)">
+							<TextBlock Text="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+						</Border>
+						<Border Grid.Row="1"  Background="rgb(224,255,255)">
+							<TextBlock Text="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+						</Border>
+						<Border Grid.Row="2" Background="rgb(224,255,255)">
+							<TextBlock Text="3" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+						</Border>
+						<Border Grid.Row="3" Background="rgb(224,255,255)">
+							<TextBlock Text="4" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+						</Border>
+						<Border Grid.Row="4" Background="rgb(224,255,255)">
+							<TextBlock Text="5" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+						</Border>
+						<Border Grid.Row="5" Background="rgb(224,255,255)">
+							<TextBlock Text="6" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+						</Border>
+						<Border Grid.Row="6"  Background="rgb(224,255,255)">
+							<TextBlock Text="7" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+						</Border>
+						<Border Grid.Row="7" Background="rgb(224,255,255)">
+							<TextBlock Text="8" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+						</Border>
+						<Border Grid.Row="8" Background="rgb(224,255,255)">
+							<TextBlock Text="9" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+						</Border>
+						<Border Grid.Row="9" Background="rgb(224,255,255)">
+							<TextBlock Text="10" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+						</Border>
+						<Border Grid.Row="10" Background="rgb(224,255,255)">
+							<TextBlock Text="11" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+						</Border>
+						<Border Grid.Row="11"  Background="rgb(224,255,255)">
+							<TextBlock Text="12" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+						</Border>
+						<Border Grid.Row="12" Background="rgb(224,255,255)">
+							<TextBlock Text="13" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+						</Border>
+						<Border Grid.Row="13" Background="rgb(224,255,255)">
+							<TextBlock Text="14" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+						</Border>
+						<Border Grid.Row="14" Background="rgb(224,255,255)">
+							<TextBlock Text="15" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+						</Border>
+						<Border Grid.Row="15" Background="rgb(224,255,255)">
+							<TextBlock Text="16" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+						</Border>
+						<Border Grid.Row="16"  Background="rgb(224,255,255)">
+							<TextBlock Text="17" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+						</Border>
+						<Border Grid.Row="17" Background="rgb(224,255,255)">
+							<TextBlock Text="18" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+						</Border>
+						<Border Grid.Row="18" Background="rgb(224,255,255)">
+							<TextBlock Text="19" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+						</Border>
+						<Border Grid.Row="19" Background="rgb(224,255,255)">
+							<TextBlock Text="20" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5"/>
+						</Border>
+					</Grid>
+					<vm:SlideBoxView Grid.Column="1" VerticalAlignment="Stretch" Margin="0,0,0,0">
+					</vm:SlideBoxView>
+				</Grid>
+			</SplitView>
+		</suki:GroupBox>
+	</suki:GlassCard>
+
+</UserControl>

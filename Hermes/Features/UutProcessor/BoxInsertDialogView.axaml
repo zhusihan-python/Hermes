@@ -1,0 +1,32 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+			 xmlns:local="clr-namespace:Hermes.Features.UutProcessor"
+			 xmlns:sukiUi="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+             x:Class="Hermes.Features.UutProcessor.BoxInsertDialogView"
+			 x:DataType="local:BoxInsertDialogViewModel">
+	<sukiUi:GroupBox Header="提示" MaxWidth="400" Padding="10">
+
+		<StackPanel Margin="0"
+                    Spacing="20">
+			<StackPanel>
+				<TextBlock Text="检测到玻片盒新增，是否开始流程" FontSize="20"></TextBlock>
+			</StackPanel>
+			<StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Spacing="20">
+				<Button HorizontalContentAlignment="Center"
+                        Classes="Outlined"
+                        Command="{Binding AcceptCommand}"
+                        Content="确定" />
+
+				<Button HorizontalContentAlignment="Center"
+                        Classes="Outlined Accent"
+                        Command="{Binding CloseDialogCommand}"
+                        Content="取消" />
+			</StackPanel>
+		</StackPanel>
+	</sukiUi:GroupBox>
+</UserControl>
