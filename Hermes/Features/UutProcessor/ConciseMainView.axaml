@@ -1,0 +1,113 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="760"
+			 xmlns:controls="using:Hermes.Features.Controls"
+			 xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+			 xmlns:actipro="http://schemas.actiprosoftware.com/avaloniaui"
+             x:Class="Hermes.Features.UutProcessor.ConciseMainView">
+	<UserControl.Background>
+		<!-- 使用 ImageBrush 作为背景 -->
+		<ImageBrush Source="avares://Hermes/AppData/Assets/snow.jpg" Stretch="UniformToFill" />
+	</UserControl.Background>
+	<Border Width="900" Height="700">
+		<Grid RowDefinitions="20,*,*,*" ColumnDefinitions="*,25,*">
+			<StackPanel Margin="5" Grid.Row="1" Grid.Column="0" Grid.RowSpan="3" Spacing="20">
+				<Panel>
+					<actipro:MeshGradientPresenter Background="#B2EBF2" CornerRadius="10">
+						<actipro:MeshGradientNode Center="1%, 95%" Color="#D1C4E9" />
+						<actipro:MeshGradientNode Center="30%, 0%" Color="#BBDEFB" />
+						<actipro:MeshGradientNode Center="99%, 37%" Color="#B2DFDB" />
+						<actipro:MeshGradientNode Center="83%, 95%" Color="#B3E5FC" />
+					</actipro:MeshGradientPresenter>
+					<StackPanel Spacing="30" Margin="15">
+						<Button Classes="Outlined" Height="180" Opacity="0.8">
+							<TextBlock>
+								<Run Text="封" FontSize="32"/>
+								<Run Text=" " FontSize="32"/>
+								<Run Text="片" FontSize="32"/>
+							</TextBlock>
+						</Button>
+						<Button Classes="Outlined" Height="180" Opacity="0.8">
+							<TextBlock>
+								<Run Text="理" FontSize="32"/>
+								<Run Text=" " FontSize="32"/>
+								<Run Text="片" FontSize="32"/>
+							</TextBlock>		
+						</Button>
+					</StackPanel>
+				</Panel>
+			</StackPanel>
+
+			<StackPanel Grid.Row="1" Grid.Column="2" Spacing="30">
+				<Panel  Width="320" Height="200">
+					<actipro:MeshGradientPresenter Background="#B2EBF2" CornerRadius="10">
+						<actipro:MeshGradientNode Center="1%, 95%" Color="#D1C4E9" />
+						<actipro:MeshGradientNode Center="30%, 0%" Color="#BBDEFB" />
+						<actipro:MeshGradientNode Center="99%, 37%" Color="#B2DFDB" />
+						<actipro:MeshGradientNode Center="83%, 95%" Color="#B3E5FC" />
+					</actipro:MeshGradientPresenter>
+					<StackPanel>
+						<Viewbox Stretch="Uniform">
+							<Viewbox.Effect>
+								<DropShadowEffect OffsetX="0" OffsetY="1" BlurRadius="5" Opacity="0.2" />
+							</Viewbox.Effect>
+
+							<StackPanel Margin="30,20">
+								<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+									<TextBlock Text="封片中" FontSize="23" Foreground="#37474F" VerticalAlignment="Center" />
+								</StackPanel>
+							</StackPanel>
+						</Viewbox>
+						<ProgressBar Value="30" Margin="10,0,10,0"/>				
+					</StackPanel>
+
+				</Panel >
+			</StackPanel>
+
+			<StackPanel Grid.Row="2" Grid.Column="2">
+				<Panel  Width="320" Height="150">
+					<actipro:MeshGradientPresenter Background="#B2EBF2" CornerRadius="10">
+						<actipro:MeshGradientNode Center="1%, 95%" Color="#D1C4E9" />
+						<actipro:MeshGradientNode Center="30%, 0%" Color="#BBDEFB" />
+						<actipro:MeshGradientNode Center="99%, 37%" Color="#B2DFDB" />
+						<actipro:MeshGradientNode Center="83%, 95%" Color="#B3E5FC" />
+					</actipro:MeshGradientPresenter>
+					<Viewbox Stretch="Uniform">
+						<Viewbox.Effect>
+							<DropShadowEffect OffsetX="0" OffsetY="1" BlurRadius="5" Opacity="0.2" />
+						</Viewbox.Effect>
+
+						<StackPanel Margin="30,20">
+							<TextBlock Text="10:32" FontSize="23" FontWeight="Bold" Foreground="#37474F" HorizontalAlignment="Center" />
+							<TextBlock Text="12-12 2024" FontSize="23" FontWeight="Bold" Foreground="#37474F" HorizontalAlignment="Center" />
+						</StackPanel>
+					</Viewbox>
+				</Panel >
+			</StackPanel>
+
+			<StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center" Spacing="30">
+				<controls:ButtonImage Width="150" Height="150">
+					<controls:ButtonImage.NormalBackground>avares://Hermes/AppData/Assets/start_dark.png</controls:ButtonImage.NormalBackground>
+					<controls:ButtonImage.PressedBackground>avares://Hermes/AppData/Assets/start_light.png</controls:ButtonImage.PressedBackground>
+				</controls:ButtonImage>
+				<controls:ButtonImage Width="150" Height="150">
+					<controls:ButtonImage.NormalBackground>avares://Hermes/AppData/Assets/stop_dark.png</controls:ButtonImage.NormalBackground>
+					<controls:ButtonImage.PressedBackground>avares://Hermes/AppData/Assets/stop_light.png</controls:ButtonImage.PressedBackground>
+				</controls:ButtonImage>
+			</StackPanel>
+
+			<Border Grid.Row="3" Grid.Column="2" CornerRadius="10">
+				<StackPanel Orientation="Horizontal" Spacing="20">
+					<controls:StoreBox>
+					</controls:StoreBox>
+					<controls:BottleControl Margin="0,15,0,15"></controls:BottleControl>
+					<controls:BottleControl Margin="0,15,0,15"></controls:BottleControl>
+					<controls:BottleControl Margin="0,15,0,15"></controls:BottleControl>
+				</StackPanel>
+
+			</Border>
+		</Grid>
+	</Border>
+</UserControl>
