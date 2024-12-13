@@ -5,6 +5,7 @@
 			 xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
              xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
              xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+			 xmlns:labs="using:Hermes.Features.Controls"
              xmlns:local="clr-namespace:Hermes.Features.UutProcessor"
              xmlns:controls="clr-namespace:SukiUI.Controls;assembly=SukiUI"
              xmlns:converters="clr-namespace:Hermes.Common.Converters"
@@ -15,281 +16,287 @@
 			 x:Name="Self"
              x:Class="Hermes.Features.UutProcessor.UutProcessorView"
              x:DataType="local:UutProcessorViewModel">
-
-    <ScrollViewer VerticalScrollBarVisibility="Auto">
-
-        <Grid Margin="0,0,5,0"
-              RowDefinitions="100,*,30"
-              ColumnDefinitions="Auto,*,180">
-
-            <!-- Sort Radio Group -->
-			<Border Grid.Row="0" Grid.Column="0" Background="#d5ddee"
-				CornerRadius="22"
-				Padding="5" Margin="10">
-				<StackPanel Spacing="12"
-							Orientation="Horizontal"
-							HorizontalAlignment="Center"
-							VerticalAlignment="Center">
-					<TextBlock FontSize="20" Text="理片按"></TextBlock>
-					<Grid RowDefinitions="*" ColumnDefinitions="*,*,*,*">
-						<RadioButton Grid.Row="0" Grid.Column="0" GroupName="Sort Group" Content="项目"/>
-						<RadioButton Grid.Row="0" Grid.Column="1" GroupName="Sort Group" Content="医生"/>
-						<RadioButton Grid.Row="0" Grid.Column="2" GroupName="Sort Group" Content="病理号"/>
-						<RadioButton Grid.Row="0" Grid.Column="3" GroupName="Sort Group" Content="玻片号"/>
-					</Grid>
-				</StackPanel>
-			</Border>
-
-			<!-- Control Buttons -->
-			<Border  Grid.Row="0" Grid.Column="1" Background="#d5ddee"
-				CornerRadius="22" Padding="10" Margin="10">
-				<Grid RowDefinitions="*"
-                      ColumnDefinitions="*">
-					<StackPanel Grid.Column="0" Spacing="12" Orientation="Horizontal" HorizontalAlignment="Center">
-						<Button Classes="Outlined" MaxWidth="88">
-							<StackPanel Orientation="Horizontal" Spacing="10">
-								<avalonia:MaterialIcon Kind="Pause" Margin="-5,0,0,0"/>
-								<TextBlock Text="暂停"/>
-							</StackPanel>
-						</Button>
-						<Button Classes="Outlined" MaxWidth="88">
-							<StackPanel Orientation="Horizontal" Spacing="10">
-								<avalonia:MaterialIcon Kind="Triangle" Margin="-5,0,0,0">
-									<avalonia:MaterialIcon.RenderTransform>
-										<RotateTransform Angle="90" />
-									</avalonia:MaterialIcon.RenderTransform>
-								</avalonia:MaterialIcon>
-								<TextBlock Text="运行"/>
-							</StackPanel>
-						</Button>
-						<Button Classes="Outlined" MaxWidth="88">
-							<StackPanel Orientation="Horizontal" Spacing="10">
-								<avalonia:MaterialIcon Kind="Square" Margin="-5,0,0,0"/>
-								<TextBlock Text="停止"/>
-							</StackPanel>
-						</Button>
-						<Button Classes="Outlined" MaxWidth="88">
-							<StackPanel Orientation="Horizontal" Spacing="10" >
-								<avalonia:MaterialIcon Kind="FilterPlusOutline" Margin="-5,0,0,0"/>
-								<TextBlock Text="选片"/>
-							</StackPanel>
-						</Button>
+	<ScrollViewer>
+	<labs:Swipe Name="SwipePage" SwipeThreshold="60">
+		<labs:Swipe.Right>
+			<DataTemplate>
+			<Grid Margin="0,0,5,0"
+					RowDefinitions="100,*,30"
+					ColumnDefinitions="Auto,*,180">
+				<!-- Sort Radio Group -->
+				<Border Grid.Row="0" Grid.Column="0" Background="#d5ddee"
+					CornerRadius="22"
+					Padding="5" Margin="10">
+					<StackPanel Spacing="12"
+								Orientation="Horizontal"
+								HorizontalAlignment="Center"
+								VerticalAlignment="Center">
+						<TextBlock FontSize="20" Text="理片按"></TextBlock>
+						<Grid RowDefinitions="*" ColumnDefinitions="*,*,*,*">
+							<RadioButton Grid.Row="0" Grid.Column="0" GroupName="Sort Group" Content="项目"/>
+							<RadioButton Grid.Row="0" Grid.Column="1" GroupName="Sort Group" Content="医生"/>
+							<RadioButton Grid.Row="0" Grid.Column="2" GroupName="Sort Group" Content="病理号"/>
+							<RadioButton Grid.Row="0" Grid.Column="3" GroupName="Sort Group" Content="玻片号"/>
+						</Grid>
 					</StackPanel>
-				</Grid>
-			</Border>
+				</Border>
 
-			<!-- Time Group -->
-			<Border Grid.Row="0" Grid.Column="3" Background="#d5ddee"
-				CornerRadius="22"
-				Padding="10" Margin="10">
-				<StackPanel Spacing="12"
-							Orientation="Horizontal"
-							HorizontalAlignment="Center"
-							VerticalAlignment="Center">
-					<TextBlock FontSize="20" Text="时间"></TextBlock>
-					<TextBlock FontSize="20" Text="****-**-**"></TextBlock>
-				</StackPanel>
-			</Border>
-
-			<StackPanel Grid.Row="1" Grid.ColumnSpan="5">
-				<Grid RowDefinitions="*" ColumnDefinitions="20,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,20"
-					  Height="20">
-					<!-- Row headers -->
-					<Border Grid.Row="0" Grid.Column="0" Background="LightBlue"></Border>
-					<Border Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
-						<TextBlock Text="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
-					</Border>
-					<Border Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
-						<TextBlock Text="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
-					</Border>
-					<Border Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
-						<TextBlock Text="3" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
-					</Border>
-					<Border Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
-						<TextBlock Text="4" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
-					</Border>
-					<Border Grid.Row="0" Grid.Column="5" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
-						<TextBlock Text="5" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
-					</Border>
-					<Border Grid.Row="0" Grid.Column="6" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
-						<TextBlock Text="6" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
-					</Border>
-					<Border Grid.Row="0" Grid.Column="7" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
-						<TextBlock Text="7" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
-					</Border>
-					<Border Grid.Row="0" Grid.Column="8" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
-						<TextBlock Text="8" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
-					</Border>
-					<Border Grid.Row="0" Grid.Column="9" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
-						<TextBlock Text="9" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
-					</Border>
-					<Border Grid.Row="0" Grid.Column="10" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
-						<TextBlock Text="10" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
-					</Border>
-					<Border Grid.Row="0" Grid.Column="11" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
-						<TextBlock Text="11" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
-					</Border>
-					<Border Grid.Row="0" Grid.Column="12" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
-						<TextBlock Text="12" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
-					</Border>
-					<Border Grid.Row="0" Grid.Column="13" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
-						<TextBlock Text="13" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
-					</Border>
-					<Border Grid.Row="0" Grid.Column="14" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
-						<TextBlock Text="14" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
-					</Border>
-					<Border Grid.Row="0" Grid.Column="15" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
-						<TextBlock Text="15" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
-					</Border>
-					<Border Grid.Row="0" Grid.Column="16" Background="LightBlue"></Border>
-				</Grid>
-				<Grid RowDefinitions="*" ColumnDefinitions="20,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,20">
-					<!-- Column headers -->
-					<Grid RowDefinitions="*,*,*,*,*" ColumnDefinitions="*">
-						<Border Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Background="rgb(224,255,255)">
-							<TextBlock Text="A" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
-						</Border>
-						<Border Grid.Row="1" Grid.RowSpan="1" Grid.Column="0" Background="rgb(224,255,255)">
-							<TextBlock Text="B" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
-						</Border>
-						<Border Grid.Row="2" Grid.RowSpan="1" Grid.Column="0" Background="rgb(224,255,255)">
-							<TextBlock Text="C" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
-						</Border>
-						<Border Grid.Row="3" Grid.RowSpan="1" Grid.Column="0" Background="rgb(224,255,255)">
-							<TextBlock Text="D" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
-						</Border>
-						<Border Grid.Row="4" Grid.RowSpan="1" Grid.Column="0" Background="rgb(224,255,255)">
-							<TextBlock Text="E" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
-						</Border>
+				<!-- Control Buttons -->
+				<Border  Grid.Row="0" Grid.Column="1" Background="#d5ddee"
+					CornerRadius="22" Padding="10" Margin="10">
+					<Grid RowDefinitions="*"
+							ColumnDefinitions="*">
+						<StackPanel Grid.Column="0" Spacing="12" Orientation="Horizontal" HorizontalAlignment="Center">
+							<Button Classes="Outlined" MaxWidth="88">
+								<StackPanel Orientation="Horizontal" Spacing="10">
+									<avalonia:MaterialIcon Kind="Pause" Margin="-5,0,0,0"/>
+									<TextBlock Text="暂停"/>
+								</StackPanel>
+							</Button>
+							<Button Classes="Outlined" MaxWidth="88">
+								<StackPanel Orientation="Horizontal" Spacing="10">
+									<avalonia:MaterialIcon Kind="Triangle" Margin="-5,0,0,0">
+										<avalonia:MaterialIcon.RenderTransform>
+											<RotateTransform Angle="90" />
+										</avalonia:MaterialIcon.RenderTransform>
+									</avalonia:MaterialIcon>
+									<TextBlock Text="运行"/>
+								</StackPanel>
+							</Button>
+							<Button Classes="Outlined" MaxWidth="88">
+								<StackPanel Orientation="Horizontal" Spacing="10">
+									<avalonia:MaterialIcon Kind="Square" Margin="-5,0,0,0"/>
+									<TextBlock Text="停止"/>
+								</StackPanel>
+							</Button>
+							<Button Classes="Outlined" MaxWidth="88">
+								<StackPanel Orientation="Horizontal" Spacing="10" >
+									<avalonia:MaterialIcon Kind="FilterPlusOutline" Margin="-5,0,0,0"/>
+									<TextBlock Text="选片"/>
+								</StackPanel>
+							</Button>
+						</StackPanel>
 					</Grid>
+				</Border>
 
-					<local:SlideBoardView Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="15">
-					</local:SlideBoardView>
-
-					<Grid Grid.Row="0" Grid.Column="16" RowDefinitions="*,*,*,*,*" ColumnDefinitions="*">
-						<Border Grid.Row="0" Grid.RowSpan="1" Grid.Column="16" Background="rgb(224,255,255)">
-							<TextBlock Text="A" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
-						</Border>
-						<Border Grid.Row="1" Grid.RowSpan="1" Grid.Column="16" Background="rgb(224,255,255)">
-							<TextBlock Text="B" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
-						</Border>
-						<Border Grid.Row="2" Grid.RowSpan="1" Grid.Column="16" Background="rgb(224,255,255)">
-							<TextBlock Text="C" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
-						</Border>
-						<Border Grid.Row="3" Grid.RowSpan="1" Grid.Column="16" Background="rgb(224,255,255)">
-							<TextBlock Text="D" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
-						</Border>
-						<Border Grid.Row="4" Grid.RowSpan="1" Grid.Column="16" Background="rgb(224,255,255)">
-							<TextBlock Text="E" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
-						</Border>
-					</Grid>
-				</Grid>
-				<Grid RowDefinitions="*" ColumnDefinitions="20,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,20"
-					  Height="20">
-					<!-- Bottom Row headers -->
-					<Border Grid.Row="0" Grid.Column="0" Background="LightBlue"></Border>
-					<Border Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
-						<TextBlock Text="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
-					</Border>
-					<Border Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
-						<TextBlock Text="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
-					</Border>
-					<Border Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
-						<TextBlock Text="3" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
-					</Border>
-					<Border Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
-						<TextBlock Text="4" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
-					</Border>
-					<Border Grid.Row="0" Grid.Column="5" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
-						<TextBlock Text="5" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
-					</Border>
-					<Border Grid.Row="0" Grid.Column="6" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
-						<TextBlock Text="6" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
-					</Border>
-					<Border Grid.Row="0" Grid.Column="7" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
-						<TextBlock Text="7" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
-					</Border>
-					<Border Grid.Row="0" Grid.Column="8" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
-						<TextBlock Text="8" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
-					</Border>
-					<Border Grid.Row="0" Grid.Column="9" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
-						<TextBlock Text="9" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
-					</Border>
-					<Border Grid.Row="0" Grid.Column="10" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
-						<TextBlock Text="10" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
-					</Border>
-					<Border Grid.Row="0" Grid.Column="11" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
-						<TextBlock Text="11" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
-					</Border>
-					<Border Grid.Row="0" Grid.Column="12" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
-						<TextBlock Text="12" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
-					</Border>
-					<Border Grid.Row="0" Grid.Column="13" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
-						<TextBlock Text="13" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
-					</Border>
-					<Border Grid.Row="0" Grid.Column="14" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
-						<TextBlock Text="14" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
-					</Border>
-					<Border Grid.Row="0" Grid.Column="15" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
-						<TextBlock Text="15" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
-					</Border>
-					<Border Grid.Row="0" Grid.Column="16" Background="LightBlue"></Border>
-				</Grid>
-			</StackPanel>
-
-			<Grid Grid.Row="2" Grid.ColumnSpan="5" ColumnDefinitions="130,130,*,*,*,*,*,Auto">
-				<StackPanel Grid.Column="0" MaxHeight="30" Orientation="Horizontal" Spacing="5">
-					<Border Width="20" Height="30"
-						Background="LightGray"
-						BorderBrush="LightGray"
-						BorderThickness="1"/>
-					<TextBlock Text="装载玻片架" FontSize="18" VerticalAlignment="Center"></TextBlock>
-				</StackPanel>
-				<StackPanel Grid.Column="1" MaxHeight="30" Orientation="Horizontal" Spacing="5">
-					<Border Width="20" Height="30"
-						Background="Gray"
-						BorderBrush="LightGray"
-						BorderThickness="1"/>
-					<TextBlock Text="空载玻片架" FontSize="18" VerticalAlignment="Center"></TextBlock>
-				</StackPanel>
-				<StackPanel Grid.Column="2" MaxHeight="30" Spacing="10" Orientation="Horizontal">
-					<Border Width="50" Height="10"
-						Background="Cyan"
-						BorderBrush="LightGray"
-						BorderThickness="1"/>
-					<TextBlock Text="待整理" FontSize="18" HorizontalAlignment="Center"></TextBlock>
-				</StackPanel>
-				<StackPanel Grid.Column="3" MaxHeight="30" Spacing="10" Orientation="Horizontal">
-					<Border Width="50" Height="10"
-						Background="#3ec607"
-						BorderBrush="LightGray"
-						BorderThickness="1"/>
-					<TextBlock Text="已整理" FontSize="18" HorizontalAlignment="Center"></TextBlock>
-				</StackPanel>
-				<StackPanel Grid.Column="4" MaxHeight="30" Spacing="10" Orientation="Horizontal">
-					<Border Width="50" Height="10"
-						Background="Red"
-						BorderBrush="LightGray"
-						BorderThickness="1"/>
-					<TextBlock Text="异常" FontSize="18" HorizontalAlignment="Center"></TextBlock>
-				</StackPanel>
-				<StackPanel Grid.Column="5" MaxHeight="30" Spacing="5" Margin="20,0,0,0" Orientation="Horizontal">
-					<TextBlock Text="可用盖玻片" FontSize="15" HorizontalAlignment="Center"></TextBlock>
-					<TextBlock Text="12片" FontSize="15" HorizontalAlignment="Center"></TextBlock>
-				</StackPanel>
-				<StackPanel Grid.Column="7" Orientation="Horizontal" Spacing="12" Margin="30,10,0,0" HorizontalAlignment="Center">
-					<StackPanel Orientation="Horizontal" Spacing="5">
-						<TextBlock Text="21" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
-						<avalonia:MaterialIcon Kind="TemperatureCelsius"/>
+				<!-- Time Group -->
+				<Border Grid.Row="0" Grid.Column="3" Background="#d5ddee"
+					CornerRadius="22"
+					Padding="10" Margin="10">
+					<StackPanel Spacing="12"
+								Orientation="Horizontal"
+								HorizontalAlignment="Center"
+								VerticalAlignment="Center">
+						<TextBlock FontSize="20" Text="时间"></TextBlock>
+						<TextBlock FontSize="20" Text="****-**-**"></TextBlock>
 					</StackPanel>
-					<StackPanel Orientation="Horizontal" Spacing="5">
-						<TextBlock Text="15" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
-						<avalonia:MaterialIcon Kind="WaterPercent"/>
-					</StackPanel>		
+				</Border>
+
+				<StackPanel Grid.Row="1" Grid.ColumnSpan="5">
+					<Grid RowDefinitions="*" ColumnDefinitions="20,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,20"
+							Height="20">
+						<!-- Row headers -->
+						<Border Grid.Row="0" Grid.Column="0" Background="LightBlue"></Border>
+						<Border Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+							<TextBlock Text="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+						</Border>
+						<Border Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+							<TextBlock Text="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+						</Border>
+						<Border Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+							<TextBlock Text="3" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+						</Border>
+						<Border Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+							<TextBlock Text="4" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+						</Border>
+						<Border Grid.Row="0" Grid.Column="5" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+							<TextBlock Text="5" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+						</Border>
+						<Border Grid.Row="0" Grid.Column="6" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+							<TextBlock Text="6" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+						</Border>
+						<Border Grid.Row="0" Grid.Column="7" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+							<TextBlock Text="7" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+						</Border>
+						<Border Grid.Row="0" Grid.Column="8" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+							<TextBlock Text="8" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+						</Border>
+						<Border Grid.Row="0" Grid.Column="9" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+							<TextBlock Text="9" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+						</Border>
+						<Border Grid.Row="0" Grid.Column="10" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+							<TextBlock Text="10" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+						</Border>
+						<Border Grid.Row="0" Grid.Column="11" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+							<TextBlock Text="11" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+						</Border>
+						<Border Grid.Row="0" Grid.Column="12" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+							<TextBlock Text="12" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+						</Border>
+						<Border Grid.Row="0" Grid.Column="13" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+							<TextBlock Text="13" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+						</Border>
+						<Border Grid.Row="0" Grid.Column="14" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+							<TextBlock Text="14" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+						</Border>
+						<Border Grid.Row="0" Grid.Column="15" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+							<TextBlock Text="15" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+						</Border>
+						<Border Grid.Row="0" Grid.Column="16" Background="LightBlue"></Border>
+					</Grid>
+					<Grid RowDefinitions="*" ColumnDefinitions="20,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,20">
+						<!-- Column headers -->
+						<Grid RowDefinitions="*,*,*,*,*" ColumnDefinitions="*">
+							<Border Grid.Row="0" Grid.RowSpan="1" Grid.Column="0" Background="rgb(224,255,255)">
+								<TextBlock Text="A" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+							</Border>
+							<Border Grid.Row="1" Grid.RowSpan="1" Grid.Column="0" Background="rgb(224,255,255)">
+								<TextBlock Text="B" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+							</Border>
+							<Border Grid.Row="2" Grid.RowSpan="1" Grid.Column="0" Background="rgb(224,255,255)">
+								<TextBlock Text="C" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+							</Border>
+							<Border Grid.Row="3" Grid.RowSpan="1" Grid.Column="0" Background="rgb(224,255,255)">
+								<TextBlock Text="D" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+							</Border>
+							<Border Grid.Row="4" Grid.RowSpan="1" Grid.Column="0" Background="rgb(224,255,255)">
+								<TextBlock Text="E" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+							</Border>
+						</Grid>
+
+						<local:SlideBoardView Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="15">
+						</local:SlideBoardView>
+
+						<Grid Grid.Row="0" Grid.Column="16" RowDefinitions="*,*,*,*,*" ColumnDefinitions="*">
+							<Border Grid.Row="0" Grid.RowSpan="1" Grid.Column="16" Background="rgb(224,255,255)">
+								<TextBlock Text="A" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+							</Border>
+							<Border Grid.Row="1" Grid.RowSpan="1" Grid.Column="16" Background="rgb(224,255,255)">
+								<TextBlock Text="B" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+							</Border>
+							<Border Grid.Row="2" Grid.RowSpan="1" Grid.Column="16" Background="rgb(224,255,255)">
+								<TextBlock Text="C" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+							</Border>
+							<Border Grid.Row="3" Grid.RowSpan="1" Grid.Column="16" Background="rgb(224,255,255)">
+								<TextBlock Text="D" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+							</Border>
+							<Border Grid.Row="4" Grid.RowSpan="1" Grid.Column="16" Background="rgb(224,255,255)">
+								<TextBlock Text="E" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+							</Border>
+						</Grid>
+					</Grid>
+					<Grid RowDefinitions="*" ColumnDefinitions="20,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,20"
+							Height="20">
+						<!-- Bottom Row headers -->
+						<Border Grid.Row="0" Grid.Column="0" Background="LightBlue"></Border>
+						<Border Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+							<TextBlock Text="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+						</Border>
+						<Border Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+							<TextBlock Text="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+						</Border>
+						<Border Grid.Row="0" Grid.Column="3" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+							<TextBlock Text="3" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+						</Border>
+						<Border Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+							<TextBlock Text="4" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+						</Border>
+						<Border Grid.Row="0" Grid.Column="5" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+							<TextBlock Text="5" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+						</Border>
+						<Border Grid.Row="0" Grid.Column="6" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+							<TextBlock Text="6" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+						</Border>
+						<Border Grid.Row="0" Grid.Column="7" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+							<TextBlock Text="7" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+						</Border>
+						<Border Grid.Row="0" Grid.Column="8" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+							<TextBlock Text="8" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+						</Border>
+						<Border Grid.Row="0" Grid.Column="9" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+							<TextBlock Text="9" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+						</Border>
+						<Border Grid.Row="0" Grid.Column="10" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+							<TextBlock Text="10" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+						</Border>
+						<Border Grid.Row="0" Grid.Column="11" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+							<TextBlock Text="11" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+						</Border>
+						<Border Grid.Row="0" Grid.Column="12" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+							<TextBlock Text="12" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+						</Border>
+						<Border Grid.Row="0" Grid.Column="13" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+							<TextBlock Text="13" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+						</Border>
+						<Border Grid.Row="0" Grid.Column="14" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+							<TextBlock Text="14" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+						</Border>
+						<Border Grid.Row="0" Grid.Column="15" Grid.ColumnSpan="1" Background="rgb(224,255,255)">
+							<TextBlock Text="15" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0"/>
+						</Border>
+						<Border Grid.Row="0" Grid.Column="16" Background="LightBlue"></Border>
+					</Grid>
 				</StackPanel>
 
+				<Grid Grid.Row="2" Grid.ColumnSpan="5" ColumnDefinitions="130,130,*,*,*,*,*,Auto">
+					<StackPanel Grid.Column="0" MaxHeight="30" Orientation="Horizontal" Spacing="5">
+						<Border Width="20" Height="30"
+							Background="LightGray"
+							BorderBrush="LightGray"
+							BorderThickness="1"/>
+						<TextBlock Text="装载玻片架" FontSize="18" VerticalAlignment="Center"></TextBlock>
+					</StackPanel>
+					<StackPanel Grid.Column="1" MaxHeight="30" Orientation="Horizontal" Spacing="5">
+						<Border Width="20" Height="30"
+							Background="Gray"
+							BorderBrush="LightGray"
+							BorderThickness="1"/>
+						<TextBlock Text="空载玻片架" FontSize="18" VerticalAlignment="Center"></TextBlock>
+					</StackPanel>
+					<StackPanel Grid.Column="2" MaxHeight="30" Spacing="10" Orientation="Horizontal">
+						<Border Width="50" Height="10"
+							Background="Cyan"
+							BorderBrush="LightGray"
+							BorderThickness="1"/>
+						<TextBlock Text="待整理" FontSize="18" HorizontalAlignment="Center"></TextBlock>
+					</StackPanel>
+					<StackPanel Grid.Column="3" MaxHeight="30" Spacing="10" Orientation="Horizontal">
+						<Border Width="50" Height="10"
+							Background="#3ec607"
+							BorderBrush="LightGray"
+							BorderThickness="1"/>
+						<TextBlock Text="已整理" FontSize="18" HorizontalAlignment="Center"></TextBlock>
+					</StackPanel>
+					<StackPanel Grid.Column="4" MaxHeight="30" Spacing="10" Orientation="Horizontal">
+						<Border Width="50" Height="10"
+							Background="Red"
+							BorderBrush="LightGray"
+							BorderThickness="1"/>
+						<TextBlock Text="异常" FontSize="18" HorizontalAlignment="Center"></TextBlock>
+					</StackPanel>
+					<StackPanel Grid.Column="5" MaxHeight="30" Spacing="5" Margin="20,0,0,0" Orientation="Horizontal">
+						<TextBlock Text="可用盖玻片" FontSize="15" HorizontalAlignment="Center"></TextBlock>
+						<TextBlock Text="12片" FontSize="15" HorizontalAlignment="Center"></TextBlock>
+					</StackPanel>
+					<StackPanel Grid.Column="7" Orientation="Horizontal" Spacing="12" Margin="30,10,0,0" HorizontalAlignment="Center">
+						<StackPanel Orientation="Horizontal" Spacing="5">
+							<TextBlock Text="21" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
+							<avalonia:MaterialIcon Kind="TemperatureCelsius"/>
+						</StackPanel>
+						<StackPanel Orientation="Horizontal" Spacing="5">
+							<TextBlock Text="15" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
+							<avalonia:MaterialIcon Kind="WaterPercent"/>
+						</StackPanel>
+					</StackPanel>
+
+				</Grid>
 			</Grid>
-        </Grid>
+			</DataTemplate>
+	    </labs:Swipe.Right>
+		<labs:Swipe.Content>
+			<local:ConciseMainView></local:ConciseMainView>
+		</labs:Swipe.Content>
 
-    </ScrollViewer>
+</labs:Swipe>
+	</ScrollViewer>
 </UserControl>
