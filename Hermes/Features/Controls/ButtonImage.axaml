@@ -1,0 +1,32 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="200" d:DesignHeight="150"
+			 x:Name="Self"
+             x:Class="Hermes.Features.Controls.ButtonImage">
+	<Button Name="Button"
+            Width="{Binding #Self.Width}"
+            Height="{Binding #Self.Height}"
+            CornerRadius="30"
+            Command="{Binding #Self.Command}"
+            CommandParameter="{Binding #Self.CommandParameter}">
+
+		<Button.Styles>
+			<Style Selector="Button:pressed">
+				<Setter Property="Background">
+					<Setter.Value>
+						<ImageBrush Source="{Binding #Self.PressedBackground}" Stretch="UniformToFill"/>
+					</Setter.Value>
+				</Setter>
+			</Style>
+			<Style Selector="Button">
+				<Setter Property="Background">
+					<Setter.Value>
+						<ImageBrush Source="{Binding #Self.NormalBackground}" Stretch="UniformToFill"/>
+					</Setter.Value>
+				</Setter>
+			</Style>
+		</Button.Styles>
+	</Button>
+</UserControl>
