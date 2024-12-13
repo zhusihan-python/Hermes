@@ -9,7 +9,12 @@
              x:Class="Hermes.Features.UutProcessor.SlideBoxView"
 			 x:DataType="vm:SlideBoxViewModel">
 
-	<Border BorderBrush="#263238" BorderThickness="2" Background="White">
+	<Border BorderBrush="#263238" BorderThickness="2" Background="White" PointerPressed="Border_PointerPressed">
+		<FlyoutBase.AttachedFlyout>
+			<Flyout Placement="Right">
+				<vm:SlideDetailsView></vm:SlideDetailsView>
+			</Flyout>
+		</FlyoutBase.AttachedFlyout>
 		<ItemsControl Name="ParentControl" ItemsSource="{Binding ItemList}" MinWidth="50" MinHeight="105">
 			<ItemsControl.ItemsPanel>
 				<ItemsPanelTemplate>
@@ -20,18 +25,11 @@
 			<ItemsControl.ItemTemplate>
 				<DataTemplate>
 					<Border BorderBrush="LightGray" BorderThickness="1">
-						<Panel>
-							<Rectangle Margin="2,0,2,0">
-								<Rectangle.Fill>
-									<SolidColorBrush Color="{Binding BackColor}"/>
-								</Rectangle.Fill>
-							</Rectangle>
-							<Rectangle RadiusX="5"
-									   RadiusY="5"
-									   Fill="Black"
-									   Opacity="0.3"
-									   IsVisible="{Binding IsSelected}"/>
-						</Panel>
+						<Rectangle Margin="2,0,2,0">
+							<Rectangle.Fill>
+								<SolidColorBrush Color="{Binding BackColor}"/>
+							</Rectangle.Fill>
+						</Rectangle>
 					</Border>
 				</DataTemplate>
 			</ItemsControl.ItemTemplate>

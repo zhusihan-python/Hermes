@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using R3;
 using ObservableCollections;
+using Hermes.Repositories;
 
 namespace Hermes.Features.UutProcessor;
 
@@ -27,7 +28,7 @@ public partial class SlideBoardViewModel : ViewModelBase
         get => _columnCount;
     }
 
-    public SlideBoardViewModel()
+    public SlideBoardViewModel(SlideRepository slideRepository)
     {
         _slideBoxList = new ObservableList<SlideBoxViewModel>();
 
@@ -35,7 +36,7 @@ public partial class SlideBoardViewModel : ViewModelBase
         {
             for (int j = 0; j < _columnCount; j++)
             {
-                _slideBoxList.Add(new SlideBoxViewModel() { RowIndex = i, ColumnIndex = j });
+                _slideBoxList.Add(new SlideBoxViewModel(slideRepository) { RowIndex = i, ColumnIndex = j });
             }
         }
         Console.WriteLine("SlideBoxList", SlideBoxList);

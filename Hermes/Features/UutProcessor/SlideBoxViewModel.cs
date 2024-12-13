@@ -12,7 +12,6 @@ using Material.Icons;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using R3;
-using System.Threading;
 
 namespace Hermes.Features.UutProcessor;
 
@@ -45,8 +44,9 @@ public partial class SlideBoxViewModel : ViewModelBase
     public List<SlideModel> ItemList { get; set; } = new List<SlideModel>();
     public RangeObservableCollection<Slide> Slides { get; set; } = [];
     private readonly SlideRepository _slideRepository;
-    public SlideBoxViewModel()
+    public SlideBoxViewModel(SlideRepository slideRepository)
     {
+        this._slideRepository = slideRepository;
         var ids = new List<string>() {"24001124","24001125","24001126","24001127","24001128","24001129","24001130",
                         "24001131","24001132","24001133","24001134","24001135","24001136","24001137","24001138","24001139","24001140" };
         Random _random = new Random();
@@ -75,28 +75,26 @@ public partial class SlideBoxViewModel : ViewModelBase
         }
         SelectedSlideIndex = rowIndex;
         ItemList[rowIndex].IsSelected = true;
-        Refresh();
     }
 
-    public IObservable<Unit> LoadSlidesObservable()
+    public Observable<Unit> LoadSlidesObservable()
     {
-        return (IObservable<Unit>)Observable.FromAsync(async (cancellationToken) =>
+        return Observable.FromAsync(async (cancellationToken) =>
         {
             Slides.Clear();
             var ids = new List<string> { "24001124","24001125","24001126","24001127","24001128","24001129","24001130",
-                        "24001131","24001132","24001133","24001134","24001135","24001136","24001137","24001138","24001139","24001140" };
-            var result = await _slideRepository.FindByIds(ids);
+                        "24001131","24001132","24001133","24001134","24001135","24001136","24001137","24001138",
+                        "24001139","24001140", "24001141","24001142","24001143" };
+            var result = await _slideRepository.FindBySlideIds(ids);
             Slides.AddRange(result);
         });
     }
 
     public void ExecuteLoadSlides()
     {
-        LoadSlidesObservable()
-            .Subscribe(
-                _ => Console.WriteLine("Slides loaded successfully"),
-                ex => Console.WriteLine($"Error loading slides: {ex.Message}")
-            );
+        LoadSlidesObservable().Subscribe(
+            _ => Console.WriteLine("Operation completed")
+        );
     }
 
     protected override void SetupReactiveExtensions()
@@ -107,12 +105,12 @@ public partial class SlideBoxViewModel : ViewModelBase
     [RelayCommand]
     private async Task Refresh()
     {
-        this.ProgramId = Slides[SelectedSlideIndex].ProgramId;
-        this.PathologyId = Slides[SelectedSlideIndex].PathologyId.ToString();
-        this.SlideId = Slides[SelectedSlideIndex].SlideId.ToString();
-        this.PatientName = Slides[SelectedSlideIndex].PatientName;
-        this.DoctorName = Slides[SelectedSlideIndex].Doctor.Name;
-        this.EntryDate = Slides[SelectedSlideIndex].EntryDate;
+        //this.ProgramId = Slides[SelectedSlideIndex].ProgramId;
+        //this.PathologyId = Slides[SelectedSlideIndex].PathologyId.ToString();
+        //this.SlideId = Slides[SelectedSlideIndex].SlideId.ToString();
+        //this.PatientName = Slides[SelectedSlideIndex].PatientName;
+        //this.DoctorName = Slides[SelectedSlideIndex].Doctor.Name;
+        //this.EntryDate = Slides[SelectedSlideIndex].EntryDate;
     }
 
     [RelayCommand]
