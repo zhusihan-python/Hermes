@@ -1,32 +1,39 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:c="using:Hermes.Features.Controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-			 xmlns:local="clr-namespace:Hermes.Features.UutProcessor"
+			 xmlns:vm="using:Hermes.Features.UutProcessor"
              mc:Ignorable="d" d:DesignWidth="1080" d:DesignHeight="750"
              x:Class="Hermes.Features.UutProcessor.SlideBoardView"
-			 x:DataType="local:SlideBoardViewModel">
+			 x:DataType="vm:SlideBoardViewModel">
 
-	<ItemsControl BorderBrush="Black" VerticalAlignment="Stretch" BorderThickness="1" Margin="1" ItemsSource="{Binding SlideBoxList}">
+	<ItemsControl BorderBrush="Black" VerticalAlignment="Stretch" BorderThickness="1" Margin="1" ItemsSource="{Binding SlideBoxes}">
 		<ItemsControl.ItemsPanel>
 			<ItemsPanelTemplate>
-				<Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto"
+				<!--<Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto"
 					  ColumnDefinitions="*,*,*,*,*,*,*,*,*,*,*,*,*,*,*">
-				</Grid>
+				</Grid>-->
+				<c:SpacedUniformGrid
+					x:Name="boardGrid"
+					Classes="cells"
+					Columns="{Binding ColumnCount}"
+					Rows="{Binding RowCount}" />
 			</ItemsPanelTemplate>
 		</ItemsControl.ItemsPanel>
 		<ItemsControl.ItemTemplate>
 			<DataTemplate>
-				<local:SlideBoxView VerticalAlignment="Stretch" Margin="3,2,3,2">
-				</local:SlideBoxView>
+				<vm:SlideBoxView VerticalAlignment="Stretch"
+									Margin="3,2,3,2">
+				</vm:SlideBoxView>
 			</DataTemplate>
 		</ItemsControl.ItemTemplate>
-		<ItemsControl.Styles>
-			<Style x:DataType="local:SlideBoxViewModel" Selector="ContentPresenter">
+		<!--<ItemsControl.Styles>
+			<Style x:DataType="vm:SlideBoxViewModel" Selector="ContentPresenter">
 				<Setter Property="Grid.Row" Value="{Binding RowIndex}" />
 				<Setter Property="Grid.Column" Value="{Binding ColumnIndex}" />
 			</Style>
-		</ItemsControl.Styles>
+		</ItemsControl.Styles>-->
 	</ItemsControl>
 
 </UserControl>

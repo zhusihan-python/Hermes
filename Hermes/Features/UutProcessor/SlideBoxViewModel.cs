@@ -20,7 +20,7 @@ public partial class SlideBoxViewModel : ViewModelBase
     private int _rowIndex = 1;
     private int _columnIndex = 1;
     private int _selectedSlideIndex = -1;
-    public int RowIndex 
+    public int RowIndex
     { 
         get { return _rowIndex; }
         set { SetProperty(ref _rowIndex, value); } 
@@ -30,18 +30,14 @@ public partial class SlideBoxViewModel : ViewModelBase
         get { return _columnIndex; }
         set { SetProperty(ref _columnIndex, value); }
     }
-    public int SelectedSlideIndex
-    {
-        get { return _selectedSlideIndex; }
-        set { SetProperty(ref _selectedSlideIndex, value); }
-    }
+
     [ObservableProperty] private string _programId;
     [ObservableProperty] private string _pathologyId;
     [ObservableProperty] private string _slideId;
     [ObservableProperty] private string _patientName;
     [ObservableProperty] private string _doctorName;
     [ObservableProperty] private string _entryDate;
-    public List<SlideModel> ItemList { get; set; } = new List<SlideModel>();
+    public ObservableCollection<SlideModel> ItemList { get; set; } = new ObservableCollection<SlideModel>();
     public RangeObservableCollection<Slide> Slides { get; set; } = [];
     private readonly SlideRepository _slideRepository;
     public SlideBoxViewModel(SlideRepository slideRepository)
@@ -61,20 +57,8 @@ public partial class SlideBoxViewModel : ViewModelBase
             ItemList.Add(new SlideModel
             {
                 State = randomState,
-                RowIndex = i, // 可选：根据索引设置行号
             });
         }
-    }
-
-    [RelayCommand]
-    private void ChangeRowIndex(int rowIndex)
-    {
-        if (SelectedSlideIndex >= 0)
-        {
-            ItemList[SelectedSlideIndex].IsSelected = false;
-        }
-        SelectedSlideIndex = rowIndex;
-        ItemList[rowIndex].IsSelected = true;
     }
 
     public Observable<Unit> LoadSlidesObservable()

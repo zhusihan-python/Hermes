@@ -6,16 +6,17 @@ using System.Threading.Tasks;
 using R3;
 using ObservableCollections;
 using Hermes.Repositories;
+using System.Collections.ObjectModel;
 
 namespace Hermes.Features.UutProcessor;
 
 public partial class SlideBoardViewModel : ViewModelBase
 {
-    private ObservableList<SlideBoxViewModel> _slideBoxList;
-    public ObservableList<SlideBoxViewModel> SlideBoxList
+    private ObservableCollection<SlideBoxViewModel> _slideBoxes;
+    public ObservableCollection<SlideBoxViewModel> SlideBoxes
     {
-        get { return _slideBoxList; }
-        set { SetProperty(ref _slideBoxList, value); }
+        get { return _slideBoxes; }
+        set { SetProperty(ref _slideBoxes, value); }
     }
     private int _rowCount = 5;
     public int RowCount
@@ -30,16 +31,16 @@ public partial class SlideBoardViewModel : ViewModelBase
 
     public SlideBoardViewModel(SlideRepository slideRepository)
     {
-        _slideBoxList = new ObservableList<SlideBoxViewModel>();
+        SlideBoxes = new ObservableCollection<SlideBoxViewModel>();
 
         for (int i = 0; i < _rowCount; i++)
         {
             for (int j = 0; j < _columnCount; j++)
             {
-                _slideBoxList.Add(new SlideBoxViewModel(slideRepository) { RowIndex = i, ColumnIndex = j });
+                SlideBoxes.Add(new SlideBoxViewModel(slideRepository) { RowIndex = i, ColumnIndex = j });
             }
         }
-        Console.WriteLine("SlideBoxList", SlideBoxList);
+        Console.WriteLine("SlideBoxes", SlideBoxes);
     }
 
     protected override void SetupReactiveExtensions()
