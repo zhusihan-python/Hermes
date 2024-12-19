@@ -11,80 +11,87 @@
 		<!-- 使用 ImageBrush 作为背景 -->
 		<ImageBrush Source="avares://Hermes/AppData/Assets/snow.jpg" Stretch="UniformToFill" />
 	</UserControl.Background>
+	<UserControl.Styles>
+		<Style Selector="Border.CardPanel">
+			<Setter Property="ClipToBounds" Value="True" />
+			<Setter Property="BorderBrush" Value="{DynamicResource CardBorderBrush}" />
+			<Setter Property="BorderThickness" Value="0,1,0,0" />
+			<Setter Property="CornerRadius" Value="5" />
+			<Setter Property="Effect">
+				<Setter.Value>
+					<DropShadowDirectionEffect
+                        BlurRadius="25"
+                        Direction="45"
+                        ShadowDepth="5"
+                        Color="{DynamicResource SystemAltLowColor}" />
+				</Setter.Value>
+			</Setter>
+		</Style>
+	</UserControl.Styles>
 	<Border Width="900" Height="700">
 		<Grid RowDefinitions="20,*,*,*" ColumnDefinitions="*,25,*">
 			<StackPanel Margin="5" Grid.Row="1" Grid.Column="0" Grid.RowSpan="3" Spacing="20">
-				<Panel>
-					<actipro:MeshGradientPresenter Background="#B2EBF2" CornerRadius="10">
-						<actipro:MeshGradientNode Center="1%, 95%" Color="#D1C4E9" />
-						<actipro:MeshGradientNode Center="30%, 0%" Color="#BBDEFB" />
-						<actipro:MeshGradientNode Center="99%, 37%" Color="#B2DFDB" />
-						<actipro:MeshGradientNode Center="83%, 95%" Color="#B3E5FC" />
-					</actipro:MeshGradientPresenter>
-					<StackPanel Spacing="30" Margin="15">
-						<Button Classes="Outlined" Height="180" Opacity="0.8">
-							<TextBlock>
-								<Run Text="封" FontSize="32"/>
-								<Run Text=" " FontSize="32"/>
-								<Run Text="片" FontSize="32"/>
-							</TextBlock>
-						</Button>
-						<Button Classes="Outlined" Height="180" Opacity="0.8">
-							<TextBlock>
-								<Run Text="理" FontSize="32"/>
-								<Run Text=" " FontSize="32"/>
-								<Run Text="片" FontSize="32"/>
-							</TextBlock>		
-						</Button>
-					</StackPanel>
-				</Panel>
+				<Border Classes="CardPanel">
+					<Grid>
+						<controls:BackdropBlurControl />
+						<StackPanel Spacing="30" Margin="15">
+							<Button Classes="Outlined" Height="180" Opacity="0.8">
+								<TextBlock>
+									<Run Text="封" FontSize="32"/>
+									<Run Text=" " FontSize="32"/>
+									<Run Text="片" FontSize="32"/>
+								</TextBlock>
+							</Button>
+							<Button Classes="Outlined" Height="180" Opacity="0.8">
+								<TextBlock>
+									<Run Text="理" FontSize="32"/>
+									<Run Text=" " FontSize="32"/>
+									<Run Text="片" FontSize="32"/>
+								</TextBlock>
+							</Button>
+						</StackPanel>
+					</Grid>
+				</Border>
 			</StackPanel>
 
 			<StackPanel Grid.Row="1" Grid.Column="2" Spacing="30">
-				<Panel  Width="320" Height="200">
-					<actipro:MeshGradientPresenter Background="#B2EBF2" CornerRadius="10">
-						<actipro:MeshGradientNode Center="1%, 95%" Color="#D1C4E9" />
-						<actipro:MeshGradientNode Center="30%, 0%" Color="#BBDEFB" />
-						<actipro:MeshGradientNode Center="99%, 37%" Color="#B2DFDB" />
-						<actipro:MeshGradientNode Center="83%, 95%" Color="#B3E5FC" />
-					</actipro:MeshGradientPresenter>
-					<StackPanel>
+				<Border Width="320" Height="200" Classes="CardPanel">
+					<Grid>
+						<controls:BackdropBlurControl />
+						<StackPanel>
+							<Viewbox Stretch="Uniform">
+								<Viewbox.Effect>
+									<DropShadowEffect OffsetX="0" OffsetY="1" BlurRadius="5" Opacity="0.2" />
+								</Viewbox.Effect>
+
+								<StackPanel Margin="30,20">
+									<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+										<TextBlock Text="封片中" FontSize="23" Foreground="#37474F" VerticalAlignment="Center" />
+									</StackPanel>
+								</StackPanel>
+							</Viewbox>
+							<ProgressBar Value="30" Margin="10,0,10,0"/>
+						</StackPanel>
+					</Grid>
+				</Border>
+			</StackPanel>
+
+			<StackPanel Grid.Row="2" Grid.Column="2">
+				<Border Width="320" Height="150" Classes="CardPanel">
+					<Grid>
+						<controls:BackdropBlurControl />
 						<Viewbox Stretch="Uniform">
 							<Viewbox.Effect>
 								<DropShadowEffect OffsetX="0" OffsetY="1" BlurRadius="5" Opacity="0.2" />
 							</Viewbox.Effect>
 
 							<StackPanel Margin="30,20">
-								<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-									<TextBlock Text="封片中" FontSize="23" Foreground="#37474F" VerticalAlignment="Center" />
-								</StackPanel>
+								<TextBlock Text="10:32" FontSize="23" FontWeight="Bold" Foreground="#37474F" HorizontalAlignment="Center" />
+								<TextBlock Text="12-12 2024" FontSize="23" FontWeight="Bold" Foreground="#37474F" HorizontalAlignment="Center" />
 							</StackPanel>
 						</Viewbox>
-						<ProgressBar Value="30" Margin="10,0,10,0"/>				
-					</StackPanel>
-
-				</Panel >
-			</StackPanel>
-
-			<StackPanel Grid.Row="2" Grid.Column="2">
-				<Panel  Width="320" Height="150">
-					<actipro:MeshGradientPresenter Background="#B2EBF2" CornerRadius="10">
-						<actipro:MeshGradientNode Center="1%, 95%" Color="#D1C4E9" />
-						<actipro:MeshGradientNode Center="30%, 0%" Color="#BBDEFB" />
-						<actipro:MeshGradientNode Center="99%, 37%" Color="#B2DFDB" />
-						<actipro:MeshGradientNode Center="83%, 95%" Color="#B3E5FC" />
-					</actipro:MeshGradientPresenter>
-					<Viewbox Stretch="Uniform">
-						<Viewbox.Effect>
-							<DropShadowEffect OffsetX="0" OffsetY="1" BlurRadius="5" Opacity="0.2" />
-						</Viewbox.Effect>
-
-						<StackPanel Margin="30,20">
-							<TextBlock Text="10:32" FontSize="23" FontWeight="Bold" Foreground="#37474F" HorizontalAlignment="Center" />
-							<TextBlock Text="12-12 2024" FontSize="23" FontWeight="Bold" Foreground="#37474F" HorizontalAlignment="Center" />
-						</StackPanel>
-					</Viewbox>
-				</Panel >
+					</Grid>
+				</Border>
 			</StackPanel>
 
 			<StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center" Spacing="30">
