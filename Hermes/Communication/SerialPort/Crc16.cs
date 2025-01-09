@@ -1,4 +1,6 @@
-﻿namespace Hermes.Communication.SerialPort;
+﻿using System;
+
+namespace Hermes.Communication.SerialPort;
 
 public static class Crc16
 {
@@ -63,6 +65,28 @@ public static class Crc16
     public static ushort ComputeCrc(byte[] data, int length)
     {
         return CalcCrc(data, 0, length, true);
+    }
+
+    /// <summary>
+    /// 计算 ReadOnlySpan 的 CRC 校验值
+    /// </summary>
+    /// <param name="data">ReadOnlySpan 数据</param>
+    /// <param name="length">数据长度</param>
+    /// <returns>CRC 校验值</returns>
+    public static ushort ComputeCrc(ReadOnlySpan<byte> data, int length)
+    {
+        byte uchCRCHi = 0xFF; // 高字节初始化
+        byte uchCRCLo = 0xFF; // 低字节初始化
+        uint uIndex; // 查表索引
+
+        for (int i = 0; i < length; i++) // 遍历数据
+        {
+            uIndex = (uint)(uchCRCHi ^ data[i]); // 计算索引
+            uchCRCHi = (byte)(uchCRCLo ^ auchCRCHi[uIndex]);
+            uchCRCLo = auchCRCLo[uIndex];
+        }
+
+        return (ushort)((uchCRCHi << 8) | uchCRCLo); // 返回结果
     }
 
     public static bool IsValidCrcInBracketPort(byte[] data)
