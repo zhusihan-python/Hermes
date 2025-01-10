@@ -50,7 +50,7 @@ public class SvtDataHandlingAdapter : CustomDataHandlingAdapter<SvtRequestInfo>
                 var lastHeadIndex = headIndexes[^1];
                 var pos = byteBlock.Position;//记录初始游标位置，防止本次无法解析时，回退游标。
                 // 去掉包头包尾
-                var package = span.Slice(lastHeadIndex, tailIndex - Tails.Length);
+                var package = span.Slice(lastHeadIndex+1, tailIndex+1 - Tails.Length -Headers.Length);
                 // 去掉转义字符，才能校验包长度和CRC
                 var cleanPackage = RemoveInsertedBytes(package);
                 var myRequestInfo = new SvtRequestInfo();
@@ -64,7 +64,7 @@ public class SvtDataHandlingAdapter : CustomDataHandlingAdapter<SvtRequestInfo>
                     packetPos += 2;
 
                     // Read PacketLength (2 byte)
-                    myRequestInfo.PacketLength = TouchSocketBitConverter.LittleEndian.ToUInt16(cleanPackage.Slice(packetPos, 2).ToArray(), 0);
+                    myRequestInfo.PacketLength = TouchSocketBitConverter.BigEndian.ToUInt16(cleanPackage.Slice(packetPos, 2).ToArray(), 0);
                     packetPos += 2;
 
                     // Read AddressLength (1 byte)
@@ -85,6 +85,19 @@ public class SvtDataHandlingAdapter : CustomDataHandlingAdapter<SvtRequestInfo>
                     myRequestInfo.FrameType = cleanPackage[packetPos];
                     packetPos += 1;
 
+                    myRequestInfo.DataLength = (ushort)((cleanPackage[packetPos] << 8) | cleanPackage[packetPos + 1]);
+                    packetPos += 2;
+
+                    // 数据长度校验，从包尾往前推，该校验可以去掉
+                    if (packetPos + myRequestInfo.DataLength + 2 > cleanPackage.Length)
+                    {
+                        byteBlock.Position += tailIndex;
+                        return FilterResult.GoOn;
+                    }
+
+                    myRequestInfo.Data = cleanPackage.Slice(packetPos, myRequestInfo.DataLength).ToArray();
+                    packetPos += myRequestInfo.DataLength;
+
                     // Read CRC (1 byte)
                     myRequestInfo.CRC16 = cleanPackage.Slice(packetPos, 2).ToArray();
                     packetPos += 2;
@@ -92,7 +105,8 @@ public class SvtDataHandlingAdapter : CustomDataHandlingAdapter<SvtRequestInfo>
                     if (Crc16.ComputeCrc(cleanPackage, cleanPackage.Length-2) ==
                             BitConverter.ToUInt16(myRequestInfo.CRC16.Reverse().ToArray(), 0))
                     {
-                        byteBlock.Position += tailIndex;
+                        request = myRequestInfo;
+                        byteBlock.Position += tailIndex+1;
                         return FilterResult.Success;
                     }
                     else
@@ -104,7 +118,6 @@ public class SvtDataHandlingAdapter : CustomDataHandlingAdapter<SvtRequestInfo>
                 }
                 else
                 {
-                    request = myRequestInfo;
                     // 包有效长度不够，移动Position到该包尾的位置
                     byteBlock.Position += tailIndex;
                     return FilterResult.GoOn;
@@ -158,7 +171,7 @@ public class SvtRequestInfo : IRequestInfo
 {
     private byte[] m_sync;
     private byte[] m_cMDID;
-    private byte[] m_sample;
+    private byte[] m_data;
     private byte[] m_cRC16;
 
     /// <summary>
@@ -204,12 +217,12 @@ public class SvtRequestInfo : IRequestInfo
     /// <summary>
     /// 数据长度: 固定2位 数据段的长度
     /// </summary>
-    public int BodyLength { get; private set; }
+    public int DataLength { get; set; }
 
     /// <summary>
     /// 数据区: 长度为BodyLength的Value
     /// </summary>
-    public byte[] Sample { get => this.m_sample; set => this.m_sample = value; }
+    public byte[] Data { get => this.m_data; set => this.m_data = value; }
 
     /// <summary>
     /// 校验位：固定2位 校验内容为报文序号至数据区所有内容，不包括报文头和报文尾
