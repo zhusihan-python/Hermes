@@ -1,14 +1,17 @@
-﻿using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System;
 using TouchSocket.Core;
 using TouchSocket.SerialPorts;
 using TouchSocket.Sockets;
+using System.Diagnostics;
+using System.Linq;
 
 namespace Hermes.Communication.SerialPort;
 
 public class ComPort
 {
+    private static readonly Lazy<ComPort> _instance = new(() => new ComPort());
+    public static ComPort Instance => _instance.Value;
     private SerialPortClient _client;
 
     public ComPort()
@@ -25,9 +28,14 @@ public class ComPort
         _client.Closed = (client, e) => { return EasyTask.CompletedTask; };    // 从端口断开连接
 
         // 接收数据事件
-        _client.Received = async (c, e) =>
+        _client.Received = (c, e) =>
         {
-            await Console.Out.WriteLineAsync(e.ByteBlock.Span.ToString(Encoding.UTF8));
+            if (e.RequestInfo is SvtRequestInfo myRequest)
+            {
+                Debug.WriteLine($"已从{myRequest.MasterAddress}接收到：CMDID={string.Join(" ", myRequest.CMDID.Select(b => b.ToString("X2")))}," +
+                    $"FrameType={myRequest.FrameType},消息={string.Join(" ", myRequest.Data.Select(b => b.ToString("X2")))}");
+            }
+            return Task.CompletedTask;
         };
 
         // 配置串口参数
@@ -43,6 +51,7 @@ public class ComPort
             .SetSerialDataHandlingAdapter(() => new SvtDataHandlingAdapter()) // 数据适配器
             .ConfigurePlugins(a =>
             {
+                a.Add<MyConnectingPlugin>();
                 a.Add<MyConnectedPlugin>();
                 a.Add<MyReceivedPlugin>();
                 a.Add<MyClosedPlugin>();
@@ -50,8 +59,17 @@ public class ComPort
 
         // 连接串口
         await _client.ConnectAsync();
-        Console.WriteLine("串口连接成功");
-        _client.Close();
+        Debug.WriteLine("串口连接成功");
+        //_client.Close();
+    }
+
+    internal class MyConnectingPlugin : PluginBase, ISerialConnectingPlugin
+    {
+        public async Task OnSerialConnecting(ISerialPortSession client, ConnectingEventArgs e)
+        {
+            Debug.WriteLine("准备连接串口");
+            await e.InvokeNext();
+        }
     }
 
     internal class MyConnectedPlugin : PluginBase, ISerialConnectedPlugin
@@ -62,7 +80,7 @@ public class ComPort
         }
     }
 
-    public class MyReceivedPlugin : PluginBase, ISerialReceivedPlugin
+    internal class MyReceivedPlugin : PluginBase, ISerialReceivedPlugin
     {
         public async Task OnSerialReceived(ISerialPortSession client, ReceivedDataEventArgs e)
         {
@@ -77,7 +95,7 @@ public class ComPort
         }
     }
 
-    public class MyClosedPlugin : PluginBase, ISerialClosedPlugin
+    internal class MyClosedPlugin : PluginBase, ISerialClosedPlugin
     {
         public async Task OnSerialClosed(ISerialPortSession client, ClosedEventArgs e)
         {

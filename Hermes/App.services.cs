@@ -18,12 +18,14 @@ using SukiUI.Dialogs;
 using SukiUI.Toasts;
 using System.Linq;
 using System;
+using Hermes.Features.Bender;
+using Hermes.Communication.SerialPort;
 
 namespace Hermes;
 
 public partial class App
 {
-    private ServiceProvider GetServiceProvider()
+    public ServiceProvider GetServiceProvider()
     {
         var services = new ServiceCollection();
         ConfigureModels(services);
@@ -65,6 +67,8 @@ public partial class App
         services.AddTransient<ISfcRepository, SfcOracleRepository>();
         services.AddTransient<SfcResponseRepository>();
         services.AddTransient<StopRepository>();
+        services.AddTransient<DoctorRepository>();
+        services.AddTransient<SlideRepository>();
         services.AddTransient<UnitUnderTestRepository>();
     }
 
@@ -82,6 +86,7 @@ public partial class App
         services.AddSingleton<SfcResponseBuilder>();
         services.AddSingleton<TokenGenerator>();
         services.AddSingleton<UnitUnderTestBuilder>();
+        services.AddSingleton<ComPort>();
         services.AddTransient<SerialPortRx>();
     }
 

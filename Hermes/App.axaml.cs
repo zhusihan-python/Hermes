@@ -7,6 +7,7 @@ using ConfigFactory.Avalonia.Helpers;
 using Hermes.Common.Extensions;
 using Hermes.Common.Messages;
 using Hermes.Common;
+using Hermes.Communication.SerialPort;
 using Hermes.Features;
 using Hermes.Repositories;
 using Hermes.Services;
@@ -20,6 +21,7 @@ namespace Hermes
     {
         private readonly ServiceProvider _provider;
         private readonly ILogger? _logger;
+        private readonly ComPort _comPort;
         private WindowService? _windowService;
         private Window? _mainWindow;
 
@@ -27,6 +29,7 @@ namespace Hermes
         {
             _provider = this.GetServiceProvider();
             this._logger = _provider.GetService<ILogger>()!;
+            this._comPort = _provider.GetService<ComPort>()!;
         }
 
         public override void Initialize()
@@ -52,6 +55,7 @@ namespace Hermes
             }
 
             base.OnFrameworkInitializationCompleted();
+            _ = _comPort.InitializeAsync("COM3", 115200);
         }
 
         public static void Restart()
