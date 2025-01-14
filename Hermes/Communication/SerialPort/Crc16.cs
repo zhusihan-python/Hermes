@@ -89,6 +89,23 @@ public static class Crc16
         return (ushort)((uchCRCHi << 8) | uchCRCLo); // 返回结果
     }
 
+    public static byte[] ComputeCrcArray(ReadOnlySpan<byte> data, int length)
+    {
+        byte uchCRCHi = 0xFF; // 高字节初始化
+        byte uchCRCLo = 0xFF; // 低字节初始化
+        uint uIndex; // 查表索引
+
+        for (int i = 0; i < length; i++) // 遍历数据
+        {
+            uIndex = (uint)(uchCRCHi ^ data[i]); // 计算索引
+            uchCRCHi = (byte)(uchCRCLo ^ auchCRCHi[uIndex]);
+            uchCRCLo = auchCRCLo[uIndex];
+        }
+
+        // 返回高低字节组成的 byte 数组
+        return new byte[] { uchCRCHi, uchCRCLo };
+    }
+
     public static bool IsValidCrcInBracketPort(byte[] data)
     {
         ushort crc = ComputeCrc(data, data.Length - 4);
