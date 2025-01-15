@@ -5,6 +5,10 @@ using TouchSocket.SerialPorts;
 using TouchSocket.Sockets;
 using System.Diagnostics;
 using System.Linq;
+using ObservableCollections;
+using System.Net.Sockets;
+using R3;
+using AutoMapper.Internal;
 
 namespace Hermes.Communication.SerialPort;
 
@@ -12,7 +16,11 @@ public class ComPort
 {
     private static readonly Lazy<ComPort> _instance = new(() => new ComPort());
     public static ComPort Instance => _instance.Value;
+    private readonly ObservableQueue<SvtRequestInfo> _packetQueue = new ObservableQueue<SvtRequestInfo>();
+    //private readonly Subject<Unit> _processingSignal = new(); // 控制发送的信号
+    private FrameSequenceGenerator _frameSequenceGenerator = new FrameSequenceGenerator();
     private SerialPortClient _client;
+    public bool State => _client.Online;
 
     public ComPort()
     {
@@ -60,8 +68,11 @@ public class ComPort
         // 连接串口
         await _client.ConnectAsync();
         Debug.WriteLine("串口连接成功");
+
         //_client.Close();
     }
+
+
 
     internal class MyConnectingPlugin : PluginBase, ISerialConnectingPlugin
     {
@@ -101,5 +112,38 @@ public class ComPort
         {
             await e.InvokeNext();
         }
+    }
+
+    public void EnqueuePacket(SvtRequestInfo packet)
+    {
+        Debug.WriteLine($"EnqueuePacket: {packet}");
+        _packetQueue.Enqueue(packet);
+    }
+
+    private SvtRequestInfo? DequeuePacket()
+    {
+        if (_packetQueue.TryDequeue(out var packet))
+        {
+            return packet;
+        }
+        return null;
+    }
+
+    //public async Task SendPacketsAsync()
+    //{
+    //    while (_packetQueue.Count > 0)
+    //    {
+    //        var packet = _packetQueue.Dequeue();
+    //        packet.FrameNo = _frameSequenceGenerator.GenerateFrameSequence();
+    //        await SendPacketAsync(packet);
+    //    }
+    //}
+
+    public async Task SendPacketAsync(SvtRequestInfo packet)
+    {
+        await Task.Delay(200);
+        packet.FrameNo = _frameSequenceGenerator.GenerateFrameSequence();
+        Debug.WriteLine($"SendPacketAsync: {string.Join(" ", packet.DataFrame().Select(b => b.ToString("X2")))}");
+        await this._client.SendAsync(packet);
     }
 }

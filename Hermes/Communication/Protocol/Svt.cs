@@ -18,16 +18,15 @@ internal static class Svt
     public const byte EndByte1 = 0x3E;  // ">"
 
     // supported function codes
-    public const ushort DiagnosticsReturnQueryData = 0;
-    public const ushort DeviceId = 0x0020;
-    public const ushort BaudRate = 0x0022;
-    public const ushort Diagnostics = 0x0026;
-    public const ushort BakeParams = 0x0338;
-    public const ushort ScanTrigger = 0x033A;
-    public const ushort ScanResult = 0x033B;
-    public const ushort HeartBeat = 0x033F;
-    public const ushort SystemStatus = 0x0340;
-    public const ushort FlowAction = 0x0341;
+    public static readonly byte[] DeviceId = { 0x00, 0x20 };
+    public static readonly byte[] BaudRate = { 0x00, 0x22 };
+    public static readonly byte[] Diagnostics = { 0x00, 0x26 };
+    public static readonly byte[] BakeParams = { 0x03, 0x38 };
+    public static readonly byte[] ScanTrigger = { 0x03, 0x3A };
+    public static readonly byte[] ScanResult = { 0x03, 0x3B };
+    public static readonly byte[] HeartBeat = { 0x03, 0x3F };
+    public static readonly byte[] SystemStatus = { 0x03, 0x40 };
+    public static readonly byte[] FlowAction = { 0x03, 0x41 };
 
     public const int MaximumDiscreteRequestResponseSize = 65535;
     public const int MaximumRegisterRequestResponseSize = 4095;

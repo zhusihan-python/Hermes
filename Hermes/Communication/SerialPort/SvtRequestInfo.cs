@@ -74,6 +74,43 @@ public class SvtRequestInfo : IRequestInfo, IRequestInfoBuilder
     /// </summary>
     public byte Tail { get; set; }
 
+    public T WithFrameNo<T>(byte[] frameNo) where T : SvtRequestInfo
+    {
+        FrameNo = frameNo;
+        return (T)this;
+    }
+
+    public T WithMasterAddress<T>(byte masterAddress) where T : SvtRequestInfo
+    {
+        MasterAddress = masterAddress;
+        return (T)this;
+    }
+
+    public T WithSlaveAddress<T>(byte slaveAddress) where T : SvtRequestInfo
+    {
+        SlaveAddress = slaveAddress;
+        return (T)this;
+    }
+
+    public T WithCMD<T>(byte[] cmdId) where T : SvtRequestInfo
+    {
+        CMDID = cmdId;
+        return (T)this;
+    }
+
+    public T WithFrameType<T>(byte frameType) where T : SvtRequestInfo
+    {
+        FrameType = frameType;
+        return (T)this;
+    }
+
+    public T WithData<T>(byte[] data) where T : SvtRequestInfo
+    {
+        DataLength = (ushort)data.Length;
+        Data = data;
+        return (T)this;
+    }
+
     public byte[] DataFrame()
     {
         // 计算总长度

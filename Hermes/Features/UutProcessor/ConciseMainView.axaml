@@ -4,9 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="760"
 			 xmlns:controls="using:Hermes.Features.Controls"
+			 xmlns:uutProcessor="clr-namespace:Hermes.Features.UutProcessor"
 			 xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
 			 xmlns:actipro="http://schemas.actiprosoftware.com/avaloniaui"
-             x:Class="Hermes.Features.UutProcessor.ConciseMainView">
+             x:Class="Hermes.Features.UutProcessor.ConciseMainView"
+			 x:DataType="uutProcessor:ConciseMainViewModel">
 	<UserControl.Background>
 		<!-- 使用 ImageBrush 作为背景 -->
 		<ImageBrush Source="avares://Hermes/AppData/Assets/snow.jpg" Stretch="UniformToFill" />
@@ -35,14 +37,16 @@
 					<Grid>
 						<controls:BackdropBlurControl />
 						<StackPanel Spacing="30" Margin="15">
-							<Button Classes="Outlined" Height="180" Opacity="0.8">
+							<Button Classes="Outlined" Height="180" Opacity="0.8"
+									Command="{Binding SealSlideCommand}">
 								<TextBlock>
 									<Run Text="封" FontSize="32"/>
 									<Run Text=" " FontSize="32"/>
 									<Run Text="片" FontSize="32"/>
 								</TextBlock>
 							</Button>
-							<Button Classes="Outlined" Height="180" Opacity="0.8">
+							<Button Classes="Outlined" Height="180" Opacity="0.8"
+									Command="{Binding SortSlideCommand}">
 								<TextBlock>
 									<Run Text="理" FontSize="32"/>
 									<Run Text=" " FontSize="32"/>
