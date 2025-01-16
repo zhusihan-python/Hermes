@@ -128,7 +128,7 @@ public class SvtDataHandlingAdapter : CustomDataHandlingAdapter<SvtRequestInfo>
         else
         {
             //byteBlock.Position += this.HeaderLength;
-            return FilterResult.GoOn;
+            return FilterResult.Cache;
         }
     }
 
