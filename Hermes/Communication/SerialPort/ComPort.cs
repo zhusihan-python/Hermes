@@ -8,7 +8,6 @@ using System.Linq;
 using ObservableCollections;
 using System.Net.Sockets;
 using R3;
-using AutoMapper.Internal;
 
 namespace Hermes.Communication.SerialPort;
 
@@ -36,14 +35,14 @@ public class ComPort
         _client.Closed = (client, e) => { return EasyTask.CompletedTask; };    // 从端口断开连接
 
         // 接收数据事件
-        _client.Received = (c, e) =>
+        _client.Received = async (c, e) =>
         {
             if (e.RequestInfo is SvtRequestInfo myRequest)
             {
                 Debug.WriteLine($"已从{myRequest.MasterAddress}接收到：CMDID={string.Join(" ", myRequest.CMDID.Select(b => b.ToString("X2")))}," +
                     $"FrameType={myRequest.FrameType},消息={string.Join(" ", myRequest.Data.Select(b => b.ToString("X2")))}");
+                await ProcessReceivedDataAsync(myRequest);
             }
-            return Task.CompletedTask;
         };
 
         // 配置串口参数
@@ -72,6 +71,14 @@ public class ComPort
         //_client.Close();
     }
 
+    // 异步处理数据的示例方法
+    private async Task ProcessReceivedDataAsync(SvtRequestInfo request)
+    {
+        // 模拟异步操作，如存储数据或发送响应
+        //await Task.Delay(100); // Simulate I/O or processing delay
+        await FrameParser.Route(request);
+        Debug.WriteLine($"处理完成：来自{request.MasterAddress}的消息已处理。");
+    }
 
 
     internal class MyConnectingPlugin : PluginBase, ISerialConnectingPlugin

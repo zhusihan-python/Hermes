@@ -40,6 +40,7 @@ public partial class App
     private static void ConfigureModels(ServiceCollection services)
     {
         services.AddSingleton<Session>();
+        services.AddSingleton<Device>();
         services.AddSingleton<Settings>(sp => sp.GetRequiredService<ISettingsRepository>().Read());
     }
 
