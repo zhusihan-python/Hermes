@@ -37,12 +37,12 @@ public class SvtRequestInfo : IRequestInfo, IRequestInfoBuilder
     /// <summary>
     /// 源设备地址
     /// </summary>
-    public byte MasterAddress { get; set; }
+    public byte MasterAddress { get; set; } = 0xF2;
 
     /// <summary>
     /// 目标设备地址
     /// </summary>
-    public byte SlaveAddress { get; set; }
+    public byte SlaveAddress { get; set; } = 0x13;
 
     /// <summary>
     /// 命令码: 固定2位
