@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Hermes.Types;
 using ObservableCollections;
-using R3;
+using Reactive.Bindings;
 
 namespace Hermes.Models;
 
@@ -42,7 +42,7 @@ public class Device : ObservableObject
     // 烘干设定温度(℃)
     public ReactiveProperty<float> BakeTargetTemp { get; set; } = new(0.0f);
     // 烘干当前温度(℃)
-    public ReactiveProperty<float> BakeRealTemp { get; set; } = new(0.0f);
+    public ReactiveProperty<float> BakeRealTemp { get; set; } = new(1.1f);
     // 烘干设定时间(S)
     public ReactiveProperty<uint> BakeTargetDuration { get; set; } = new(0);
     // 烘干剩余时间(S)

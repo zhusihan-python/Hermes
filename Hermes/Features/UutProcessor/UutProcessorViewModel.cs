@@ -15,7 +15,9 @@ using R3;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
-using Avalonia.Controls;
+using Avalonia;
+using System.Diagnostics;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Hermes.Features.UutProcessor;
 
@@ -26,11 +28,24 @@ public partial class UutProcessorViewModel : PageBase
     [ObservableProperty] private string _stateText = Resources.enum_stopped;
     [ObservableProperty] private bool _isWaitingForDummy;
     [ObservableProperty] private bool _isOptionVisible;
+    //[ObservableProperty] private string _bakeRealTemp = "-";
+    //public BindableReactiveProperty<float> BakeRealTemp { get; }
+    //partial void OnBakeRealTempChanging(string? value)
+    //{
+    //    Debug.WriteLine($"BakeRealTemp is about to change to {value}");
+    //}
+
+    //partial void OnBakeRealTempChanged(string? value)
+    //{
+    //    Debug.WriteLine($"BakeRealTemp has changed to {value}");
+    //}
     //public ReactiveProperty<UnitUnderTest> CurrentUnitUnderTest { get; } = new(Models.UnitUnderTest.Null);
     public ScannerViewModel ScannerViewModel { get; }
     public DummyViewModel DummyViewModel { get; }
     public ConciseMainViewModel ConciseMainViewModel { get; }
-    private readonly Device _device;
+    [ObservableProperty]
+    public Device _deviceModel;
+    private readonly IServiceProvider _serviceProvider;
     //private readonly FileService _fileService;
     //private readonly ILogger _logger;
     //private readonly Session _session;
@@ -40,7 +55,8 @@ public partial class UutProcessorViewModel : PageBase
 
     public UutProcessorViewModel(
         ILogger logger,
-        Device device,
+        //Device device,
+        IServiceProvider serviceProvider,
         //Session session,
         Settings settings,
         //StopService stopService,
@@ -58,7 +74,7 @@ public partial class UutProcessorViewModel : PageBase
         this.DummyViewModel = dummyViewModel;
         this.ScannerViewModel = scannerViewModel;
         this.ConciseMainViewModel = conciseMainViewModel;
-        this._device = device;
+        //this.DeviceModel = device;
         //this._fileService = fileService;
         //this._logger = logger;
         //this._session = session;
@@ -68,8 +84,12 @@ public partial class UutProcessorViewModel : PageBase
         //this.CurrentUnitUnderTest = this._uutSenderService
         //    .UnitUnderTest
         //    .ToBindableReactiveProperty<UnitUnderTest>();
-        this.SetupReactiveExtensionsOnActivation = false;
+        this.SetupReactiveExtensionsOnActivation = true;
         this.IsActive = true;
+        //this.BakeRealTemp = this.DeviceModel.BakeRealTemp.ToBindableReactiveProperty();
+        this._serviceProvider = serviceProvider;
+        var device = this._serviceProvider.GetRequiredService<Device>();
+        this.DeviceModel = device;
         //if (settings.AutostartUutProcessor)
         //{
         //    this.Start();
@@ -78,6 +98,11 @@ public partial class UutProcessorViewModel : PageBase
 
     protected override void SetupReactiveExtensions()
     {
+        //this.DeviceModel
+        //    .BakeRealTemp
+        //    .Subscribe(x => this.BakeRealTemp = x.ToString("F1"))
+        //    .AddTo(ref Disposables);
+
         //this._uutSenderService
         //    .State
         //    .Do(x => this._session.UutProcessorState.Value = x)
@@ -111,7 +136,8 @@ public partial class UutProcessorViewModel : PageBase
     protected override void OnActivated()
     {
         Messenger.Register<ExitMessage>(this, this.OnExitReceive);
-        Messenger.Register<WaitForDummyMessage>(this, this.OnWaitForDummyMessage);
+        //Messenger.Register<WaitForDummyMessage>(this, this.OnWaitForDummyMessage);
+        //Messenger.Register<HeartBeatMessage>(this, this.OnHeartBeatMessage);
         Messenger.Register<ReSendUnitUnderTestMessage>(this, this.OnReSendUnitUnderTestMessage);
         base.OnActivated();
     }
@@ -128,10 +154,7 @@ public partial class UutProcessorViewModel : PageBase
         //}
     }
 
-    private void OnWaitForDummyMessage(object recipient, WaitForDummyMessage message)
-    {
-        //this._uutSenderService.IsWaitingForDummy = message.Value;
-    }
+    //private void OnHeartBeatMessage(object recipient, HeartBeatMessage message) => this.BakeRealTemp = DeviceModel.BakeRealTemp.ToString();
 
     protected override void OnDeactivated()
     {
@@ -142,21 +165,12 @@ public partial class UutProcessorViewModel : PageBase
     [RelayCommand]
     private void Start()
     {
-        //try
-        //{
-        //    if (this.IsRunning) return;
-        //    this.IsRunning = true;
-        //    this.Path = this._uutSenderService.Path;
-        //    this._uutSenderService.Start();
-        //    this._stopService.Start();
-        //    this.SetupReactiveExtensions();
-        //    this.ShowInfoToast(Resources.msg_uut_processor_started);
-        //}
-        //catch (Exception e)
-        //{
-        //    _logger.Error(e.Message);
-        //    this.ShowErrorToast(e.Message);
-        //}
+        //this.BakeRealTemp = "2.2";
+        var device = this._serviceProvider.GetRequiredService<Device>();
+        Debug.WriteLine(ReferenceEquals(device, this.DeviceModel));
+        var device2 = this._serviceProvider.GetRequiredService<Device>();
+        Debug.WriteLine(ReferenceEquals(device, device2));
+        Debug.WriteLine("Into Start Command");
     }
 
     [RelayCommand]
