@@ -13,17 +13,19 @@ namespace Hermes.Communication.SerialPort;
 
 public class ComPort
 {
-    private static readonly Lazy<ComPort> _instance = new(() => new ComPort());
-    public static ComPort Instance => _instance.Value;
+    //private static readonly Lazy<ComPort> _instance = new(() => new ComPort());
+    //public static ComPort Instance => _instance.Value;
     private readonly ObservableQueue<SvtRequestInfo> _packetQueue = new ObservableQueue<SvtRequestInfo>();
     //private readonly Subject<Unit> _processingSignal = new(); // 控制发送的信号
     private FrameSequenceGenerator _frameSequenceGenerator = new FrameSequenceGenerator();
     private SerialPortClient _client;
+    private readonly FrameParser _parser;
     public bool State => _client.Online;
 
-    public ComPort()
+    public ComPort(FrameParser parser)
     {
         _client = new SerialPortClient();
+        _parser = parser;
     }
 
     public async Task InitializeAsync(string portName, int baudRate)
@@ -76,7 +78,7 @@ public class ComPort
     {
         // 模拟异步操作，如存储数据或发送响应
         //await Task.Delay(100); // Simulate I/O or processing delay
-        await FrameParser.Route(request);
+        await this._parser.Route(request);
         Debug.WriteLine($"处理完成：来自{request.MasterAddress}的消息已处理。");
     }
 

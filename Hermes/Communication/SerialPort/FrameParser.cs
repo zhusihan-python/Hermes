@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using Avalonia;
 using Hermes.Common;
 using Hermes.Communication.Protocol;
 using Hermes.Models;
@@ -14,7 +13,14 @@ namespace Hermes.Communication.SerialPort;
 
 public class FrameParser
 {
-    public async static Task Route(SvtRequestInfo request)
+    private readonly IServiceProvider _serviceProvider;
+    public FrameParser(
+        IServiceProvider serviceProvider
+    )
+    {
+        this._serviceProvider = serviceProvider;
+    }
+    public async Task Route(SvtRequestInfo request)
     {
         if (Enumerable.SequenceEqual(request.CMDID, Svt.HeartBeat) && request.FrameType == Svt.ReadSuccess)
         {
@@ -22,9 +28,9 @@ public class FrameParser
         }
     }
 
-    private static void HeartBeatParse(SvtRequestInfo request)
+    private void HeartBeatParse(SvtRequestInfo request)
     {
-        var device = ((App)Application.Current!).GetServiceProvider().GetService<Device>();
+        var device = this._serviceProvider.GetRequiredService<Device>();
         var span = new ReadOnlySpan<byte>(request.Data);
         if (span.Length >= 400)
         {

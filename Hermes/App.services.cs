@@ -5,6 +5,7 @@ using Hermes.Common.Parsers;
 using Hermes.Common.Reactive;
 using Hermes.Common.Validators;
 using Hermes.Common;
+using Hermes.Communication.SerialPort;
 using Hermes.Features.SettingsConfig;
 using Hermes.Features.SfcSimulator;
 using Hermes.Features.UutProcessor;
@@ -18,8 +19,6 @@ using SukiUI.Dialogs;
 using SukiUI.Toasts;
 using System.Linq;
 using System;
-using Hermes.Features.Bender;
-using Hermes.Communication.SerialPort;
 
 namespace Hermes;
 
@@ -40,7 +39,9 @@ public partial class App
     private static void ConfigureModels(ServiceCollection services)
     {
         services.AddSingleton<Session>();
-        services.AddSingleton<Device>();
+        services.AddSingleton<ServiceProvider>();
+        services.AddSingleton(new Device());
+        services.AddSingleton<FrameParser>();
         services.AddSingleton<Settings>(sp => sp.GetRequiredService<ISettingsRepository>().Read());
     }
 
@@ -103,7 +104,7 @@ public partial class App
         services.AddTransient<FolderWatcherService>();
         services.AddTransient<GkgUutSenderService>();
         services.AddTransient<ISfcService, SharedFolderSfcService>();
-        services.AddTransient<ServiceProvider>();
+        //services.AddTransient<ServiceProvider>();
         services.AddTransient<SfcSimulatorService>();
         services.AddTransient<StopService>();
         services.AddTransient<TriUutSenderService>();
