@@ -42,11 +42,11 @@
                                        HorizontalAlignment="Center"
                                        FontSize="18"
                                        FontWeight="DemiBold"
-                                       Text="{x:Static lang:Resources.c_login_title}" />
+                                       Text="封片机" />
 
                             <TextBlock Margin="6,15,0,3"
                                        FontWeight="DemiBold"
-                                       Text="{x:Static lang:Resources.txt_user}">
+                                       Text="用户名">
                             </TextBlock>
 
                             <TextBox Name="UserNameTextBox"
@@ -55,7 +55,7 @@
 
                             <TextBlock Margin="0,0,0,0"
                                        FontWeight="DemiBold"
-                                       Text="{x:Static lang:Resources.txt_password}" />
+                                       Text="密码" />
 
                             <TextBox Name="PasswordTextBox"
                                      Watermark="*******"
@@ -75,7 +75,7 @@
                         Classes="Flat Rounded Accent"
                         FontWeight="DemiBold"
                         Command="{Binding LoginCommand}"
-                        Content="{x:Static lang:Resources.txt_login}" />
+                        Content="登录" />
             </Grid>
 
             <!-- User Info -->
