@@ -20,7 +20,7 @@ public class ComPort
     private FrameSequenceGenerator _frameSequenceGenerator = new FrameSequenceGenerator();
     private SerialPortClient _client;
     private readonly FrameParser _parser;
-    public bool State => _client.Online;
+    public bool ClientOnline => _client.Online;
 
     public ComPort(FrameParser parser)
     {
@@ -129,15 +129,6 @@ public class ComPort
         _packetQueue.Enqueue(packet);
     }
 
-    private SvtRequestInfo? DequeuePacket()
-    {
-        if (_packetQueue.TryDequeue(out var packet))
-        {
-            return packet;
-        }
-        return null;
-    }
-
     //public async Task SendPacketsAsync()
     //{
     //    while (_packetQueue.Count > 0)
@@ -150,9 +141,31 @@ public class ComPort
 
     public async Task SendPacketAsync(SvtRequestInfo packet)
     {
-        await Task.Delay(200);
+        //await Task.Delay(200);
         packet.FrameNo = _frameSequenceGenerator.GenerateFrameSequence();
         Debug.WriteLine($"SendPacketAsync: {string.Join(" ", packet.DataFrame().Select(b => b.ToString("X2")))}");
         await this._client.SendAsync(packet);
+    }
+}
+
+public class FrameSequenceGenerator
+{
+    private int _counter = 0; // 计数器，用于生成序号
+    private const int MaxSequence = 65535; // 最大序号值
+
+    // 生成下一个序号
+    public byte[] GenerateFrameSequence()
+    {
+        // 计算下一个序号
+        _counter = (_counter % MaxSequence) + 1;
+
+        // 将序号转换为大端序的字节数组
+        byte[] sequenceBytes = BitConverter.GetBytes((ushort)_counter);
+        if (BitConverter.IsLittleEndian)
+        {
+            Array.Reverse(sequenceBytes); // 如果是小端序，反转字节数组
+        }
+
+        return sequenceBytes;
     }
 }
