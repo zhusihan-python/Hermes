@@ -21,7 +21,7 @@ namespace Hermes
     {
         private readonly ServiceProvider _provider;
         private readonly ILogger? _logger;
-        private readonly ComPort _comPort;
+        private readonly MessageSender _sender;
         private WindowService? _windowService;
         private Window? _mainWindow;
 
@@ -29,7 +29,7 @@ namespace Hermes
         {
             _provider = this.GetServiceProvider();
             this._logger = _provider.GetService<ILogger>()!;
-            this._comPort = _provider.GetService<ComPort>()!;
+            this._sender = _provider.GetService<MessageSender>()!;
         }
 
         public override void Initialize()
@@ -55,7 +55,7 @@ namespace Hermes
             }
 
             base.OnFrameworkInitializationCompleted();
-            _ = _comPort.InitializeAsync("COM3", 115200);
+            _sender.InitializeComPort();
         }
 
         public static void Restart()

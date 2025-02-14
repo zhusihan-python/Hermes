@@ -89,6 +89,7 @@ public partial class App
         services.AddSingleton<TokenGenerator>();
         services.AddSingleton<UnitUnderTestBuilder>();
         services.AddSingleton<ComPort>();
+        services.AddSingleton<MessageSender>();
         services.AddTransient<SerialPortRx>();
     }
 

@@ -17,19 +17,20 @@ public partial class ConciseMainViewModel : ViewModelBase
     [ObservableProperty] private bool _isConnected;
 
     private readonly ILogger _logger;
-    private ComPort _comPort;
-    private ComPort ComPort { get => this._comPort; set => _comPort = value; }
+    //private ComPort _comPort;
+    //private ComPort ComPort { get => this._comPort; set => _comPort = value; }
+    private readonly MessageSender _sender;
     public ICommand SealSlideCommand { get; }
     public ICommand SortSlideCommand { get; }
 
 
     public ConciseMainViewModel(
         ILogger logger,
-        ComPort comPort)
+        MessageSender sender)
     {
         this._logger = logger;
-        this.ComPort = comPort;
-        this.State = new ReactiveProperty<bool>(comPort.State);
+        this._sender = sender;
+        this.State = new ReactiveProperty<bool>(_sender.GetClientState());
         SealSlideCommand = new AsyncRelayCommand(SealSlide);
         SortSlideCommand = new AsyncRelayCommand(SortSlide);
     }
@@ -47,11 +48,12 @@ public partial class ConciseMainViewModel : ViewModelBase
             boxTags[21] = 0x01;
             var packet = new SystemStatusWrite().
                             WithOperationType(0x04).
-                            WithMasterAddress<SystemStatusWrite>(0x12).
-                            WithSlaveAddress<SystemStatusWrite>(0x11).
+                            WithMasterAddress<SystemStatusWrite>(0xF2).
+                            WithSlaveAddress<SystemStatusWrite>(0x13).
                             WithBoxTags(boxTags);
-            this.ComPort.EnqueuePacket(packet);
-            await this.ComPort.SendPacketAsync(packet);
+            //this.ComPort.EnqueuePacket(packet);
+            //await this.ComPort.SendPacketAsync(packet);
+            this._sender.EnqueueMessage(packet);
         }
         catch (Exception e)
         {
@@ -64,14 +66,10 @@ public partial class ConciseMainViewModel : ViewModelBase
     {
         try
         {
-            var boxTags = new byte[75];
-            var packet = new SystemStatusWrite().
-                            WithOperationType(0x01).
-                            WithMasterAddress<SystemStatusWrite>(0x12).
-                            WithSlaveAddress<SystemStatusWrite>(0x11).
-                            WithBoxTags(boxTags);
-            this.ComPort.EnqueuePacket(packet);
-            await this.ComPort.SendPacketAsync(packet);
+            var packet = new HeartBeatRead();
+            this._sender.EnqueueMessage(packet);
+            //this.ComPort.EnqueuePacket(packet);
+            //await this.ComPort.SendPacketAsync(packet);
         }
         catch (Exception e)
         {
