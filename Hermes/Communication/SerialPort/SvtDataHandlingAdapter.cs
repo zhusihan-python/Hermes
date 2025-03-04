@@ -43,7 +43,7 @@ public class SvtDataHandlingAdapter : CustomDataHandlingAdapter<SvtRequestInfo>
             {
                 // 取距离包尾最近的包头
                 var lastHeadIndex = headIndexes[^1];
-                var pos = byteBlock.Position;//记录初始游标位置，防止本次无法解析时，回退游标。
+                //var pos = byteBlock.Position;//记录初始游标位置，防止本次无法解析时，回退游标。
                 // 去掉包头包尾
                 var package = span.Slice(lastHeadIndex+1, tailIndex+1 - Svt.FullTail.Length - Svt.FullHead.Length);
                 // 去掉转义字符，才能校验包长度和CRC

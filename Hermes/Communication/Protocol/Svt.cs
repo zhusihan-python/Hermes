@@ -60,3 +60,11 @@ internal static class Svt
     // public const string NewLine = ")>";
     public const string NewLine = "293E";
 }
+
+internal static class Scan
+{
+    //帧头定义
+    public static readonly byte[] FullHead = { 0x04, 0xD0, 0x00, 0x00, 0xFF, 0x2C };
+    //帧尾定义
+    public static readonly byte[] FullTail = { 0x0D, 0x0A };
+}

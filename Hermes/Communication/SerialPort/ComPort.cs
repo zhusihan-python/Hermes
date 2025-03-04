@@ -13,10 +13,6 @@ namespace Hermes.Communication.SerialPort;
 
 public class ComPort
 {
-    //private static readonly Lazy<ComPort> _instance = new(() => new ComPort());
-    //public static ComPort Instance => _instance.Value;
-    private readonly ObservableQueue<SvtRequestInfo> _packetQueue = new ObservableQueue<SvtRequestInfo>();
-    //private readonly Subject<Unit> _processingSignal = new(); // 控制发送的信号
     private FrameSequenceGenerator _frameSequenceGenerator = new FrameSequenceGenerator();
     private SerialPortClient _client;
     private readonly FrameParser _parser;
@@ -67,10 +63,24 @@ public class ComPort
             }));
 
         // 连接串口
-        await _client.ConnectAsync();
-        Debug.WriteLine("串口连接成功");
-
-        //_client.Close();
+        //await _client.ConnectAsync();
+        //Debug.WriteLine("串口连接成功");
+        try
+        {
+            // 连接串口
+            await _client.ConnectAsync();
+            Debug.WriteLine($"串口 {portName} 连接成功");
+        }
+        catch (System.IO.FileNotFoundException ex)
+        {
+            Debug.WriteLine($"串口 {portName} 不存在: {ex.Message}");
+            //throw new Exception($"找不到串口 {portName}", ex);
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"串口连接失败: {ex.Message}");
+            throw;
+        }
     }
 
     // 异步处理数据的示例方法
@@ -123,11 +133,11 @@ public class ComPort
         }
     }
 
-    public void EnqueuePacket(SvtRequestInfo packet)
-    {
-        Debug.WriteLine($"EnqueuePacket: {packet}");
-        _packetQueue.Enqueue(packet);
-    }
+    //public void EnqueuePacket(SvtRequestInfo packet)
+    //{
+    //    Debug.WriteLine($"EnqueuePacket: {packet}");
+    //    _packetQueue.Enqueue(packet);
+    //}
 
     //public async Task SendPacketsAsync()
     //{
