@@ -1,5 +1,7 @@
 ﻿using Hermes.Communication.Protocol;
 using System;
+using System.Buffers.Binary;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using TouchSocket.Core;
@@ -125,7 +127,9 @@ public class SvtRequestInfo : IRequestInfo, IRequestInfoBuilder
             writer.Write(FrameNo);
 
             // 写入 PacketLength（2 字节）
-            writer.Write(PacketLength);
+            byte[] PacketLengthBytes = new byte[2];
+            BinaryPrimitives.WriteUInt16BigEndian(PacketLengthBytes, PacketLength);
+            writer.Write(PacketLengthBytes);
 
             // 写入 AddressLength（1 字节）
             writer.Write(AddressLength);
@@ -143,7 +147,9 @@ public class SvtRequestInfo : IRequestInfo, IRequestInfoBuilder
             writer.Write(FrameType);
 
             // 写入 DataLength（2 字节）
-            writer.Write(BitConverter.GetBytes(DataLength).Reverse().ToArray());
+            byte[] DataLengthBytes = new byte[2];
+            BinaryPrimitives.WriteUInt16BigEndian(DataLengthBytes, DataLength);
+            writer.Write(DataLengthBytes);
 
             // 写入 Data（可变长度）
             if (Data != null && Data.Length > 0)
@@ -165,6 +171,31 @@ public class SvtRequestInfo : IRequestInfo, IRequestInfoBuilder
         byteBlock.Write(AddSymbol(msgFrame));
         byteBlock.Write(AddSymbol(crcAscii));
         byteBlock.Write(Svt.FullTail);
+    }
+
+    public byte[] BuildPackets(byte[] frameNo)
+    {
+        this.FrameNo = frameNo;
+        var msgFrame = this.DataFrame();
+        var crcAscii = Crc16.ComputeCrcArray(msgFrame, msgFrame.Length);
+        var frame = AddSymbol(msgFrame);
+        var crc = AddSymbol(crcAscii);
+        int totalLength = Svt.FullHead.Length + frame.Length + crc.Length + Svt.FullTail.Length;
+        byte[] combinedArray = new byte[totalLength];
+        int offset = 0;
+
+        Buffer.BlockCopy(Svt.FullHead, 0, combinedArray, offset, Svt.FullHead.Length);
+        offset += Svt.FullHead.Length;
+
+        Buffer.BlockCopy(frame.ToArray(), 0, combinedArray, offset, frame.Length);
+        offset += frame.Length;
+
+        Buffer.BlockCopy(crc.ToArray(), 0, combinedArray, offset, crc.Length);
+        offset += crc.Length;
+
+        Buffer.BlockCopy(Svt.FullTail, 0, combinedArray, offset, Svt.FullTail.Length);
+
+        return combinedArray;
     }
 
     public static ReadOnlySpan<byte> AddSymbol(byte[] inputArray)

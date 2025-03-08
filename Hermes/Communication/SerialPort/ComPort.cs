@@ -37,8 +37,8 @@ public class ComPort
         {
             if (e.RequestInfo is SvtRequestInfo myRequest)
             {
-                Debug.WriteLine($"已从{myRequest.MasterAddress}接收到：CMDID={string.Join(" ", myRequest.CMDID.Select(b => b.ToString("X2")))}," +
-                    $"FrameType={myRequest.FrameType},消息={string.Join(" ", myRequest.Data.Select(b => b.ToString("X2")))}");
+                Debug.WriteLine($"已从{BitConverter.ToString(myRequest.FrameNo)}接收到：CMDID={string.Join(" ", myRequest.CMDID.Select(b => b.ToString("X2")))}," +
+                    $"FrameType=0x{myRequest.FrameType:X2},消息={string.Join(" ", myRequest.Data.Select(b => b.ToString("X2")))}");
                 await ProcessReceivedDataAsync(myRequest);
             }
         };
@@ -81,6 +81,17 @@ public class ComPort
             Debug.WriteLine($"串口连接失败: {ex.Message}");
             throw;
         }
+    }
+
+    public async Task ClientSafeCloseAsync()
+    {
+        await _client.SafeCloseAsync();
+    }
+
+    public IWaitingClient<ISerialPortClient, IReceiverResult> CreateWaitingClient(WaitingOptions options)
+    {
+        var client = _client!.CreateWaitingClient(options);
+        return client;
     }
 
     // 异步处理数据的示例方法
@@ -133,26 +144,15 @@ public class ComPort
         }
     }
 
-    //public void EnqueuePacket(SvtRequestInfo packet)
-    //{
-    //    Debug.WriteLine($"EnqueuePacket: {packet}");
-    //    _packetQueue.Enqueue(packet);
-    //}
-
-    //public async Task SendPacketsAsync()
-    //{
-    //    while (_packetQueue.Count > 0)
-    //    {
-    //        var packet = _packetQueue.Dequeue();
-    //        packet.FrameNo = _frameSequenceGenerator.GenerateFrameSequence();
-    //        await SendPacketAsync(packet);
-    //    }
-    //}
+    public byte[] GetFrameNumber()
+    {
+        return _frameSequenceGenerator.GenerateFrameSequence();
+    }
 
     public async Task SendPacketAsync(SvtRequestInfo packet)
     {
         //await Task.Delay(200);
-        packet.FrameNo = _frameSequenceGenerator.GenerateFrameSequence();
+        packet.FrameNo = GetFrameNumber();
         Debug.WriteLine($"SendPacketAsync: {string.Join(" ", packet.DataFrame().Select(b => b.ToString("X2")))}");
         await this._client.SendAsync(packet);
     }
