@@ -57,6 +57,17 @@ public class ScanEngine
         Debug.WriteLine($"串口 {portName} 连接成功");
     }
 
+    public async Task ClientSafeCloseAsync()
+    {
+        await _client.SafeCloseAsync();
+    }
+
+    public IWaitingClient<ISerialPortClient, IReceiverResult> CreateWaitingClient(WaitingOptions options)
+    {
+        var client = _client!.CreateWaitingClient(options);
+        return client;
+    }
+
     // 异步处理数据的示例方法
     private async Task ProcessReceivedDataAsync(ScanRequestInfo request)
     {

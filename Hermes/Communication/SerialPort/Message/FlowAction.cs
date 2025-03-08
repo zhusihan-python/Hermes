@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Buffers.Binary;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Hermes.Communication.Protocol;
 using TouchSocket.Core;
@@ -26,12 +27,12 @@ public class FlowActionRead : SvtRequestInfo
 public class FlowActionWrite : SvtRequestInfo
 {
     public byte OperationType = 0x01; // 0x00：清空所有 0x01：增加一个动作 0x02：写入动作包总数
-    public byte[] ActionSquence = { 0x00, 0x01 };
-    public byte[] SlideSequence = { 0x00, 0x01 };
+    public byte[] ActionSquence = { 0x00, 0x00 };
+    public byte[] SlideSequence = { 0x00, 0x00 };
     public byte ActionType = 0x01; // 0x01：封片 0x02：理片 0x03：封片后理片
     public byte PickCount = 0x01; // 玻片取放次数
-    public byte[] SourceOne = { 0x00, 0x01 };
-    public byte[] DestinationOne = { 0x00, 0x01 };
+    public byte[] SourceOne = { 0x00, 0x00 };
+    public byte[] DestinationOne = { 0x00, 0x00 };
     public byte[] SourceTwo = { 0x00, 0x00 };
     public byte[] DestinationTwo = { 0x00, 0x00 };
     public byte[] SourceThree = { 0x00, 0x00 };
@@ -98,6 +99,68 @@ public class FlowActionWrite : SvtRequestInfo
         DestinationFour = chunks[7];
         SourceFive = chunks[8];
         DestinationFive = chunks[9];
+
+        return this;
+    }
+
+    public FlowActionWrite GenData()
+    {
+        int totalLength = 1 + this.ActionSquence.Length + this.SlideSequence.Length + 1 + 1 +
+                      this.SourceOne.Length + this.DestinationOne.Length +
+                      this.SourceTwo.Length + this.DestinationTwo.Length +
+                      this.SourceThree.Length + this.DestinationThree.Length +
+                      this.SourceFour.Length + this.DestinationFour.Length +
+                      this.SourceFive.Length + this.DestinationFive.Length;
+        byte[] combinedArray = new byte[totalLength];
+        Span<byte> combinedSpan = combinedArray;
+
+        combinedSpan[0] = OperationType;
+        combinedSpan = combinedSpan.Slice(1);
+
+        ActionSquence.CopyTo(combinedSpan);
+        combinedSpan = combinedSpan.Slice(ActionSquence.Length);
+
+        SlideSequence.CopyTo(combinedSpan);
+        combinedSpan = combinedSpan.Slice(SlideSequence.Length);
+
+        combinedSpan[0] = ActionType;
+        combinedSpan = combinedSpan.Slice(1);
+
+        combinedSpan[0] = PickCount;
+        combinedSpan = combinedSpan.Slice(1);
+
+        SourceOne.CopyTo(combinedSpan);
+        combinedSpan = combinedSpan.Slice(SourceOne.Length);
+
+        DestinationOne.CopyTo(combinedSpan);
+        combinedSpan = combinedSpan.Slice(DestinationOne.Length);
+
+        SourceTwo.CopyTo(combinedSpan);
+        combinedSpan = combinedSpan.Slice(SourceTwo.Length);
+
+        DestinationTwo.CopyTo(combinedSpan);
+        combinedSpan = combinedSpan.Slice(DestinationTwo.Length);
+
+        SourceThree.CopyTo(combinedSpan);
+        combinedSpan = combinedSpan.Slice(SourceThree.Length);
+
+        DestinationThree.CopyTo(combinedSpan);
+        combinedSpan = combinedSpan.Slice(DestinationThree.Length);
+
+        SourceFour.CopyTo(combinedSpan);
+        combinedSpan = combinedSpan.Slice(SourceFour.Length);
+
+        DestinationFour.CopyTo(combinedSpan);
+        combinedSpan = combinedSpan.Slice(DestinationFour.Length);
+
+        SourceFive.CopyTo(combinedSpan);
+        combinedSpan = combinedSpan.Slice(SourceFive.Length);
+
+        DestinationFive.CopyTo(combinedSpan);
+
+        this.WithData<FlowActionWrite>(combinedArray);
+
+        //Debug.WriteLine($"GenData combinedSpan.ToArray(): {string.Join(" ", this.Data.Select(b => b.ToString("X2")))}");
         return this;
     }
 }
