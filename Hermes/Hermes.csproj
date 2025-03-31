@@ -55,19 +55,19 @@
     <ItemGroup>
         <PackageReference Include="ActiproSoftware.Controls.Avalonia" Version="25.1.0" />
         <PackageReference Include="AutoMapper" Version="13.0.1" />
-        <PackageReference Include="Avalonia" Version="11.2.3" />
-        <PackageReference Include="Avalonia.Desktop" Version="11.2.3" />
+        <PackageReference Include="Avalonia" Version="11.2.6" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.2.6" />
         <PackageReference Include="Avalonia.Labs.Controls" Version="11.2.0" />
-        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.3" />
-        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.3" />
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.6" />
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.6" />
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.2.3" />
+        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.2.6" />
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
         <PackageReference Include="ConfigFactory" Version="0.4.2" />
         <PackageReference Include="ConfigFactory.Avalonia" Version="0.4.2" />
         <PackageReference Include="ConfigFactory.Core" Version="0.4.2" />
         <PackageReference Include="Dapper" Version="2.1.35" />
-        <PackageReference Include="Material.Icons.Avalonia" Version="2.1.10" />
+        <PackageReference Include="Material.Icons.Avalonia" Version="2.3.1" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -86,8 +86,8 @@
         <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="2.88.9" />
         <PackageReference Include="SukiUI" Version="6.0.0-rc" />
         <PackageReference Include="System.IO.Ports" Version="9.0.1" />
-        <PackageReference Include="TouchSocket" Version="3.0.12" />
-        <PackageReference Include="TouchSocket.SerialPorts" Version="3.0.12" />
+        <PackageReference Include="TouchSocket" Version="3.0.20" />
+        <PackageReference Include="TouchSocket.SerialPorts" Version="3.0.20" />
         <PackageReference Include="Velopack" Version="0.0.942" />
     </ItemGroup>
 
