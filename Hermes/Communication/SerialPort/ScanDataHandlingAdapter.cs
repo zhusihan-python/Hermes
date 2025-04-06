@@ -42,13 +42,14 @@ public class ScanDataHandlingAdapter : CustomDataHandlingAdapter<ScanRequestInfo
                 var lastHeadIndex = headIndexes[^1];
                 //var pos = byteBlock.Position;//记录初始游标位置，防止本次无法解析时，回退游标。
                 // 去掉包头包尾
-                var package = span.Slice(lastHeadIndex + 1, tailIndex + 1 - Svt.FullTail.Length - Svt.FullHead.Length).ToArray();
+                var package = span.Slice(lastHeadIndex + 1, tailIndex + 1 - Scan.FullTail.Length - Scan.FullHead.Length).ToArray();
                 // 清理之后包长度，不含包头包尾最少是14
                 if (package.Length > 0)
                 {
                     var requestInfo = new ScanRequestInfo();
                     requestInfo.dataFrame = package;
                     request = requestInfo;
+                    byteBlock.Position += tailIndex + 1;
                     return FilterResult.Success;
                 }
                 else
@@ -68,18 +69,19 @@ public class ScanDataHandlingAdapter : CustomDataHandlingAdapter<ScanRequestInfo
         else
         {
             var firstHeadIndex = span.IndexOfFirst(0, span.Length, Scan.FullHead);
-            if (firstHeadIndex > 0)
-            {
-                // 只有包头的包
-                var head = span.Slice(firstHeadIndex + 1, Svt.FullHead.Length).ToArray();
-                var emptyRequestInfo = new ScanRequestInfo();
-                emptyRequestInfo.header = head;
-                return FilterResult.Success;
-            }
-            else
-            {
-                return FilterResult.Cache;
-            }
+            return FilterResult.Cache;
+            //if (firstHeadIndex > 0 && span.Length == Scan.FullHead.Length)
+            //{
+            //    // 只有包头的包
+            //    var head = span.Slice(firstHeadIndex + 1, Svt.FullHead.Length).ToArray();
+            //    var emptyRequestInfo = new ScanRequestInfo();
+            //    emptyRequestInfo.header = head;
+            //    return FilterResult.Success;
+            //}
+            //else
+            //{
+            //    return FilterResult.Cache;
+            //}
         }
     }
 }
