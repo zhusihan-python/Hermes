@@ -96,13 +96,25 @@ public class FrameParser
                 var slideSeq = TouchSocketBitConverter.BigEndian.ToUInt16(request.Data.Skip(1).Take(2).ToArray(), 0);
                 var scanRequest = new ScanStartRequest(slideSeq, request.FrameNo);
 
-                // 触发扫码解码
-                await sender!.SendScannerMessageAsync(scanRequest);
+                if (slideSeq >= 1 && slideSeq <= 1500)
+                {
+                    // 触发扫码解码
+                    await sender!.SendScannerMessageAsync(scanRequest);
 
-                var packet = new ScanTriggerWriteResponse().
-                                WithMasterAddress<ScanTriggerWriteResponse>(0xF2).
-                                WithSlaveAddress<ScanTriggerWriteResponse>(0x13).
-                                TriggerSuccess();
+                    var successResponse = new ScanTriggerWriteResponse().
+                                    WithMasterAddress<ScanTriggerWriteResponse>(0xF2).
+                                    WithSlaveAddress<ScanTriggerWriteResponse>(0x13).
+                                    TriggerSuccess();
+                    sender.EnqueueMessage(successResponse);
+                }
+                else
+                {
+                    var failResponse = new ScanTriggerWriteResponse().
+                                    WithMasterAddress<ScanTriggerWriteResponse>(0xF2).
+                                    WithSlaveAddress<ScanTriggerWriteResponse>(0x13).
+                                    TriggerFail();
+                    sender!.EnqueueMessage(failResponse);
+                }
             }
         }
     }
