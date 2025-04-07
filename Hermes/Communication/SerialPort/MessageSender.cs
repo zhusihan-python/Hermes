@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ public class MessageSender : IDisposable
     private ConcurrentQueue<SvtRequestInfo> _messageQueue = new();
     private readonly Timer _timer;
     private ComPort _comPort;
-    private ScanEngine scanEngine;
+    public ScanEngine scanEngine;
     private readonly ManualResetEventSlim _filterSignal = new(true); // 初始化为允许SendMessageAsync运行
     private bool _timerRunning; // 添加一个标志来跟踪定时器状态
     private bool _disposed;
@@ -24,12 +25,14 @@ public class MessageSender : IDisposable
         this.scanEngine = scanEngine;
         _timer = new Timer(async state => await SendMessageAsync(), null, Timeout.Infinite, Timeout.Infinite);
         _timerRunning = false; // 初始化标志
+        this.scanEngine.ScanMessageReceived += OnScanMessageReceived;
+        this.scanEngine.ScanFailed += OnScanFailed;
     }
 
     public async void InitializeComPort()
     {
-        await _comPort.InitializeAsync("COM1", 115200);
-        await scanEngine.InitializeAsync("COM7", 9600);
+        await _comPort.InitializeAsync("COM3", 115200);
+        await scanEngine.InitializeAsync("COM5", 9600);
     }
 
     public void EnqueueMessage(SvtRequestInfo message)
@@ -111,6 +114,20 @@ public class MessageSender : IDisposable
         await scanEngine.SendPacketAsync(message);
     }
 
+    private void OnScanMessageReceived(object? sender, byte[] frameNumber)
+    {
+        Debug.WriteLine("扫描成功");
+        var request = new ScanResultWrite(frameNumber).ScanSuccess();
+        EnqueueMessage(request);
+    }
+
+    private void OnScanFailed(object? sender, byte[] frameNumber)
+    {
+        Debug.WriteLine("扫描失败");
+        var request = new ScanResultWrite(frameNumber).ScanFail();
+        EnqueueMessage(request);
+    }
+
     public bool GetClientState()
     {
         return _comPort.ClientOnline;
@@ -125,6 +142,8 @@ public class MessageSender : IDisposable
     {
         if (_disposed) return;
 
+        this.scanEngine.ScanMessageReceived -= OnScanMessageReceived;
+        this.scanEngine.ScanFailed -= OnScanFailed; // 取消订阅 ScanFailed 事件
         _timer.Dispose();
         _disposed = true;
     }

@@ -1,5 +1,8 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Linq;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 using TouchSocket.Core;
 using TouchSocket.SerialPorts;
@@ -11,10 +14,14 @@ public class ScanEngine
 {
     private SerialPortClient _client;
     public bool ClientOnline => _client.Online;
+    private readonly ConcurrentQueue<PacketResult> _resultQueue;
+    public event EventHandler<byte[]> ScanMessageReceived;
+    public event EventHandler<byte[]> ScanFailed;
 
     public ScanEngine()
     {
         _client = new SerialPortClient();
+        _resultQueue = new ConcurrentQueue<PacketResult>();
     }
 
     public async Task InitializeAsync(string portName, int baudRate)
@@ -28,9 +35,12 @@ public class ScanEngine
         // 接收数据事件
         _client.Received = async (c, e) =>
         {
-            Debug.WriteLine($"RequestInfo {e.RequestInfo}");
-            await Task.Delay(100);
-            //await ProcessReceivedDataAsync(myRequest);
+            if (e.RequestInfo is ScanRequestInfo myRequest)
+            {
+                Debug.WriteLine($"RequestInfo {e.RequestInfo}");
+                await Task.Delay(100);
+                await ProcessReceivedDataAsync(myRequest);
+            }
         };
 
         // 配置串口参数
@@ -71,10 +81,23 @@ public class ScanEngine
     // 异步处理数据的示例方法
     private async Task ProcessReceivedDataAsync(ScanRequestInfo request)
     {
-        // 模拟异步操作，如存储数据或发送响应
-        //await Task.Delay(100); // Simulate I/O or processing delay
-        //await this._parser.Route(request);
-        Debug.WriteLine($"处理完成：来自{request.dataFrame}的消息已处理。");
+        _resultQueue.TryDequeue(out var item);
+        // 判断是否超时 超时直接丢弃
+        Debug.WriteLine($"TryDequeue item {item}");
+
+        if (item is not null && IsWithinTwoSeconds(item.Timestamp))
+        {
+            Debug.WriteLine($"帧序号：{string.Join(" ", item.FrameNo!.Select(b => b.ToString("X2")))}。");
+            if (request.dataFrame != null)
+            {
+                ScanMessageReceived?.Invoke(this, request.dataFrame);
+            }
+        }
+        else
+        {
+            Debug.WriteLine($"超时：来自{request.dataFrame}的消息已处理。");
+            ScanFailed?.Invoke(this, request.dataFrame);
+        }
     }
 
     internal class ScannerConnectingPlugin : PluginBase, ISerialConnectingPlugin
@@ -121,6 +144,48 @@ public class ScanEngine
     {
         await Task.Delay(100);
         Debug.WriteLine($"Send ScanRequestInfo: {string.Join(" ", packet.dataFrame.Select(b => b.ToString("X2")))}");
+        var packetResult = new PacketResult { SlideSeq = packet.SlideSeq, FrameNo = packet.FrameNo };
+        _resultQueue.Enqueue(packetResult);
+        // 启动超时检查
+        _ = StartTimeoutCheckAsync(packet.FrameNo);
+
         await this._client.SendAsync(packet);
     }
+
+    private async Task StartTimeoutCheckAsync(byte[] frameNo)
+    {
+        await Task.Delay(2000); // 2秒超时
+        // 超时后尝试移除未处理的请求
+        RemoveFromQueue(frameNo);
+    }
+
+    private void RemoveFromQueue(byte[] frameNo)
+    {
+        Debug.WriteLine("into RemoveFromQueue");
+        _resultQueue.TryDequeue(out var item);
+        if (item != null && Enumerable.SequenceEqual(item.FrameNo!, frameNo))
+        {
+            Debug.WriteLine($"移除请求 (frameNo: {frameNo})");
+            Debug.WriteLine($"移除请求 (item: {item})");
+            Debug.WriteLine($"移除请求 (FrameNo: {item.FrameNo})");
+        }
+        else
+        {
+
+        }
+    }
+
+    public static bool IsWithinTwoSeconds(DateTime timeStamp)
+    {
+        DateTime now = DateTime.Now;
+        TimeSpan difference = now - timeStamp;
+        return Math.Abs(difference.TotalSeconds) <= 2;
+    }
+}
+
+public class PacketResult
+{
+    public ushort SlideSeq;
+    public byte[]? FrameNo { get; set; }
+    public DateTime Timestamp { get; set; } = DateTime.Now;
 }
