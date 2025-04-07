@@ -35,8 +35,9 @@ internal static class Svt
     public const byte Read = 0x55;
     public const byte Write = 0x66;
     public const byte ReadSuccess = 0xAA;
+    public const byte WriteResponse = 0x99;
     public const byte WriteScueess = 0x88;
-    public const byte WriteFailed = 0x99;
+    public const byte WriteFailed = 0xAA;
 
     // modbus slave exception offset that is added to the function code, to flag an exception
     public const byte ExceptionOffset = 128;
