@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Avalonia;
 using Hermes.Common;
 using Hermes.Communication.Protocol;
 using Hermes.Models;
@@ -25,6 +26,10 @@ public class FrameParser
         if (Enumerable.SequenceEqual(request.CMDID, Svt.HeartBeat) && request.FrameType == Svt.ReadSuccess)
         {
             await Task.Run(() => HeartBeatParse(request));
+        }
+        else if (Enumerable.SequenceEqual(request.CMDID, Svt.ScanTrigger) && request.FrameType == Svt.Write)
+        {
+            await Task.Run(() => ScanTriggerParse(request));
         }
     }
 
@@ -77,5 +82,28 @@ public class FrameParser
             }
         }
         Debug.WriteLine("Finish HeartBeatParse");
+    }
+
+    private async Task ScanTriggerParse(SvtRequestInfo request)
+    {
+        if (request.Data != null && request.Data.Length == 7)
+        {
+            var actionType = (TriggerActionType)request.Data[0];
+            if (actionType == TriggerActionType.ScanCode)
+            {
+                var serviceProvider = ((App)Application.Current!).GetServiceProvider();
+                var sender = serviceProvider.GetService<MessageSender>();
+                var slideSeq = TouchSocketBitConverter.BigEndian.ToUInt16(request.Data.Skip(1).Take(2).ToArray(), 0);
+                var scanRequest = new ScanStartRequest(slideSeq, request.FrameNo);
+
+                // 触发扫码解码
+                await sender!.SendScannerMessageAsync(scanRequest);
+
+                var packet = new ScanTriggerWriteResponse().
+                                WithMasterAddress<ScanTriggerWriteResponse>(0xF2).
+                                WithSlaveAddress<ScanTriggerWriteResponse>(0x13).
+                                TriggerSuccess();
+            }
+        }
     }
 }
