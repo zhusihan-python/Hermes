@@ -8,7 +8,6 @@ using System.Linq;
 //using ObservableCollections;
 using System.Net.Sockets;
 using R3;
-using System.Threading;
 
 namespace Hermes.Communication.SerialPort;
 
@@ -17,9 +16,8 @@ public class ComPort
     private FrameSequenceGenerator _frameSequenceGenerator = new FrameSequenceGenerator();
     private SerialPortClient _client;
     private readonly FrameParser _parser;
-    private Timer _heartbeatTimer;
     private const int HeartbeatIntervalMs = 2000; // 2 秒
-    private CancellationTokenSource _heartbeatCts; // 心跳任务取消令牌
+    private Task _heartbeatTask;
     public bool ClientOnline => _client.Online;
 
     public ComPort(FrameParser parser)
@@ -35,14 +33,18 @@ public class ComPort
         _client.Connected = async (client, e) =>
         {
             // 连接成功后启动心跳任务
-            StartHeartbeat();
+            _heartbeatTask = Task.Run(HeartbeatLoop);
             await EasyTask.CompletedTask;
         };
         _client.Closing = (client, e) => { return EasyTask.CompletedTask; };   // 即将从端口断开连接
         _client.Closed = async (client, e) =>
         {
-            // 断开时停止心跳任务
-            StopHeartbeat();
+            // 断开时等待心跳任务停止
+            if (_heartbeatTask != null)
+            {
+                await _heartbeatTask;
+                _heartbeatTask = null;
+            }
             await EasyTask.CompletedTask;
         };
 
@@ -172,48 +174,31 @@ public class ComPort
     }
 
     /// <summary>
-    /// 启动心跳任务
+    /// 心跳循环
     /// </summary>
-    private void StartHeartbeat()
+    /// <returns></returns>
+    private async Task HeartbeatLoop()
     {
-        _heartbeatCts = new CancellationTokenSource();
-        _heartbeatTimer = new Timer(async (state) =>
+        while (_client.Online)
         {
-            if (_client.Online && !_heartbeatCts.Token.IsCancellationRequested)
+            var heartbeat = new HeartBeatRead();
+            await SendPacketAsync(heartbeat);
+            try
             {
-                var heartbeat = new HeartBeatRead();
-                await SendPacketAsync(heartbeat);
-                // 延迟等待，并传递取消令牌
-                try
-                {
-                    await Task.Delay(HeartbeatIntervalMs, _heartbeatCts.Token);
-                }
-                catch (TaskCanceledException)
-                {
-                    // 心跳任务被取消
-                    Debug.WriteLine("心跳任务被取消。");
-                }
+                await Task.Delay(HeartbeatIntervalMs);
             }
-            else
+            catch (TaskCanceledException)
             {
-                // 连接已断开或取消请求已发出，停止心跳
-                StopHeartbeatInternal();
+                // Task.Delay 可能会在程序关闭时抛出这个异常
+                Debug.WriteLine("心跳循环中的延迟被取消。");
             }
-        }, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(HeartbeatIntervalMs));
-    }
-
-    private void StopHeartbeat()
-    {
-        _heartbeatCts?.Cancel(); // 发出取消信号
-        StopHeartbeatInternal();
-    }
-
-    private void StopHeartbeatInternal()
-    {
-        _heartbeatTimer?.Dispose();
-        _heartbeatTimer = null;
-        _heartbeatCts?.Dispose();
-        _heartbeatCts = null;
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"心跳循环发生异常: {ex.Message}");
+                await Task.Delay(TimeSpan.FromSeconds(5)); // 发生错误后等待一段时间再重试
+            }
+        }
+        Debug.WriteLine("心跳循环已停止（连接断开）。");
     }
 }
 
