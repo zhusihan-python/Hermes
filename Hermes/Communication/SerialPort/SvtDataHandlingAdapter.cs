@@ -45,7 +45,9 @@ public class SvtDataHandlingAdapter : CustomDataHandlingAdapter<SvtRequestInfo>
                 var lastHeadIndex = headIndexes[^1];
                 //var pos = byteBlock.Position;//记录初始游标位置，防止本次无法解析时，回退游标。
                 // 去掉包头包尾
-                var package = span.Slice(lastHeadIndex+1, tailIndex+1 - Svt.FullTail.Length - Svt.FullHead.Length);
+                var startIndex = lastHeadIndex + 1;
+                var length = tailIndex + 1 - Svt.FullTail.Length - 2;
+                var package = span.Slice(startIndex, length);
                 // 去掉转义字符，才能校验包长度和CRC
                 var cleanPackage = RemoveInsertedBytes(package);
                 var myRequestInfo = new SvtRequestInfo();
