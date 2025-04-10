@@ -15,6 +15,8 @@ public partial class ConciseMainViewModel : ViewModelBase
     public ReactiveProperty<bool> State { get; }
 
     [ObservableProperty] private bool _isConnected;
+    [ObservableProperty] private string _currentDay;
+    [ObservableProperty] private string _currentHour;
 
     private readonly ILogger _logger;
     //private ComPort _comPort;
@@ -33,6 +35,18 @@ public partial class ConciseMainViewModel : ViewModelBase
         this.State = new ReactiveProperty<bool>(_sender.GetClientState());
         SealSlideCommand = new AsyncRelayCommand(SealSlide);
         SortSlideCommand = new AsyncRelayCommand(SortSlide);
+        // 初次赋值
+        var curDateTime = DateTime.Now;
+        CurrentDay = curDateTime.ToString("MM-dd yyyy");
+        CurrentHour = curDateTime.ToString("HH:mm");
+        // 每分钟更新一次（如果需要实时更新）
+        Observable.Interval(TimeSpan.FromMinutes(1))
+                  .Subscribe(_ =>
+                  {
+                      var curDateTime = DateTime.Now;
+                      CurrentDay = curDateTime.ToString("MM-dd yyyy");
+                      CurrentHour = curDateTime.ToString("HH:mm");
+                  });
     }
 
     protected override void SetupReactiveExtensions()
@@ -66,10 +80,12 @@ public partial class ConciseMainViewModel : ViewModelBase
     {
         try
         {
-            var packet = new HeartBeatRead();
-            this._sender.EnqueueMessage(packet);
-            //this.ComPort.EnqueuePacket(packet);
-            //await this.ComPort.SendPacketAsync(packet);
+            //var packet = new HeartBeatRead();
+            //this._sender.EnqueueMessage(packet);
+
+            var frameNumber = new byte[] { 0x00, 0x01 };
+            var scanRequest = new ScanStartRequest(0x0001, frameNumber);
+            await this._sender.SendScannerMessageAsync(scanRequest);
         }
         catch (Exception e)
         {

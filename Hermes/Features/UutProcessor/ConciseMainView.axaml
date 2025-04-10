@@ -90,8 +90,8 @@
 							</Viewbox.Effect>
 
 							<StackPanel Margin="30,20">
-								<TextBlock Text="10:32" FontSize="23" FontWeight="Bold" Foreground="#37474F" HorizontalAlignment="Center" />
-								<TextBlock Text="12-12 2024" FontSize="23" FontWeight="Bold" Foreground="#37474F" HorizontalAlignment="Center" />
+								<TextBlock Text="{Binding CurrentHour}" FontSize="23" FontWeight="Bold" Foreground="#37474F" HorizontalAlignment="Center" />
+								<TextBlock Text="{Binding CurrentDay}" FontSize="23" FontWeight="Bold" Foreground="#37474F" HorizontalAlignment="Center" />
 							</StackPanel>
 						</Viewbox>
 					</Grid>
