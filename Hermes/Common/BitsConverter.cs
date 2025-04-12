@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 
 namespace Hermes.Common;
 
@@ -46,7 +47,7 @@ public static class BitsConverter
 
     public static bool[] ByteToBit(byte value)
     {
-        bool[] bits = new bool[8]; // 创建一个长度为 8 的 bool 数组
+        bool[] bits = new bool[8];
 
         for (int i = 0; i < 8; i++)
         {
@@ -74,6 +75,28 @@ public static class BitsConverter
 
                 bits[index] = (b & (1 << i)) != 0;
                 index++;
+            }
+        }
+
+        return bits;
+    }
+
+    public static BitArray BytesToBitsAsBitArray(byte[] bytes, int bitCount)
+    {
+        if (bytes == null || bytes.Length == 0 || bitCount <= 0)
+            return new BitArray(0);
+
+        BitArray bits = new BitArray(bitCount);
+        int index = 0;
+
+        foreach (byte b in bytes)
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                if (index >= bitCount)
+                    return bits;
+
+                bits[index++] = (b & (1 << i)) != 0;
             }
         }
 

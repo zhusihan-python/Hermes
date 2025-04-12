@@ -44,7 +44,7 @@ public class FrameParser : ObservableRecipient
         var span = new ReadOnlySpan<byte>(request.Data);
         if (span.Length >= 400)
         {
-            device!.DeviceResetState.Value = (DeviceResetType)span[0];
+            device!.DeviceResetState = (DeviceResetType)span[0];
             device.SealMotorResetState.Value = (SealMotorResetType)span[1];
             device.SortMotorResetState.Value = (SortMotorResetType)span[2];
             device.SealMotorFlowState.Value = (SealMotorFlowType)span[3];
@@ -71,16 +71,16 @@ public class FrameParser : ObservableRecipient
             var alarmCodes = Enumerable.Range(0, 10)
                      .Select(i => TouchSocketBitConverter.BigEndian.ToUInt16(alarmCodesArray.AsSpan().Slice(i * 2, 2).ToArray(), 0));
             device.AlarmCodes.AddLastRange(alarmCodes);
-            var slideBoxInPlaceBits = BitsConverter.BytesToBits(span.Slice(68, 10).ToArray(), 75);
-            for (int i = 0; i < slideBoxInPlaceBits.Length; i++)
-            {
-                device.SlideBoxInPlace[i] = slideBoxInPlaceBits[i];
-            }
-            var SlideInPlaceBits = BitsConverter.BytesToBits(span.Slice(78, 188).ToArray(), 1500);
-            for (int j = 0; j < SlideInPlaceBits.Length; j++)
-            {
-                device.SlideInPlace[j] = SlideInPlaceBits[j];
-            }
+            device.SlideBoxInPlace = BitsConverter.BytesToBitsAsBitArray(span.Slice(68, 10).ToArray(), 75);
+            //for (int i = 0; i < slideBoxInPlaceBits.Length; i++)
+            //{
+            //    device.SlideBoxInPlace[i] = slideBoxInPlaceBits[i];
+            //}
+            device.SlideInPlace = BitsConverter.BytesToBitsAsBitArray(span.Slice(78, 188).ToArray(), 1500);
+            //for (int j = 0; j < SlideInPlaceBits.Length; j++)
+            //{
+            //    device.SlideInPlace[j] = SlideInPlaceBits[j];
+            //}
             for (int k = 0; k < 75; k++)
             {
                 device.SlideBoxActions[k] = (SlideBoxActionType)span[k+ 266];

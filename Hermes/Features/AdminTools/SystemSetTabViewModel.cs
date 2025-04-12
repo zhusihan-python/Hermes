@@ -2,6 +2,10 @@
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using Hermes.Common.Messages;
+using Hermes.Models;
+using Hermes.Types;
 using System;
 using System.Threading.Tasks;
 
@@ -33,8 +37,13 @@ public partial class SystemSetTabViewModel: ViewModelBase
     private string hisInterface = "http://192.168.0.1";
     [ObservableProperty]
     private string pisInterface = "http://192.168.0.2";
+    [ObservableProperty]
+    private DeviceResetType _resetState = DeviceResetType.NotRest;
+    private Device _device;
 
-    public SystemSetTabViewModel()
+    public SystemSetTabViewModel(
+        Device device
+        )
     {
         SealMediumHeader = "封片剂添加量";
         SealMediumDescription = "封片剂添加量 单位μL";
@@ -59,6 +68,14 @@ public partial class SystemSetTabViewModel: ViewModelBase
         GasTankPressureHeader = "气罐压力";
         GasTankPressureDescription = "气罐压力 0到1000 Kpa";
         GasTankPressureValue = "200";
+
+        this._device = device;
+        Messenger.Register<HeartBeatMessage>(this, this.Receive);
+    }
+
+    public void Receive(object? recipient, HeartBeatMessage message)
+    {
+        ResetState = this._device.DeviceResetState;
     }
 
     [RelayCommand]
@@ -77,5 +94,11 @@ public partial class SystemSetTabViewModel: ViewModelBase
         {
             DefaultDir = folder.Result[0].Path.LocalPath;
         }
+        await Task.Delay(100);
+    }
+
+    public void Dispose()
+    {
+        Messenger.UnregisterAll(this);
     }
 }

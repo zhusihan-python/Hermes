@@ -52,6 +52,8 @@
 						<controls:LEDControl Grid.Row="0" Grid.Column="1" Width="20" Height="20"></controls:LEDControl>
 						<TextBlock Text="气动爪手" Grid.Row="0" Grid.Column="2"></TextBlock>
 						<controls:LEDControl Grid.Row="0" Grid.Column="3" Width="20" Height="20"></controls:LEDControl>
+						<TextBlock Text="复位状态" Grid.Row="0" Grid.Column="4"></TextBlock>
+						<controls:LEDControl Grid.Row="0" Grid.Column="5" Width="20" Height="20" State="{Binding ResetState}"></controls:LEDControl>
 					</Grid>
 				</Grid>
 			</suki:GroupBox>
