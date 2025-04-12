@@ -19,7 +19,7 @@ public class LEDStateToImageConverter : IValueConverter
             LEDState.Disconnect => "avares://Hermes/AppData/Assets/LED_Disconnect.png",
             LEDState.Normal => "avares://Hermes/AppData/Assets/LED_Normal.png",
             LEDState.Warning => "avares://Hermes/AppData/Assets/LED_Warning.png",
-            LEDState.Error => "avares://Hermes/AppData/Assetsts/LED_Error.png",
+            LEDState.Error => "avares://Hermes/AppData/Assets/LED_Error.png",
             _ => "avares://Hermes/AppData/Assets/LED_Disconnect.png"
         };
         Uri uri;
