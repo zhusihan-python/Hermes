@@ -29,7 +29,7 @@
 		</Border.Styles>
 		<Grid RowDefinitions="*,130,*" ColumnDefinitions="450,8,*">
 			<suki:GroupBox Header="系统检测" Grid.Row="0" Grid.Column="0">
-				<Grid RowDefinitions="*,*,40" ColumnDefinitions="*" Margin="12,0,0,0">
+				<Grid RowDefinitions="*,*,50" ColumnDefinitions="*" Margin="12,0,0,0">
 					<Grid Grid.Row="0" Grid.Column="0" RowDefinitions="*,*" ColumnDefinitions="*,*,*,*,*,*">
 						<TextBlock Text="温度传感器" Grid.Row="0" Grid.Column="0"></TextBlock>
 						<TextBlock Text="22 ℃" Grid.Row="0" Grid.Column="1"></TextBlock>
@@ -47,7 +47,7 @@
 						</StackPanel>
 						<ListBox x:Name="cameras" Grid.Row="1" Grid.Column="0"/>
 					</StackPanel>
-					<Grid Grid.Row="2" Grid.Column="0" RowDefinitions="20,20" ColumnDefinitions="*,*,*,*,*,*">
+					<Grid Grid.Row="2" Grid.Column="0" RowDefinitions="40,10" ColumnDefinitions="*,*,*,*,*,*">
 						<TextBlock Text="复位状态" Grid.Row="0" Grid.Column="0"></TextBlock>
 						<controls:LEDControl Grid.Row="0" Grid.Column="1" Width="20" Height="20" State="{Binding $parent[vm:SystemSetTabView].((vm:SystemSetTabViewModel)DataContext).ResetState}"></controls:LEDControl>
 						<Button Content="复位" Grid.Column="2" Command="{Binding ResetDeviceCommand}"/>
