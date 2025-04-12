@@ -32,6 +32,11 @@ namespace Hermes
             this._sender = _provider.GetService<MessageSender>()!;
         }
 
+        public ServiceProvider GetSingleServiceProvider()
+        {
+            return this._provider;
+        }
+
         public override void Initialize()
         {
             AvaloniaXamlLoader.Load(this);

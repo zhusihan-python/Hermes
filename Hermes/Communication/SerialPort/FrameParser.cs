@@ -3,7 +3,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
 using Hermes.Common;
+using Hermes.Common.Messages;
 using Hermes.Communication.Protocol;
 using Hermes.Models;
 using Hermes.Types;
@@ -12,14 +15,16 @@ using TouchSocket.Core;
 
 namespace Hermes.Communication.SerialPort;
 
-public class FrameParser
+public class FrameParser : ObservableRecipient
 {
-    private readonly IServiceProvider _serviceProvider;
+    //private readonly IServiceProvider _serviceProvider;
+    private Device _device;
+
     public FrameParser(
-        IServiceProvider serviceProvider
+        Device device
     )
     {
-        this._serviceProvider = serviceProvider;
+        this._device = device;
     }
     public async Task Route(SvtRequestInfo request)
     {
@@ -35,7 +40,7 @@ public class FrameParser
 
     private void HeartBeatParse(SvtRequestInfo request)
     {
-        var device = this._serviceProvider.GetRequiredService<Device>();
+        var device = this._device;
         var span = new ReadOnlySpan<byte>(request.Data);
         if (span.Length >= 400)
         {
@@ -80,6 +85,7 @@ public class FrameParser
             {
                 device.SlideBoxActions[k] = (SlideBoxActionType)span[k+ 266];
             }
+            Messenger.Send(new HeartBeatMessage(true));
         }
         Debug.WriteLine("Finish HeartBeatParse");
     }
@@ -91,7 +97,7 @@ public class FrameParser
             var actionType = (TriggerActionType)request.Data[0];
             if (actionType == TriggerActionType.ScanCode)
             {
-                var serviceProvider = ((App)Application.Current!).GetServiceProvider();
+                var serviceProvider = ((App)Application.Current!).GetSingleServiceProvider();
                 var sender = serviceProvider.GetService<MessageSender>();
                 var slideSeq = TouchSocketBitConverter.BigEndian.ToUInt16(request.Data.Skip(1).Take(2).ToArray(), 0);
                 var scanRequest = new ScanStartRequest(slideSeq, request.FrameNo);

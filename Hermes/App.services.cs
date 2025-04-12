@@ -40,7 +40,7 @@ public partial class App
     {
         services.AddSingleton<Session>();
         services.AddSingleton<ServiceProvider>();
-        services.AddSingleton(new Device());
+        services.AddSingleton<Device>();
         services.AddSingleton<FrameParser>();
         services.AddSingleton<Settings>(sp => sp.GetRequiredService<ISettingsRepository>().Read());
     }
