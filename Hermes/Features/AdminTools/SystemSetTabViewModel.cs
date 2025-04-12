@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Hermes.Common.Messages;
+using Hermes.Communication.SerialPort;
 using Hermes.Models;
 using Hermes.Types;
 using System;
@@ -38,11 +39,13 @@ public partial class SystemSetTabViewModel: ViewModelBase
     [ObservableProperty]
     private string pisInterface = "http://192.168.0.2";
     [ObservableProperty]
-    private DeviceResetType _resetState = DeviceResetType.NotRest;
+    private LEDState _resetState;
     private Device _device;
+    private readonly MessageSender _sender;
 
     public SystemSetTabViewModel(
-        Device device
+        Device device,
+        MessageSender sender
         )
     {
         SealMediumHeader = "封片剂添加量";
@@ -70,12 +73,33 @@ public partial class SystemSetTabViewModel: ViewModelBase
         GasTankPressureValue = "200";
 
         this._device = device;
+        this._sender = sender;
         Messenger.Register<HeartBeatMessage>(this, this.Receive);
     }
 
     public void Receive(object? recipient, HeartBeatMessage message)
     {
-        ResetState = this._device.DeviceResetState;
+        if (this._device.DeviceResetState == DeviceResetType.NotRest)
+        {
+            ResetState = LEDState.Disconnect;
+        }
+        else if (this._device.DeviceResetState == DeviceResetType.Resetted)
+        {
+            ResetState = LEDState.Normal;
+        }
+    }
+
+    [RelayCommand]
+    public void ResetDevice()
+    {
+        if (this._device != null && this._device.DeviceResetState == DeviceResetType.NotRest)
+        {
+            var packet = new SystemStatusWrite().
+            WithOperationType(0x01).
+            WithMasterAddress<SystemStatusWrite>(0xF2).
+            WithSlaveAddress<SystemStatusWrite>(0x13);
+            this._sender.EnqueueMessage(packet);
+        }
     }
 
     [RelayCommand]
