@@ -8,12 +8,10 @@
              x:Class="Hermes.Features.UutProcessor.SlideBoardView"
 			 x:DataType="vm:SlideBoardViewModel">
 
-	<ItemsControl BorderBrush="Black" VerticalAlignment="Stretch" BorderThickness="1" Margin="1" ItemsSource="{Binding SlideBoxes}">
+	<ItemsControl x:Name="boxes"  ItemsSource="{Binding SlideBoxes}" 
+				  BorderBrush="Black" VerticalAlignment="Stretch" BorderThickness="1" Margin="1">
 		<ItemsControl.ItemsPanel>
 			<ItemsPanelTemplate>
-				<!--<Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto"
-					  ColumnDefinitions="*,*,*,*,*,*,*,*,*,*,*,*,*,*,*">
-				</Grid>-->
 				<c:SpacedUniformGrid
 					x:Name="boardGrid"
 					Classes="cells"
@@ -22,18 +20,12 @@
 			</ItemsPanelTemplate>
 		</ItemsControl.ItemsPanel>
 		<ItemsControl.ItemTemplate>
-			<DataTemplate>
+			<DataTemplate DataType="{x:Type vm:SlideBoxViewModel}">
 				<vm:SlideBoxView VerticalAlignment="Stretch"
 									Margin="3,2,3,2">
 				</vm:SlideBoxView>
 			</DataTemplate>
 		</ItemsControl.ItemTemplate>
-		<!--<ItemsControl.Styles>
-			<Style x:DataType="vm:SlideBoxViewModel" Selector="ContentPresenter">
-				<Setter Property="Grid.Row" Value="{Binding RowIndex}" />
-				<Setter Property="Grid.Column" Value="{Binding ColumnIndex}" />
-			</Style>
-		</ItemsControl.Styles>-->
 	</ItemsControl>
 
 </UserControl>

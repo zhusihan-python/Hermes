@@ -74,19 +74,8 @@ public partial class UutProcessorViewModel : PageBase
         this.DummyViewModel = dummyViewModel;
         this.ScannerViewModel = scannerViewModel;
         this.ConciseMainViewModel = conciseMainViewModel;
-        //this.DeviceModel = device;
-        //this._fileService = fileService;
-        //this._logger = logger;
-        //this._session = session;
-        //this._stopService = stopService;
-        //this._unitUnderTestRepository = unitUnderTestRepository;
-        //this._uutSenderService = uutSenderServiceFactory.Build();
-        //this.CurrentUnitUnderTest = this._uutSenderService
-        //    .UnitUnderTest
-        //    .ToBindableReactiveProperty<UnitUnderTest>();
         this.SetupReactiveExtensionsOnActivation = true;
         this.IsActive = true;
-        //this.BakeRealTemp = this.DeviceModel.BakeRealTemp.ToBindableReactiveProperty();
         this._serviceProvider = serviceProvider;
         var device = this._serviceProvider.GetRequiredService<Device>();
         this.DeviceModel = device;
@@ -98,39 +87,7 @@ public partial class UutProcessorViewModel : PageBase
 
     protected override void SetupReactiveExtensions()
     {
-        //this.DeviceModel
-        //    .BakeRealTemp
-        //    .Subscribe(x => this.BakeRealTemp = x.ToString("F1"))
-        //    .AddTo(ref Disposables);
 
-        //this._uutSenderService
-        //    .State
-        //    .Do(x => this._session.UutProcessorState.Value = x)
-        //    .Do(x => this.StateText = x.ToTranslatedString())
-        //    .SkipWhile(x => x == StateType.Stopped)
-        //    .Do(x =>
-        //    {
-        //        if (x == StateType.Stopped)
-        //        {
-        //            this.Stop();
-        //        }
-        //    })
-        //    .Subscribe()
-        //    .AddTo(ref Disposables);
-
-        //this._uutSenderService
-        //    .UnitUnderTest
-        //    .Where(unitUnderTest => !unitUnderTest.IsNull)
-        //    .SelectAwait(async (unitUnderTest, _) =>
-        //        (stop: await this._stopService.Calculate(unitUnderTest), unitUnderTest))
-        //    .Do(x => this.ShowResult(x.stop, x.unitUnderTest))
-        //    .SubscribeAwait(async (x, _) =>
-        //    {
-        //        x.unitUnderTest.Stop = x.stop.IsNull ? null : x.stop;
-        //        await this.MoveFilesToBackup(x.unitUnderTest);
-        //        await this.Persist(x.unitUnderTest);
-        //    })
-        //    .AddTo(ref Disposables);
     }
 
     protected override void OnActivated()
