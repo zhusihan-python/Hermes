@@ -28,17 +28,23 @@
 				<Border Grid.Row="0" Grid.Column="0" Background="#d5ddee"
 					CornerRadius="22"
 					Padding="5" Margin="10">
-					<StackPanel Spacing="12"
+					<StackPanel Grid.Column="0" Spacing="12"
 								Orientation="Horizontal"
 								HorizontalAlignment="Center"
 								VerticalAlignment="Center">
-						<TextBlock FontSize="20" Text="理片按"></TextBlock>
-						<Grid RowDefinitions="*" ColumnDefinitions="*,*,*,*">
-							<RadioButton Grid.Row="0" Grid.Column="0" GroupName="Sort Group" Content="项目"/>
-							<RadioButton Grid.Row="0" Grid.Column="1" GroupName="Sort Group" Content="医生"/>
-							<RadioButton Grid.Row="0" Grid.Column="2" GroupName="Sort Group" Content="病理号"/>
-							<RadioButton Grid.Row="0" Grid.Column="3" GroupName="Sort Group" Content="玻片号"/>
-						</Grid>
+						<ComboBox VerticalAlignment="Top" ItemsSource="{Binding SortOptions}" SelectedItem="{Binding SelectedSortOption}" />
+						<Button Classes="Outlined" MaxWidth="88" Height="62">
+							<StackPanel Orientation="Horizontal" Spacing="10">
+								<avalonia:MaterialIcon Kind="Sort" Margin="-5,0,0,0"/>
+								<TextBlock Text="理片"/>
+							</StackPanel>
+						</Button>
+						<Button Classes="Outlined" MaxWidth="88" Height="62">
+							<StackPanel Orientation="Horizontal" Spacing="10">
+								<avalonia:MaterialIcon Kind="Layers" Margin="-5,0,0,0"/>
+								<TextBlock Text="封片"/>
+							</StackPanel>
+						</Button>
 					</StackPanel>
 				</Border>
 

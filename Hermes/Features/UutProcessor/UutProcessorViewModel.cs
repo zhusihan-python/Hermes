@@ -18,40 +18,26 @@ using System;
 using Avalonia;
 using System.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
+using Avalonia.Collections;
 
 namespace Hermes.Features.UutProcessor;
 
 public partial class UutProcessorViewModel : PageBase
 {
+    public AvaloniaList<string> SortOptions { get; } = [];
     [ObservableProperty] private bool _isRunning;
     [ObservableProperty] private string _path = "";
     [ObservableProperty] private string _stateText = Resources.enum_stopped;
     [ObservableProperty] private bool _isWaitingForDummy;
     [ObservableProperty] private bool _isOptionVisible;
-    //[ObservableProperty] private string _bakeRealTemp = "-";
-    //public BindableReactiveProperty<float> BakeRealTemp { get; }
-    //partial void OnBakeRealTempChanging(string? value)
-    //{
-    //    Debug.WriteLine($"BakeRealTemp is about to change to {value}");
-    //}
+    [ObservableProperty] private string _selectedSortOption;
 
-    //partial void OnBakeRealTempChanged(string? value)
-    //{
-    //    Debug.WriteLine($"BakeRealTemp has changed to {value}");
-    //}
-    //public ReactiveProperty<UnitUnderTest> CurrentUnitUnderTest { get; } = new(Models.UnitUnderTest.Null);
     public ScannerViewModel ScannerViewModel { get; }
     public DummyViewModel DummyViewModel { get; }
     public ConciseMainViewModel ConciseMainViewModel { get; }
     [ObservableProperty]
     public Device _deviceModel;
     private readonly IServiceProvider _serviceProvider;
-    //private readonly FileService _fileService;
-    //private readonly ILogger _logger;
-    //private readonly Session _session;
-    //private readonly StopService _stopService;
-    //private readonly UnitUnderTestRepository _unitUnderTestRepository;
-    //private readonly UutSenderService _uutSenderService;
 
     public UutProcessorViewModel(
         ILogger logger,
@@ -79,10 +65,11 @@ public partial class UutProcessorViewModel : PageBase
         this._serviceProvider = serviceProvider;
         var device = this._serviceProvider.GetRequiredService<Device>();
         this.DeviceModel = device;
-        //if (settings.AutostartUutProcessor)
-        //{
-        //    this.Start();
-        //}
+        SortOptions.Add("按项目");
+        SortOptions.Add("按医生");
+        SortOptions.Add("按病理号");
+        SortOptions.Add("按玻片号");
+        SelectedSortOption = SortOptions.First();
     }
 
     protected override void SetupReactiveExtensions()
