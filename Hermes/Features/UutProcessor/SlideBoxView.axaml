@@ -9,14 +9,18 @@
              x:Class="Hermes.Features.UutProcessor.SlideBoxView"
 			 x:DataType="vm:SlideBoxViewModel">
 
-	<Border BorderBrush="#263238" BorderThickness="2" Background="White" PointerPressed="Border_PointerPressed">
-		<FlyoutBase.AttachedFlyout>
-			<Flyout Placement="Right">
-				<vm:SlideDetailsView></vm:SlideDetailsView>
-			</Flyout>
-		</FlyoutBase.AttachedFlyout>
+	<Border Classes.textHover="{Binding #ParentControl.IsPointerOver}"
+      Classes.notTextHover="{Binding !#ParentControl.IsPointerOver}" BorderBrush="#263238" BorderThickness="3" PointerPressed="Border_PointerPressed">
+		<Border.Styles>
+			<Style Selector="Border.textHover">
+				<Setter Property="Background" Value="LightBlue" />
+			</Style>
+			<Style Selector="Border.notTextHover">
+				<Setter Property="Background" Value="White" />
+			</Style>
+		</Border.Styles>
 		<Grid>
-			<ItemsControl Name="ParentControl" ItemsSource="{Binding ItemList}" 
+			<ItemsControl Name="ParentControl" ItemsSource="{Binding ItemList}" PointerPressed="SlideBox_OnPointerPressed"
 						  MinWidth="50" MinHeight="105" IsVisible="{Binding $parent.((vm:SlideBoxViewModel)DataContext).BoxInPlace}">
 				<ItemsControl.ItemsPanel>
 					<ItemsPanelTemplate>
@@ -37,6 +41,9 @@
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>
 			<Rectangle Fill="Gray" MinHeight="105" IsVisible="{Binding !$parent.((vm:SlideBoxViewModel)DataContext).BoxInPlace}"/>
+			<Rectangle Fill="LightBlue" Opacity="0.5" PointerPressed="SlideBox_OnPointerPressed" IsVisible="{Binding IsSelected}"/>
+			<TextBlock Text="✓" Classes="Accent" FontSize="26" FontWeight="Bold" PointerPressed="SlideBox_OnPointerPressed" 
+				Foreground="Green" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="{Binding IsSelected}"/>
 		</Grid>
 	</Border>
 

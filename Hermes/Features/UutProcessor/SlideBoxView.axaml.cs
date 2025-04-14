@@ -7,8 +7,7 @@ namespace Hermes.Features.UutProcessor;
 
 public partial class SlideBoxView : UserControl
 {
-    public int Row;
-    public int Column;
+    SlideBoxViewModel? ViewModel => DataContext as SlideBoxViewModel;
     public SlideBoxView()
     {
         InitializeComponent();
@@ -21,6 +20,17 @@ public partial class SlideBoxView : UserControl
         if (ctl != null)
         {
             FlyoutBase.ShowAttachedFlyout(ctl);
+        }
+    }
+
+    void SlideBox_OnPointerPressed(object sender, PointerPressedEventArgs e)
+    {
+        if (ViewModel is null)
+            return;
+
+        if (ViewModel.BoxInPlace)
+        {
+            ViewModel.IsSelected = !ViewModel.IsSelected;
         }
     }
 }
