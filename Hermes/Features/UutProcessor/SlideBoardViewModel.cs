@@ -86,21 +86,26 @@ public partial class SlideBoardViewModel : ViewModelBase
     public void StartSealSlide(object? recipient, SealSlideMessage message)
     {
         var boxTags = new byte[SlideBoxes.Count];
+        var sealBoxCounts = 0;
         for (int i = 0; i < SlideBoxes.Count; i++)
         {
             var viewModel = SlideBoxes[i];
             if (viewModel.IsSelected)
             {
                 boxTags[i] = 0x01;
+                sealBoxCounts ++;
                 Debug.WriteLine($"StartSealSlide row {viewModel.RowIndex} col {viewModel.ColumnIndex} selected {viewModel.IsSelected}");
             }
         }
-        var packet = new SystemStatusWrite().
-                        WithOperationType(0x04).
-                        WithMasterAddress<SystemStatusWrite>(0xF2).
-                        WithSlaveAddress<SystemStatusWrite>(0x13).
-                        WithBoxTags(boxTags);
-        this._sender.EnqueueMessage(packet);
+        if (sealBoxCounts > 0)
+        {
+            var packet = new SystemStatusWrite().
+                            WithOperationType(0x04).
+                            WithMasterAddress<SystemStatusWrite>(0xF2).
+                            WithSlaveAddress<SystemStatusWrite>(0x13).
+                            WithBoxTags(boxTags);
+            this._sender.EnqueueMessage(packet);
+        }
     }
 
     protected override void SetupReactiveExtensions()
