@@ -7,6 +7,8 @@ using Hermes.Repositories;
 using CommunityToolkit.Mvvm.Messaging;
 using Hermes.Common.Messages;
 using System.Diagnostics;
+using Hermes.Types;
+using Hermes.Communication.SerialPort;
 
 namespace Hermes.Features.UutProcessor;
 
@@ -29,11 +31,12 @@ public partial class SlideBoardViewModel : ViewModelBase
         get => _columnCount;
     }
     public Device _device;
-    private readonly IServiceProvider _serviceProvider;
+    private readonly MessageSender _sender;
 
     public SlideBoardViewModel(
         SlideRepository slideRepository,
-        Device device
+        Device device,
+        MessageSender sender
         )
     {
         SlideBoxes = new ObservableCollection<SlideBoxViewModel>();
@@ -45,11 +48,9 @@ public partial class SlideBoardViewModel : ViewModelBase
                 SlideBoxes.Add(new SlideBoxViewModel(slideRepository) { RowIndex = i, ColumnIndex = j });
             }
         }
-        Console.WriteLine("SlideBoxes", SlideBoxes);
-        // 订阅 Device.SlideBoxInPlace 的变化
-        //this._serviceProvider = serviceProvider;
-        //var device = this._serviceProvider.GetRequiredService<Device>();
+        //Console.WriteLine("SlideBoxes", SlideBoxes);
         this._device = device;
+        this._sender = sender;
 
         // 初始化时同步一次状态
         for (int i = 0; i < Math.Min(device.SlideBoxInPlace.Length, SlideBoxes.Count); i++)
@@ -57,15 +58,49 @@ public partial class SlideBoardViewModel : ViewModelBase
             SlideBoxes[i].BoxInPlace = device.SlideBoxInPlace[i];
         }
         Messenger.Register<HeartBeatMessage>(this, this.Receive);
+        Messenger.Register<SealSlideMessage>(this, this.StartSealSlide);
     }
 
     public void Receive(object? recipient, HeartBeatMessage message)
     {
-        for (int i = 0; i < Math.Min(this._device.SlideBoxInPlace.Length, SlideBoxes.Count); i++)
+        if (this._device.SlideBoxInPlace.Length != SlideBoxes.Count)
         {
-            SlideBoxes[i].BoxInPlace = this._device.SlideBoxInPlace[i];
+            return;
+        }
+
+        for (int i = 0; i < SlideBoxes.Count; i++)
+        {
+            var slideBoxViewModel = SlideBoxes[i];
+            slideBoxViewModel.BoxInPlace = this._device.SlideBoxInPlace[i];
+            var itemList = slideBoxViewModel.ItemList;
+
+            for (int j = 0;j < itemList.Count; j++)
+            {
+                var item = itemList[j];
+                item.State = this._device.SlideInPlace[i * itemList.Count + j].ToSlideState();
+            }
         }
         Debug.WriteLine("HeartBeatMessage更新完成");
+    }
+
+    public void StartSealSlide(object? recipient, SealSlideMessage message)
+    {
+        var boxTags = new byte[SlideBoxes.Count];
+        for (int i = 0; i < SlideBoxes.Count; i++)
+        {
+            var viewModel = SlideBoxes[i];
+            if (viewModel.IsSelected)
+            {
+                boxTags[i] = 0x01;
+                Debug.WriteLine($"StartSealSlide row {viewModel.RowIndex} col {viewModel.ColumnIndex} selected {viewModel.IsSelected}");
+            }
+        }
+        var packet = new SystemStatusWrite().
+                        WithOperationType(0x04).
+                        WithMasterAddress<SystemStatusWrite>(0xF2).
+                        WithSlaveAddress<SystemStatusWrite>(0x13).
+                        WithBoxTags(boxTags);
+        this._sender.EnqueueMessage(packet);
     }
 
     protected override void SetupReactiveExtensions()

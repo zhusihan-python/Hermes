@@ -1,21 +1,15 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using Hermes.Common.Extensions;
 using Hermes.Common.Messages;
 using Hermes.Common;
 using Hermes.Language;
 using Hermes.Models;
 using Hermes.Repositories;
 using Hermes.Services.UutSenderService;
-using Hermes.Services;
-using Hermes.Types;
 using Material.Icons;
-using R3;
 using System.Linq;
-using System.Threading.Tasks;
 using System;
-using Avalonia;
 using System.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
 using Avalonia.Collections;
@@ -137,42 +131,11 @@ public partial class UutProcessorViewModel : PageBase
         //}
     }
 
-    //[RelayCommand]
-    //private void ToggleBorderClick()
-    //{
-    //    SetupBorderClickObservable();
-    //}
-
-    //private void SetupBorderClickObservable()
-    //{
-
-    //}
-
-    //private void ShowResult(Stop stop, UnitUnderTest unitUnderTest)
-    //{
-    //    if (stop.IsNull)
-    //    {
-    //        Messenger.Send(new ShowSuccessMessage(unitUnderTest));
-    //    }
-    //    else
-    //    {
-    //        _session.Stop = stop;
-    //        Messenger.Send(new ShowStopMessage(stop));
-    //    }
-    //}
-
-    //private async Task MoveFilesToBackup(UnitUnderTest unitUnderTest)
-    //{
-    //    unitUnderTest.FullPath = await this._fileService
-    //        .MoveToBackupAsync(unitUnderTest.FullPath);
-    //    unitUnderTest.SfcResponseFullPath = await this._fileService
-    //        .MoveToBackupAsync(unitUnderTest.SfcResponseFullPath);
-    //}
-
-    //private async Task Persist(UnitUnderTest unitUnderTest)
-    //{
-    //    await this._unitUnderTestRepository.AddAndSaveAsync(unitUnderTest);
-    //}
+    [RelayCommand]
+    private void SealSlide()
+    {
+        Messenger.Send(new SealSlideMessage());
+    }
 
     private void OnExitReceive(object recipient, ExitMessage message)
     {
