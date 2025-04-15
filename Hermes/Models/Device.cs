@@ -1,4 +1,6 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System;
+using System.Collections;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Hermes.Types;
 using ObservableCollections;
 using Reactive.Bindings;
@@ -7,8 +9,9 @@ namespace Hermes.Models;
 
 public class Device : ObservableObject
 {
+    public Guid Id { get; } = Guid.NewGuid();
     // 整机复位状态
-    public ReactiveProperty<DeviceResetType> DeviceResetState { get; set; } = new(DeviceResetType.NotRest);
+    public DeviceResetType DeviceResetState { get; set; } = DeviceResetType.NotRest;
     // 封片电机组复位状态
     public ReactiveProperty<SealMotorResetType> SealMotorResetState { get; set; } = new(SealMotorResetType.NotRest);
     // 理片电机组复位状态
@@ -50,11 +53,16 @@ public class Device : ObservableObject
     // 废片盒在位信息
     public ReactiveProperty<bool> WasteBoxInPlace { get; set; } = new(false);
     public ReactiveProperty<bool> CoverBoxInPlace { get; set; } = new(false);
-    public ReactiveProperty<ushort> CoverBoxLeftCount { get; set; } = new(0);
-    public ObservableRingBuffer<ushort> AlarmCodes { get; set; } = new ObservableRingBuffer<ushort>(new ushort[10]);
+    public ushort CoverBoxLeftCount { get; set; } = 0;
+    public ushort[] AlarmCodes { get; set; } = new ushort[10];
     // 玻片盒1-75在位
-    public ObservableList<bool> SlideBoxInPlace { get; set; } = new ObservableList<bool>(new bool[75]);
+    public BitArray SlideBoxInPlace { get; set; } = new BitArray(75);
     // 玻片1-1500在位
-    public ObservableList<bool> SlideInPlace { get; set; } = new ObservableList<bool>(new bool[1500]);
-    public ObservableList<SlideBoxActionType> SlideBoxActions { get; set; } = new ObservableList<SlideBoxActionType>(new SlideBoxActionType[75]);
+    public BitArray SlideInPlace { get; set; } = new BitArray(1500);
+    public SlideBoxActionType[] SlideBoxActions { get; set; } = new SlideBoxActionType[75];
+    public float BoardTemp { get; set; } = 0.0f;
+    public float BoardHumidity { get; set; } = 0.0f;
+    public bool SealLiquidExist { get; set; } = false;
+    public bool XyleneExist { get; set; } = false;
+    public bool CleanLiquidExist { get; set; } = false;
 }

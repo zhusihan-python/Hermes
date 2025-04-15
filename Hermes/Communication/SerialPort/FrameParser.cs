@@ -66,11 +66,11 @@ public class FrameParser : ObservableRecipient
             device.BakeLeftDuration.Value = TouchSocketBitConverter.BigEndian.ToUInt32(span.Slice(40, 4).ToArray(), 0);
             device.WasteBoxInPlace.Value = span[44] != 0;
             device.CoverBoxInPlace.Value = span[45] != 0;
-            device.CoverBoxLeftCount.Value = TouchSocketBitConverter.BigEndian.ToUInt16(span.Slice(46, 2).ToArray(), 0);
+            device.CoverBoxLeftCount = TouchSocketBitConverter.BigEndian.ToUInt16(span.Slice(46, 2).ToArray(), 0);
             var alarmCodesArray = span.Slice(48, 20).ToArray();
             var alarmCodes = Enumerable.Range(0, 10)
                      .Select(i => TouchSocketBitConverter.BigEndian.ToUInt16(alarmCodesArray.AsSpan().Slice(i * 2, 2).ToArray(), 0));
-            device.AlarmCodes.AddLastRange(alarmCodes);
+            device.AlarmCodes = alarmCodes.ToArray();
             device.SlideBoxInPlace = BitsConverter.BytesToBitsAsBitArray(span.Slice(68, 10).ToArray(), 75);
             //for (int i = 0; i < slideBoxInPlaceBits.Length; i++)
             //{
@@ -85,6 +85,11 @@ public class FrameParser : ObservableRecipient
             {
                 device.SlideBoxActions[k] = (SlideBoxActionType)span[k+ 266];
             }
+            device.BoardTemp = TouchSocketBitConverter.BigEndian.ToSingle(span.Slice(341, 4).ToArray(), 0);
+            device.BoardHumidity = TouchSocketBitConverter.BigEndian.ToSingle(span.Slice(345, 4).ToArray(), 0);
+            device.SealLiquidExist = span[349] != 0;
+            device.XyleneExist = span[350] != 0;
+            device.CleanLiquidExist = span[351] != 0;
             Messenger.Send(new HeartBeatMessage(true));
         }
         Debug.WriteLine("Finish HeartBeatParse");
