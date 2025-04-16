@@ -1,11 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Hermes.Common;
 using System.Threading.Tasks;
 using System;
 using R3;
 using Hermes.Communication.SerialPort;
 using System.Windows.Input;
+using Hermes.Common.Messages;
+using Hermes.Models;
 
 namespace Hermes.Features.UutProcessor;
 
@@ -17,24 +20,28 @@ public partial class ConciseMainViewModel : ViewModelBase
     [ObservableProperty] private bool _isConnected;
     [ObservableProperty] private string _currentDay;
     [ObservableProperty] private string _currentHour;
+    [ObservableProperty] private ushort _leftCovers;
 
     private readonly ILogger _logger;
-    //private ComPort _comPort;
-    //private ComPort ComPort { get => this._comPort; set => _comPort = value; }
+    private readonly Device _device;
     private readonly MessageSender _sender;
+
     public ICommand SealSlideCommand { get; }
     public ICommand SortSlideCommand { get; }
 
 
     public ConciseMainViewModel(
         ILogger logger,
+        Device device,
         MessageSender sender)
     {
         this._logger = logger;
+        this._device = device;
         this._sender = sender;
         this.State = new ReactiveProperty<bool>(_sender.GetClientState());
         SealSlideCommand = new AsyncRelayCommand(SealSlide);
         SortSlideCommand = new AsyncRelayCommand(SortSlide);
+        Messenger.Register<HeartBeatMessage>(this, this.Refresh);
         // 初次赋值
         var curDateTime = DateTime.Now;
         CurrentDay = curDateTime.ToString("MM-dd yyyy");
@@ -52,6 +59,15 @@ public partial class ConciseMainViewModel : ViewModelBase
     protected override void SetupReactiveExtensions()
     {
 
+    }
+
+    public void Refresh(object? recipient, HeartBeatMessage message)
+    {
+        if (this._device == null)
+        {
+            return;
+        }
+        LeftCovers = this._device.CoverBoxLeftCount;
     }
 
     private async Task SealSlide()
