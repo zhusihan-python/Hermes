@@ -1,5 +1,6 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:labs="using:Avalonia.Labs.Controls"
              xmlns:sukiUi="clr-namespace:SukiUI;assembly=SukiUI"
              xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
              xmlns:sys="clr-namespace:System;assembly=System.Runtime"
@@ -12,8 +13,9 @@
     </Application.DataTemplates>
 
     <Application.Styles>
-        <sukiUi:SukiTheme ThemeColor="Blue" />
+		<sukiUi:SukiTheme ThemeColor="Blue" />
         <materialIcons:MaterialIconStyles />
+		<labs:ControlThemes/>
         <Style Selector="Label">
             <Setter Property="Foreground" Value="{DynamicResource SukiText}" />
         </Style>
@@ -36,6 +38,13 @@
         <Thickness x:Key="DefaultLeftMargin">10 0 0 0</Thickness>
         <CornerRadius x:Key="DefaultCornerRadius">5</CornerRadius>
     </Application.Resources>
+	<Application.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceInclude Source="avares://Hermes/Features/Controls/LoadingIndicators.axaml" />
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</Application.Resources>
 
     <TrayIcon.Icons>
         <TrayIcons>
