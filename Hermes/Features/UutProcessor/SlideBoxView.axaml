@@ -5,6 +5,7 @@
 			 xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
              xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
 			 xmlns:vm="using:Hermes.Features.UutProcessor"
+			 xmlns:li="using:LoadingIndicators.Avalonia"
              mc:Ignorable="d" d:DesignWidth="80" d:DesignHeight="120"
              x:Class="Hermes.Features.UutProcessor.SlideBoxView"
 			 x:DataType="vm:SlideBoxViewModel">
@@ -42,8 +43,9 @@
 			</ItemsControl>
 			<Rectangle Fill="Gray" MinHeight="105" IsVisible="{Binding !$parent.((vm:SlideBoxViewModel)DataContext).BoxInPlace}"/>
 			<Rectangle Fill="LightBlue" Opacity="0.5" PointerPressed="SlideBox_OnPointerPressed" IsVisible="{Binding IsSelected}"/>
-			<TextBlock Text="✓" Classes="Accent" FontSize="26" FontWeight="Bold" PointerPressed="SlideBox_OnPointerPressed" 
+			<TextBlock Text="✓" Classes="Accent" FontSize="26" FontWeight="Bold" PointerPressed="SlideBox_OnPointerPressed"
 				Foreground="Green" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="{Binding IsSelected}"/>
+			<li:LoadingIndicator IsActive="{Binding IsBusy}" Mode="Ring" SpeedRatio="0.5"/>
 		</Grid>
 	</Border>
 

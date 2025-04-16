@@ -37,6 +37,7 @@ public partial class SlideBoxViewModel : ViewModelBase
     [ObservableProperty] private string _entryDate;
     [ObservableProperty] private bool _boxInPlace;
     [ObservableProperty] private bool _isSelected;
+    [ObservableProperty] private bool _isBusy;
     public ObservableCollection<SlideModel> ItemList { get; set; } = new ObservableCollection<SlideModel>();
     public RangeObservableCollection<Slide> Slides { get; set; } = [];
     private readonly SlideRepository _slideRepository;

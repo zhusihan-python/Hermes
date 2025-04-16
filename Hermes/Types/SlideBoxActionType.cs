@@ -48,4 +48,16 @@ public static class SlideBoxActionTypeExtensions
             _ => "未知状态"
         };
     }
+
+    public static bool IsBusy(this SlideBoxActionType actionType) =>
+        actionType switch
+        {
+            SlideBoxActionType.ScanningSlide => true,
+            SlideBoxActionType.ScanSlidePaused => true,
+            SlideBoxActionType.ScanningCode => true,
+            SlideBoxActionType.ScanCodePaused => true,
+            SlideBoxActionType.SealingSlide => true,
+            SlideBoxActionType.SealSlidePaused => true,
+            _ => false
+        };
 }

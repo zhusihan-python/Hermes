@@ -72,6 +72,7 @@ public partial class SlideBoardViewModel : ViewModelBase
         {
             var slideBoxViewModel = SlideBoxes[i];
             slideBoxViewModel.BoxInPlace = this._device.SlideBoxInPlace[i];
+            slideBoxViewModel.IsBusy = this._device.SlideBoxActions[i].IsBusy();
             var itemList = slideBoxViewModel.ItemList;
 
             for (int j = 0;j < itemList.Count; j++)
@@ -105,6 +106,15 @@ public partial class SlideBoardViewModel : ViewModelBase
                             WithSlaveAddress<SystemStatusWrite>(0x13).
                             WithBoxTags(boxTags);
             this._sender.EnqueueMessage(packet);
+            // remove selected  tag
+            for (int j = 0;j < SlideBoxes.Count; j++)
+            {
+                var viewModel = SlideBoxes[j];
+                if (boxTags[j] == 0x01)
+                {
+                    viewModel.IsSelected = false;
+                }
+            }
         }
     }
 
