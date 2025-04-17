@@ -15,6 +15,7 @@ using SukiUI.Toasts;
 using System.Threading.Tasks;
 using System.Threading;
 using System;
+using System.Runtime.Caching;
 
 namespace Hermes.Services;
 
@@ -50,6 +51,9 @@ public class WindowService : ObservableRecipient
     private SettingsView? _settingsView;
     private CancellationTokenSource _successViewCancellationTokenSource = new();
     private readonly ISukiToastManager _toastManager;
+    private readonly MemoryCache _lastShownMessagesCache = MemoryCache.Default;
+    private const ushort _maxShowCount = 4;
+    private readonly TimeSpan _messageTTL = TimeSpan.FromSeconds(600);
 
     public WindowService(
         ViewLocator viewLocator,
@@ -156,6 +160,34 @@ public class WindowService : ObservableRecipient
 
     public void ShowToast(object? recipient, ShowToastMessage message)
     {
+        if (_lastShownMessagesCache.Contains(message.Value))
+        {
+            ushort showCount = (ushort)(_lastShownMessagesCache.Get(message.Value) ?? 0);
+            if (showCount >= _maxShowCount)
+            {
+                // 达到最大显示次数，不再显示
+                return;
+            }
+
+            else
+            {
+                showCount++;
+                var policy = new CacheItemPolicy
+                {
+                    AbsoluteExpiration = DateTimeOffset.Now.Add(_messageTTL)
+                };
+                _lastShownMessagesCache.Set(message.Value, showCount, policy);
+            }
+        }
+        else
+        {
+            // 将消息添加到缓存，并设置过期策略
+            var policy = new CacheItemPolicy
+            {
+                AbsoluteExpiration = DateTimeOffset.Now.Add(_messageTTL)
+            };
+            _lastShownMessagesCache.Set(message.Value, (ushort)1, policy);
+        }
         Dispatcher.UIThread.Invoke(() =>
         {
             _toastManager.CreateToast()
