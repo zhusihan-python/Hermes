@@ -22,7 +22,6 @@ public partial class StopViewModel : ViewModelBase
     [ObservableProperty] private bool _isMachineStop = true;
     [ObservableProperty] private Stop _stop = Stop.Null;
     [ObservableProperty] private string _dateText = string.Empty;
-    private readonly StopRepository _stopRepository;
 
     public string Actions
     {
@@ -37,10 +36,8 @@ public partial class StopViewModel : ViewModelBase
     private string _actions = "";
 
     public StopViewModel(
-        StopRepository stopRepository,
         TokenViewModel tokenViewModel)
     {
-        this._stopRepository = stopRepository;
         this.ToastManager = new SukiToastManager();
         tokenViewModel.ToastManager = this.ToastManager;
 
@@ -96,18 +93,18 @@ public partial class StopViewModel : ViewModelBase
 
     private async void RestoreStop(List<User> users)
     {
-        try
-        {
-            if (this.Stop is { IsNull: false, IsFake: false })
-            {
-                this.Stop.Actions = this.Actions;
-                await this._stopRepository.RestoreAsync(this.Stop, users);
-            }
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-        }
+        //try
+        //{
+        //    if (this.Stop is { IsNull: false, IsFake: false })
+        //    {
+        //        this.Stop.Actions = this.Actions;
+        //        await this._stopRepository.RestoreAsync(this.Stop, users);
+        //    }
+        //}
+        //catch (Exception e)
+        //{
+        //    Console.WriteLine(e);
+        //}
 
         this.Restored?.Invoke(this, EventArgs.Empty);
     }
