@@ -35,20 +35,16 @@ public partial class UnitUnderTestLogViewModel : ViewModelBase
     public static IEnumerable<TimeSpanType?> TimeSpanOptions => NullableExtensions.GetValues<TimeSpanType>();
 
     private readonly FileService _fileService;
-    private readonly UnitUnderTestRepository _unitUnderTestRepository;
 
     public UnitUnderTestLogViewModel(
-        FileService fileService,
-        UnitUnderTestRepository unitUnderTestRepository)
+        FileService fileService)
     {
         _fileService = fileService;
-        _unitUnderTestRepository = unitUnderTestRepository;
     }
 
     private async Task LoadLogsAsync()
     {
         UnitsUnderTest.Clear();
-        UnitsUnderTest.AddRange(await _unitUnderTestRepository.GetAllLast24HrsUnits());
     }
 
     [RelayCommand]
@@ -118,14 +114,14 @@ public partial class UnitUnderTestLogViewModel : ViewModelBase
     [RelayCommand]
     private async Task Search()
     {
-        var units = await _unitUnderTestRepository.GetLastUnits(
-            SerialNumberFilter,
-            SelectedTestStatus,
-            SelectedSfcResponse,
-            SfcResponseContentFilter,
-            SelectedTimeSpan == null ? null : TimeSpan.FromHours((int)SelectedTimeSpan));
+        //var units = await _unitUnderTestRepository.GetLastUnits(
+        //    SerialNumberFilter,
+        //    SelectedTestStatus,
+        //    SelectedSfcResponse,
+        //    SfcResponseContentFilter,
+        //    SelectedTimeSpan == null ? null : TimeSpan.FromHours((int)SelectedTimeSpan));
 
-        UnitsUnderTest.Clear();
-        UnitsUnderTest.AddRange(units);
+        //UnitsUnderTest.Clear();
+        //UnitsUnderTest.AddRange(units);
     }
 }

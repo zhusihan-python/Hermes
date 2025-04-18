@@ -34,20 +34,16 @@ public partial class SlideManageTabViewModel : ViewModelBase
     public static IEnumerable<TimeSpanType?> TimeSpanOptions => NullableExtensions.GetValues<TimeSpanType>();
 
     private readonly FileService _fileService;
-    private readonly UnitUnderTestRepository _unitUnderTestRepository;
 
     public SlideManageTabViewModel(
-        FileService fileService,
-        UnitUnderTestRepository unitUnderTestRepository)
+        FileService fileService)
     {
         _fileService = fileService;
-        _unitUnderTestRepository = unitUnderTestRepository;
     }
 
     private async Task LoadLogsAsync()
     {
         UnitsUnderTest.Clear();
-        UnitsUnderTest.AddRange(await _unitUnderTestRepository.GetAllLast24HrsUnits());
     }
 
     [RelayCommand]
@@ -94,5 +90,6 @@ public partial class SlideManageTabViewModel : ViewModelBase
 
         //UnitsUnderTest.Clear();
         //UnitsUnderTest.AddRange(units);
+        await Task.Delay(100);
     }
 }

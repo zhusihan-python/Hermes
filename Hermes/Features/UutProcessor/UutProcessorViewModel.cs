@@ -5,7 +5,6 @@ using Hermes.Common.Messages;
 using Hermes.Common;
 using Hermes.Language;
 using Hermes.Models;
-using Hermes.Repositories;
 using Hermes.Services.UutSenderService;
 using Material.Icons;
 using System.Linq;
@@ -42,7 +41,6 @@ public partial class UutProcessorViewModel : PageBase
         //StopService stopService,
         //FileService fileService,
         UutSenderServiceFactory uutSenderServiceFactory,
-        UnitUnderTestRepository unitUnderTestRepository,
         ScannerViewModel scannerViewModel,
         DummyViewModel dummyViewModel,
         ConciseMainViewModel conciseMainViewModel)
