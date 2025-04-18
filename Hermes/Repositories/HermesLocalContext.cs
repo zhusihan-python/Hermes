@@ -1,7 +1,7 @@
 using Hermes.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using System.Reflection;
+//using System.Reflection;
 
 namespace Hermes.Repositories;
 
@@ -9,11 +9,14 @@ public class HermesLocalContext : DbContext
 {
     protected string ConnectionString { get; init; } = "Filename=dbSqlite.db";
 
-    public DbSet<Defect> Defects { get; set; }
-    public DbSet<SfcResponse> SfcResponses { get; set; }
-    public DbSet<Stop> Stops { get; set; }
-    public DbSet<UnitUnderTest> UnitsUnderTest { get; set; }
+    //public DbSet<Defect> Defects { get; set; }
+    //public DbSet<SfcResponse> SfcResponses { get; set; }
+    //public DbSet<Stop> Stops { get; set; }
+    //public DbSet<UnitUnderTest> UnitsUnderTest { get; set; }
     public DbSet<User> Users { get; set; }
+    public DbSet<Doctor> Doctors { get; set; }
+    public DbSet<Slide> Slides { get; set; }
+    public DbSet<Heartbeat> Heartbeats { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -34,10 +37,12 @@ public class HermesLocalContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Defect>().ToTable("Defects");
-        modelBuilder.Entity<SfcResponse>().ToTable("SfcResponses");
-        modelBuilder.Entity<Stop>().ToTable("Stops");
-        modelBuilder.Entity<UnitUnderTest>().ToTable("UnitsUnderTest");
+        //modelBuilder.Entity<Defect>().ToTable("Defects");
+        //modelBuilder.Entity<SfcResponse>().ToTable("SfcResponses");
+        //modelBuilder.Entity<Stop>().ToTable("Stops");
+        //modelBuilder.Entity<UnitUnderTest>().ToTable("UnitsUnderTest");
         modelBuilder.Entity<User>().ToTable("Users");
+        modelBuilder.Entity<Doctor>().ToTable("Doctors");
+        modelBuilder.Entity<Slide>().ToTable("Slides");
     }
 }
