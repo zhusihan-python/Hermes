@@ -60,4 +60,18 @@ public static class SlideBoxActionTypeExtensions
             SlideBoxActionType.SealSlidePaused => true,
             _ => false
         };
+
+    public static bool IsSealSuccess(this SlideBoxActionType actionType) =>
+        actionType switch
+        {
+            SlideBoxActionType.SealSlideSuccess => true,
+            _ => false
+        };
+
+    public static bool IsSealFailed(this SlideBoxActionType actionType) =>
+        actionType switch
+        {
+            SlideBoxActionType.SealSlideFailed => true,
+            _ => false
+        };
 }

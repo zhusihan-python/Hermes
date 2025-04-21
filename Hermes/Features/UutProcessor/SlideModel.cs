@@ -2,16 +2,12 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using Hermes.Models;
 using Hermes.Types;
-using Microsoft.EntityFrameworkCore.Update.Internal;
 
 namespace Hermes.Features.UutProcessor;
-public partial class SlideModel : ViewModelBase
+public partial class SlideModel: ObservableObject
 {
-    [ObservableProperty] private int _rowIndex = 0;
-    [ObservableProperty] private bool _isSelected = false;
     [ObservableProperty] public Color backColor = Colors.White;
-
-    private Slide Slide { get; set; }
+    public Slide Slide { get; set; }
     private SlideState _state;
     public SlideState State
     {
@@ -27,12 +23,7 @@ public partial class SlideModel : ViewModelBase
     }
     public SlideModel()
     {
-        this.IsActive = true;
-    }
 
-    public SlideModel(int SlideId)
-    {
-        //Slide.Initialize(SlideId);
     }
 
     // 根据 SlideState 更新状态文本和背景颜色
@@ -57,10 +48,5 @@ public partial class SlideModel : ViewModelBase
                 BackColor = Colors.Transparent;
                 break;
         }
-    }
-
-    protected override void SetupReactiveExtensions()
-    {
-
     }
 }

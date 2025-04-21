@@ -23,7 +23,7 @@ public struct AlarmCodeInfoStruct
 
     public override string ToString()
     {
-        return $"报警码: {Code}, 含义: {Meaning}, 级别: {Level}";
+        return $"报警码: {Code}, {Meaning}, 级别: {Level}";
     }
 }
 

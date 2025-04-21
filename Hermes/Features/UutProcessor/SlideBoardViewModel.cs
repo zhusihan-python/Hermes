@@ -1,7 +1,7 @@
 ﻿using System;
-//using System.Linq;
+using System.Linq;
 using System.Collections.ObjectModel;
-using Microsoft.Extensions.DependencyInjection;
+//using Microsoft.Extensions.DependencyInjection;
 using Hermes.Models;
 using Hermes.Repositories;
 using CommunityToolkit.Mvvm.Messaging;
@@ -32,6 +32,8 @@ public partial class SlideBoardViewModel : ViewModelBase
     }
     public Device _device;
     private readonly MessageSender _sender;
+    private readonly SlideRepository _slideRepository;
+    private static readonly char[] RowLabels = { 'A', 'B', 'C', 'D', 'E' };
 
     public SlideBoardViewModel(
         SlideRepository slideRepository,
@@ -51,6 +53,7 @@ public partial class SlideBoardViewModel : ViewModelBase
         //Console.WriteLine("SlideBoxes", SlideBoxes);
         this._device = device;
         this._sender = sender;
+        this._slideRepository = slideRepository;
 
         // 初始化时同步一次状态
         for (int i = 0; i < Math.Min(device.SlideBoxInPlace.Length, SlideBoxes.Count); i++)
@@ -59,6 +62,8 @@ public partial class SlideBoardViewModel : ViewModelBase
         }
         Messenger.Register<HeartBeatMessage>(this, this.Receive);
         Messenger.Register<SealSlideMessage>(this, this.StartSealSlide);
+        Messenger.Register<SortSlideMessage>(this, this.StartSortSlide);
+        Messenger.Register<SlideInfoMessage>(this, this.UpdateSlideInfo);
     }
 
     public void Receive(object? recipient, HeartBeatMessage message)
@@ -73,6 +78,17 @@ public partial class SlideBoardViewModel : ViewModelBase
             var slideBoxViewModel = SlideBoxes[i];
             slideBoxViewModel.BoxInPlace = this._device.SlideBoxInPlace[i];
             slideBoxViewModel.IsBusy = this._device.SlideBoxActions[i].IsBusy();
+            if (this._device.SlideBoxActions[i].IsSealSuccess())
+            {
+                string boxLocation = $"{RowLabels[i / 15]}-{i % 15 + 1}";
+                ShowSuccessToast($"{boxLocation}封片成功", "提示");
+            }
+            else if (this._device.SlideBoxActions[i].IsSealFailed())
+            {
+                string boxLocation = $"{RowLabels[i / 15]}-{i % 15 + 1}";
+                ShowWarningToast($"{boxLocation}封片失败", "警告");
+            }
+
             var itemList = slideBoxViewModel.ItemList;
 
             for (int j = 0;j < itemList.Count; j++)
@@ -115,6 +131,58 @@ public partial class SlideBoardViewModel : ViewModelBase
                     viewModel.IsSelected = false;
                 }
             }
+        }
+    }
+
+    public void StartSortSlide(object? recipient, SortSlideMessage message)
+    {
+        var boxTags = new byte[SlideBoxes.Count];
+        var sortBoxCounts = 0;
+        for (int i = 0; i < SlideBoxes.Count; i++)
+        {
+            var viewModel = SlideBoxes[i];
+            if (viewModel.IsSelected)
+            {
+                boxTags[i] = 0x01;
+                sortBoxCounts ++;
+                Debug.WriteLine($"StartSortSlide row {viewModel.RowIndex} col {viewModel.ColumnIndex} selected {viewModel.IsSelected}");
+            }
+        }
+        if (sortBoxCounts > 0)
+        {
+            var packet = new SystemStatusWrite().
+                            WithOperationType(0x03).
+                            WithMasterAddress<SystemStatusWrite>(0xF2).
+                            WithSlaveAddress<SystemStatusWrite>(0x13).
+                            WithBoxTags(boxTags);
+            this._sender.EnqueueMessage(packet);
+            // remove selected  tag
+            for (int j = 0; j < SlideBoxes.Count; j++)
+            {
+                var viewModel = SlideBoxes[j];
+                if (boxTags[j] == 0x01)
+                {
+                    viewModel.IsSelected = false;
+                }
+            }
+        }
+    }
+
+    private async void UpdateSlideInfo(object? recipient, SlideInfoMessage message)
+    {
+        if (message != null)
+        {
+            var (slideSeq, originBarcode) = message.Value;
+            if (originBarcode.Length > 0)
+            {
+                var barcode = string.Concat(originBarcode.Select(b => (char)b));
+                var slide = await this._slideRepository.FindById(barcode);
+                var boxIndex = (slideSeq - 1) / 20;
+                var slideIndex = (slideSeq - 1) % 20;
+                var boxModel = this.SlideBoxes[boxIndex];
+                boxModel.UpdateSlide(slideIndex, slide);
+            }
+            Debug.WriteLine("UpdateSlideInfo");
         }
     }
 
