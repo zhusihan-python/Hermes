@@ -95,7 +95,7 @@ public partial class UnitUnderTestLogViewModel : ViewModelBase
     [RelayCommand(CanExecute = nameof(CanResend))]
     private void ReSend()
     {
-        Messenger.Send(new ReSendUnitUnderTestMessage(SelectedUnitUnderTest));
+        //Messenger.Send(new ReSendUnitUnderTestMessage(SelectedUnitUnderTest));
     }
 
     private bool CanResend() => !string.IsNullOrEmpty(SelectedUnitUnderTest.SerialNumber);

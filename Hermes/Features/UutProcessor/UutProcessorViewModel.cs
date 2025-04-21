@@ -34,12 +34,8 @@ public partial class UutProcessorViewModel : PageBase
 
     public UutProcessorViewModel(
         ILogger logger,
-        //Device device,
         IServiceProvider serviceProvider,
-        //Session session,
         Settings settings,
-        //StopService stopService,
-        //FileService fileService,
         UutSenderServiceFactory uutSenderServiceFactory,
         ScannerViewModel scannerViewModel,
         DummyViewModel dummyViewModel,
@@ -72,25 +68,8 @@ public partial class UutProcessorViewModel : PageBase
     protected override void OnActivated()
     {
         Messenger.Register<ExitMessage>(this, this.OnExitReceive);
-        //Messenger.Register<WaitForDummyMessage>(this, this.OnWaitForDummyMessage);
-        //Messenger.Register<HeartBeatMessage>(this, this.OnHeartBeatMessage);
-        Messenger.Register<ReSendUnitUnderTestMessage>(this, this.OnReSendUnitUnderTestMessage);
         base.OnActivated();
     }
-
-    private void OnReSendUnitUnderTestMessage(object recipient, ReSendUnitUnderTestMessage message)
-    {
-        //if (this._uutSenderService.CanReSend(message.Value))
-        //{
-        //    this._uutSenderService.ReSend(message.Value);
-        //}
-        //else
-        //{
-        //    this.ShowErrorToast(Resources.msg_can_not_resed_uut);
-        //}
-    }
-
-    //private void OnHeartBeatMessage(object recipient, HeartBeatMessage message) => this.BakeRealTemp = DeviceModel.BakeRealTemp.ToString();
 
     protected override void OnDeactivated()
     {
@@ -127,6 +106,12 @@ public partial class UutProcessorViewModel : PageBase
         //    _logger.Error(e.Message);
         //    this.ShowErrorToast(e.Message);
         //}
+    }
+
+    [RelayCommand]
+    private void SortSlide()
+    {
+        Messenger.Send(new SortSlideMessage());
     }
 
     [RelayCommand]

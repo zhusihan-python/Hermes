@@ -33,13 +33,13 @@
 								HorizontalAlignment="Center"
 								VerticalAlignment="Center">
 						<ComboBox VerticalAlignment="Top" ItemsSource="{Binding SortOptions}" SelectedItem="{Binding SelectedSortOption}" />
-						<Button Classes="Outlined" MaxWidth="88" Height="62">
+						<Button Classes="Outlined" MaxWidth="88" Height="62" Command="{Binding SortSlideCommand}">
 							<StackPanel Orientation="Horizontal" Spacing="10">
 								<avalonia:MaterialIcon Kind="Sort" Margin="-5,0,0,0"/>
 								<TextBlock Text="理片"/>
 							</StackPanel>
 						</Button>
-						<Button Classes="Outlined" MaxWidth="88" Height="62"  Command="{Binding SealSlideCommand}">
+						<Button Classes="Outlined" MaxWidth="88" Height="62" Command="{Binding SealSlideCommand}">
 							<StackPanel Orientation="Horizontal" Spacing="10">
 								<avalonia:MaterialIcon Kind="Layers" Margin="-5,0,0,0"/>
 								<TextBlock Text="封片"/>

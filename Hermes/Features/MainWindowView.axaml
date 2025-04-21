@@ -10,11 +10,12 @@
                  x:Name="Self"
                  x:Class="Hermes.Features.MainWindowView"
                  x:DataType="features:MainWindowViewModel"
-                 Width="1080"
-                 Height="810"
+                 Width="1020"
+                 Height="768"
                  WindowStartupLocation="CenterScreen"
                  IsMenuVisible="False"
-                 IsTitleBarVisible="False">
+                 IsTitleBarVisible="False"
+				 TransparencyLevelHint="AcrylicBlur" >
     <suki:SukiWindow.Hosts>
         <suki:SukiToastHost Manager="{Binding ToastManager}" />
         <suki:SukiDialogHost Manager="{Binding DialogManager}" />

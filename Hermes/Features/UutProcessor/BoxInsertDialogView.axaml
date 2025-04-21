@@ -2,17 +2,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="250"
 			 xmlns:local="clr-namespace:Hermes.Features.UutProcessor"
 			 xmlns:sukiUi="clr-namespace:SukiUI.Controls;assembly=SukiUI"
              x:Class="Hermes.Features.UutProcessor.BoxInsertDialogView"
 			 x:DataType="local:BoxInsertDialogViewModel">
-	<sukiUi:GroupBox Header="ÌáÊ¾" MaxWidth="400" Padding="10">
+	<sukiUi:GroupBox Header="æç¤º" MaxWidth="400" Padding="10">
 
 		<StackPanel Margin="0"
                     Spacing="20">
 			<StackPanel>
-				<TextBlock Text="¼ì²âµ½²£Æ¬ºÐÐÂÔö£¬ÊÇ·ñ¿ªÊ¼Á÷³Ì" FontSize="20"></TextBlock>
+				<TextBlock Text="æ£€æµ‹åˆ°çŽ»ç‰‡ç›’æ–°å¢žï¼Œæ˜¯å¦å¼€å§‹æµç¨‹" FontSize="20"></TextBlock>
 			</StackPanel>
 			<StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Center"
@@ -20,12 +20,12 @@
 				<Button HorizontalContentAlignment="Center"
                         Classes="Outlined"
                         Command="{Binding AcceptCommand}"
-                        Content="È·¶¨" />
+                        Content="ç¡®å®š" />
 
 				<Button HorizontalContentAlignment="Center"
                         Classes="Outlined Accent"
                         Command="{Binding CloseDialogCommand}"
-                        Content="È¡Ïû" />
+                        Content="å–æ¶ˆ" />
 			</StackPanel>
 		</StackPanel>
 	</sukiUi:GroupBox>
