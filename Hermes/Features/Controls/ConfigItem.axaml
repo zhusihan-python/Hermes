@@ -1,0 +1,65 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:Hermes.Features.Controls">
+	<Design.PreviewWith>
+		<local:ConfigItem Margin="10"
+                          Description="设置项描述：描述1&#x0a;描述2描述3!"
+                          ValidationBrush="Green">
+			<TextBox Text="设置项的值" />
+		</local:ConfigItem>
+	</Design.PreviewWith>
+
+	<Style Selector="local|ConfigItem">
+		<Setter Property="Background" Value="{DynamicResource SystemChromeMediumColor}" />
+		<Setter Property="BoxShadow" Value="1 1 5 0 #00000000" />
+		<Setter Property="CornerRadius" Value="5" />
+		<Setter Property="InnerMargin" Value="5" />
+		<Setter Property="Padding" Value="10" />
+		<Setter Property="Template">
+			<ControlTemplate>
+				<Border Name="PART_Border"
+                        Margin="{TemplateBinding InnerMargin}"
+                        Padding="{TemplateBinding Padding}"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        BoxShadow="{TemplateBinding BoxShadow}"
+                        CornerRadius="{TemplateBinding CornerRadius}">
+					<Grid Name="PART_ColumnLayout">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="Auto" />
+							<ColumnDefinition Width="100" />
+							<ColumnDefinition Width="30" />
+							<ColumnDefinition Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ContentColumn}" />
+						</Grid.ColumnDefinitions>
+						<Border Name="PART_ValidationBorder"
+                                Width="2"
+                                Margin="0,0,5,0"
+                                Background="{TemplateBinding ValidationBrush}"
+                                CornerRadius="1" />
+						<Grid Name="PART_RowLayout"
+                              Grid.Column="1"
+                              RowDefinitions="Auto,5,*">
+							<TextBlock Name="PART_Header"
+                                       FontSize="15"
+                                       Text="{TemplateBinding Header}"
+                                       TextWrapping="WrapWithOverflow" />
+							<TextBlock Name="PART_Description"
+                                       Grid.Row="2"
+                                       FontSize="12"
+                                       FontWeight="Light"
+                                       Opacity="0.7"
+                                       Text="{TemplateBinding Description}"
+                                       TextWrapping="Wrap" />
+						</Grid>
+						<ContentPresenter Name="PART_ContentPresenter"
+                                          Grid.RowSpan="2"
+                                          Grid.Column="3"
+                                          Content="{TemplateBinding Content}" />
+					</Grid>
+				</Border>
+			</ControlTemplate>
+		</Setter>
+
+	</Style>
+</Styles>
