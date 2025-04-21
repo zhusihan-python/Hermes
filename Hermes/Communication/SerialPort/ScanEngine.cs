@@ -4,13 +4,16 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net.Sockets;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
+using Hermes.Common.Messages;
 using TouchSocket.Core;
 using TouchSocket.SerialPorts;
 using TouchSocket.Sockets;
 
 namespace Hermes.Communication.SerialPort;
 
-public class ScanEngine
+public class ScanEngine : ObservableRecipient
 {
     private SerialPortClient _client;
     public bool ClientOnline => _client.Online;
@@ -90,7 +93,9 @@ public class ScanEngine
             Debug.WriteLine($"帧序号：{string.Join(" ", item.FrameNo!.Select(b => b.ToString("X2")))}。");
             if (request.dataFrame != null)
             {
-                ScanMessageReceived?.Invoke(this, request.dataFrame);
+                Debug.WriteLine($"dataFrame：{string.Join(" ", request.dataFrame!.Select(b => b.ToString("X2")))}。");
+                Messenger.Send(new SlideInfoMessage((item.SlideSeq, request.dataFrame)));
+                ScanMessageReceived?.Invoke(this, item.FrameNo!);
             }
         }
         else

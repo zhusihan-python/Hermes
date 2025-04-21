@@ -67,7 +67,8 @@ public class ComPort
                 BaudRate = baudRate,       // 波特率
                 DataBits = 8,              // 数据位
                 Parity = System.IO.Ports.Parity.None, // 校验位
-                StopBits = System.IO.Ports.StopBits.One // 停止位
+                StopBits = System.IO.Ports.StopBits.One, // 停止位
+                DtrEnable = true
             })
             .SetSerialDataHandlingAdapter(() => new SvtDataHandlingAdapter()) // 数据适配器
             .ConfigurePlugins(a =>

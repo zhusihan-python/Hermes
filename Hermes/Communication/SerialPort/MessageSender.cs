@@ -32,7 +32,7 @@ public class MessageSender : IDisposable
     public async void InitializeComPort()
     {
         await _comPort.InitializeAsync("COM3", 115200);
-        await scanEngine.InitializeAsync("COM5", 9600);
+        await scanEngine.InitializeAsync("COM4", 9600);
     }
 
     public void EnqueueMessage(SvtRequestInfo message)
