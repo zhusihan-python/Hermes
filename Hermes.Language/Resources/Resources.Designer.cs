@@ -70,6 +70,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Log-in to Pushi 的本地化字符串。
+        /// </summary>
+        public static string c_login_title1 {
+            get {
+                return ResourceManager.GetString("c_login_title1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Title bar is hidden 的本地化字符串。
         /// </summary>
         public static string c_main_window_title_bar_hidden {
@@ -88,11 +97,38 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 The title bar has been hiddden 的本地化字符串。
+        /// </summary>
+        public static string c_main_window_title_bar_hidden_msg1 {
+            get {
+                return ResourceManager.GetString("c_main_window_title_bar_hidden_msg1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Title bar is hidden 的本地化字符串。
+        /// </summary>
+        public static string c_main_window_title_bar_hidden1 {
+            get {
+                return ResourceManager.GetString("c_main_window_title_bar_hidden1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Title bar has been shown 的本地化字符串。
         /// </summary>
         public static string c_main_window_title_bar_visible_msg {
             get {
                 return ResourceManager.GetString("c_main_window_title_bar_visible_msg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Title bar has been shown 的本地化字符串。
+        /// </summary>
+        public static string c_main_window_title_bar_visible_msg1 {
+            get {
+                return ResourceManager.GetString("c_main_window_title_bar_visible_msg1", resourceCulture);
             }
         }
         
@@ -106,11 +142,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Title bar is visible 的本地化字符串。
+        /// </summary>
+        public static string c_main_window_title_bar_vissible1 {
+            get {
+                return ResourceManager.GetString("c_main_window_title_bar_vissible1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Makes the app fullscreen 的本地化字符串。
         /// </summary>
         public static string c_main_window_tooltip_fullscreen {
             get {
                 return ResourceManager.GetString("c_main_window_tooltip_fullscreen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Makes the app fullscreen 的本地化字符串。
+        /// </summary>
+        public static string c_main_window_tooltip_fullscreen1 {
+            get {
+                return ResourceManager.GetString("c_main_window_tooltip_fullscreen1", resourceCulture);
             }
         }
         
@@ -124,11 +178,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Click to toggle top menu 的本地化字符串。
+        /// </summary>
+        public static string c_main_window_tooltip_toggle_top_menu1 {
+            get {
+                return ResourceManager.GetString("c_main_window_tooltip_toggle_top_menu1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 General 的本地化字符串。
         /// </summary>
         public static string c_settings_category_general {
             get {
                 return ResourceManager.GetString("c_settings_category_general", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 General 的本地化字符串。
+        /// </summary>
+        public static string c_settings_category_general1 {
+            get {
+                return ResourceManager.GetString("c_settings_category_general1", resourceCulture);
             }
         }
         
@@ -142,11 +214,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Uut processor 的本地化字符串。
+        /// </summary>
+        public static string c_settings_category_uut_processor1 {
+            get {
+                return ResourceManager.GetString("c_settings_category_uut_processor1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 When SFC response contains this text, it will be evaluated as ok 的本地化字符串。
         /// </summary>
         public static string c_settings_description_additional_ok_sfc_response {
             get {
                 return ResourceManager.GetString("c_settings_description_additional_ok_sfc_response", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 When SFC response contains this text, it will be evaluated as ok 的本地化字符串。
+        /// </summary>
+        public static string c_settings_description_additional_ok_sfc_response1 {
+            get {
+                return ResourceManager.GetString("c_settings_description_additional_ok_sfc_response1", resourceCulture);
             }
         }
         
@@ -160,6 +250,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Critical locations comma separated 的本地化字符串。
+        /// </summary>
+        public static string c_settings_description_critical_locations1 {
+            get {
+                return ResourceManager.GetString("c_settings_description_critical_locations1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Show stop window when a failure is detected in a component listed in the &quot;Critical Locations&quot; setting. 的本地化字符串。
         /// </summary>
         public static string c_settings_description_enable_critical_location_stop {
@@ -169,11 +268,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Show stop window when a failure is detected in a component listed in the &quot;Critical Locations&quot; setting. 的本地化字符串。
+        /// </summary>
+        public static string c_settings_description_enable_critical_location_stop1 {
+            get {
+                return ResourceManager.GetString("c_settings_description_enable_critical_location_stop1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Show stop window when an error occurs in sfc or when a flow error is detected. 的本地化字符串。
         /// </summary>
         public static string c_settings_description_enable_machine_stop {
             get {
                 return ResourceManager.GetString("c_settings_description_enable_machine_stop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Show stop window when an error occurs in sfc or when a flow error is detected. 的本地化字符串。
+        /// </summary>
+        public static string c_settings_description_enable_machine_stop1 {
+            get {
+                return ResourceManager.GetString("c_settings_description_enable_machine_stop1", resourceCulture);
             }
         }
         
@@ -189,11 +306,31 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Show stop window when 3 consecutive same faults or 5 same faults in 1 hour or 10 different faults in 1 hour are detected.
+        ///
+        /// 的本地化字符串。
+        /// </summary>
+        public static string c_settings_description_enable_rule_three_five_ten1 {
+            get {
+                return ResourceManager.GetString("c_settings_description_enable_rule_three_five_ten1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Language of interface 的本地化字符串。
         /// </summary>
         public static string c_settings_description_language {
             get {
                 return ResourceManager.GetString("c_settings_description_language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Language of interface 的本地化字符串。
+        /// </summary>
+        public static string c_settings_description_language1 {
+            get {
+                return ResourceManager.GetString("c_settings_description_language1", resourceCulture);
             }
         }
         
@@ -207,11 +344,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Max sfc send retries when failure 的本地化字符串。
+        /// </summary>
+        public static string c_settings_description_max_retries1 {
+            get {
+                return ResourceManager.GetString("c_settings_description_max_retries1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Close success window when this time is over 的本地化字符串。
         /// </summary>
         public static string c_settings_description_success_window_timeout {
             get {
                 return ResourceManager.GetString("c_settings_description_success_window_timeout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Close success window when this time is over 的本地化字符串。
+        /// </summary>
+        public static string c_settings_description_success_window_timeout1 {
+            get {
+                return ResourceManager.GetString("c_settings_description_success_window_timeout1", resourceCulture);
             }
         }
         
@@ -225,11 +380,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 General delay while waiting for actions to happen 的本地化字符串。
+        /// </summary>
+        public static string c_settings_description_wait_delay_ms1 {
+            get {
+                return ResourceManager.GetString("c_settings_description_wait_delay_ms1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Common 的本地化字符串。
         /// </summary>
         public static string c_settings_group_common {
             get {
                 return ResourceManager.GetString("c_settings_group_common", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Common 的本地化字符串。
+        /// </summary>
+        public static string c_settings_group_common1 {
+            get {
+                return ResourceManager.GetString("c_settings_group_common1", resourceCulture);
             }
         }
         
@@ -243,11 +416,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Features 的本地化字符串。
+        /// </summary>
+        public static string c_settings_group_features1 {
+            get {
+                return ResourceManager.GetString("c_settings_group_features1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Paths 的本地化字符串。
         /// </summary>
         public static string c_settings_group_paths {
             get {
                 return ResourceManager.GetString("c_settings_group_paths", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Paths 的本地化字符串。
+        /// </summary>
+        public static string c_settings_group_paths1 {
+            get {
+                return ResourceManager.GetString("c_settings_group_paths1", resourceCulture);
             }
         }
         
@@ -261,11 +452,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Station 的本地化字符串。
+        /// </summary>
+        public static string c_settings_group_station1 {
+            get {
+                return ResourceManager.GetString("c_settings_group_station1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Time 的本地化字符串。
         /// </summary>
         public static string c_settings_group_time {
             get {
                 return ResourceManager.GetString("c_settings_group_time", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Time 的本地化字符串。
+        /// </summary>
+        public static string c_settings_group_time1 {
+            get {
+                return ResourceManager.GetString("c_settings_group_time1", resourceCulture);
             }
         }
         
@@ -279,11 +488,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Additional sfc ok response 的本地化字符串。
+        /// </summary>
+        public static string c_settings_header_additional_ok_sfc_response1 {
+            get {
+                return ResourceManager.GetString("c_settings_header_additional_ok_sfc_response1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Autostart UUT Processor 的本地化字符串。
         /// </summary>
         public static string c_settings_header_autostart_uut_processor {
             get {
                 return ResourceManager.GetString("c_settings_header_autostart_uut_processor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Autostart UUT Processor 的本地化字符串。
+        /// </summary>
+        public static string c_settings_header_autostart_uut_processor1 {
+            get {
+                return ResourceManager.GetString("c_settings_header_autostart_uut_processor1", resourceCulture);
             }
         }
         
@@ -297,11 +524,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Backup Path 的本地化字符串。
+        /// </summary>
+        public static string c_settings_header_backup_path1 {
+            get {
+                return ResourceManager.GetString("c_settings_header_backup_path1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Critical locations 的本地化字符串。
         /// </summary>
         public static string c_settings_header_critical_locations {
             get {
                 return ResourceManager.GetString("c_settings_header_critical_locations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Critical locations 的本地化字符串。
+        /// </summary>
+        public static string c_settings_header_critical_locations1 {
+            get {
+                return ResourceManager.GetString("c_settings_header_critical_locations1", resourceCulture);
             }
         }
         
@@ -315,11 +560,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Database server 的本地化字符串。
+        /// </summary>
+        public static string c_settings_header_database_server1 {
+            get {
+                return ResourceManager.GetString("c_settings_header_database_server1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Critical location stop 的本地化字符串。
         /// </summary>
         public static string c_settings_header_enable_critical_location_stop {
             get {
                 return ResourceManager.GetString("c_settings_header_enable_critical_location_stop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Critical location stop 的本地化字符串。
+        /// </summary>
+        public static string c_settings_header_enable_critical_location_stop1 {
+            get {
+                return ResourceManager.GetString("c_settings_header_enable_critical_location_stop1", resourceCulture);
             }
         }
         
@@ -333,11 +596,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Machine Sfc error stop 的本地化字符串。
+        /// </summary>
+        public static string c_settings_header_enable_machine_stop1 {
+            get {
+                return ResourceManager.GetString("c_settings_header_enable_machine_stop1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Rule three five ten stop 的本地化字符串。
         /// </summary>
         public static string c_settings_header_enable_rule_three_five_ten {
             get {
                 return ResourceManager.GetString("c_settings_header_enable_rule_three_five_ten", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Rule three five ten stop 的本地化字符串。
+        /// </summary>
+        public static string c_settings_header_enable_rule_three_five_ten1 {
+            get {
+                return ResourceManager.GetString("c_settings_header_enable_rule_three_five_ten1", resourceCulture);
             }
         }
         
@@ -351,11 +632,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Gkg tunnel com port 的本地化字符串。
+        /// </summary>
+        public static string c_settings_header_gkg_tunnel_com_port1 {
+            get {
+                return ResourceManager.GetString("c_settings_header_gkg_tunnel_com_port1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Input file extension 的本地化字符串。
         /// </summary>
         public static string c_settings_header_input_file_ext {
             get {
                 return ResourceManager.GetString("c_settings_header_input_file_ext", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Input file extension 的本地化字符串。
+        /// </summary>
+        public static string c_settings_header_input_file_ext1 {
+            get {
+                return ResourceManager.GetString("c_settings_header_input_file_ext1", resourceCulture);
             }
         }
         
@@ -369,11 +668,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Input Path 的本地化字符串。
+        /// </summary>
+        public static string c_settings_header_input_path1 {
+            get {
+                return ResourceManager.GetString("c_settings_header_input_path1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Language 的本地化字符串。
         /// </summary>
         public static string c_settings_header_language {
             get {
                 return ResourceManager.GetString("c_settings_header_language", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Language 的本地化字符串。
+        /// </summary>
+        public static string c_settings_header_language1 {
+            get {
+                return ResourceManager.GetString("c_settings_header_language1", resourceCulture);
             }
         }
         
@@ -387,11 +704,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Line name 的本地化字符串。
+        /// </summary>
+        public static string c_settings_header_line_name1 {
+            get {
+                return ResourceManager.GetString("c_settings_header_line_name1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Logfile type 的本地化字符串。
         /// </summary>
         public static string c_settings_header_logfile_type {
             get {
                 return ResourceManager.GetString("c_settings_header_logfile_type", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Logfile type 的本地化字符串。
+        /// </summary>
+        public static string c_settings_header_logfile_type1 {
+            get {
+                return ResourceManager.GetString("c_settings_header_logfile_type1", resourceCulture);
             }
         }
         
@@ -405,11 +740,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Machine type 的本地化字符串。
+        /// </summary>
+        public static string c_settings_header_machine_type1 {
+            get {
+                return ResourceManager.GetString("c_settings_header_machine_type1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Max retries 的本地化字符串。
         /// </summary>
         public static string c_settings_header_max_retries {
             get {
                 return ResourceManager.GetString("c_settings_header_max_retries", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Max retries 的本地化字符串。
+        /// </summary>
+        public static string c_settings_header_max_retries1 {
+            get {
+                return ResourceManager.GetString("c_settings_header_max_retries1", resourceCulture);
             }
         }
         
@@ -423,11 +776,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Scanner com port 的本地化字符串。
+        /// </summary>
+        public static string c_settings_header_scanner_com_port1 {
+            get {
+                return ResourceManager.GetString("c_settings_header_scanner_com_port1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Send unit to repair 的本地化字符串。
         /// </summary>
         public static string c_settings_header_send_repair_file {
             get {
                 return ResourceManager.GetString("c_settings_header_send_repair_file", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Send unit to repair 的本地化字符串。
+        /// </summary>
+        public static string c_settings_header_send_repair_file1 {
+            get {
+                return ResourceManager.GetString("c_settings_header_send_repair_file1", resourceCulture);
             }
         }
         
@@ -441,6 +812,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Sfc Path 的本地化字符串。
+        /// </summary>
+        public static string c_settings_header_sfc_path1 {
+            get {
+                return ResourceManager.GetString("c_settings_header_sfc_path1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Sfc response extension 的本地化字符串。
         /// </summary>
         public static string c_settings_header_sfc_response_ext {
@@ -450,11 +830,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Sfc response extension 的本地化字符串。
+        /// </summary>
+        public static string c_settings_header_sfc_response_ext1 {
+            get {
+                return ResourceManager.GetString("c_settings_header_sfc_response_ext1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Sfc Timeout 的本地化字符串。
         /// </summary>
         public static string c_settings_header_sfc_timeout {
             get {
                 return ResourceManager.GetString("c_settings_header_sfc_timeout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Sfc Timeout 的本地化字符串。
+        /// </summary>
+        public static string c_settings_header_sfc_timeout1 {
+            get {
+                return ResourceManager.GetString("c_settings_header_sfc_timeout1", resourceCulture);
             }
         }
         
@@ -477,11 +875,38 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Station Id 的本地化字符串。
+        /// </summary>
+        public static string c_settings_header_station_id1 {
+            get {
+                return ResourceManager.GetString("c_settings_header_station_id1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Station 的本地化字符串。
+        /// </summary>
+        public static string c_settings_header_station1 {
+            get {
+                return ResourceManager.GetString("c_settings_header_station1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Success window timeout 的本地化字符串。
         /// </summary>
         public static string c_settings_header_success_window_timeout {
             get {
                 return ResourceManager.GetString("c_settings_header_success_window_timeout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Success window timeout 的本地化字符串。
+        /// </summary>
+        public static string c_settings_header_success_window_timeout1 {
+            get {
+                return ResourceManager.GetString("c_settings_header_success_window_timeout1", resourceCulture);
             }
         }
         
@@ -495,6 +920,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Hermes update url 的本地化字符串。
+        /// </summary>
+        public static string c_settings_header_update_manager_url1 {
+            get {
+                return ResourceManager.GetString("c_settings_header_update_manager_url1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Wait delay (ms) 的本地化字符串。
         /// </summary>
         public static string c_settings_header_wait_delay_ms {
@@ -504,11 +938,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Wait delay (ms) 的本地化字符串。
+        /// </summary>
+        public static string c_settings_header_wait_delay_ms1 {
+            get {
+                return ResourceManager.GetString("c_settings_header_wait_delay_ms1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Create critical fail logfile 的本地化字符串。
         /// </summary>
         public static string c_sfc_sim_create_log_critical_fail {
             get {
                 return ResourceManager.GetString("c_sfc_sim_create_log_critical_fail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Create critical fail logfile 的本地化字符串。
+        /// </summary>
+        public static string c_sfc_sim_create_log_critical_fail1 {
+            get {
+                return ResourceManager.GetString("c_sfc_sim_create_log_critical_fail1", resourceCulture);
             }
         }
         
@@ -531,6 +983,24 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Create fail logfile with custom defect 的本地化字符串。
+        /// </summary>
+        public static string c_sfc_sim_create_log_fail_with_custom_defect1 {
+            get {
+                return ResourceManager.GetString("c_sfc_sim_create_log_fail_with_custom_defect1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Create fail logfile 的本地化字符串。
+        /// </summary>
+        public static string c_sfc_sim_create_log_fail1 {
+            get {
+                return ResourceManager.GetString("c_sfc_sim_create_log_fail1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Create pass logfile 的本地化字符串。
         /// </summary>
         public static string c_sfc_sim_create_log_pass {
@@ -549,11 +1019,38 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Create pass logfile with custom defect 的本地化字符串。
+        /// </summary>
+        public static string c_sfc_sim_create_log_pass_with_defect1 {
+            get {
+                return ResourceManager.GetString("c_sfc_sim_create_log_pass_with_defect1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Create pass logfile 的本地化字符串。
+        /// </summary>
+        public static string c_sfc_sim_create_log_pass1 {
+            get {
+                return ResourceManager.GetString("c_sfc_sim_create_log_pass1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Show pass view 的本地化字符串。
         /// </summary>
         public static string c_sfc_sim_show_pass {
             get {
                 return ResourceManager.GetString("c_sfc_sim_show_pass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Show pass view 的本地化字符串。
+        /// </summary>
+        public static string c_sfc_sim_show_pass1 {
+            get {
+                return ResourceManager.GetString("c_sfc_sim_show_pass1", resourceCulture);
             }
         }
         
@@ -576,11 +1073,38 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Show repair view with message 的本地化字符串。
+        /// </summary>
+        public static string c_sfc_sim_show_repair_with_message1 {
+            get {
+                return ResourceManager.GetString("c_sfc_sim_show_repair_with_message1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Show repair view 的本地化字符串。
+        /// </summary>
+        public static string c_sfc_sim_show_repair1 {
+            get {
+                return ResourceManager.GetString("c_sfc_sim_show_repair1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Show stop machine view 的本地化字符串。
         /// </summary>
         public static string c_sfc_sim_show_stop_machine {
             get {
                 return ResourceManager.GetString("c_sfc_sim_show_stop_machine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Show stop machine view 的本地化字符串。
+        /// </summary>
+        public static string c_sfc_sim_show_stop_machine1 {
+            get {
+                return ResourceManager.GetString("c_sfc_sim_show_stop_machine1", resourceCulture);
             }
         }
         
@@ -594,11 +1118,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Show stop line view 的本地化字符串。
+        /// </summary>
+        public static string c_sfc_sim_show_top_line1 {
+            get {
+                return ResourceManager.GetString("c_sfc_sim_show_top_line1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Response mode 的本地化字符串。
         /// </summary>
         public static string c_sfc_simulator_response_mode {
             get {
                 return ResourceManager.GetString("c_sfc_simulator_response_mode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Response mode 的本地化字符串。
+        /// </summary>
+        public static string c_sfc_simulator_response_mode1 {
+            get {
+                return ResourceManager.GetString("c_sfc_simulator_response_mode1", resourceCulture);
             }
         }
         
@@ -612,11 +1154,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Unlock 的本地化字符串。
+        /// </summary>
+        public static string c_token_unlock_button1 {
+            get {
+                return ResourceManager.GetString("c_token_unlock_button1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Token 的本地化字符串。
         /// </summary>
         public static string c_token_watermark {
             get {
                 return ResourceManager.GetString("c_token_watermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Token 的本地化字符串。
+        /// </summary>
+        public static string c_token_watermark1 {
+            get {
+                return ResourceManager.GetString("c_token_watermark1", resourceCulture);
             }
         }
         
@@ -630,11 +1190,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Admin 的本地化字符串。
+        /// </summary>
+        public static string enum_admin1 {
+            get {
+                return ResourceManager.GetString("enum_admin1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Administrator 的本地化字符串。
         /// </summary>
         public static string enum_administrator {
             get {
                 return ResourceManager.GetString("enum_administrator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Administrator 的本地化字符串。
+        /// </summary>
+        public static string enum_administrator1 {
+            get {
+                return ResourceManager.GetString("enum_administrator1", resourceCulture);
             }
         }
         
@@ -648,11 +1226,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 AOI 的本地化字符串。
+        /// </summary>
+        public static string enum_aoi1 {
+            get {
+                return ResourceManager.GetString("enum_aoi1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Automation 的本地化字符串。
         /// </summary>
         public static string enum_automation {
             get {
                 return ResourceManager.GetString("enum_automation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Automation 的本地化字符串。
+        /// </summary>
+        public static string enum_automation1 {
+            get {
+                return ResourceManager.GetString("enum_automation1", resourceCulture);
             }
         }
         
@@ -666,11 +1262,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Blocked 的本地化字符串。
+        /// </summary>
+        public static string enum_blocked1 {
+            get {
+                return ResourceManager.GetString("enum_blocked1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Equipment engineering 的本地化字符串。
         /// </summary>
         public static string enum_ee {
             get {
                 return ResourceManager.GetString("enum_ee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Equipment engineering 的本地化字符串。
+        /// </summary>
+        public static string enum_ee1 {
+            get {
+                return ResourceManager.GetString("enum_ee1", resourceCulture);
             }
         }
         
@@ -684,11 +1298,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Eight hours 的本地化字符串。
+        /// </summary>
+        public static string enum_eighthours1 {
+            get {
+                return ResourceManager.GetString("enum_eighthours1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Empty 的本地化字符串。
         /// </summary>
         public static string enum_empty {
             get {
                 return ResourceManager.GetString("enum_empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Empty 的本地化字符串。
+        /// </summary>
+        public static string enum_empty1 {
+            get {
+                return ResourceManager.GetString("enum_empty1", resourceCulture);
             }
         }
         
@@ -702,11 +1334,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Engineer 的本地化字符串。
+        /// </summary>
+        public static string enum_engineer1 {
+            get {
+                return ResourceManager.GetString("enum_engineer1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Engineer Leader 的本地化字符串。
         /// </summary>
         public static string enum_engineerleader {
             get {
                 return ResourceManager.GetString("enum_engineerleader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Engineer Leader 的本地化字符串。
+        /// </summary>
+        public static string enum_engineerleader1 {
+            get {
+                return ResourceManager.GetString("enum_engineerleader1", resourceCulture);
             }
         }
         
@@ -720,11 +1370,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Exit 的本地化字符串。
+        /// </summary>
+        public static string enum_exit1 {
+            get {
+                return ResourceManager.GetString("enum_exit1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Failed 的本地化字符串。
         /// </summary>
         public static string enum_failed {
             get {
                 return ResourceManager.GetString("enum_failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Failed 的本地化字符串。
+        /// </summary>
+        public static string enum_failed1 {
+            get {
+                return ResourceManager.GetString("enum_failed1", resourceCulture);
             }
         }
         
@@ -738,11 +1406,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Free access 的本地化字符串。
+        /// </summary>
+        public static string enum_freeaccess1 {
+            get {
+                return ResourceManager.GetString("enum_freeaccess1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Idle 的本地化字符串。
         /// </summary>
         public static string enum_idle {
             get {
                 return ResourceManager.GetString("enum_idle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Idle 的本地化字符串。
+        /// </summary>
+        public static string enum_idle1 {
+            get {
+                return ResourceManager.GetString("enum_idle1", resourceCulture);
             }
         }
         
@@ -756,6 +1442,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 In use 的本地化字符串。
+        /// </summary>
+        public static string enum_inuse1 {
+            get {
+                return ResourceManager.GetString("enum_inuse1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Kitting 的本地化字符串。
         /// </summary>
         public static string enum_kitting {
@@ -765,11 +1460,101 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Kitting 的本地化字符串。
+        /// </summary>
+        public static string enum_kitting1 {
+            get {
+                return ResourceManager.GetString("enum_kitting1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Level 1 的本地化字符串。
         /// </summary>
         public static string enum_level1 {
             get {
                 return ResourceManager.GetString("enum_level1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Level 1 的本地化字符串。
+        /// </summary>
+        public static string enum_level10 {
+            get {
+                return ResourceManager.GetString("enum_level10", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Level 2 的本地化字符串。
+        /// </summary>
+        public static string enum_level11 {
+            get {
+                return ResourceManager.GetString("enum_level11", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Level 3 的本地化字符串。
+        /// </summary>
+        public static string enum_level12 {
+            get {
+                return ResourceManager.GetString("enum_level12", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Level 4 的本地化字符串。
+        /// </summary>
+        public static string enum_level13 {
+            get {
+                return ResourceManager.GetString("enum_level13", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Level 5 的本地化字符串。
+        /// </summary>
+        public static string enum_level14 {
+            get {
+                return ResourceManager.GetString("enum_level14", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Level 6 的本地化字符串。
+        /// </summary>
+        public static string enum_level15 {
+            get {
+                return ResourceManager.GetString("enum_level15", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Level 7 的本地化字符串。
+        /// </summary>
+        public static string enum_level16 {
+            get {
+                return ResourceManager.GetString("enum_level16", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Level 8 的本地化字符串。
+        /// </summary>
+        public static string enum_level17 {
+            get {
+                return ResourceManager.GetString("enum_level17", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Level 9 的本地化字符串。
+        /// </summary>
+        public static string enum_level18 {
+            get {
+                return ResourceManager.GetString("enum_level18", resourceCulture);
             }
         }
         
@@ -855,11 +1640,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Loaded 的本地化字符串。
+        /// </summary>
+        public static string enum_loaded1 {
+            get {
+                return ResourceManager.GetString("enum_loaded1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Manufacturing 的本地化字符串。
         /// </summary>
         public static string enum_mfg {
             get {
                 return ResourceManager.GetString("enum_mfg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Manufacturing 的本地化字符串。
+        /// </summary>
+        public static string enum_mfg1 {
+            get {
+                return ResourceManager.GetString("enum_mfg1", resourceCulture);
             }
         }
         
@@ -873,11 +1676,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Not recognized 的本地化字符串。
+        /// </summary>
+        public static string enum_not_recognized1 {
+            get {
+                return ResourceManager.GetString("enum_not_recognized1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Not sorted 的本地化字符串。
         /// </summary>
         public static string enum_not_sorted {
             get {
                 return ResourceManager.GetString("enum_not_sorted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Not sorted 的本地化字符串。
+        /// </summary>
+        public static string enum_not_sorted1 {
+            get {
+                return ResourceManager.GetString("enum_not_sorted1", resourceCulture);
             }
         }
         
@@ -891,11 +1712,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Not ran 的本地化字符串。
+        /// </summary>
+        public static string enum_notran1 {
+            get {
+                return ResourceManager.GetString("enum_notran1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Ok 的本地化字符串。
         /// </summary>
         public static string enum_ok {
             get {
                 return ResourceManager.GetString("enum_ok", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Ok 的本地化字符串。
+        /// </summary>
+        public static string enum_ok1 {
+            get {
+                return ResourceManager.GetString("enum_ok1", resourceCulture);
             }
         }
         
@@ -909,11 +1748,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 One day 的本地化字符串。
+        /// </summary>
+        public static string enum_oneday1 {
+            get {
+                return ResourceManager.GetString("enum_oneday1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 One hour 的本地化字符串。
         /// </summary>
         public static string enum_onehour {
             get {
                 return ResourceManager.GetString("enum_onehour", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 One hour 的本地化字符串。
+        /// </summary>
+        public static string enum_onehour1 {
+            get {
+                return ResourceManager.GetString("enum_onehour1", resourceCulture);
             }
         }
         
@@ -927,11 +1784,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Open 的本地化字符串。
+        /// </summary>
+        public static string enum_open1 {
+            get {
+                return ResourceManager.GetString("enum_open1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Open admin tools 的本地化字符串。
         /// </summary>
         public static string enum_openadmintools {
             get {
                 return ResourceManager.GetString("enum_openadmintools", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Open admin tools 的本地化字符串。
+        /// </summary>
+        public static string enum_openadmintools1 {
+            get {
+                return ResourceManager.GetString("enum_openadmintools1", resourceCulture);
             }
         }
         
@@ -945,11 +1820,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Open bender 的本地化字符串。
+        /// </summary>
+        public static string enum_openbender1 {
+            get {
+                return ResourceManager.GetString("enum_openbender1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Open logs 的本地化字符串。
         /// </summary>
         public static string enum_openlogs {
             get {
                 return ResourceManager.GetString("enum_openlogs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Open logs 的本地化字符串。
+        /// </summary>
+        public static string enum_openlogs1 {
+            get {
+                return ResourceManager.GetString("enum_openlogs1", resourceCulture);
             }
         }
         
@@ -963,11 +1856,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Open settings config 的本地化字符串。
+        /// </summary>
+        public static string enum_opensettingsconfig1 {
+            get {
+                return ResourceManager.GetString("enum_opensettingsconfig1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Open sfc simulator 的本地化字符串。
         /// </summary>
         public static string enum_opensfcsimulator {
             get {
                 return ResourceManager.GetString("enum_opensfcsimulator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Open sfc simulator 的本地化字符串。
+        /// </summary>
+        public static string enum_opensfcsimulator1 {
+            get {
+                return ResourceManager.GetString("enum_opensfcsimulator1", resourceCulture);
             }
         }
         
@@ -981,11 +1892,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Open user admin 的本地化字符串。
+        /// </summary>
+        public static string enum_openuseradmin1 {
+            get {
+                return ResourceManager.GetString("enum_openuseradmin1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Open uut processor 的本地化字符串。
         /// </summary>
         public static string enum_openuutprocessor {
             get {
                 return ResourceManager.GetString("enum_openuutprocessor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Open uut processor 的本地化字符串。
+        /// </summary>
+        public static string enum_openuutprocessor1 {
+            get {
+                return ResourceManager.GetString("enum_openuutprocessor1", resourceCulture);
             }
         }
         
@@ -999,11 +1928,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Operator 的本地化字符串。
+        /// </summary>
+        public static string enum_operator1 {
+            get {
+                return ResourceManager.GetString("enum_operator1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Operator leader 的本地化字符串。
         /// </summary>
         public static string enum_operatorleader {
             get {
                 return ResourceManager.GetString("enum_operatorleader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Operator leader 的本地化字符串。
+        /// </summary>
+        public static string enum_operatorleader1 {
+            get {
+                return ResourceManager.GetString("enum_operatorleader1", resourceCulture);
             }
         }
         
@@ -1017,11 +1964,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Passed 的本地化字符串。
+        /// </summary>
+        public static string enum_passed1 {
+            get {
+                return ResourceManager.GetString("enum_passed1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Process engineering 的本地化字符串。
         /// </summary>
         public static string enum_process {
             get {
                 return ResourceManager.GetString("enum_process", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Process engineering 的本地化字符串。
+        /// </summary>
+        public static string enum_process1 {
+            get {
+                return ResourceManager.GetString("enum_process1", resourceCulture);
             }
         }
         
@@ -1035,11 +2000,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Processing 的本地化字符串。
+        /// </summary>
+        public static string enum_processing1 {
+            get {
+                return ResourceManager.GetString("enum_processing1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Quality 的本地化字符串。
         /// </summary>
         public static string enum_qa {
             get {
                 return ResourceManager.GetString("enum_qa", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Quality 的本地化字符串。
+        /// </summary>
+        public static string enum_qa1 {
+            get {
+                return ResourceManager.GetString("enum_qa1", resourceCulture);
             }
         }
         
@@ -1053,11 +2036,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Recognized 的本地化字符串。
+        /// </summary>
+        public static string enum_recognized1 {
+            get {
+                return ResourceManager.GetString("enum_recognized1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Restore aoi stop 的本地化字符串。
         /// </summary>
         public static string enum_restoreaoistop {
             get {
                 return ResourceManager.GetString("enum_restoreaoistop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Restore aoi stop 的本地化字符串。
+        /// </summary>
+        public static string enum_restoreaoistop1 {
+            get {
+                return ResourceManager.GetString("enum_restoreaoistop1", resourceCulture);
             }
         }
         
@@ -1071,11 +2072,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Restore axi stop 的本地化字符串。
+        /// </summary>
+        public static string enum_restoreaxistop1 {
+            get {
+                return ResourceManager.GetString("enum_restoreaxistop1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Restore labeling machine stop 的本地化字符串。
         /// </summary>
         public static string enum_restorelabelingmachinestop {
             get {
                 return ResourceManager.GetString("enum_restorelabelingmachinestop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Restore labeling machine stop 的本地化字符串。
+        /// </summary>
+        public static string enum_restorelabelingmachinestop1 {
+            get {
+                return ResourceManager.GetString("enum_restorelabelingmachinestop1", resourceCulture);
             }
         }
         
@@ -1089,11 +2108,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Restore screen printer stop 的本地化字符串。
+        /// </summary>
+        public static string enum_restorescreenprinterstop1 {
+            get {
+                return ResourceManager.GetString("enum_restorescreenprinterstop1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Restore spi stop 的本地化字符串。
         /// </summary>
         public static string enum_restorespistop {
             get {
                 return ResourceManager.GetString("enum_restorespistop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Restore spi stop 的本地化字符串。
+        /// </summary>
+        public static string enum_restorespistop1 {
+            get {
+                return ResourceManager.GetString("enum_restorespistop1", resourceCulture);
             }
         }
         
@@ -1107,11 +2144,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Scann error 的本地化字符串。
+        /// </summary>
+        public static string enum_scanerror1 {
+            get {
+                return ResourceManager.GetString("enum_scanerror1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Scanned 的本地化字符串。
         /// </summary>
         public static string enum_scanned {
             get {
                 return ResourceManager.GetString("enum_scanned", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Scanned 的本地化字符串。
+        /// </summary>
+        public static string enum_scanned1 {
+            get {
+                return ResourceManager.GetString("enum_scanned1", resourceCulture);
             }
         }
         
@@ -1125,11 +2180,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Seven days 的本地化字符串。
+        /// </summary>
+        public static string enum_sevendays1 {
+            get {
+                return ResourceManager.GetString("enum_sevendays1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Slide blocked 的本地化字符串。
         /// </summary>
         public static string enum_slide_blocked {
             get {
                 return ResourceManager.GetString("enum_slide_blocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Slide blocked 的本地化字符串。
+        /// </summary>
+        public static string enum_slide_blocked1 {
+            get {
+                return ResourceManager.GetString("enum_slide_blocked1", resourceCulture);
             }
         }
         
@@ -1143,11 +2216,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Sorted 的本地化字符串。
+        /// </summary>
+        public static string enum_sorted1 {
+            get {
+                return ResourceManager.GetString("enum_sorted1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Stopped 的本地化字符串。
         /// </summary>
         public static string enum_stopped {
             get {
                 return ResourceManager.GetString("enum_stopped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Stopped 的本地化字符串。
+        /// </summary>
+        public static string enum_stopped1 {
+            get {
+                return ResourceManager.GetString("enum_stopped1", resourceCulture);
             }
         }
         
@@ -1161,11 +2252,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Supervisor 的本地化字符串。
+        /// </summary>
+        public static string enum_supervisor1 {
+            get {
+                return ResourceManager.GetString("enum_supervisor1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Technician 的本地化字符串。
         /// </summary>
         public static string enum_technician {
             get {
                 return ResourceManager.GetString("enum_technician", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Technician 的本地化字符串。
+        /// </summary>
+        public static string enum_technician1 {
+            get {
+                return ResourceManager.GetString("enum_technician1", resourceCulture);
             }
         }
         
@@ -1179,11 +2288,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Timeout 的本地化字符串。
+        /// </summary>
+        public static string enum_timeout1 {
+            get {
+                return ResourceManager.GetString("enum_timeout1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Unknown 的本地化字符串。
         /// </summary>
         public static string enum_unknown {
             get {
                 return ResourceManager.GetString("enum_unknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Unknown 的本地化字符串。
+        /// </summary>
+        public static string enum_unknown1 {
+            get {
+                return ResourceManager.GetString("enum_unknown1", resourceCulture);
             }
         }
         
@@ -1197,11 +2324,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Used 的本地化字符串。
+        /// </summary>
+        public static string enum_used1 {
+            get {
+                return ResourceManager.GetString("enum_used1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Wrong station 的本地化字符串。
         /// </summary>
         public static string enum_wrongstation {
             get {
                 return ResourceManager.GetString("enum_wrongstation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Wrong station 的本地化字符串。
+        /// </summary>
+        public static string enum_wrongstation1 {
+            get {
+                return ResourceManager.GetString("enum_wrongstation1", resourceCulture);
             }
         }
         
@@ -1215,11 +2360,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Can&apos;t resend unit under test 的本地化字符串。
+        /// </summary>
+        public static string msg_can_not_resed_uut1 {
+            get {
+                return ResourceManager.GetString("msg_can_not_resed_uut1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Select the work order 的本地化字符串。
         /// </summary>
         public static string msg_change_wo {
             get {
                 return ResourceManager.GetString("msg_change_wo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Select the work order 的本地化字符串。
+        /// </summary>
+        public static string msg_change_wo1 {
+            get {
+                return ResourceManager.GetString("msg_change_wo1", resourceCulture);
             }
         }
         
@@ -1233,11 +2396,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Delete package from Hermes 的本地化字符串。
+        /// </summary>
+        public static string msg_delete_package_from_hermes1 {
+            get {
+                return ResourceManager.GetString("msg_delete_package_from_hermes1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 An error occurred while getting the information from the database 的本地化字符串。
         /// </summary>
         public static string msg_error_while_getting_info_from_db {
             get {
                 return ResourceManager.GetString("msg_error_while_getting_info_from_db", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 An error occurred while getting the information from the database 的本地化字符串。
+        /// </summary>
+        public static string msg_error_while_getting_info_from_db1 {
+            get {
+                return ResourceManager.GetString("msg_error_while_getting_info_from_db1", resourceCulture);
             }
         }
         
@@ -1251,11 +2432,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Feature permission successfully added 的本地化字符串。
+        /// </summary>
+        public static string msg_feature_permission_added1 {
+            get {
+                return ResourceManager.GetString("msg_feature_permission_added1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Feature permission successfully deleted 的本地化字符串。
         /// </summary>
         public static string msg_feature_permission_deleted {
             get {
                 return ResourceManager.GetString("msg_feature_permission_deleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Feature permission successfully deleted 的本地化字符串。
+        /// </summary>
+        public static string msg_feature_permission_deleted1 {
+            get {
+                return ResourceManager.GetString("msg_feature_permission_deleted1", resourceCulture);
             }
         }
         
@@ -1269,11 +2468,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 The user belongs to a different department 的本地化字符串。
+        /// </summary>
+        public static string msg_invalid_department1 {
+            get {
+                return ResourceManager.GetString("msg_invalid_department1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Invalid employee id, it must be only numbers 的本地化字符串。
         /// </summary>
         public static string msg_invalid_employee_id {
             get {
                 return ResourceManager.GetString("msg_invalid_employee_id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Invalid employee id, it must be only numbers 的本地化字符串。
+        /// </summary>
+        public static string msg_invalid_employee_id1 {
+            get {
+                return ResourceManager.GetString("msg_invalid_employee_id1", resourceCulture);
             }
         }
         
@@ -1287,11 +2504,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 The token is invalid 的本地化字符串。
+        /// </summary>
+        public static string msg_invalid_token1 {
+            get {
+                return ResourceManager.GetString("msg_invalid_token1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Invalid user information 的本地化字符串。
         /// </summary>
         public static string msg_invalid_user_info {
             get {
                 return ResourceManager.GetString("msg_invalid_user_info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Invalid user information 的本地化字符串。
+        /// </summary>
+        public static string msg_invalid_user_info1 {
+            get {
+                return ResourceManager.GetString("msg_invalid_user_info1", resourceCulture);
             }
         }
         
@@ -1305,11 +2540,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Invalid user/password 的本地化字符串。
+        /// </summary>
+        public static string msg_invalid_user_password1 {
+            get {
+                return ResourceManager.GetString("msg_invalid_user_password1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 To improve performance, only the last 500 records will be displayed 的本地化字符串。
         /// </summary>
         public static string msg_limited_to_500_logs {
             get {
                 return ResourceManager.GetString("msg_limited_to_500_logs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 To improve performance, only the last 500 records will be displayed 的本地化字符串。
+        /// </summary>
+        public static string msg_limited_to_500_logs1 {
+            get {
+                return ResourceManager.GetString("msg_limited_to_500_logs1", resourceCulture);
             }
         }
         
@@ -1323,11 +2576,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 No updates available 的本地化字符串。
+        /// </summary>
+        public static string msg_no_updates_available1 {
+            get {
+                return ResourceManager.GetString("msg_no_updates_available1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 No users found 的本地化字符串。
         /// </summary>
         public static string msg_no_users_found {
             get {
                 return ResourceManager.GetString("msg_no_users_found", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 No users found 的本地化字符串。
+        /// </summary>
+        public static string msg_no_users_found1 {
+            get {
+                return ResourceManager.GetString("msg_no_users_found1", resourceCulture);
             }
         }
         
@@ -1341,11 +2612,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Package added to Hermes 的本地化字符串。
+        /// </summary>
+        public static string msg_package_added_to_hermes1 {
+            get {
+                return ResourceManager.GetString("msg_package_added_to_hermes1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Package not found 的本地化字符串。
         /// </summary>
         public static string msg_package_not_found {
             get {
                 return ResourceManager.GetString("msg_package_not_found", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Package not found 的本地化字符串。
+        /// </summary>
+        public static string msg_package_not_found1 {
+            get {
+                return ResourceManager.GetString("msg_package_not_found1", resourceCulture);
             }
         }
         
@@ -1368,11 +2657,38 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Package removed from &quot;loaded&quot; 的本地化字符串。
+        /// </summary>
+        public static string msg_package_removed_from_loaded1 {
+            get {
+                return ResourceManager.GetString("msg_package_removed_from_loaded1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Package removed 的本地化字符串。
+        /// </summary>
+        public static string msg_package_removed1 {
+            get {
+                return ResourceManager.GetString("msg_package_removed1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Remove package from loadder 的本地化字符串。
         /// </summary>
         public static string msg_remove_package_load {
             get {
                 return ResourceManager.GetString("msg_remove_package_load", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Remove package from loadder 的本地化字符串。
+        /// </summary>
+        public static string msg_remove_package_load1 {
+            get {
+                return ResourceManager.GetString("msg_remove_package_load1", resourceCulture);
             }
         }
         
@@ -1386,11 +2702,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Are you sure you want to remove this user? 的本地化字符串。
+        /// </summary>
+        public static string msg_remove_user1 {
+            get {
+                return ResourceManager.GetString("msg_remove_user1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Scan the package&apos;s 2D code 的本地化字符串。
         /// </summary>
         public static string msg_scan_2d_package {
             get {
                 return ResourceManager.GetString("msg_scan_2d_package", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Scan the package&apos;s 2D code 的本地化字符串。
+        /// </summary>
+        public static string msg_scan_2d_package1 {
+            get {
+                return ResourceManager.GetString("msg_scan_2d_package1", resourceCulture);
             }
         }
         
@@ -1404,11 +2738,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Error scanning serial number 的本地化字符串。
+        /// </summary>
+        public static string msg_scan_error1 {
+            get {
+                return ResourceManager.GetString("msg_scan_error1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Scan the vendor 的本地化字符串。
         /// </summary>
         public static string msg_scan_vendor {
             get {
                 return ResourceManager.GetString("msg_scan_vendor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Scan the vendor 的本地化字符串。
+        /// </summary>
+        public static string msg_scan_vendor1 {
+            get {
+                return ResourceManager.GetString("msg_scan_vendor1", resourceCulture);
             }
         }
         
@@ -1422,11 +2774,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Please restart the application to apply the changes 的本地化字符串。
+        /// </summary>
+        public static string msg_settings_changed_needs_restart1 {
+            get {
+                return ResourceManager.GetString("msg_settings_changed_needs_restart1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 SFC server not responding, please contact IT department 的本地化字符串。
         /// </summary>
         public static string msg_sfc_timeout {
             get {
                 return ResourceManager.GetString("msg_sfc_timeout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 SFC server not responding, please contact IT department 的本地化字符串。
+        /// </summary>
+        public static string msg_sfc_timeout1 {
+            get {
+                return ResourceManager.GetString("msg_sfc_timeout1", resourceCulture);
             }
         }
         
@@ -1440,11 +2810,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 SFC unknown error 的本地化字符串。
+        /// </summary>
+        public static string msg_sfc_unkown_error1 {
+            get {
+                return ResourceManager.GetString("msg_sfc_unkown_error1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Please clean the pcb and feed it back into the screen printer 的本地化字符串。
         /// </summary>
         public static string msg_spi_repair {
             get {
                 return ResourceManager.GetString("msg_spi_repair", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Please clean the pcb and feed it back into the screen printer 的本地化字符串。
+        /// </summary>
+        public static string msg_spi_repair1 {
+            get {
+                return ResourceManager.GetString("msg_spi_repair1", resourceCulture);
             }
         }
         
@@ -1458,11 +2846,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Task successfully executed 的本地化字符串。
+        /// </summary>
+        public static string msg_success_task1 {
+            get {
+                return ResourceManager.GetString("msg_success_task1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Update available 的本地化字符串。
         /// </summary>
         public static string msg_update_available {
             get {
                 return ResourceManager.GetString("msg_update_available", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Update available 的本地化字符串。
+        /// </summary>
+        public static string msg_update_available1 {
+            get {
+                return ResourceManager.GetString("msg_update_available1", resourceCulture);
             }
         }
         
@@ -1476,11 +2882,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 User added 的本地化字符串。
+        /// </summary>
+        public static string msg_user_added1 {
+            get {
+                return ResourceManager.GetString("msg_user_added1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 User already exists 的本地化字符串。
         /// </summary>
         public static string msg_user_already_exists {
             get {
                 return ResourceManager.GetString("msg_user_already_exists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 User already exists 的本地化字符串。
+        /// </summary>
+        public static string msg_user_already_exists1 {
+            get {
+                return ResourceManager.GetString("msg_user_already_exists1", resourceCulture);
             }
         }
         
@@ -1494,11 +2918,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 User deleted 的本地化字符串。
+        /// </summary>
+        public static string msg_user_deleted1 {
+            get {
+                return ResourceManager.GetString("msg_user_deleted1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 User not found 的本地化字符串。
         /// </summary>
         public static string msg_user_not_found {
             get {
                 return ResourceManager.GetString("msg_user_not_found", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 User not found 的本地化字符串。
+        /// </summary>
+        public static string msg_user_not_found1 {
+            get {
+                return ResourceManager.GetString("msg_user_not_found1", resourceCulture);
             }
         }
         
@@ -1512,11 +2954,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 User updated 的本地化字符串。
+        /// </summary>
+        public static string msg_user_updated1 {
+            get {
+                return ResourceManager.GetString("msg_user_updated1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 User without permission to excecute the action. 的本地化字符串。
         /// </summary>
         public static string msg_user_without_permission {
             get {
                 return ResourceManager.GetString("msg_user_without_permission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 User without permission to excecute the action. 的本地化字符串。
+        /// </summary>
+        public static string msg_user_without_permission1 {
+            get {
+                return ResourceManager.GetString("msg_user_without_permission1", resourceCulture);
             }
         }
         
@@ -1530,11 +2990,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 The users have been exported to a CSV file 的本地化字符串。
+        /// </summary>
+        public static string msg_users_exported_to_csv1 {
+            get {
+                return ResourceManager.GetString("msg_users_exported_to_csv1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 UUT Processor started 的本地化字符串。
         /// </summary>
         public static string msg_uut_processor_started {
             get {
                 return ResourceManager.GetString("msg_uut_processor_started", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 UUT Processor started 的本地化字符串。
+        /// </summary>
+        public static string msg_uut_processor_started1 {
+            get {
+                return ResourceManager.GetString("msg_uut_processor_started1", resourceCulture);
             }
         }
         
@@ -1548,11 +3026,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 UUT Processor stopped 的本地化字符串。
+        /// </summary>
+        public static string msg_uut_processor_stopped1 {
+            get {
+                return ResourceManager.GetString("msg_uut_processor_stopped1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Error while trying to wait for dummy board 的本地化字符串。
         /// </summary>
         public static string msg_wait_for_dummy_error {
             get {
                 return ResourceManager.GetString("msg_wait_for_dummy_error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Error while trying to wait for dummy board 的本地化字符串。
+        /// </summary>
+        public static string msg_wait_for_dummy_error1 {
+            get {
+                return ResourceManager.GetString("msg_wait_for_dummy_error1", resourceCulture);
             }
         }
         
@@ -1566,11 +3062,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Waiting for dummy board 的本地化字符串。
+        /// </summary>
+        public static string msg_waiting_dummy_board1 {
+            get {
+                return ResourceManager.GetString("msg_waiting_dummy_board1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Work order not found 的本地化字符串。
         /// </summary>
         public static string msg_work_order_not_found {
             get {
                 return ResourceManager.GetString("msg_work_order_not_found", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Work order not found 的本地化字符串。
+        /// </summary>
+        public static string msg_work_order_not_found1 {
+            get {
+                return ResourceManager.GetString("msg_work_order_not_found1", resourceCulture);
             }
         }
         
@@ -1584,11 +3098,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 The uut does not correspond to this station 的本地化字符串。
+        /// </summary>
+        public static string msg_wrong_station1 {
+            get {
+                return ResourceManager.GetString("msg_wrong_station1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 About 的本地化字符串。
         /// </summary>
         public static string txt_about {
             get {
                 return ResourceManager.GetString("txt_about", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 About 的本地化字符串。
+        /// </summary>
+        public static string txt_about1 {
+            get {
+                return ResourceManager.GetString("txt_about1", resourceCulture);
             }
         }
         
@@ -1602,11 +3134,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Account 的本地化字符串。
+        /// </summary>
+        public static string txt_account1 {
+            get {
+                return ResourceManager.GetString("txt_account1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Actions 的本地化字符串。
         /// </summary>
         public static string txt_actions {
             get {
                 return ResourceManager.GetString("txt_actions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Actions 的本地化字符串。
+        /// </summary>
+        public static string txt_actions1 {
+            get {
+                return ResourceManager.GetString("txt_actions1", resourceCulture);
             }
         }
         
@@ -1629,11 +3179,38 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Add package 的本地化字符串。
+        /// </summary>
+        public static string txt_add_package1 {
+            get {
+                return ResourceManager.GetString("txt_add_package1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Add user 的本地化字符串。
         /// </summary>
         public static string txt_add_user {
             get {
                 return ResourceManager.GetString("txt_add_user", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Add user 的本地化字符串。
+        /// </summary>
+        public static string txt_add_user1 {
+            get {
+                return ResourceManager.GetString("txt_add_user1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Add 的本地化字符串。
+        /// </summary>
+        public static string txt_add1 {
+            get {
+                return ResourceManager.GetString("txt_add1", resourceCulture);
             }
         }
         
@@ -1647,11 +3224,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Amin tools 的本地化字符串。
+        /// </summary>
+        public static string txt_admin_tools1 {
+            get {
+                return ResourceManager.GetString("txt_admin_tools1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 All 的本地化字符串。
         /// </summary>
         public static string txt_all {
             get {
                 return ResourceManager.GetString("txt_all", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 All 的本地化字符串。
+        /// </summary>
+        public static string txt_all1 {
+            get {
+                return ResourceManager.GetString("txt_all1", resourceCulture);
             }
         }
         
@@ -1665,11 +3260,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Cancel 的本地化字符串。
+        /// </summary>
+        public static string txt_cancel1 {
+            get {
+                return ResourceManager.GetString("txt_cancel1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Check for updates 的本地化字符串。
         /// </summary>
         public static string txt_check_for_updates {
             get {
                 return ResourceManager.GetString("txt_check_for_updates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Check for updates 的本地化字符串。
+        /// </summary>
+        public static string txt_check_for_updates1 {
+            get {
+                return ResourceManager.GetString("txt_check_for_updates1", resourceCulture);
             }
         }
         
@@ -1683,11 +3296,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Com port 的本地化字符串。
+        /// </summary>
+        public static string txt_com_port1 {
+            get {
+                return ResourceManager.GetString("txt_com_port1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Connect 的本地化字符串。
         /// </summary>
         public static string txt_connect {
             get {
                 return ResourceManager.GetString("txt_connect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Connect 的本地化字符串。
+        /// </summary>
+        public static string txt_connect1 {
+            get {
+                return ResourceManager.GetString("txt_connect1", resourceCulture);
             }
         }
         
@@ -1701,11 +3332,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Connected 的本地化字符串。
+        /// </summary>
+        public static string txt_connected1 {
+            get {
+                return ResourceManager.GetString("txt_connected1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Created at 的本地化字符串。
         /// </summary>
         public static string txt_created_at {
             get {
                 return ResourceManager.GetString("txt_created_at", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Created at 的本地化字符串。
+        /// </summary>
+        public static string txt_created_at1 {
+            get {
+                return ResourceManager.GetString("txt_created_at1", resourceCulture);
             }
         }
         
@@ -1719,11 +3368,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Dark theme 的本地化字符串。
+        /// </summary>
+        public static string txt_dark_theme1 {
+            get {
+                return ResourceManager.GetString("txt_dark_theme1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Date 的本地化字符串。
         /// </summary>
         public static string txt_date {
             get {
                 return ResourceManager.GetString("txt_date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Date 的本地化字符串。
+        /// </summary>
+        public static string txt_date1 {
+            get {
+                return ResourceManager.GetString("txt_date1", resourceCulture);
             }
         }
         
@@ -1737,11 +3404,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Defect 的本地化字符串。
+        /// </summary>
+        public static string txt_defect1 {
+            get {
+                return ResourceManager.GetString("txt_defect1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Delete 的本地化字符串。
         /// </summary>
         public static string txt_delete {
             get {
                 return ResourceManager.GetString("txt_delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Delete 的本地化字符串。
+        /// </summary>
+        public static string txt_delete1 {
+            get {
+                return ResourceManager.GetString("txt_delete1", resourceCulture);
             }
         }
         
@@ -1755,11 +3440,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Department 的本地化字符串。
+        /// </summary>
+        public static string txt_department1 {
+            get {
+                return ResourceManager.GetString("txt_department1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Disconnect 的本地化字符串。
         /// </summary>
         public static string txt_disconnect {
             get {
                 return ResourceManager.GetString("txt_disconnect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Disconnect 的本地化字符串。
+        /// </summary>
+        public static string txt_disconnect1 {
+            get {
+                return ResourceManager.GetString("txt_disconnect1", resourceCulture);
             }
         }
         
@@ -1773,11 +3476,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Disconnected 的本地化字符串。
+        /// </summary>
+        public static string txt_disconnected1 {
+            get {
+                return ResourceManager.GetString("txt_disconnected1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Dummy board 的本地化字符串。
         /// </summary>
         public static string txt_dummy_board {
             get {
                 return ResourceManager.GetString("txt_dummy_board", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Dummy board 的本地化字符串。
+        /// </summary>
+        public static string txt_dummy_board1 {
+            get {
+                return ResourceManager.GetString("txt_dummy_board1", resourceCulture);
             }
         }
         
@@ -1800,11 +3521,38 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Edit user 的本地化字符串。
+        /// </summary>
+        public static string txt_edit_user1 {
+            get {
+                return ResourceManager.GetString("txt_edit_user1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Edit 的本地化字符串。
+        /// </summary>
+        public static string txt_edit1 {
+            get {
+                return ResourceManager.GetString("txt_edit1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Employee 的本地化字符串。
         /// </summary>
         public static string txt_employee {
             get {
                 return ResourceManager.GetString("txt_employee", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Employee 的本地化字符串。
+        /// </summary>
+        public static string txt_employee1 {
+            get {
+                return ResourceManager.GetString("txt_employee1", resourceCulture);
             }
         }
         
@@ -1827,11 +3575,38 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Error code 的本地化字符串。
+        /// </summary>
+        public static string txt_error_code1 {
+            get {
+                return ResourceManager.GetString("txt_error_code1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Error flag 的本地化字符串。
         /// </summary>
         public static string txt_error_flag {
             get {
                 return ResourceManager.GetString("txt_error_flag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Error flag 的本地化字符串。
+        /// </summary>
+        public static string txt_error_flag1 {
+            get {
+                return ResourceManager.GetString("txt_error_flag1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Error 的本地化字符串。
+        /// </summary>
+        public static string txt_error1 {
+            get {
+                return ResourceManager.GetString("txt_error1", resourceCulture);
             }
         }
         
@@ -1845,11 +3620,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Exit 的本地化字符串。
+        /// </summary>
+        public static string txt_exit1 {
+            get {
+                return ResourceManager.GetString("txt_exit1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Export table to csv 的本地化字符串。
         /// </summary>
         public static string txt_export_table_to_csv {
             get {
                 return ResourceManager.GetString("txt_export_table_to_csv", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Export table to csv 的本地化字符串。
+        /// </summary>
+        public static string txt_export_table_to_csv1 {
+            get {
+                return ResourceManager.GetString("txt_export_table_to_csv1", resourceCulture);
             }
         }
         
@@ -1863,11 +3656,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Failed 的本地化字符串。
+        /// </summary>
+        public static string txt_failed1 {
+            get {
+                return ResourceManager.GetString("txt_failed1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Feature Permissions 的本地化字符串。
         /// </summary>
         public static string txt_features_permissions {
             get {
                 return ResourceManager.GetString("txt_features_permissions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Feature Permissions 的本地化字符串。
+        /// </summary>
+        public static string txt_features_permissions1 {
+            get {
+                return ResourceManager.GetString("txt_features_permissions1", resourceCulture);
             }
         }
         
@@ -1881,11 +3692,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 File 的本地化字符串。
+        /// </summary>
+        public static string txt_file1 {
+            get {
+                return ResourceManager.GetString("txt_file1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Filter 的本地化字符串。
         /// </summary>
         public static string txt_filter {
             get {
                 return ResourceManager.GetString("txt_filter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Filter 的本地化字符串。
+        /// </summary>
+        public static string txt_filter1 {
+            get {
+                return ResourceManager.GetString("txt_filter1", resourceCulture);
             }
         }
         
@@ -1899,11 +3728,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 From 的本地化字符串。
+        /// </summary>
+        public static string txt_from1 {
+            get {
+                return ResourceManager.GetString("txt_from1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Fullscreen 的本地化字符串。
         /// </summary>
         public static string txt_fullscreen {
             get {
                 return ResourceManager.GetString("txt_fullscreen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Fullscreen 的本地化字符串。
+        /// </summary>
+        public static string txt_fullscreen1 {
+            get {
+                return ResourceManager.GetString("txt_fullscreen1", resourceCulture);
             }
         }
         
@@ -1917,11 +3764,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 General settings 的本地化字符串。
+        /// </summary>
+        public static string txt_general_settings1 {
+            get {
+                return ResourceManager.GetString("txt_general_settings1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Hermes 的本地化字符串。
         /// </summary>
         public static string txt_hermes {
             get {
                 return ResourceManager.GetString("txt_hermes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Hermes 的本地化字符串。
+        /// </summary>
+        public static string txt_hermes1 {
+            get {
+                return ResourceManager.GetString("txt_hermes1", resourceCulture);
             }
         }
         
@@ -1935,11 +3800,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Hidden 的本地化字符串。
+        /// </summary>
+        public static string txt_hidden1 {
+            get {
+                return ResourceManager.GetString("txt_hidden1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Id 的本地化字符串。
         /// </summary>
         public static string txt_id {
             get {
                 return ResourceManager.GetString("txt_id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Id 的本地化字符串。
+        /// </summary>
+        public static string txt_id1 {
+            get {
+                return ResourceManager.GetString("txt_id1", resourceCulture);
             }
         }
         
@@ -1953,11 +3836,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 In use 的本地化字符串。
+        /// </summary>
+        public static string txt_in_use1 {
+            get {
+                return ResourceManager.GetString("txt_in_use1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Info 的本地化字符串。
         /// </summary>
         public static string txt_info {
             get {
                 return ResourceManager.GetString("txt_info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Info 的本地化字符串。
+        /// </summary>
+        public static string txt_info1 {
+            get {
+                return ResourceManager.GetString("txt_info1", resourceCulture);
             }
         }
         
@@ -1980,11 +3881,38 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Input dummy board 的本地化字符串。
+        /// </summary>
+        public static string txt_input_dummy1 {
+            get {
+                return ResourceManager.GetString("txt_input_dummy1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Input 的本地化字符串。
+        /// </summary>
+        public static string txt_input1 {
+            get {
+                return ResourceManager.GetString("txt_input1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Invalid token 的本地化字符串。
         /// </summary>
         public static string txt_invalid_token {
             get {
                 return ResourceManager.GetString("txt_invalid_token", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Invalid token 的本地化字符串。
+        /// </summary>
+        public static string txt_invalid_token1 {
+            get {
+                return ResourceManager.GetString("txt_invalid_token1", resourceCulture);
             }
         }
         
@@ -1998,11 +3926,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Last refresh 的本地化字符串。
+        /// </summary>
+        public static string txt_last_refresh1 {
+            get {
+                return ResourceManager.GetString("txt_last_refresh1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Later 的本地化字符串。
         /// </summary>
         public static string txt_later {
             get {
                 return ResourceManager.GetString("txt_later", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Later 的本地化字符串。
+        /// </summary>
+        public static string txt_later1 {
+            get {
+                return ResourceManager.GetString("txt_later1", resourceCulture);
             }
         }
         
@@ -2016,11 +3962,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Level 的本地化字符串。
+        /// </summary>
+        public static string txt_level1 {
+            get {
+                return ResourceManager.GetString("txt_level1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Light theme 的本地化字符串。
         /// </summary>
         public static string txt_light_theme {
             get {
                 return ResourceManager.GetString("txt_light_theme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Light theme 的本地化字符串。
+        /// </summary>
+        public static string txt_light_theme1 {
+            get {
+                return ResourceManager.GetString("txt_light_theme1", resourceCulture);
             }
         }
         
@@ -2034,11 +3998,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Loaded 的本地化字符串。
+        /// </summary>
+        public static string txt_loaded1 {
+            get {
+                return ResourceManager.GetString("txt_loaded1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Loading... 的本地化字符串。
         /// </summary>
         public static string txt_loading {
             get {
                 return ResourceManager.GetString("txt_loading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Loading... 的本地化字符串。
+        /// </summary>
+        public static string txt_loading1 {
+            get {
+                return ResourceManager.GetString("txt_loading1", resourceCulture);
             }
         }
         
@@ -2052,11 +4034,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Location 的本地化字符串。
+        /// </summary>
+        public static string txt_location1 {
+            get {
+                return ResourceManager.GetString("txt_location1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Logging in... 的本地化字符串。
         /// </summary>
         public static string txt_logging_in {
             get {
                 return ResourceManager.GetString("txt_logging_in", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Logging in... 的本地化字符串。
+        /// </summary>
+        public static string txt_logging_in1 {
+            get {
+                return ResourceManager.GetString("txt_logging_in1", resourceCulture);
             }
         }
         
@@ -2070,11 +4070,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Login 的本地化字符串。
+        /// </summary>
+        public static string txt_login1 {
+            get {
+                return ResourceManager.GetString("txt_login1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Logout 的本地化字符串。
         /// </summary>
         public static string txt_logout {
             get {
                 return ResourceManager.GetString("txt_logout", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Logout 的本地化字符串。
+        /// </summary>
+        public static string txt_logout1 {
+            get {
+                return ResourceManager.GetString("txt_logout1", resourceCulture);
             }
         }
         
@@ -2088,11 +4106,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Minimum level 的本地化字符串。
+        /// </summary>
+        public static string txt_minimum_level1 {
+            get {
+                return ResourceManager.GetString("txt_minimum_level1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Name 的本地化字符串。
         /// </summary>
         public static string txt_name {
             get {
                 return ResourceManager.GetString("txt_name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Name 的本地化字符串。
+        /// </summary>
+        public static string txt_name1 {
+            get {
+                return ResourceManager.GetString("txt_name1", resourceCulture);
             }
         }
         
@@ -2106,11 +4142,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 No 的本地化字符串。
+        /// </summary>
+        public static string txt_no1 {
+            get {
+                return ResourceManager.GetString("txt_no1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Not found 的本地化字符串。
         /// </summary>
         public static string txt_not_found {
             get {
                 return ResourceManager.GetString("txt_not_found", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Not found 的本地化字符串。
+        /// </summary>
+        public static string txt_not_found1 {
+            get {
+                return ResourceManager.GetString("txt_not_found1", resourceCulture);
             }
         }
         
@@ -2124,11 +4178,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Ok 的本地化字符串。
+        /// </summary>
+        public static string txt_ok1 {
+            get {
+                return ResourceManager.GetString("txt_ok1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Open Pushi app 的本地化字符串。
         /// </summary>
         public static string txt_open_hermes_app {
             get {
                 return ResourceManager.GetString("txt_open_hermes_app", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Open Pushi app 的本地化字符串。
+        /// </summary>
+        public static string txt_open_hermes_app1 {
+            get {
+                return ResourceManager.GetString("txt_open_hermes_app1", resourceCulture);
             }
         }
         
@@ -2142,11 +4214,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Passed 的本地化字符串。
+        /// </summary>
+        public static string txt_passed1 {
+            get {
+                return ResourceManager.GetString("txt_passed1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Password 的本地化字符串。
         /// </summary>
         public static string txt_password {
             get {
                 return ResourceManager.GetString("txt_password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Password 的本地化字符串。
+        /// </summary>
+        public static string txt_password1 {
+            get {
+                return ResourceManager.GetString("txt_password1", resourceCulture);
             }
         }
         
@@ -2160,11 +4250,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Path 的本地化字符串。
+        /// </summary>
+        public static string txt_path1 {
+            get {
+                return ResourceManager.GetString("txt_path1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Permission 的本地化字符串。
         /// </summary>
         public static string txt_permission {
             get {
                 return ResourceManager.GetString("txt_permission", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Permission 的本地化字符串。
+        /// </summary>
+        public static string txt_permission1 {
+            get {
+                return ResourceManager.GetString("txt_permission1", resourceCulture);
             }
         }
         
@@ -2178,11 +4286,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 PkgId 的本地化字符串。
+        /// </summary>
+        public static string txt_pkgid1 {
+            get {
+                return ResourceManager.GetString("txt_pkgid1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Refresh 的本地化字符串。
         /// </summary>
         public static string txt_refresh {
             get {
                 return ResourceManager.GetString("txt_refresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Refresh 的本地化字符串。
+        /// </summary>
+        public static string txt_refresh1 {
+            get {
+                return ResourceManager.GetString("txt_refresh1", resourceCulture);
             }
         }
         
@@ -2196,11 +4322,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Remove user 的本地化字符串。
+        /// </summary>
+        public static string txt_remove_user1 {
+            get {
+                return ResourceManager.GetString("txt_remove_user1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Repair 的本地化字符串。
         /// </summary>
         public static string txt_repair {
             get {
                 return ResourceManager.GetString("txt_repair", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Repair 的本地化字符串。
+        /// </summary>
+        public static string txt_repair1 {
+            get {
+                return ResourceManager.GetString("txt_repair1", resourceCulture);
             }
         }
         
@@ -2214,11 +4358,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Resend 的本地化字符串。
+        /// </summary>
+        public static string txt_resend1 {
+            get {
+                return ResourceManager.GetString("txt_resend1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Restart 的本地化字符串。
         /// </summary>
         public static string txt_restart {
             get {
                 return ResourceManager.GetString("txt_restart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Restart 的本地化字符串。
+        /// </summary>
+        public static string txt_restart1 {
+            get {
+                return ResourceManager.GetString("txt_restart1", resourceCulture);
             }
         }
         
@@ -2232,6 +4394,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Running 的本地化字符串。
+        /// </summary>
+        public static string txt_running1 {
+            get {
+                return ResourceManager.GetString("txt_running1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Scanned 的本地化字符串。
         /// </summary>
         public static string txt_scanned {
@@ -2241,11 +4412,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Scanned 的本地化字符串。
+        /// </summary>
+        public static string txt_scanned1 {
+            get {
+                return ResourceManager.GetString("txt_scanned1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Scanner 的本地化字符串。
         /// </summary>
         public static string txt_scanner {
             get {
                 return ResourceManager.GetString("txt_scanner", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Scanner 的本地化字符串。
+        /// </summary>
+        public static string txt_scanner1 {
+            get {
+                return ResourceManager.GetString("txt_scanner1", resourceCulture);
             }
         }
         
@@ -2268,6 +4457,24 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Search PackageId 的本地化字符串。
+        /// </summary>
+        public static string txt_search_pkgid1 {
+            get {
+                return ResourceManager.GetString("txt_search_pkgid1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Search 的本地化字符串。
+        /// </summary>
+        public static string txt_search1 {
+            get {
+                return ResourceManager.GetString("txt_search1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Select work order 的本地化字符串。
         /// </summary>
         public static string txt_select_work_order {
@@ -2277,11 +4484,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Select work order 的本地化字符串。
+        /// </summary>
+        public static string txt_select_work_order1 {
+            get {
+                return ResourceManager.GetString("txt_select_work_order1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Serial number 的本地化字符串。
         /// </summary>
         public static string txt_serial_number {
             get {
                 return ResourceManager.GetString("txt_serial_number", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Serial number 的本地化字符串。
+        /// </summary>
+        public static string txt_serial_number1 {
+            get {
+                return ResourceManager.GetString("txt_serial_number1", resourceCulture);
             }
         }
         
@@ -2304,11 +4529,38 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Settings changed 的本地化字符串。
+        /// </summary>
+        public static string txt_settings_changed1 {
+            get {
+                return ResourceManager.GetString("txt_settings_changed1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Settings 的本地化字符串。
+        /// </summary>
+        public static string txt_settings1 {
+            get {
+                return ResourceManager.GetString("txt_settings1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 SFC open 的本地化字符串。
         /// </summary>
         public static string txt_sfc_open {
             get {
                 return ResourceManager.GetString("txt_sfc_open", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 SFC open 的本地化字符串。
+        /// </summary>
+        public static string txt_sfc_open1 {
+            get {
+                return ResourceManager.GetString("txt_sfc_open1", resourceCulture);
             }
         }
         
@@ -2331,11 +4583,38 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Sfc response content 的本地化字符串。
+        /// </summary>
+        public static string txt_sfc_response_content1 {
+            get {
+                return ResourceManager.GetString("txt_sfc_response_content1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Sfc response 的本地化字符串。
+        /// </summary>
+        public static string txt_sfc_response1 {
+            get {
+                return ResourceManager.GetString("txt_sfc_response1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Sfc Simulator 的本地化字符串。
         /// </summary>
         public static string txt_sfc_simulator {
             get {
                 return ResourceManager.GetString("txt_sfc_simulator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Sfc Simulator 的本地化字符串。
+        /// </summary>
+        public static string txt_sfc_simulator1 {
+            get {
+                return ResourceManager.GetString("txt_sfc_simulator1", resourceCulture);
             }
         }
         
@@ -2349,11 +4628,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Show password 的本地化字符串。
+        /// </summary>
+        public static string txt_show_password1 {
+            get {
+                return ResourceManager.GetString("txt_show_password1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Shown 的本地化字符串。
         /// </summary>
         public static string txt_shown {
             get {
                 return ResourceManager.GetString("txt_shown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Shown 的本地化字符串。
+        /// </summary>
+        public static string txt_shown1 {
+            get {
+                return ResourceManager.GetString("txt_shown1", resourceCulture);
             }
         }
         
@@ -2367,11 +4664,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Start 的本地化字符串。
+        /// </summary>
+        public static string txt_start1 {
+            get {
+                return ResourceManager.GetString("txt_start1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Status 的本地化字符串。
         /// </summary>
         public static string txt_status {
             get {
                 return ResourceManager.GetString("txt_status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Status 的本地化字符串。
+        /// </summary>
+        public static string txt_status1 {
+            get {
+                return ResourceManager.GetString("txt_status1", resourceCulture);
             }
         }
         
@@ -2385,11 +4700,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Stop 的本地化字符串。
+        /// </summary>
+        public static string txt_stop1 {
+            get {
+                return ResourceManager.GetString("txt_stop1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Stopped 的本地化字符串。
         /// </summary>
         public static string txt_stopped {
             get {
                 return ResourceManager.GetString("txt_stopped", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Stopped 的本地化字符串。
+        /// </summary>
+        public static string txt_stopped1 {
+            get {
+                return ResourceManager.GetString("txt_stopped1", resourceCulture);
             }
         }
         
@@ -2403,11 +4736,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Success 的本地化字符串。
+        /// </summary>
+        public static string txt_success1 {
+            get {
+                return ResourceManager.GetString("txt_success1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Test status 的本地化字符串。
         /// </summary>
         public static string txt_test_status {
             get {
                 return ResourceManager.GetString("txt_test_status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Test status 的本地化字符串。
+        /// </summary>
+        public static string txt_test_status1 {
+            get {
+                return ResourceManager.GetString("txt_test_status1", resourceCulture);
             }
         }
         
@@ -2421,11 +4772,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Time span 的本地化字符串。
+        /// </summary>
+        public static string txt_time_span1 {
+            get {
+                return ResourceManager.GetString("txt_time_span1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Title bar 的本地化字符串。
         /// </summary>
         public static string txt_title_bar {
             get {
                 return ResourceManager.GetString("txt_title_bar", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Title bar 的本地化字符串。
+        /// </summary>
+        public static string txt_title_bar1 {
+            get {
+                return ResourceManager.GetString("txt_title_bar1", resourceCulture);
             }
         }
         
@@ -2439,6 +4808,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 To 的本地化字符串。
+        /// </summary>
+        public static string txt_to1 {
+            get {
+                return ResourceManager.GetString("txt_to1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Token 的本地化字符串。
         /// </summary>
         public static string txt_token {
@@ -2448,11 +4826,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Token 的本地化字符串。
+        /// </summary>
+        public static string txt_token1 {
+            get {
+                return ResourceManager.GetString("txt_token1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Trigger 的本地化字符串。
         /// </summary>
         public static string txt_trigger {
             get {
                 return ResourceManager.GetString("txt_trigger", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Trigger 的本地化字符串。
+        /// </summary>
+        public static string txt_trigger1 {
+            get {
+                return ResourceManager.GetString("txt_trigger1", resourceCulture);
             }
         }
         
@@ -2475,6 +4871,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 New version available 的本地化字符串。
+        /// </summary>
+        public static string txt_update_available1 {
+            get {
+                return ResourceManager.GetString("txt_update_available1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Update level 的本地化字符串。
         /// </summary>
         public static string txt_update_level {
@@ -2484,11 +4889,38 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Update level 的本地化字符串。
+        /// </summary>
+        public static string txt_update_level1 {
+            get {
+                return ResourceManager.GetString("txt_update_level1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Update 的本地化字符串。
+        /// </summary>
+        public static string txt_update1 {
+            get {
+                return ResourceManager.GetString("txt_update1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Used 的本地化字符串。
         /// </summary>
         public static string txt_used {
             get {
                 return ResourceManager.GetString("txt_used", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Used 的本地化字符串。
+        /// </summary>
+        public static string txt_used1 {
+            get {
+                return ResourceManager.GetString("txt_used1", resourceCulture);
             }
         }
         
@@ -2511,11 +4943,38 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 User management 的本地化字符串。
+        /// </summary>
+        public static string txt_user_management1 {
+            get {
+                return ResourceManager.GetString("txt_user_management1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 User 的本地化字符串。
+        /// </summary>
+        public static string txt_user1 {
+            get {
+                return ResourceManager.GetString("txt_user1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 UUT Processor 的本地化字符串。
         /// </summary>
         public static string txt_uut_processor {
             get {
                 return ResourceManager.GetString("txt_uut_processor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 UUT Processor 的本地化字符串。
+        /// </summary>
+        public static string txt_uut_processor1 {
+            get {
+                return ResourceManager.GetString("txt_uut_processor1", resourceCulture);
             }
         }
         
@@ -2538,11 +4997,38 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 View level 的本地化字符串。
+        /// </summary>
+        public static string txt_view_level1 {
+            get {
+                return ResourceManager.GetString("txt_view_level1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 View 的本地化字符串。
+        /// </summary>
+        public static string txt_view1 {
+            get {
+                return ResourceManager.GetString("txt_view1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Visible 的本地化字符串。
         /// </summary>
         public static string txt_visible {
             get {
                 return ResourceManager.GetString("txt_visible", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Visible 的本地化字符串。
+        /// </summary>
+        public static string txt_visible1 {
+            get {
+                return ResourceManager.GetString("txt_visible1", resourceCulture);
             }
         }
         
@@ -2556,11 +5042,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Warning 的本地化字符串。
+        /// </summary>
+        public static string txt_warning1 {
+            get {
+                return ResourceManager.GetString("txt_warning1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Welcome 的本地化字符串。
         /// </summary>
         public static string txt_welcome {
             get {
                 return ResourceManager.GetString("txt_welcome", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Welcome 的本地化字符串。
+        /// </summary>
+        public static string txt_welcome1 {
+            get {
+                return ResourceManager.GetString("txt_welcome1", resourceCulture);
             }
         }
         
@@ -2574,11 +5078,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Work order 的本地化字符串。
+        /// </summary>
+        public static string txt_work_order1 {
+            get {
+                return ResourceManager.GetString("txt_work_order1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Yes 的本地化字符串。
         /// </summary>
         public static string txt_yes {
             get {
                 return ResourceManager.GetString("txt_yes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Yes 的本地化字符串。
+        /// </summary>
+        public static string txt_yes1 {
+            get {
+                return ResourceManager.GetString("txt_yes1", resourceCulture);
             }
         }
     }

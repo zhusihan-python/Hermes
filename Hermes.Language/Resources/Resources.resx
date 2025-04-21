@@ -120,754 +120,1507 @@
   <data name="c_token_unlock_button" xml:space="preserve">
     <value>Unlock</value>
   </data>
+  <data name="c_token_unlock_button1" xml:space="preserve">
+    <value>Unlock</value>
+  </data>
   <data name="c_token_watermark" xml:space="preserve">
+    <value>Token</value>
+  </data>
+  <data name="c_token_watermark1" xml:space="preserve">
     <value>Token</value>
   </data>
   <data name="txt_start" xml:space="preserve">
     <value>Start</value>
   </data>
+  <data name="txt_start1" xml:space="preserve">
+    <value>Start</value>
+  </data>
   <data name="txt_stop" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="txt_stop1" xml:space="preserve">
     <value>Stop</value>
   </data>
   <data name="txt_running" xml:space="preserve">
     <value>Running</value>
   </data>
+  <data name="txt_running1" xml:space="preserve">
+    <value>Running</value>
+  </data>
   <data name="txt_stopped" xml:space="preserve">
+    <value>Stopped</value>
+  </data>
+  <data name="txt_stopped1" xml:space="preserve">
     <value>Stopped</value>
   </data>
   <data name="txt_status" xml:space="preserve">
     <value>Status</value>
   </data>
+  <data name="txt_status1" xml:space="preserve">
+    <value>Status</value>
+  </data>
   <data name="c_sfc_simulator_response_mode" xml:space="preserve">
+    <value>Response mode</value>
+  </data>
+  <data name="c_sfc_simulator_response_mode1" xml:space="preserve">
     <value>Response mode</value>
   </data>
   <data name="txt_file" xml:space="preserve">
     <value>File</value>
   </data>
+  <data name="txt_file1" xml:space="preserve">
+    <value>File</value>
+  </data>
   <data name="txt_view" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="txt_view1" xml:space="preserve">
     <value>View</value>
   </data>
   <data name="txt_exit" xml:space="preserve">
     <value>Exit</value>
   </data>
+  <data name="txt_exit1" xml:space="preserve">
+    <value>Exit</value>
+  </data>
   <data name="txt_fullscreen" xml:space="preserve">
+    <value>Fullscreen</value>
+  </data>
+  <data name="txt_fullscreen1" xml:space="preserve">
     <value>Fullscreen</value>
   </data>
   <data name="txt_settings" xml:space="preserve">
     <value>Settings</value>
   </data>
+  <data name="txt_settings1" xml:space="preserve">
+    <value>Settings</value>
+  </data>
   <data name="txt_general_settings" xml:space="preserve">
+    <value>General settings</value>
+  </data>
+  <data name="txt_general_settings1" xml:space="preserve">
     <value>General settings</value>
   </data>
   <data name="c_main_window_tooltip_fullscreen" xml:space="preserve">
     <value>Makes the app fullscreen</value>
   </data>
+  <data name="c_main_window_tooltip_fullscreen1" xml:space="preserve">
+    <value>Makes the app fullscreen</value>
+  </data>
   <data name="c_main_window_tooltip_toggle_top_menu" xml:space="preserve">
+    <value>Click to toggle top menu</value>
+  </data>
+  <data name="c_main_window_tooltip_toggle_top_menu1" xml:space="preserve">
     <value>Click to toggle top menu</value>
   </data>
   <data name="txt_title_bar" xml:space="preserve">
     <value>Title bar</value>
   </data>
+  <data name="txt_title_bar1" xml:space="preserve">
+    <value>Title bar</value>
+  </data>
   <data name="c_main_window_title_bar_vissible" xml:space="preserve">
+    <value>Title bar is visible</value>
+  </data>
+  <data name="c_main_window_title_bar_vissible1" xml:space="preserve">
     <value>Title bar is visible</value>
   </data>
   <data name="txt_visible" xml:space="preserve">
     <value>Visible</value>
   </data>
+  <data name="txt_visible1" xml:space="preserve">
+    <value>Visible</value>
+  </data>
   <data name="txt_hidden" xml:space="preserve">
+    <value>Hidden</value>
+  </data>
+  <data name="txt_hidden1" xml:space="preserve">
     <value>Hidden</value>
   </data>
   <data name="txt_shown" xml:space="preserve">
     <value>Shown</value>
   </data>
+  <data name="txt_shown1" xml:space="preserve">
+    <value>Shown</value>
+  </data>
   <data name="c_main_window_title_bar_hidden" xml:space="preserve">
+    <value>Title bar is hidden</value>
+  </data>
+  <data name="c_main_window_title_bar_hidden1" xml:space="preserve">
     <value>Title bar is hidden</value>
   </data>
   <data name="c_main_window_title_bar_hidden_msg" xml:space="preserve">
     <value>The title bar has been hiddden</value>
   </data>
+  <data name="c_main_window_title_bar_hidden_msg1" xml:space="preserve">
+    <value>The title bar has been hiddden</value>
+  </data>
   <data name="c_main_window_title_bar_visible_msg" xml:space="preserve">
+    <value>Title bar has been shown</value>
+  </data>
+  <data name="c_main_window_title_bar_visible_msg1" xml:space="preserve">
     <value>Title bar has been shown</value>
   </data>
   <data name="txt_dark_theme" xml:space="preserve">
     <value>Dark theme</value>
   </data>
+  <data name="txt_dark_theme1" xml:space="preserve">
+    <value>Dark theme</value>
+  </data>
   <data name="txt_light_theme" xml:space="preserve">
+    <value>Light theme</value>
+  </data>
+  <data name="txt_light_theme1" xml:space="preserve">
     <value>Light theme</value>
   </data>
   <data name="txt_uut_processor" xml:space="preserve">
     <value>UUT Processor</value>
   </data>
+  <data name="txt_uut_processor1" xml:space="preserve">
+    <value>UUT Processor</value>
+  </data>
   <data name="txt_serial_number" xml:space="preserve">
+    <value>Serial number</value>
+  </data>
+  <data name="txt_serial_number1" xml:space="preserve">
     <value>Serial number</value>
   </data>
   <data name="txt_path" xml:space="preserve">
     <value>Path</value>
   </data>
+  <data name="txt_path1" xml:space="preserve">
+    <value>Path</value>
+  </data>
   <data name="enum_stopped" xml:space="preserve">
+    <value>Stopped</value>
+  </data>
+  <data name="enum_stopped1" xml:space="preserve">
     <value>Stopped</value>
   </data>
   <data name="enum_idle" xml:space="preserve">
     <value>Idle</value>
   </data>
+  <data name="enum_idle1" xml:space="preserve">
+    <value>Idle</value>
+  </data>
   <data name="enum_processing" xml:space="preserve">
+    <value>Processing</value>
+  </data>
+  <data name="enum_processing1" xml:space="preserve">
     <value>Processing</value>
   </data>
   <data name="enum_blocked" xml:space="preserve">
     <value>Blocked</value>
   </data>
+  <data name="enum_blocked1" xml:space="preserve">
+    <value>Blocked</value>
+  </data>
   <data name="txt_repair" xml:space="preserve">
+    <value>Repair</value>
+  </data>
+  <data name="txt_repair1" xml:space="preserve">
     <value>Repair</value>
   </data>
   <data name="txt_ok" xml:space="preserve">
     <value>Ok</value>
   </data>
+  <data name="txt_ok1" xml:space="preserve">
+    <value>Ok</value>
+  </data>
   <data name="txt_actions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="txt_actions1" xml:space="preserve">
     <value>Actions</value>
   </data>
   <data name="enum_ok" xml:space="preserve">
     <value>Ok</value>
   </data>
+  <data name="enum_ok1" xml:space="preserve">
+    <value>Ok</value>
+  </data>
   <data name="enum_timeout" xml:space="preserve">
+    <value>Timeout</value>
+  </data>
+  <data name="enum_timeout1" xml:space="preserve">
     <value>Timeout</value>
   </data>
   <data name="enum_wrongstation" xml:space="preserve">
     <value>Wrong station</value>
   </data>
+  <data name="enum_wrongstation1" xml:space="preserve">
+    <value>Wrong station</value>
+  </data>
   <data name="enum_unknown" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="enum_unknown1" xml:space="preserve">
     <value>Unknown</value>
   </data>
   <data name="c_sfc_sim_create_log_pass" xml:space="preserve">
     <value>Create pass logfile</value>
   </data>
+  <data name="c_sfc_sim_create_log_pass1" xml:space="preserve">
+    <value>Create pass logfile</value>
+  </data>
   <data name="c_sfc_sim_create_log_pass_with_defect" xml:space="preserve">
+    <value>Create pass logfile with custom defect</value>
+  </data>
+  <data name="c_sfc_sim_create_log_pass_with_defect1" xml:space="preserve">
     <value>Create pass logfile with custom defect</value>
   </data>
   <data name="c_sfc_sim_create_log_fail" xml:space="preserve">
     <value>Create fail logfile</value>
   </data>
+  <data name="c_sfc_sim_create_log_fail1" xml:space="preserve">
+    <value>Create fail logfile</value>
+  </data>
   <data name="c_sfc_sim_create_log_critical_fail" xml:space="preserve">
+    <value>Create critical fail logfile</value>
+  </data>
+  <data name="c_sfc_sim_create_log_critical_fail1" xml:space="preserve">
     <value>Create critical fail logfile</value>
   </data>
   <data name="c_sfc_sim_create_log_fail_with_custom_defect" xml:space="preserve">
     <value>Create fail logfile with custom defect</value>
   </data>
+  <data name="c_sfc_sim_create_log_fail_with_custom_defect1" xml:space="preserve">
+    <value>Create fail logfile with custom defect</value>
+  </data>
   <data name="txt_defect" xml:space="preserve">
+    <value>Defect</value>
+  </data>
+  <data name="txt_defect1" xml:space="preserve">
     <value>Defect</value>
   </data>
   <data name="txt_error_flag" xml:space="preserve">
     <value>Error flag</value>
   </data>
+  <data name="txt_error_flag1" xml:space="preserve">
+    <value>Error flag</value>
+  </data>
   <data name="txt_location" xml:space="preserve">
+    <value>Location</value>
+  </data>
+  <data name="txt_location1" xml:space="preserve">
     <value>Location</value>
   </data>
   <data name="txt_error_code" xml:space="preserve">
     <value>Error code</value>
   </data>
+  <data name="txt_error_code1" xml:space="preserve">
+    <value>Error code</value>
+  </data>
   <data name="c_sfc_sim_show_pass" xml:space="preserve">
+    <value>Show pass view</value>
+  </data>
+  <data name="c_sfc_sim_show_pass1" xml:space="preserve">
     <value>Show pass view</value>
   </data>
   <data name="c_sfc_sim_show_repair" xml:space="preserve">
     <value>Show repair view</value>
   </data>
+  <data name="c_sfc_sim_show_repair1" xml:space="preserve">
+    <value>Show repair view</value>
+  </data>
   <data name="c_sfc_sim_show_stop_machine" xml:space="preserve">
+    <value>Show stop machine view</value>
+  </data>
+  <data name="c_sfc_sim_show_stop_machine1" xml:space="preserve">
     <value>Show stop machine view</value>
   </data>
   <data name="c_sfc_sim_show_top_line" xml:space="preserve">
     <value>Show stop line view</value>
   </data>
+  <data name="c_sfc_sim_show_top_line1" xml:space="preserve">
+    <value>Show stop line view</value>
+  </data>
   <data name="c_settings_category_general" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="c_settings_category_general1" xml:space="preserve">
     <value>General</value>
   </data>
   <data name="c_settings_group_common" xml:space="preserve">
     <value>Common</value>
   </data>
+  <data name="c_settings_group_common1" xml:space="preserve">
+    <value>Common</value>
+  </data>
   <data name="c_settings_header_language" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="c_settings_header_language1" xml:space="preserve">
     <value>Language</value>
   </data>
   <data name="c_settings_description_language" xml:space="preserve">
     <value>Language of interface</value>
   </data>
+  <data name="c_settings_description_language1" xml:space="preserve">
+    <value>Language of interface</value>
+  </data>
   <data name="c_settings_category_uut_processor" xml:space="preserve">
+    <value>Uut processor</value>
+  </data>
+  <data name="c_settings_category_uut_processor1" xml:space="preserve">
     <value>Uut processor</value>
   </data>
   <data name="c_settings_group_station" xml:space="preserve">
     <value>Station</value>
   </data>
+  <data name="c_settings_group_station1" xml:space="preserve">
+    <value>Station</value>
+  </data>
   <data name="c_settings_group_paths" xml:space="preserve">
+    <value>Paths</value>
+  </data>
+  <data name="c_settings_group_paths1" xml:space="preserve">
     <value>Paths</value>
   </data>
   <data name="c_settings_group_time" xml:space="preserve">
     <value>Time</value>
   </data>
+  <data name="c_settings_group_time1" xml:space="preserve">
+    <value>Time</value>
+  </data>
   <data name="c_settings_header_wait_delay_ms" xml:space="preserve">
+    <value>Wait delay (ms)</value>
+  </data>
+  <data name="c_settings_header_wait_delay_ms1" xml:space="preserve">
     <value>Wait delay (ms)</value>
   </data>
   <data name="c_settings_header_station" xml:space="preserve">
     <value>Station</value>
   </data>
+  <data name="c_settings_header_station1" xml:space="preserve">
+    <value>Station</value>
+  </data>
   <data name="c_settings_header_machine_type" xml:space="preserve">
+    <value>Machine type</value>
+  </data>
+  <data name="c_settings_header_machine_type1" xml:space="preserve">
     <value>Machine type</value>
   </data>
   <data name="c_settings_header_line_name" xml:space="preserve">
     <value>Line name</value>
   </data>
+  <data name="c_settings_header_line_name1" xml:space="preserve">
+    <value>Line name</value>
+  </data>
   <data name="c_settings_header_logfile_type" xml:space="preserve">
+    <value>Logfile type</value>
+  </data>
+  <data name="c_settings_header_logfile_type1" xml:space="preserve">
     <value>Logfile type</value>
   </data>
   <data name="c_settings_header_sfc_response_ext" xml:space="preserve">
     <value>Sfc response extension</value>
   </data>
+  <data name="c_settings_header_sfc_response_ext1" xml:space="preserve">
+    <value>Sfc response extension</value>
+  </data>
   <data name="c_settings_header_input_file_ext" xml:space="preserve">
+    <value>Input file extension</value>
+  </data>
+  <data name="c_settings_header_input_file_ext1" xml:space="preserve">
     <value>Input file extension</value>
   </data>
   <data name="c_settings_header_send_repair_file" xml:space="preserve">
     <value>Send unit to repair</value>
   </data>
+  <data name="c_settings_header_send_repair_file1" xml:space="preserve">
+    <value>Send unit to repair</value>
+  </data>
   <data name="c_settings_header_autostart_uut_processor" xml:space="preserve">
+    <value>Autostart UUT Processor</value>
+  </data>
+  <data name="c_settings_header_autostart_uut_processor1" xml:space="preserve">
     <value>Autostart UUT Processor</value>
   </data>
   <data name="c_settings_header_max_retries" xml:space="preserve">
     <value>Max retries</value>
   </data>
+  <data name="c_settings_header_max_retries1" xml:space="preserve">
+    <value>Max retries</value>
+  </data>
   <data name="c_settings_header_input_path" xml:space="preserve">
+    <value>Input Path</value>
+  </data>
+  <data name="c_settings_header_input_path1" xml:space="preserve">
     <value>Input Path</value>
   </data>
   <data name="c_settings_header_backup_path" xml:space="preserve">
     <value>Backup Path</value>
   </data>
+  <data name="c_settings_header_backup_path1" xml:space="preserve">
+    <value>Backup Path</value>
+  </data>
   <data name="c_settings_header_sfc_path" xml:space="preserve">
+    <value>Sfc Path</value>
+  </data>
+  <data name="c_settings_header_sfc_path1" xml:space="preserve">
     <value>Sfc Path</value>
   </data>
   <data name="c_settings_header_sfc_timeout" xml:space="preserve">
     <value>Sfc Timeout</value>
   </data>
+  <data name="c_settings_header_sfc_timeout1" xml:space="preserve">
+    <value>Sfc Timeout</value>
+  </data>
   <data name="c_settings_header_success_window_timeout" xml:space="preserve">
+    <value>Success window timeout</value>
+  </data>
+  <data name="c_settings_header_success_window_timeout1" xml:space="preserve">
     <value>Success window timeout</value>
   </data>
   <data name="c_settings_description_wait_delay_ms" xml:space="preserve">
     <value>General delay while waiting for actions to happen</value>
   </data>
+  <data name="c_settings_description_wait_delay_ms1" xml:space="preserve">
+    <value>General delay while waiting for actions to happen</value>
+  </data>
   <data name="c_settings_description_max_retries" xml:space="preserve">
+    <value>Max sfc send retries when failure</value>
+  </data>
+  <data name="c_settings_description_max_retries1" xml:space="preserve">
     <value>Max sfc send retries when failure</value>
   </data>
   <data name="c_settings_description_success_window_timeout" xml:space="preserve">
     <value>Close success window when this time is over</value>
   </data>
+  <data name="c_settings_description_success_window_timeout1" xml:space="preserve">
+    <value>Close success window when this time is over</value>
+  </data>
   <data name="txt_account" xml:space="preserve">
+    <value>Account</value>
+  </data>
+  <data name="txt_account1" xml:space="preserve">
     <value>Account</value>
   </data>
   <data name="txt_logging_in" xml:space="preserve">
     <value>Logging in...</value>
   </data>
+  <data name="txt_logging_in1" xml:space="preserve">
+    <value>Logging in...</value>
+  </data>
   <data name="c_login_title" xml:space="preserve">
+    <value>Log-in to Pushi</value>
+  </data>
+  <data name="c_login_title1" xml:space="preserve">
     <value>Log-in to Pushi</value>
   </data>
   <data name="txt_token" xml:space="preserve">
     <value>Token</value>
   </data>
+  <data name="txt_token1" xml:space="preserve">
+    <value>Token</value>
+  </data>
   <data name="txt_login" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="txt_login1" xml:space="preserve">
     <value>Login</value>
   </data>
   <data name="txt_logout" xml:space="preserve">
     <value>Logout</value>
   </data>
+  <data name="txt_logout1" xml:space="preserve">
+    <value>Logout</value>
+  </data>
   <data name="txt_welcome" xml:space="preserve">
+    <value>Welcome</value>
+  </data>
+  <data name="txt_welcome1" xml:space="preserve">
     <value>Welcome</value>
   </data>
   <data name="txt_employee" xml:space="preserve">
     <value>Employee</value>
   </data>
+  <data name="txt_employee1" xml:space="preserve">
+    <value>Employee</value>
+  </data>
   <data name="txt_id" xml:space="preserve">
+    <value>Id</value>
+  </data>
+  <data name="txt_id1" xml:space="preserve">
     <value>Id</value>
   </data>
   <data name="txt_name" xml:space="preserve">
     <value>Name</value>
   </data>
+  <data name="txt_name1" xml:space="preserve">
+    <value>Name</value>
+  </data>
   <data name="txt_view_level" xml:space="preserve">
+    <value>View level</value>
+  </data>
+  <data name="txt_view_level1" xml:space="preserve">
     <value>View level</value>
   </data>
   <data name="txt_update_level" xml:space="preserve">
     <value>Update level</value>
   </data>
+  <data name="txt_update_level1" xml:space="preserve">
+    <value>Update level</value>
+  </data>
   <data name="enum_level1" xml:space="preserve">
+    <value>Level 1</value>
+  </data>
+  <data name="enum_level10" xml:space="preserve">
     <value>Level 1</value>
   </data>
   <data name="enum_level2" xml:space="preserve">
     <value>Level 2</value>
   </data>
+  <data name="enum_level11" xml:space="preserve">
+    <value>Level 2</value>
+  </data>
   <data name="enum_level3" xml:space="preserve">
+    <value>Level 3</value>
+  </data>
+  <data name="enum_level12" xml:space="preserve">
     <value>Level 3</value>
   </data>
   <data name="enum_level4" xml:space="preserve">
     <value>Level 4</value>
   </data>
+  <data name="enum_level13" xml:space="preserve">
+    <value>Level 4</value>
+  </data>
   <data name="enum_level5" xml:space="preserve">
+    <value>Level 5</value>
+  </data>
+  <data name="enum_level14" xml:space="preserve">
     <value>Level 5</value>
   </data>
   <data name="enum_level6" xml:space="preserve">
     <value>Level 6</value>
   </data>
+  <data name="enum_level15" xml:space="preserve">
+    <value>Level 6</value>
+  </data>
   <data name="enum_level7" xml:space="preserve">
+    <value>Level 7</value>
+  </data>
+  <data name="enum_level16" xml:space="preserve">
     <value>Level 7</value>
   </data>
   <data name="enum_level8" xml:space="preserve">
     <value>Level 8</value>
   </data>
+  <data name="enum_level17" xml:space="preserve">
+    <value>Level 8</value>
+  </data>
   <data name="enum_level9" xml:space="preserve">
+    <value>Level 9</value>
+  </data>
+  <data name="enum_level18" xml:space="preserve">
     <value>Level 9</value>
   </data>
   <data name="enum_administrator" xml:space="preserve">
     <value>Administrator</value>
   </data>
+  <data name="enum_administrator1" xml:space="preserve">
+    <value>Administrator</value>
+  </data>
   <data name="txt_department" xml:space="preserve">
+    <value>Department</value>
+  </data>
+  <data name="txt_department1" xml:space="preserve">
     <value>Department</value>
   </data>
   <data name="msg_invalid_token" xml:space="preserve">
     <value>The token is invalid</value>
   </data>
+  <data name="msg_invalid_token1" xml:space="preserve">
+    <value>The token is invalid</value>
+  </data>
   <data name="txt_invalid_token" xml:space="preserve">
+    <value>Invalid token</value>
+  </data>
+  <data name="txt_invalid_token1" xml:space="preserve">
     <value>Invalid token</value>
   </data>
   <data name="enum_ee" xml:space="preserve">
     <value>Equipment engineering</value>
   </data>
+  <data name="enum_ee1" xml:space="preserve">
+    <value>Equipment engineering</value>
+  </data>
   <data name="enum_mfg" xml:space="preserve">
+    <value>Manufacturing</value>
+  </data>
+  <data name="enum_mfg1" xml:space="preserve">
     <value>Manufacturing</value>
   </data>
   <data name="enum_qa" xml:space="preserve">
     <value>Quality</value>
   </data>
+  <data name="enum_qa1" xml:space="preserve">
+    <value>Quality</value>
+  </data>
   <data name="enum_aoi" xml:space="preserve">
+    <value>AOI</value>
+  </data>
+  <data name="enum_aoi1" xml:space="preserve">
     <value>AOI</value>
   </data>
   <data name="msg_spi_repair" xml:space="preserve">
     <value>Please clean the pcb and feed it back into the screen printer</value>
   </data>
+  <data name="msg_spi_repair1" xml:space="preserve">
+    <value>Please clean the pcb and feed it back into the screen printer</value>
+  </data>
   <data name="c_sfc_sim_show_repair_with_message" xml:space="preserve">
+    <value>Show repair view with message</value>
+  </data>
+  <data name="c_sfc_sim_show_repair_with_message1" xml:space="preserve">
     <value>Show repair view with message</value>
   </data>
   <data name="txt_loading" xml:space="preserve">
     <value>Loading...</value>
   </data>
+  <data name="txt_loading1" xml:space="preserve">
+    <value>Loading...</value>
+  </data>
   <data name="msg_change_wo" xml:space="preserve">
+    <value>Select the work order</value>
+  </data>
+  <data name="msg_change_wo1" xml:space="preserve">
     <value>Select the work order</value>
   </data>
   <data name="msg_scan_2d_package" xml:space="preserve">
     <value>Scan the package's 2D code</value>
   </data>
+  <data name="msg_scan_2d_package1" xml:space="preserve">
+    <value>Scan the package's 2D code</value>
+  </data>
   <data name="msg_scan_vendor" xml:space="preserve">
+    <value>Scan the vendor</value>
+  </data>
+  <data name="msg_scan_vendor1" xml:space="preserve">
     <value>Scan the vendor</value>
   </data>
   <data name="txt_select_work_order" xml:space="preserve">
     <value>Select work order</value>
   </data>
+  <data name="txt_select_work_order1" xml:space="preserve">
+    <value>Select work order</value>
+  </data>
   <data name="txt_work_order" xml:space="preserve">
+    <value>Work order</value>
+  </data>
+  <data name="txt_work_order1" xml:space="preserve">
     <value>Work order</value>
   </data>
   <data name="txt_add_package" xml:space="preserve">
     <value>Add package</value>
   </data>
+  <data name="txt_add_package1" xml:space="preserve">
+    <value>Add package</value>
+  </data>
   <data name="txt_date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="txt_date1" xml:space="preserve">
     <value>Date</value>
   </data>
   <data name="txt_filter" xml:space="preserve">
     <value>Filter</value>
   </data>
+  <data name="txt_filter1" xml:space="preserve">
+    <value>Filter</value>
+  </data>
   <data name="txt_pkgid" xml:space="preserve">
+    <value>PkgId</value>
+  </data>
+  <data name="txt_pkgid1" xml:space="preserve">
     <value>PkgId</value>
   </data>
   <data name="txt_from" xml:space="preserve">
     <value>From</value>
   </data>
+  <data name="txt_from1" xml:space="preserve">
+    <value>From</value>
+  </data>
   <data name="txt_to" xml:space="preserve">
+    <value>To</value>
+  </data>
+  <data name="txt_to1" xml:space="preserve">
     <value>To</value>
   </data>
   <data name="txt_scanned" xml:space="preserve">
     <value>Scanned</value>
   </data>
+  <data name="txt_scanned1" xml:space="preserve">
+    <value>Scanned</value>
+  </data>
   <data name="txt_sfc_open" xml:space="preserve">
+    <value>SFC open</value>
+  </data>
+  <data name="txt_sfc_open1" xml:space="preserve">
     <value>SFC open</value>
   </data>
   <data name="txt_loaded" xml:space="preserve">
     <value>Loaded</value>
   </data>
+  <data name="txt_loaded1" xml:space="preserve">
+    <value>Loaded</value>
+  </data>
   <data name="txt_used" xml:space="preserve">
+    <value>Used</value>
+  </data>
+  <data name="txt_used1" xml:space="preserve">
     <value>Used</value>
   </data>
   <data name="txt_in_use" xml:space="preserve">
     <value>In use</value>
   </data>
+  <data name="txt_in_use1" xml:space="preserve">
+    <value>In use</value>
+  </data>
   <data name="txt_last_refresh" xml:space="preserve">
+    <value>Last refresh</value>
+  </data>
+  <data name="txt_last_refresh1" xml:space="preserve">
     <value>Last refresh</value>
   </data>
   <data name="enum_scanned" xml:space="preserve">
     <value>Scanned</value>
   </data>
+  <data name="enum_scanned1" xml:space="preserve">
+    <value>Scanned</value>
+  </data>
   <data name="enum_open" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="enum_open1" xml:space="preserve">
     <value>Open</value>
   </data>
   <data name="enum_inuse" xml:space="preserve">
     <value>In use</value>
   </data>
+  <data name="enum_inuse1" xml:space="preserve">
+    <value>In use</value>
+  </data>
   <data name="enum_used" xml:space="preserve">
+    <value>Used</value>
+  </data>
+  <data name="enum_used1" xml:space="preserve">
     <value>Used</value>
   </data>
   <data name="enum_loaded" xml:space="preserve">
     <value>Loaded</value>
   </data>
+  <data name="enum_loaded1" xml:space="preserve">
+    <value>Loaded</value>
+  </data>
   <data name="msg_remove_package_load" xml:space="preserve">
+    <value>Remove package from loadder</value>
+  </data>
+  <data name="msg_remove_package_load1" xml:space="preserve">
     <value>Remove package from loadder</value>
   </data>
   <data name="msg_delete_package_from_hermes" xml:space="preserve">
     <value>Delete package from Hermes</value>
   </data>
+  <data name="msg_delete_package_from_hermes1" xml:space="preserve">
+    <value>Delete package from Hermes</value>
+  </data>
   <data name="txt_user" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="txt_user1" xml:space="preserve">
     <value>User</value>
   </data>
   <data name="txt_password" xml:space="preserve">
     <value>Password</value>
   </data>
+  <data name="txt_password1" xml:space="preserve">
+    <value>Password</value>
+  </data>
   <data name="msg_invalid_user_password" xml:space="preserve">
+    <value>Invalid user/password</value>
+  </data>
+  <data name="msg_invalid_user_password1" xml:space="preserve">
     <value>Invalid user/password</value>
   </data>
   <data name="txt_error" xml:space="preserve">
     <value>Error</value>
   </data>
+  <data name="txt_error1" xml:space="preserve">
+    <value>Error</value>
+  </data>
   <data name="txt_level" xml:space="preserve">
+    <value>Level</value>
+  </data>
+  <data name="txt_level1" xml:space="preserve">
     <value>Level</value>
   </data>
   <data name="txt_hermes" xml:space="preserve">
     <value>Hermes</value>
   </data>
+  <data name="txt_hermes1" xml:space="preserve">
+    <value>Hermes</value>
+  </data>
   <data name="txt_search_pkgid" xml:space="preserve">
+    <value>Search PackageId</value>
+  </data>
+  <data name="txt_search_pkgid1" xml:space="preserve">
     <value>Search PackageId</value>
   </data>
   <data name="txt_about" xml:space="preserve">
     <value>About</value>
   </data>
+  <data name="txt_about1" xml:space="preserve">
+    <value>About</value>
+  </data>
   <data name="txt_sfc_simulator" xml:space="preserve">
+    <value>Sfc Simulator</value>
+  </data>
+  <data name="txt_sfc_simulator1" xml:space="preserve">
     <value>Sfc Simulator</value>
   </data>
   <data name="txt_search" xml:space="preserve">
     <value>Search</value>
   </data>
+  <data name="txt_search1" xml:space="preserve">
+    <value>Search</value>
+  </data>
   <data name="txt_all" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="txt_all1" xml:space="preserve">
     <value>All</value>
   </data>
   <data name="msg_no_users_found" xml:space="preserve">
     <value>No users found</value>
   </data>
+  <data name="msg_no_users_found1" xml:space="preserve">
+    <value>No users found</value>
+  </data>
   <data name="txt_edit_user" xml:space="preserve">
+    <value>Edit user</value>
+  </data>
+  <data name="txt_edit_user1" xml:space="preserve">
     <value>Edit user</value>
   </data>
   <data name="txt_add_user" xml:space="preserve">
     <value>Add user</value>
   </data>
+  <data name="txt_add_user1" xml:space="preserve">
+    <value>Add user</value>
+  </data>
   <data name="txt_remove_user" xml:space="preserve">
+    <value>Remove user</value>
+  </data>
+  <data name="txt_remove_user1" xml:space="preserve">
     <value>Remove user</value>
   </data>
   <data name="txt_export_table_to_csv" xml:space="preserve">
     <value>Export table to csv</value>
   </data>
+  <data name="txt_export_table_to_csv1" xml:space="preserve">
+    <value>Export table to csv</value>
+  </data>
   <data name="txt_show_password" xml:space="preserve">
+    <value>Show password</value>
+  </data>
+  <data name="txt_show_password1" xml:space="preserve">
     <value>Show password</value>
   </data>
   <data name="txt_success" xml:space="preserve">
     <value>Success</value>
   </data>
+  <data name="txt_success1" xml:space="preserve">
+    <value>Success</value>
+  </data>
   <data name="msg_user_updated" xml:space="preserve">
+    <value>User updated</value>
+  </data>
+  <data name="msg_user_updated1" xml:space="preserve">
     <value>User updated</value>
   </data>
   <data name="msg_user_added" xml:space="preserve">
     <value>User added</value>
   </data>
+  <data name="msg_user_added1" xml:space="preserve">
+    <value>User added</value>
+  </data>
   <data name="msg_user_not_found" xml:space="preserve">
+    <value>User not found</value>
+  </data>
+  <data name="msg_user_not_found1" xml:space="preserve">
     <value>User not found</value>
   </data>
   <data name="msg_user_deleted" xml:space="preserve">
     <value>User deleted</value>
   </data>
+  <data name="msg_user_deleted1" xml:space="preserve">
+    <value>User deleted</value>
+  </data>
   <data name="msg_user_already_exists" xml:space="preserve">
+    <value>User already exists</value>
+  </data>
+  <data name="msg_user_already_exists1" xml:space="preserve">
     <value>User already exists</value>
   </data>
   <data name="msg_remove_user" xml:space="preserve">
     <value>Are you sure you want to remove this user?</value>
   </data>
+  <data name="msg_remove_user1" xml:space="preserve">
+    <value>Are you sure you want to remove this user?</value>
+  </data>
   <data name="txt_yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="txt_yes1" xml:space="preserve">
     <value>Yes</value>
   </data>
   <data name="txt_no" xml:space="preserve">
     <value>No</value>
   </data>
+  <data name="txt_no1" xml:space="preserve">
+    <value>No</value>
+  </data>
   <data name="msg_invalid_department" xml:space="preserve">
+    <value>The user belongs to a different department</value>
+  </data>
+  <data name="msg_invalid_department1" xml:space="preserve">
     <value>The user belongs to a different department</value>
   </data>
   <data name="c_settings_header_station_id" xml:space="preserve">
     <value>Station Id</value>
   </data>
+  <data name="c_settings_header_station_id1" xml:space="preserve">
+    <value>Station Id</value>
+  </data>
   <data name="c_settings_header_database_server" xml:space="preserve">
+    <value>Database server</value>
+  </data>
+  <data name="c_settings_header_database_server1" xml:space="preserve">
     <value>Database server</value>
   </data>
   <data name="msg_user_without_permission" xml:space="preserve">
     <value>User without permission to excecute the action.</value>
   </data>
+  <data name="msg_user_without_permission1" xml:space="preserve">
+    <value>User without permission to excecute the action.</value>
+  </data>
   <data name="c_settings_header_scanner_com_port" xml:space="preserve">
+    <value>Scanner com port</value>
+  </data>
+  <data name="c_settings_header_scanner_com_port1" xml:space="preserve">
     <value>Scanner com port</value>
   </data>
   <data name="txt_connected" xml:space="preserve">
     <value>Connected</value>
   </data>
+  <data name="txt_connected1" xml:space="preserve">
+    <value>Connected</value>
+  </data>
   <data name="txt_disconnected" xml:space="preserve">
+    <value>Disconnected</value>
+  </data>
+  <data name="txt_disconnected1" xml:space="preserve">
     <value>Disconnected</value>
   </data>
   <data name="txt_com_port" xml:space="preserve">
     <value>Com port</value>
   </data>
+  <data name="txt_com_port1" xml:space="preserve">
+    <value>Com port</value>
+  </data>
   <data name="txt_trigger" xml:space="preserve">
+    <value>Trigger</value>
+  </data>
+  <data name="txt_trigger1" xml:space="preserve">
     <value>Trigger</value>
   </data>
   <data name="txt_scanner" xml:space="preserve">
     <value>Scanner</value>
   </data>
+  <data name="txt_scanner1" xml:space="preserve">
+    <value>Scanner</value>
+  </data>
   <data name="c_settings_header_gkg_tunnel_com_port" xml:space="preserve">
+    <value>Gkg tunnel com port</value>
+  </data>
+  <data name="c_settings_header_gkg_tunnel_com_port1" xml:space="preserve">
     <value>Gkg tunnel com port</value>
   </data>
   <data name="txt_connect" xml:space="preserve">
     <value>Connect</value>
   </data>
+  <data name="txt_connect1" xml:space="preserve">
+    <value>Connect</value>
+  </data>
   <data name="txt_disconnect" xml:space="preserve">
+    <value>Disconnect</value>
+  </data>
+  <data name="txt_disconnect1" xml:space="preserve">
     <value>Disconnect</value>
   </data>
   <data name="txt_input" xml:space="preserve">
     <value>Input</value>
   </data>
+  <data name="txt_input1" xml:space="preserve">
+    <value>Input</value>
+  </data>
   <data name="txt_warning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="txt_warning1" xml:space="preserve">
     <value>Warning</value>
   </data>
   <data name="txt_info" xml:space="preserve">
     <value>Info</value>
   </data>
+  <data name="txt_info1" xml:space="preserve">
+    <value>Info</value>
+  </data>
   <data name="msg_package_added_to_hermes" xml:space="preserve">
+    <value>Package added to Hermes</value>
+  </data>
+  <data name="msg_package_added_to_hermes1" xml:space="preserve">
     <value>Package added to Hermes</value>
   </data>
   <data name="msg_package_not_found" xml:space="preserve">
     <value>Package not found</value>
   </data>
+  <data name="msg_package_not_found1" xml:space="preserve">
+    <value>Package not found</value>
+  </data>
   <data name="txt_not_found" xml:space="preserve">
+    <value>Not found</value>
+  </data>
+  <data name="txt_not_found1" xml:space="preserve">
     <value>Not found</value>
   </data>
   <data name="msg_package_removed_from_loaded" xml:space="preserve">
     <value>Package removed from "loaded"</value>
   </data>
+  <data name="msg_package_removed_from_loaded1" xml:space="preserve">
+    <value>Package removed from "loaded"</value>
+  </data>
   <data name="msg_package_removed" xml:space="preserve">
+    <value>Package removed</value>
+  </data>
+  <data name="msg_package_removed1" xml:space="preserve">
     <value>Package removed</value>
   </data>
   <data name="msg_error_while_getting_info_from_db" xml:space="preserve">
     <value>An error occurred while getting the information from the database</value>
   </data>
+  <data name="msg_error_while_getting_info_from_db1" xml:space="preserve">
+    <value>An error occurred while getting the information from the database</value>
+  </data>
   <data name="msg_work_order_not_found" xml:space="preserve">
+    <value>Work order not found</value>
+  </data>
+  <data name="msg_work_order_not_found1" xml:space="preserve">
     <value>Work order not found</value>
   </data>
   <data name="msg_invalid_user_info" xml:space="preserve">
     <value>Invalid user information</value>
   </data>
+  <data name="msg_invalid_user_info1" xml:space="preserve">
+    <value>Invalid user information</value>
+  </data>
   <data name="msg_users_exported_to_csv" xml:space="preserve">
+    <value>The users have been exported to a CSV file</value>
+  </data>
+  <data name="msg_users_exported_to_csv1" xml:space="preserve">
     <value>The users have been exported to a CSV file</value>
   </data>
   <data name="msg_uut_processor_started" xml:space="preserve">
     <value>UUT Processor started</value>
   </data>
+  <data name="msg_uut_processor_started1" xml:space="preserve">
+    <value>UUT Processor started</value>
+  </data>
   <data name="msg_uut_processor_stopped" xml:space="preserve">
+    <value>UUT Processor stopped</value>
+  </data>
+  <data name="msg_uut_processor_stopped1" xml:space="preserve">
     <value>UUT Processor stopped</value>
   </data>
   <data name="msg_success_task" xml:space="preserve">
     <value>Task successfully executed</value>
   </data>
+  <data name="msg_success_task1" xml:space="preserve">
+    <value>Task successfully executed</value>
+  </data>
   <data name="msg_sfc_timeout" xml:space="preserve">
+    <value>SFC server not responding, please contact IT department</value>
+  </data>
+  <data name="msg_sfc_timeout1" xml:space="preserve">
     <value>SFC server not responding, please contact IT department</value>
   </data>
   <data name="msg_wrong_station" xml:space="preserve">
     <value>The uut does not correspond to this station</value>
   </data>
+  <data name="msg_wrong_station1" xml:space="preserve">
+    <value>The uut does not correspond to this station</value>
+  </data>
   <data name="msg_sfc_unkown_error" xml:space="preserve">
+    <value>SFC unknown error</value>
+  </data>
+  <data name="msg_sfc_unkown_error1" xml:space="preserve">
     <value>SFC unknown error</value>
   </data>
   <data name="msg_scan_error" xml:space="preserve">
     <value>Error scanning serial number</value>
   </data>
+  <data name="msg_scan_error1" xml:space="preserve">
+    <value>Error scanning serial number</value>
+  </data>
   <data name="enum_scanerror" xml:space="preserve">
+    <value>Scann error</value>
+  </data>
+  <data name="enum_scanerror1" xml:space="preserve">
     <value>Scann error</value>
   </data>
   <data name="c_settings_header_additional_ok_sfc_response" xml:space="preserve">
     <value>Additional sfc ok response</value>
   </data>
+  <data name="c_settings_header_additional_ok_sfc_response1" xml:space="preserve">
+    <value>Additional sfc ok response</value>
+  </data>
   <data name="c_settings_description_additional_ok_sfc_response" xml:space="preserve">
+    <value>When SFC response contains this text, it will be evaluated as ok</value>
+  </data>
+  <data name="c_settings_description_additional_ok_sfc_response1" xml:space="preserve">
     <value>When SFC response contains this text, it will be evaluated as ok</value>
   </data>
   <data name="txt_input_dummy" xml:space="preserve">
     <value>Input dummy board</value>
   </data>
+  <data name="txt_input_dummy1" xml:space="preserve">
+    <value>Input dummy board</value>
+  </data>
   <data name="msg_wait_for_dummy_error" xml:space="preserve">
+    <value>Error while trying to wait for dummy board</value>
+  </data>
+  <data name="msg_wait_for_dummy_error1" xml:space="preserve">
     <value>Error while trying to wait for dummy board</value>
   </data>
   <data name="txt_dummy_board" xml:space="preserve">
     <value>Dummy board</value>
   </data>
+  <data name="txt_dummy_board1" xml:space="preserve">
+    <value>Dummy board</value>
+  </data>
   <data name="msg_waiting_dummy_board" xml:space="preserve">
+    <value>Waiting for dummy board</value>
+  </data>
+  <data name="msg_waiting_dummy_board1" xml:space="preserve">
     <value>Waiting for dummy board</value>
   </data>
   <data name="txt_cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="txt_cancel1" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
   <data name="txt_sfc_response" xml:space="preserve">
+    <value>Sfc response</value>
+  </data>
+  <data name="txt_sfc_response1" xml:space="preserve">
     <value>Sfc response</value>
   </data>
   <data name="txt_test_status" xml:space="preserve">
     <value>Test status</value>
   </data>
+  <data name="txt_test_status1" xml:space="preserve">
+    <value>Test status</value>
+  </data>
   <data name="txt_sfc_response_content" xml:space="preserve">
+    <value>Sfc response content</value>
+  </data>
+  <data name="txt_sfc_response_content1" xml:space="preserve">
     <value>Sfc response content</value>
   </data>
   <data name="txt_created_at" xml:space="preserve">
     <value>Created at</value>
   </data>
+  <data name="txt_created_at1" xml:space="preserve">
+    <value>Created at</value>
+  </data>
   <data name="enum_failed" xml:space="preserve">
+    <value>Failed</value>
+  </data>
+  <data name="enum_failed1" xml:space="preserve">
     <value>Failed</value>
   </data>
   <data name="enum_passed" xml:space="preserve">
     <value>Passed</value>
   </data>
+  <data name="enum_passed1" xml:space="preserve">
+    <value>Passed</value>
+  </data>
   <data name="enum_notran" xml:space="preserve">
+    <value>Not ran</value>
+  </data>
+  <data name="enum_notran1" xml:space="preserve">
     <value>Not ran</value>
   </data>
   <data name="msg_can_not_resed_uut" xml:space="preserve">
     <value>Can't resend unit under test</value>
   </data>
+  <data name="msg_can_not_resed_uut1" xml:space="preserve">
+    <value>Can't resend unit under test</value>
+  </data>
   <data name="txt_edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="txt_edit1" xml:space="preserve">
     <value>Edit</value>
   </data>
   <data name="txt_resend" xml:space="preserve">
     <value>Resend</value>
   </data>
+  <data name="txt_resend1" xml:space="preserve">
+    <value>Resend</value>
+  </data>
   <data name="txt_refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="txt_refresh1" xml:space="preserve">
     <value>Refresh</value>
   </data>
   <data name="txt_open_hermes_app" xml:space="preserve">
     <value>Open Pushi app</value>
   </data>
+  <data name="txt_open_hermes_app1" xml:space="preserve">
+    <value>Open Pushi app</value>
+  </data>
   <data name="txt_add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="txt_add1" xml:space="preserve">
     <value>Add</value>
   </data>
   <data name="txt_delete" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="txt_delete1" xml:space="preserve">
+    <value>Delete</value>
+  </data>
   <data name="txt_permission" xml:space="preserve">
+    <value>Permission</value>
+  </data>
+  <data name="txt_permission1" xml:space="preserve">
     <value>Permission</value>
   </data>
   <data name="txt_admin_tools" xml:space="preserve">
     <value>Amin tools</value>
   </data>
+  <data name="txt_admin_tools1" xml:space="preserve">
+    <value>Amin tools</value>
+  </data>
   <data name="msg_feature_permission_added" xml:space="preserve">
+    <value>Feature permission successfully added</value>
+  </data>
+  <data name="msg_feature_permission_added1" xml:space="preserve">
     <value>Feature permission successfully added</value>
   </data>
   <data name="msg_feature_permission_deleted" xml:space="preserve">
     <value>Feature permission successfully deleted</value>
   </data>
+  <data name="msg_feature_permission_deleted1" xml:space="preserve">
+    <value>Feature permission successfully deleted</value>
+  </data>
   <data name="enum_automation" xml:space="preserve">
+    <value>Automation</value>
+  </data>
+  <data name="enum_automation1" xml:space="preserve">
     <value>Automation</value>
   </data>
   <data name="enum_kitting" xml:space="preserve">
     <value>Kitting</value>
   </data>
+  <data name="enum_kitting1" xml:space="preserve">
+    <value>Kitting</value>
+  </data>
   <data name="enum_process" xml:space="preserve">
+    <value>Process engineering</value>
+  </data>
+  <data name="enum_process1" xml:space="preserve">
     <value>Process engineering</value>
   </data>
   <data name="enum_admin" xml:space="preserve">
     <value>Admin</value>
   </data>
+  <data name="enum_admin1" xml:space="preserve">
+    <value>Admin</value>
+  </data>
   <data name="enum_operator" xml:space="preserve">
+    <value>Operator</value>
+  </data>
+  <data name="enum_operator1" xml:space="preserve">
     <value>Operator</value>
   </data>
   <data name="enum_operatorleader" xml:space="preserve">
     <value>Operator leader</value>
   </data>
+  <data name="enum_operatorleader1" xml:space="preserve">
+    <value>Operator leader</value>
+  </data>
   <data name="enum_supervisor" xml:space="preserve">
+    <value>Supervisor</value>
+  </data>
+  <data name="enum_supervisor1" xml:space="preserve">
     <value>Supervisor</value>
   </data>
   <data name="enum_technician" xml:space="preserve">
     <value>Technician</value>
   </data>
+  <data name="enum_technician1" xml:space="preserve">
+    <value>Technician</value>
+  </data>
   <data name="enum_engineer" xml:space="preserve">
+    <value>Engineer</value>
+  </data>
+  <data name="enum_engineer1" xml:space="preserve">
     <value>Engineer</value>
   </data>
   <data name="enum_engineerleader" xml:space="preserve">
     <value>Engineer Leader</value>
   </data>
+  <data name="enum_engineerleader1" xml:space="preserve">
+    <value>Engineer Leader</value>
+  </data>
   <data name="enum_freeaccess" xml:space="preserve">
+    <value>Free access</value>
+  </data>
+  <data name="enum_freeaccess1" xml:space="preserve">
     <value>Free access</value>
   </data>
   <data name="enum_exit" xml:space="preserve">
     <value>Exit</value>
   </data>
+  <data name="enum_exit1" xml:space="preserve">
+    <value>Exit</value>
+  </data>
   <data name="enum_openbender" xml:space="preserve">
+    <value>Open bender</value>
+  </data>
+  <data name="enum_openbender1" xml:space="preserve">
     <value>Open bender</value>
   </data>
   <data name="enum_opensettingsconfig" xml:space="preserve">
     <value>Open settings config</value>
   </data>
+  <data name="enum_opensettingsconfig1" xml:space="preserve">
+    <value>Open settings config</value>
+  </data>
   <data name="enum_opensfcsimulator" xml:space="preserve">
+    <value>Open sfc simulator</value>
+  </data>
+  <data name="enum_opensfcsimulator1" xml:space="preserve">
     <value>Open sfc simulator</value>
   </data>
   <data name="enum_openuutprocessor" xml:space="preserve">
     <value>Open uut processor</value>
   </data>
+  <data name="enum_openuutprocessor1" xml:space="preserve">
+    <value>Open uut processor</value>
+  </data>
   <data name="enum_openuseradmin" xml:space="preserve">
+    <value>Open user admin</value>
+  </data>
+  <data name="enum_openuseradmin1" xml:space="preserve">
     <value>Open user admin</value>
   </data>
   <data name="enum_restorespistop" xml:space="preserve">
     <value>Restore spi stop</value>
   </data>
+  <data name="enum_restorespistop1" xml:space="preserve">
+    <value>Restore spi stop</value>
+  </data>
   <data name="enum_restorescreenprinterstop" xml:space="preserve">
+    <value>Restore screen printer stop</value>
+  </data>
+  <data name="enum_restorescreenprinterstop1" xml:space="preserve">
     <value>Restore screen printer stop</value>
   </data>
   <data name="enum_restorelabelingmachinestop" xml:space="preserve">
     <value>Restore labeling machine stop</value>
   </data>
+  <data name="enum_restorelabelingmachinestop1" xml:space="preserve">
+    <value>Restore labeling machine stop</value>
+  </data>
   <data name="enum_restoreaoistop" xml:space="preserve">
+    <value>Restore aoi stop</value>
+  </data>
+  <data name="enum_restoreaoistop1" xml:space="preserve">
     <value>Restore aoi stop</value>
   </data>
   <data name="enum_restoreaxistop" xml:space="preserve">
     <value>Restore axi stop</value>
   </data>
+  <data name="enum_restoreaxistop1" xml:space="preserve">
+    <value>Restore axi stop</value>
+  </data>
   <data name="enum_openlogs" xml:space="preserve">
+    <value>Open logs</value>
+  </data>
+  <data name="enum_openlogs1" xml:space="preserve">
     <value>Open logs</value>
   </data>
   <data name="enum_openadmintools" xml:space="preserve">
     <value>Open admin tools</value>
   </data>
+  <data name="enum_openadmintools1" xml:space="preserve">
+    <value>Open admin tools</value>
+  </data>
   <data name="txt_minimum_level" xml:space="preserve">
+    <value>Minimum level</value>
+  </data>
+  <data name="txt_minimum_level1" xml:space="preserve">
     <value>Minimum level</value>
   </data>
   <data name="txt_features_permissions" xml:space="preserve">
     <value>Feature Permissions</value>
   </data>
+  <data name="txt_features_permissions1" xml:space="preserve">
+    <value>Feature Permissions</value>
+  </data>
   <data name="c_settings_header_enable_critical_location_stop" xml:space="preserve">
+    <value>Critical location stop</value>
+  </data>
+  <data name="c_settings_header_enable_critical_location_stop1" xml:space="preserve">
     <value>Critical location stop</value>
   </data>
   <data name="c_settings_description_enable_critical_location_stop" xml:space="preserve">
     <value>Show stop window when a failure is detected in a component listed in the "Critical Locations" setting.</value>
   </data>
+  <data name="c_settings_description_enable_critical_location_stop1" xml:space="preserve">
+    <value>Show stop window when a failure is detected in a component listed in the "Critical Locations" setting.</value>
+  </data>
   <data name="c_settings_group_features" xml:space="preserve">
+    <value>Features</value>
+  </data>
+  <data name="c_settings_group_features1" xml:space="preserve">
     <value>Features</value>
   </data>
   <data name="c_settings_header_enable_rule_three_five_ten" xml:space="preserve">
     <value>Rule three five ten stop</value>
   </data>
+  <data name="c_settings_header_enable_rule_three_five_ten1" xml:space="preserve">
+    <value>Rule three five ten stop</value>
+  </data>
   <data name="c_settings_description_enable_machine_stop" xml:space="preserve">
     <value>Show stop window when an error occurs in sfc or when a flow error is detected.</value>
   </data>
+  <data name="c_settings_description_enable_machine_stop1" xml:space="preserve">
+    <value>Show stop window when an error occurs in sfc or when a flow error is detected.</value>
+  </data>
   <data name="c_settings_header_enable_machine_stop" xml:space="preserve">
+    <value>Machine Sfc error stop</value>
+  </data>
+  <data name="c_settings_header_enable_machine_stop1" xml:space="preserve">
     <value>Machine Sfc error stop</value>
   </data>
   <data name="c_settings_description_enable_rule_three_five_ten" xml:space="preserve">
@@ -875,88 +1628,177 @@
 
 </value>
   </data>
+  <data name="c_settings_description_enable_rule_three_five_ten1" xml:space="preserve">
+    <value>Show stop window when 3 consecutive same faults or 5 same faults in 1 hour or 10 different faults in 1 hour are detected.
+
+</value>
+  </data>
   <data name="c_settings_header_critical_locations" xml:space="preserve">
+    <value>Critical locations</value>
+  </data>
+  <data name="c_settings_header_critical_locations1" xml:space="preserve">
     <value>Critical locations</value>
   </data>
   <data name="c_settings_description_critical_locations" xml:space="preserve">
     <value>Critical locations comma separated</value>
   </data>
+  <data name="c_settings_description_critical_locations1" xml:space="preserve">
+    <value>Critical locations comma separated</value>
+  </data>
   <data name="txt_settings_changed" xml:space="preserve">
+    <value>Settings changed</value>
+  </data>
+  <data name="txt_settings_changed1" xml:space="preserve">
     <value>Settings changed</value>
   </data>
   <data name="msg_settings_changed_needs_restart" xml:space="preserve">
     <value>Please restart the application to apply the changes</value>
   </data>
+  <data name="msg_settings_changed_needs_restart1" xml:space="preserve">
+    <value>Please restart the application to apply the changes</value>
+  </data>
   <data name="txt_later" xml:space="preserve">
+    <value>Later</value>
+  </data>
+  <data name="txt_later1" xml:space="preserve">
     <value>Later</value>
   </data>
   <data name="txt_restart" xml:space="preserve">
     <value>Restart</value>
   </data>
+  <data name="txt_restart1" xml:space="preserve">
+    <value>Restart</value>
+  </data>
   <data name="msg_invalid_employee_id" xml:space="preserve">
+    <value>Invalid employee id, it must be only numbers</value>
+  </data>
+  <data name="msg_invalid_employee_id1" xml:space="preserve">
     <value>Invalid employee id, it must be only numbers</value>
   </data>
   <data name="txt_user_management" xml:space="preserve">
     <value>User management</value>
   </data>
+  <data name="txt_user_management1" xml:space="preserve">
+    <value>User management</value>
+  </data>
   <data name="msg_no_updates_available" xml:space="preserve">
+    <value>No updates available</value>
+  </data>
+  <data name="msg_no_updates_available1" xml:space="preserve">
     <value>No updates available</value>
   </data>
   <data name="txt_check_for_updates" xml:space="preserve">
     <value>Check for updates</value>
   </data>
+  <data name="txt_check_for_updates1" xml:space="preserve">
+    <value>Check for updates</value>
+  </data>
   <data name="txt_update_available" xml:space="preserve">
+    <value>New version available</value>
+  </data>
+  <data name="txt_update_available1" xml:space="preserve">
     <value>New version available</value>
   </data>
   <data name="msg_update_available" xml:space="preserve">
     <value>Update available</value>
   </data>
+  <data name="msg_update_available1" xml:space="preserve">
+    <value>Update available</value>
+  </data>
   <data name="c_settings_header_update_manager_url" xml:space="preserve">
+    <value>Hermes update url</value>
+  </data>
+  <data name="c_settings_header_update_manager_url1" xml:space="preserve">
     <value>Hermes update url</value>
   </data>
   <data name="txt_update" xml:space="preserve">
     <value>Update</value>
   </data>
+  <data name="txt_update1" xml:space="preserve">
+    <value>Update</value>
+  </data>
   <data name="enum_empty" xml:space="preserve">
+    <value>Empty</value>
+  </data>
+  <data name="enum_empty1" xml:space="preserve">
     <value>Empty</value>
   </data>
   <data name="enum_not_recognized" xml:space="preserve">
     <value>Not recognized</value>
   </data>
+  <data name="enum_not_recognized1" xml:space="preserve">
+    <value>Not recognized</value>
+  </data>
   <data name="enum_not_sorted" xml:space="preserve">
+    <value>Not sorted</value>
+  </data>
+  <data name="enum_not_sorted1" xml:space="preserve">
     <value>Not sorted</value>
   </data>
   <data name="enum_recognized" xml:space="preserve">
     <value>Recognized</value>
   </data>
+  <data name="enum_recognized1" xml:space="preserve">
+    <value>Recognized</value>
+  </data>
   <data name="enum_slide_blocked" xml:space="preserve">
+    <value>Slide blocked</value>
+  </data>
+  <data name="enum_slide_blocked1" xml:space="preserve">
     <value>Slide blocked</value>
   </data>
   <data name="enum_sorted" xml:space="preserve">
     <value>Sorted</value>
   </data>
+  <data name="enum_sorted1" xml:space="preserve">
+    <value>Sorted</value>
+  </data>
   <data name="enum_eighthours" xml:space="preserve">
+    <value>Eight hours</value>
+  </data>
+  <data name="enum_eighthours1" xml:space="preserve">
     <value>Eight hours</value>
   </data>
   <data name="enum_oneday" xml:space="preserve">
     <value>One day</value>
   </data>
+  <data name="enum_oneday1" xml:space="preserve">
+    <value>One day</value>
+  </data>
   <data name="enum_onehour" xml:space="preserve">
+    <value>One hour</value>
+  </data>
+  <data name="enum_onehour1" xml:space="preserve">
     <value>One hour</value>
   </data>
   <data name="enum_sevendays" xml:space="preserve">
     <value>Seven days</value>
   </data>
+  <data name="enum_sevendays1" xml:space="preserve">
+    <value>Seven days</value>
+  </data>
   <data name="msg_limited_to_500_logs" xml:space="preserve">
+    <value>To improve performance, only the last 500 records will be displayed</value>
+  </data>
+  <data name="msg_limited_to_500_logs1" xml:space="preserve">
     <value>To improve performance, only the last 500 records will be displayed</value>
   </data>
   <data name="txt_failed" xml:space="preserve">
     <value>Failed</value>
   </data>
+  <data name="txt_failed1" xml:space="preserve">
+    <value>Failed</value>
+  </data>
   <data name="txt_passed" xml:space="preserve">
     <value>Passed</value>
   </data>
+  <data name="txt_passed1" xml:space="preserve">
+    <value>Passed</value>
+  </data>
   <data name="txt_time_span" xml:space="preserve">
+    <value>Time span</value>
+  </data>
+  <data name="txt_time_span1" xml:space="preserve">
     <value>Time span</value>
   </data>
 </root>
