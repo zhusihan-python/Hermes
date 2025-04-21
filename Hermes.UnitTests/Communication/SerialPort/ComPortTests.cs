@@ -83,64 +83,6 @@ public class ComPortTests : IClassFixture<ComPortFixture>
             await Task.Delay(200);
         });
 
-        //locations = new byte[] { 0x00, 0x08, 0x00, 0x09, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        //                             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
-        //var actionPacketOne = new FlowActionWrite().
-        //                        WithOperationType(0x01).
-        //                        WithActionSequence(new byte[] { 0x00, 0x01 }). // 操作类型：1 写入动作包序号
-        //                        WithMasterAddress<FlowActionWrite>(0xF2).
-        //                        WithSlaveAddress<FlowActionWrite>(0x13).
-        //                        WithActionType(0x02). // 动作类型：2：理片
-        //                        WithPickCount(0x01).  // 抓取次数：1次
-        //                        WithSrcDstLocations(locations).
-        //                        GenData();
-        //await _fixture.comPort.SendPacketAsync(actionPacketOne);
-        //await Task.Delay(200);
-        //await _fixture.comPort.SendPacketAsync(new FlowActionWrite().
-        //                        WithOperationType(0x01).
-        //                        WithActionSequence(new byte[] { 0x00, 0x02 }).
-        //                        WithMasterAddress<FlowActionWrite>(0xF2).
-        //                        WithSlaveAddress<FlowActionWrite>(0x13).
-        //                        WithActionType(0x02).
-        //                        WithPickCount(0x01).
-        //                        WithSrcDstLocations(new byte[] { 0x00, 0x09, 0x00, 0x0A, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        //                                                         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }).
-        //                        GenData());
-        //await Task.Delay(200);
-        //await _fixture.comPort.SendPacketAsync(new FlowActionWrite().
-        //                WithOperationType(0x01).
-        //                WithActionSequence(new byte[] { 0x00, 0x03 }).
-        //                WithMasterAddress<FlowActionWrite>(0xF2).
-        //                WithSlaveAddress<FlowActionWrite>(0x13).
-        //                WithActionType(0x02).
-        //                WithPickCount(0x01).
-        //                WithSrcDstLocations(new byte[] { 0x00, 0x0A, 0x00, 0x0B, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        //                                                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }).
-        //                GenData());
-        //await Task.Delay(200);
-        //await _fixture.comPort.SendPacketAsync(new FlowActionWrite().
-        //                WithOperationType(0x01).
-        //                WithActionSequence(new byte[] { 0x00, 0x04 }).
-        //                WithMasterAddress<FlowActionWrite>(0xF2).
-        //                WithSlaveAddress<FlowActionWrite>(0x13).
-        //                WithActionType(0x02).
-        //                WithPickCount(0x01).
-        //                WithSrcDstLocations(new byte[] { 0x00, 0x0B, 0x00, 0x0C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        //                                                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }).
-        //                GenData());
-        //await Task.Delay(200);
-        //await _fixture.comPort.SendPacketAsync(new FlowActionWrite().
-        //                WithOperationType(0x01).
-        //                WithActionSequence(new byte[] { 0x00, 0x05 }).
-        //                WithMasterAddress<FlowActionWrite>(0xF2).
-        //                WithSlaveAddress<FlowActionWrite>(0x13).
-        //                WithActionType(0x02).
-        //                WithPickCount(0x01).
-        //                WithSrcDstLocations(new byte[] { 0x00, 0x0C, 0x00, 0x0D, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-        //                                                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }).
-        //                GenData());
-        //await Task.Delay(200);
-
         var actionsQuery = new FlowActionRead().
                                 WithQuery(0x00);
         await _fixture.comPort.SendPacketAsync(actionsQuery);
@@ -160,6 +102,46 @@ public class ComPortTests : IClassFixture<ComPortFixture>
                             WithBoxTags(boxTags);
         await _fixture.comPort.SendPacketAsync(executeAction);
         await Task.Delay(1000);
+    }
+
+    public byte[][] GenerateLocationPairs(int steps, byte startPositionHigh, byte startPositionLow)
+    {
+        if (steps <= 0 || steps > 20)
+        {
+            throw new ArgumentException("步数必须在1到20之间。");
+        }
+
+        var locations = new List<byte[]>();
+        byte currentPositionHigh = startPositionHigh;
+        byte currentPositionLow = startPositionLow;
+
+        for (int i = 0; i < steps - 1; i++)
+        {
+            byte nextPositionHigh = 0x00;
+            byte nextPositionLow = (byte)((currentPositionLow + 1) % 21); // 假设位置是连续的，从1到20循环
+
+            if (nextPositionLow == 0)
+            {
+                nextPositionLow = 0x01;
+                nextPositionHigh = (byte)((currentPositionHigh + 1) % 21);
+                if (nextPositionHigh == 0)
+                {
+                    nextPositionHigh = 0x01;
+                }
+            }
+
+            locations.Add(new byte[] { currentPositionHigh, currentPositionLow, nextPositionHigh, nextPositionLow, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 });
+
+            currentPositionHigh = nextPositionHigh;
+            currentPositionLow = nextPositionLow;
+        }
+
+        // 最后一步，将玻片移回起始位置
+        locations.Add(new byte[] { currentPositionHigh, currentPositionLow, startPositionHigh, startPositionLow, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 });
+
+        return locations.ToArray();
     }
 }
 
