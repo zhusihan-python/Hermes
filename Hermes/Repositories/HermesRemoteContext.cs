@@ -9,27 +9,25 @@ namespace Hermes.Repositories;
 
 public class HermesRemoteContext : DbContext
 {
-    private const string DatabaseName = "hermes";
-    private const string User = "hermes";
-    private const string Password = "AmazingPassword";
-    private string _server = "localhost";
+    //private const string DatabaseName = "hermes";
+    //private const string User = "hermes";
+    //private const string Password = "AmazingPassword";
+    //private string _server = "localhost";
 
-    private string ConnectionString => $"Server={_server};Database={DatabaseName};user={User};password={Password}";
+    private string ConnectionString => $"Filename=dbSqlite.db";
     public DbSet<User> Users { get; set; }
     public DbSet<FeaturePermission> FeaturePermissions { get; set; }
 
-    public HermesRemoteContext(Settings settings)
-    {
-#if !DEBUG
-        _server = settings.DatabaseServer;
-#endif
-    }
+//    public HermesRemoteContext(Settings settings)
+//    {
+////#if !DEBUG
+////        _server = settings.DatabaseServer;
+////#endif
+//    }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseMySql(
-            connectionString: ConnectionString,
-            serverVersion: ServerVersion.AutoDetect(ConnectionString));
+        optionsBuilder.UseSqlite(connectionString: ConnectionString);
         base.OnConfiguring(optionsBuilder);
     }
 
