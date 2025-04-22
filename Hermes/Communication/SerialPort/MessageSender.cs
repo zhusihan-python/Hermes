@@ -31,8 +31,11 @@ public class MessageSender : IDisposable
 
     public async void InitializeComPort()
     {
-        await _comPort.InitializeAsync("COM3", 115200);
-        await scanEngine.InitializeAsync("COM4", 9600);
+        //await _comPort.InitializeAsync("COM3", 115200);
+        _comPort.SetSerialPort("COM3", 115200);
+        _comPort.Open();
+        //await scanEngine.InitializeAsync("COM4", 9600);
+        await Task.Delay(50);
     }
 
     public void EnqueueMessage(SvtRequestInfo message)
@@ -89,7 +92,8 @@ public class MessageSender : IDisposable
         {
             try
             {
-                await _comPort.SendPacketAsync(message);
+                _comPort.SendPacket(message);
+                await Task.Delay(50);
             }
             catch (Exception ex)
             {

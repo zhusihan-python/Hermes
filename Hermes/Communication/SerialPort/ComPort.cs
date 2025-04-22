@@ -1,177 +1,299 @@
 ﻿using System.Threading.Tasks;
 using System;
-using TouchSocket.Core;
-using TouchSocket.SerialPorts;
-using TouchSocket.Sockets;
 using System.Diagnostics;
 using System.Linq;
-//using ObservableCollections;
-using System.Net.Sockets;
+using LanguageExt;
+//using static LanguageExt.Prelude;
 using R3;
+using RJCP.IO.Ports;
+using Hermes.Communication.Protocol;
+using System.Collections.Generic;
+using TouchSocket.Core;
 
 namespace Hermes.Communication.SerialPort;
+
+public delegate void ReceiveDataEventHandler(object sender, ReceiveDataEventArg e);
 
 public class ComPort
 {
     private FrameSequenceGenerator _frameSequenceGenerator = new FrameSequenceGenerator();
-    private SerialPortClient _client;
+    private SerialPortStream _serialPort;
     private readonly FrameParser _parser;
-    private const int HeartbeatIntervalMs = 2000; // 2 秒
-    private Task _heartbeatTask;
-    public bool ClientOnline => _client.Online;
+    private const int HeartbeatIntervalMs = 2000;
+    public bool ClientOnline => _serialPort.IsOpen;
+    public event ReceiveDataEventHandler ReceiveDataEvent;
 
     public ComPort(FrameParser parser)
     {
-        _client = new SerialPortClient();
+        _serialPort = new SerialPortStream();
         _parser = parser;
     }
 
-    public async Task InitializeAsync(string portName, int baudRate)
+    public static string[] GetPortArray()
     {
-        // 设置事件回调
-        _client.Connecting = (client, e) => { return EasyTask.CompletedTask; }; // 即将连接到端口
-        _client.Connected = async (client, e) =>
-        {
-            // 连接成功后启动心跳任务
-            _heartbeatTask = Task.Run(HeartbeatLoop);
-            await EasyTask.CompletedTask;
-        };
-        _client.Closing = (client, e) => { return EasyTask.CompletedTask; };   // 即将从端口断开连接
-        _client.Closed = async (client, e) =>
-        {
-            // 断开时等待心跳任务停止
-            if (_heartbeatTask != null)
-            {
-                await _heartbeatTask;
-                _heartbeatTask = null;
-            }
-            await EasyTask.CompletedTask;
-        };
+        return SerialPortStream.GetPortNames();
+    }
 
-        // 接收数据事件
-        _client.Received = async (c, e) =>
-        {
-            if (e.RequestInfo is SvtRequestInfo myRequest)
-            {
-                Debug.WriteLine($"已从{BitConverter.ToString(myRequest.FrameNo)}接收到：CMDID={string.Join(" ", myRequest.CMDID.Select(b => b.ToString("X2")))}," +
-                    $"FrameType=0x{myRequest.FrameType:X2},消息={string.Join(" ", myRequest.Data.Select(b => b.ToString("X2")))}");
-                await ProcessReceivedDataAsync(myRequest);
-            }
-        };
+    public void SetSerialPort(string portName, int baudrate)
+    {
+        //端口名
+        _serialPort.PortName = portName;
 
-        // 配置串口参数
-        await _client.SetupAsync(new TouchSocketConfig()
-            .SetSerialPortOption(new SerialPortOption()
-            {
-                PortName = portName,       // 串口号
-                BaudRate = baudRate,       // 波特率
-                DataBits = 8,              // 数据位
-                Parity = System.IO.Ports.Parity.None, // 校验位
-                StopBits = System.IO.Ports.StopBits.One, // 停止位
-                DtrEnable = true
-            })
-            .SetSerialDataHandlingAdapter(() => new SvtDataHandlingAdapter()) // 数据适配器
-            .ConfigurePlugins(a =>
-            {
-                a.Add<MyConnectingPlugin>();
-                a.Add<MyConnectedPlugin>();
-                a.Add<MyReceivedPlugin>();
-                a.Add<MyClosedPlugin>();
-            }));
+        //波特率
+        _serialPort.BaudRate = baudrate;
 
-        // 连接串口
-        //await _client.ConnectAsync();
-        //Debug.WriteLine("串口连接成功");
+        //奇偶校验
+        _serialPort.Parity = Parity.None;
+
+        //数据位
+        _serialPort.DataBits = 8;
+
+        //停止位
+        _serialPort.StopBits = StopBits.One;
+        //串口接收数据事件
+        _serialPort.DataReceived += ReceiveDataMethod;
+    }
+
+    public void Open()
+    {
+        //打开串口
         try
         {
-            // 连接串口
-            await _client.ConnectAsync();
-            Debug.WriteLine($"串口 {portName} 连接成功");
+            _serialPort.Open();
+            Debug.WriteLine($"串口 {_serialPort.PortName} 连接成功");
+            if (_serialPort.IsOpen)
+            {
+                _ = Task.Run(HeartbeatLoop);
+            }
         }
-        catch (System.IO.FileNotFoundException ex)
+        catch (Exception)
         {
-            Debug.WriteLine($"串口 {portName} 不存在: {ex.Message}");
-            //throw new Exception($"找不到串口 {portName}", ex);
+            //MessageBox.Show("串口被占用");
         }
-        catch (Exception ex)
+
+    }
+
+    /// <summary>
+    /// 关闭串口
+    /// </summary>
+    public void Close()
+    {
+        _serialPort.Close();
+    }
+
+    /// <summary>
+    /// 发送数据
+    /// </summary>
+    /// <param name="data">要发送的数据</param>
+    public void SendDataMethod(byte[] data)
+    {
+        //获取串口状态，true为已打开，false为未打开
+        bool isOpen = _serialPort.IsOpen;
+
+        if (!isOpen)
         {
-            Debug.WriteLine($"串口连接失败: {ex.Message}");
-            throw;
+            Open();
         }
+
+        //发送字节数组
+        //参数1：包含要写入端口的数据的字节数组。
+        //参数2：参数中从零开始的字节偏移量，从此处开始将字节复制到端口。
+        //参数3：要写入的字节数。 
+        _serialPort.Write(data, 0, data.Length);
     }
-
-    public async Task ClientSafeCloseAsync()
+    /// <summary>
+    /// 发送数据
+    /// </summary>
+    /// <param name="data">要发送的数据</param>
+    public void SendDataMethod(string data)
     {
-        await _client.SafeCloseAsync();
-    }
+        //获取串口状态，true为已打开，false为未打开
+        bool isOpen = _serialPort.IsOpen;
 
-    public IWaitingClient<ISerialPortClient, IReceiverResult> CreateWaitingClient(WaitingOptions options)
-    {
-        var client = _client!.CreateWaitingClient(options);
-        return client;
-    }
-
-    // 异步处理数据的示例方法
-    private async Task ProcessReceivedDataAsync(SvtRequestInfo request)
-    {
-        // 模拟异步操作，如存储数据或发送响应
-        //await Task.Delay(100); // Simulate I/O or processing delay
-        await this._parser.Route(request);
-        Debug.WriteLine($"处理完成：来自{request.MasterAddress}的消息已处理。");
-    }
-
-
-    internal class MyConnectingPlugin : PluginBase, ISerialConnectingPlugin
-    {
-        public async Task OnSerialConnecting(ISerialPortSession client, ConnectingEventArgs e)
+        if (!isOpen)
         {
-            Debug.WriteLine("准备连接串口");
-            await e.InvokeNext();
+            Open();
         }
-    }
 
-    internal class MyConnectedPlugin : PluginBase, ISerialConnectedPlugin
+        //直接发送字符串
+        _serialPort.Write(data);
+    }
+    /// <summary>
+    /// 串口接收到数据触发此方法进行数据读取
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private async void ReceiveDataMethod(object sender, SerialDataReceivedEventArgs e)
     {
-        public async Task OnSerialConnected(ISerialPortSession client, ConnectedEventArgs e)
+        ReceiveDataEventArg arg = new ReceiveDataEventArg();
+
+        //读取串口缓冲区的字节数据
+        arg.Data = new byte[_serialPort.BytesToRead];
+        _serialPort.Read(arg.Data, 0, _serialPort.BytesToRead);
+
+        Debug.WriteLine($"消息={string.Join(" ", arg.Data.Select(b => b.ToString("X2")))}");
+
+        var result = BuildRequestInfo(arg.Data);
+        await result.Match(
+            Right: async requestInfo =>
+            {
+                Console.WriteLine($"Request Info: {requestInfo.Data.Select(b => b.ToString("X2"))}");
+                await this._parser.Route(requestInfo);
+            },
+            Left: async error =>
+            {
+                Console.WriteLine($"Error building request info: {error.Message}");
+            });
+
+        //触发自定义消息接收事件，把串口数据发送出去
+        if (ReceiveDataEvent != null && arg.Data.Length != 0)
         {
-            await e.InvokeNext();
+            ReceiveDataEvent.Invoke(null, arg);
         }
     }
 
-    internal class MyReceivedPlugin : PluginBase, ISerialReceivedPlugin
+    private static Either<Exception, SvtRequestInfo> BuildRequestInfo(byte[] data)
     {
-        public async Task OnSerialReceived(ISerialPortSession client, ReceivedDataEventArgs e)
+        if (data == null || data.Length < Svt.MiniLength)
         {
-            //这里处理数据接收
-            //根据适配器类型，e.ByteBlock与e.RequestInfo会呈现不同的值，具体看文档=》适配器部分。
-            var byteBlock = e.ByteBlock;
-            var requestInfo = e.RequestInfo;
+            return Either<Exception, SvtRequestInfo>.Left(new ArgumentException($"Data length is less than the minimum required length: {Svt.MiniLength}"));
+        }
+        ReadOnlySpan<byte> span = data.AsSpan();
+        // 先找包尾，有可能有多个包尾，取第一个
+        var tailIndex = span.IndexOfFirst(0, span.Length, Svt.FullTail);
+        if (tailIndex > 0)
+        {
+            // 从包尾往前找包头
+            var headIndexes = span.IndexOfInclude(0, tailIndex - Svt.FullTail.Length, Svt.FullHead);
+            // 找到取第一个
+            if (headIndexes.Count > 0)
+            {
+                // 取距离包尾最近的包头
+                var lastHeadIndex = headIndexes[^1];
+                //var pos = byteBlock.Position;//记录初始游标位置，防止本次无法解析时，回退游标。
+                // 去掉包头包尾
+                var startIndex = lastHeadIndex + 1;
+                var length = tailIndex + 1 - Svt.FullTail.Length - startIndex;
+                var package = span.Slice(startIndex, length);
+                // 去掉转义字符，才能校验包长度和CRC
+                var cleanPackage = RemoveInsertedBytes(package);
+                var myRequestInfo = new SvtRequestInfo();
+                // 清理之后包长度，不含包头包尾最少是14
+                if (cleanPackage.Length >= Svt.MiniLength - 4)
+                {
+                    int packetPos = 0;
 
-            //e.Handled = true;//表示该数据已经被本插件处理，无需再投递到其他插件。
+                    // Read FrameNo (2 byte)
+                    myRequestInfo.FrameNo = cleanPackage.Slice(packetPos, 2).ToArray();
+                    packetPos += 2;
 
-            await e.InvokeNext();
+                    // Read PacketLength (2 byte)
+                    myRequestInfo.PacketLength = TouchSocketBitConverter.BigEndian.ToUInt16(cleanPackage.Slice(packetPos, 2).ToArray(), 0);
+                    packetPos += 2;
+
+                    // Read AddressLength (1 byte)
+                    myRequestInfo.AddressLength = cleanPackage[packetPos];
+                    packetPos += 1;
+
+                    myRequestInfo.MasterAddress = cleanPackage[packetPos];
+                    packetPos += 1;
+
+                    myRequestInfo.SlaveAddress = cleanPackage[packetPos];
+                    packetPos += 1;
+
+                    // Read CMDID (2 bytes)
+                    myRequestInfo.CMDID = cleanPackage.Slice(packetPos, 2).ToArray();
+                    packetPos += 2;
+
+                    // Read FrameType (1 byte)
+                    myRequestInfo.FrameType = cleanPackage[packetPos];
+                    packetPos += 1;
+
+                    myRequestInfo.DataLength = (ushort)((cleanPackage[packetPos] << 8) | cleanPackage[packetPos + 1]);
+                    packetPos += 2;
+
+                    // 数据长度校验，从包尾往前推，该校验可以去掉
+                    if (packetPos + myRequestInfo.DataLength + 2 > cleanPackage.Length)
+                    {
+                        return Either<Exception, SvtRequestInfo>.Left(new ArgumentException($"Data length Check Failed"));
+                    }
+
+                    myRequestInfo.Data = cleanPackage.Slice(packetPos, myRequestInfo.DataLength).ToArray();
+                    packetPos += myRequestInfo.DataLength;
+
+                    // Read CRC (1 byte)
+                    myRequestInfo.CRC16 = cleanPackage.Slice(packetPos, 2).ToArray();
+                    packetPos += 2;
+
+                    if (Crc16.ComputeCrc(cleanPackage, cleanPackage.Length - 2) ==
+                            BitConverter.ToUInt16(myRequestInfo.CRC16.Reverse().ToArray(), 0))
+                    {
+                        return Either<Exception, SvtRequestInfo>.Right(myRequestInfo);
+                    }
+                    else
+                    {
+                        return Either<Exception, SvtRequestInfo>.Left(new ArgumentException($"CRC Check Failed"));
+                    }
+                }
+                else
+                {
+                    // 包有效长度不够，移动Position到该包尾的位置
+                    return Either<Exception, SvtRequestInfo>.Left(new ArgumentException($"Valid Length Not Enough")); ;
+                }
+            }
+            else
+            {
+                // 找不到则移动Position到该包尾的位置
+                return Either<Exception, SvtRequestInfo>.Left(new ArgumentException($"No Head Found"));
+            }
+        }
+        else
+        {
+            return Either<Exception, SvtRequestInfo>.Left(new ArgumentException($"No Tail Found"));
         }
     }
 
-    internal class MyClosedPlugin : PluginBase, ISerialClosedPlugin
-    {
-        public async Task OnSerialClosed(ISerialPortSession client, ClosedEventArgs e)
-        {
-            await e.InvokeNext();
-        }
-    }
 
     public byte[] GetFrameNumber()
     {
         return _frameSequenceGenerator.GenerateFrameSequence();
     }
 
-    public async Task SendPacketAsync(SvtRequestInfo packet)
+    public void SendPacket(SvtRequestInfo packet)
     {
         //await Task.Delay(200);
-        packet.FrameNo = GetFrameNumber();
-        Debug.WriteLine($"SendPacketAsync: {string.Join(" ", packet.DataFrame().Select(b => b.ToString("X2")))}");
-        await this._client.SendAsync(packet);
+        var data = packet.BuildPackets(GetFrameNumber());
+        SendDataMethod(data);
+        Debug.WriteLine($"SendPacketAsync: {string.Join(" ", data.Select(b => b.ToString("X2")))}");
+    }
+
+    private static ReadOnlySpan<byte> RemoveInsertedBytes(ReadOnlySpan<byte> data)
+    {
+        var cleanedData = new List<byte>();
+
+        for (int i = 0; i < data.Length; i++)
+        {
+            // 添加当前字节
+            cleanedData.Add(data[i]);
+
+            // 检查是否需要跳过下一个字节
+            if (i + 1 < data.Length)
+            {
+                if (data[i] == Svt.StartByte && data[i + 1] == Svt.InsertStartByte)
+                {
+                    // 跳过 0x82
+                    i++;
+                }
+                else if (data[i] == Svt.EndByte && data[i + 1] == Svt.InsertEndByte)
+                {
+                    // 跳过 0x83
+                    i++;
+                }
+            }
+        }
+
+        // 将列表转换为字节数组
+        return cleanedData.ToArray().AsSpan();
     }
 
     /// <summary>
@@ -180,10 +302,10 @@ public class ComPort
     /// <returns></returns>
     private async Task HeartbeatLoop()
     {
-        while (_client.Online)
+        while (this._serialPort.IsOpen)
         {
             var heartbeat = new HeartBeatRead();
-            await SendPacketAsync(heartbeat);
+            SendPacket(heartbeat);
             try
             {
                 await Task.Delay(HeartbeatIntervalMs);
@@ -218,9 +340,17 @@ public class FrameSequenceGenerator
         byte[] sequenceBytes = BitConverter.GetBytes((ushort)_counter);
         if (BitConverter.IsLittleEndian)
         {
-            Array.Reverse(sequenceBytes); // 如果是小端序，反转字节数组
+            System.Array.Reverse(sequenceBytes); // 如果是小端序，反转字节数组
         }
 
         return sequenceBytes;
     }
+}
+
+public class ReceiveDataEventArg : EventArgs
+{
+    /// <summary>
+    /// 串口接收到的数据
+    /// </summary>
+    public byte[] Data { get; set; }
 }

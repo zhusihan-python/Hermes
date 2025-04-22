@@ -16,6 +16,7 @@ internal static class Svt
     public const byte StartByte1 = 0x28;  // "("
     public const byte EndByte = 0x29;  // ")"
     public const byte EndByte1 = 0x3E;  // ">"
+    public const int MiniLength = 18; // 数据为空的包 最小长度为18
 
     // supported function codes
     public static readonly byte[] DeviceId = { 0x00, 0x20 };
