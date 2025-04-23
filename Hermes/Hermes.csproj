@@ -75,6 +75,7 @@
         <PackageReference Include="ConfigFactory.Avalonia" Version="0.4.2" />
         <PackageReference Include="ConfigFactory.Core" Version="0.4.2" />
         <PackageReference Include="Dapper" Version="2.1.35" />
+        <PackageReference Include="LanguageExt.Core" Version="5.0.0-beta-50" />
         <PackageReference Include="Material.Icons.Avalonia" Version="2.3.1" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
             <PrivateAssets>all</PrivateAssets>
@@ -90,6 +91,7 @@
         <PackageReference Include="R3" Version="1.2.9" />
         <PackageReference Include="R3Extensions.Avalonia" Version="1.2.9" />
         <PackageReference Include="ReactiveProperty" Version="9.7.0" />
+        <PackageReference Include="SerialPortStream" Version="2.4.2" />
         <PackageReference Include="SkiaSharp" Version="3.118.0-preview.2.3" />
         <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="3.118.0-preview.2.3" />
         <PackageReference Include="SukiUI" Version="6.0.1" />
