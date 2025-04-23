@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.ObjectModel;
-//using Microsoft.Extensions.DependencyInjection;
+using System.Threading.Tasks;
 using Hermes.Models;
 using Hermes.Repositories;
 using CommunityToolkit.Mvvm.Messaging;
@@ -9,6 +9,7 @@ using Hermes.Common.Messages;
 using System.Diagnostics;
 using Hermes.Types;
 using Hermes.Communication.SerialPort;
+using System.Collections.Generic;
 
 namespace Hermes.Features.UutProcessor;
 
@@ -20,6 +21,8 @@ public partial class SlideBoardViewModel : ViewModelBase
         get { return _slideBoxes; }
         set { SetProperty(ref _slideBoxes, value); }
     }
+    private Queue<List<int>> TaskQueue;
+    private Queue<List<int>> StartedTaskQueue;
     private int _rowCount = 5;
     public int RowCount
     {
@@ -41,6 +44,8 @@ public partial class SlideBoardViewModel : ViewModelBase
         MessageSender sender
         )
     {
+        this.TaskQueue = new Queue<List<int>>();
+        this.StartedTaskQueue = new Queue<List<int>>();
         SlideBoxes = new ObservableCollection<SlideBoxViewModel>();
 
         for (int i = 0; i < _rowCount; i++)
@@ -66,6 +71,36 @@ public partial class SlideBoardViewModel : ViewModelBase
         Messenger.Register<SlideInfoMessage>(this, this.UpdateSlideInfo);
     }
 
+    public void EnqueueTask(List<int> task)
+    {
+        TaskQueue.Enqueue(task);
+    }
+
+    public List<int> DequeueTask()
+    {
+        return TaskQueue.Count > 0 ? TaskQueue.Dequeue() : new List<int>();
+    }
+
+    public void EnqueueStartedTask(List<int> task)
+    {
+        StartedTaskQueue.Enqueue(task);
+    }
+
+    public List<int> DequeueStartedTask()
+    {
+        return StartedTaskQueue.Count > 0 ? StartedTaskQueue.Dequeue() : new List<int>();
+    }
+
+    public List<int> PeekNextTask()
+    {
+        return TaskQueue.Count > 0 ? TaskQueue.Peek() : new List<int>();
+    }
+
+    public List<int> PeekStartedTask()
+    {
+        return StartedTaskQueue.Count > 0 ? StartedTaskQueue.Peek() : new List<int>();
+    }
+
     public void Receive(object? recipient, HeartBeatMessage message)
     {
         if (this._device.SlideBoxInPlace.Length != SlideBoxes.Count)
@@ -77,6 +112,7 @@ public partial class SlideBoardViewModel : ViewModelBase
         {
             var slideBoxViewModel = SlideBoxes[i];
             slideBoxViewModel.BoxInPlace = this._device.SlideBoxInPlace[i];
+            slideBoxViewModel.ActionType = this._device.SlideBoxActions[i];
             slideBoxViewModel.IsBusy = this._device.SlideBoxActions[i].IsBusy();
             if (this._device.SlideBoxActions[i].IsSealSuccess())
             {
@@ -95,6 +131,27 @@ public partial class SlideBoardViewModel : ViewModelBase
             {
                 var item = itemList[j];
                 item.State = this._device.SlideInPlace[i * itemList.Count + j].ToSlideState();
+            }
+        }
+        CheckScanStarted(this._device.SlideBoxActions);
+        var scanFinished = CheckScanTaskFinish(this._device.SlideBoxActions);
+        if (scanFinished)
+        {
+            var dices = DequeueStartedTask();
+            Debug.WriteLine("ScanTaskFinish is true");
+            foreach(int dice in dices)
+            {
+                Debug.WriteLine($"cur Index {dice}");
+                var slideBoxViewModel = SlideBoxes[dice];
+                var slideList = slideBoxViewModel.ItemList;
+                foreach(SlideModel model in slideList)
+                {
+                    var slide = model.Slide;
+                    if (slide != null)
+                    {
+                        Debug.WriteLine($"Slide ID: {slide.SlideId}, Title: {slide.PatientName}");
+                    }
+                }
             }
         }
         Debug.WriteLine("HeartBeatMessage更新完成");
@@ -121,7 +178,7 @@ public partial class SlideBoardViewModel : ViewModelBase
                             WithMasterAddress<SystemStatusWrite>(0xF2).
                             WithSlaveAddress<SystemStatusWrite>(0x13).
                             WithBoxTags(boxTags);
-            this._sender.EnqueueMessage(packet);
+            _ = Task.Run(() => this._sender.EnqueueMessage(packet));
             // remove selected  tag
             for (int j = 0;j < SlideBoxes.Count; j++)
             {
@@ -155,17 +212,45 @@ public partial class SlideBoardViewModel : ViewModelBase
                             WithMasterAddress<SystemStatusWrite>(0xF2).
                             WithSlaveAddress<SystemStatusWrite>(0x13).
                             WithBoxTags(boxTags);
-            this._sender.EnqueueMessage(packet);
+            _ = Task.Run(() => this._sender.EnqueueMessage(packet));
             // remove selected  tag
+            var selectedBoxes = new List<int>();
             for (int j = 0; j < SlideBoxes.Count; j++)
             {
                 var viewModel = SlideBoxes[j];
                 if (boxTags[j] == 0x01)
                 {
                     viewModel.IsSelected = false;
+                    selectedBoxes.Add(j);
                 }
             }
+            EnqueueTask(selectedBoxes);
         }
+    }
+
+    private void CheckScanStarted(SlideBoxActionType[] actionTypes)
+    {
+        var indices = PeekNextTask();
+        if (indices.Count > 0)
+        {
+            if (indices.Any(i => i >= 0 && i < actionTypes.Length &&
+                                   actionTypes[i] == SlideBoxActionType.ScanningCode))
+            {
+                EnqueueStartedTask(DequeueTask());
+            }
+        }
+    }
+
+    private bool CheckScanTaskFinish(SlideBoxActionType[] actionTypes)
+    {
+        var indices = PeekStartedTask();
+        if (indices.Any())
+        {
+            return indices.All(i => i >= 0 && i < actionTypes.Length &&
+                                   (actionTypes[i] == SlideBoxActionType.ScanCodeSuccess ||
+                                    actionTypes[i] == SlideBoxActionType.ScanCodeFailed));
+        }
+        return false;
     }
 
     private async void UpdateSlideInfo(object? recipient, SlideInfoMessage message)

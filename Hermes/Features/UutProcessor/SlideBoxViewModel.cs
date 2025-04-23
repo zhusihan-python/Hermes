@@ -25,14 +25,9 @@ public partial class SlideBoxViewModel : ViewModelBase
         set { SetProperty(ref _columnIndex, value); }
     }
 
-    [ObservableProperty] private string _programId;
-    [ObservableProperty] private string _pathologyId;
-    [ObservableProperty] private string _slideId;
-    [ObservableProperty] private string _patientName;
-    [ObservableProperty] private string _doctorName;
-    [ObservableProperty] private string _entryDate;
     [ObservableProperty] private bool _boxInPlace;
     [ObservableProperty] private bool _isSelected;
+    [ObservableProperty] private SlideBoxActionType _actionType;
     [ObservableProperty] private bool _isBusy;
     public ObservableCollection<SlideModel> ItemList { get; set; } = new ObservableCollection<SlideModel>();
     //public RangeObservableCollection<Slide> Slides { get; set; } = [];
@@ -50,26 +45,6 @@ public partial class SlideBoxViewModel : ViewModelBase
         Console.WriteLine("Operation completed");
     }
 
-    //public Observable<Unit> LoadSlidesObservable()
-    //{
-    //    return Observable.FromAsync(async (cancellationToken) =>
-    //    {
-    //        Slides.Clear();
-    //        var ids = new List<string> { "24001124","24001125","24001126","24001127","24001128","24001129","24001130",
-    //                    "24001131","24001132","24001133","24001134","24001135","24001136","24001137","24001138",
-    //                    "24001139","24001140", "24001141","24001142","24001143" };
-    //        var result = await _slideRepository.FindBySlideIds(ids);
-    //        Slides.AddRange(result);
-    //    });
-    //}
-
-    //public void ExecuteLoadSlides()
-    //{
-    //    LoadSlidesObservable().Subscribe(
-    //        _ => Console.WriteLine("Operation completed")
-    //    );
-    //}
-
     protected override void SetupReactiveExtensions()
     {
 
@@ -78,26 +53,13 @@ public partial class SlideBoxViewModel : ViewModelBase
     [RelayCommand]
     private async Task Refresh()
     {
-        //this.ProgramId = Slides[SelectedSlideIndex].ProgramId;
-        //this.PathologyId = Slides[SelectedSlideIndex].PathologyId.ToString();
-        //this.SlideId = Slides[SelectedSlideIndex].SlideId.ToString();
-        //this.PatientName = Slides[SelectedSlideIndex].PatientName;
-        //this.DoctorName = Slides[SelectedSlideIndex].Doctor.Name;
-        //this.EntryDate = Slides[SelectedSlideIndex].EntryDate;
+
     }
 
     [RelayCommand]
     private async Task Search()
     {
-        //var units = await _unitUnderTestRepository.GetLastUnits(
-        //    SerialNumberFilter,
-        //    SelectedTestStatus,
-        //    SelectedSfcResponse,
-        //    SfcResponseContentFilter,
-        //    SelectedTimeSpan == null ? null : TimeSpan.FromHours((int)SelectedTimeSpan));
 
-        //UnitsUnderTest.Clear();
-        //UnitsUnderTest.AddRange(units);
     }
 
     public void UpdateSlide(int slideIndex, Slide slide)
