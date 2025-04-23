@@ -174,9 +174,9 @@ public class ScanEngine : ObservableRecipient
             {
                 // 取距离包尾最近的包头
                 var lastHeadIndex = headIndexes[^1];
-                //var pos = byteBlock.Position;//记录初始游标位置，防止本次无法解析时，回退游标。
-                // 去掉包头包尾
-                var package = span.Slice(lastHeadIndex + 1, tailIndex + 1 - Scan.FullTail.Length - Scan.FullHead.Length).ToArray();
+                var startIndex = lastHeadIndex + 1;
+                var length = tailIndex + 1 - 2 - startIndex;
+                var package = span.Slice(startIndex, length).ToArray();
                 // 清理之后包长度，不含包头包尾最少是14
                 if (package.Length > 0)
                 {
