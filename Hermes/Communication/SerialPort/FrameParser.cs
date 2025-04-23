@@ -111,12 +111,11 @@ public class FrameParser : ObservableRecipient
                 {
                     // 触发扫码解码
                     await sender!.SendScannerMessageAsync(scanRequest);
-
                     var successResponse = new ScanTriggerWriteResponse().
                                     WithMasterAddress<ScanTriggerWriteResponse>(0xF2).
                                     WithSlaveAddress<ScanTriggerWriteResponse>(0x13).
                                     TriggerSuccess();
-                    sender.EnqueueMessage(successResponse);
+                    await sender.EnqueueMessage(successResponse);
                 }
                 else
                 {
@@ -124,7 +123,7 @@ public class FrameParser : ObservableRecipient
                                     WithMasterAddress<ScanTriggerWriteResponse>(0xF2).
                                     WithSlaveAddress<ScanTriggerWriteResponse>(0x13).
                                     TriggerFail();
-                    sender!.EnqueueMessage(failResponse);
+                    await sender!.EnqueueMessage(failResponse);
                 }
             }
         }

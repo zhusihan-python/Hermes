@@ -156,7 +156,7 @@ public class ComPort
     {
         if (data == null || data.Length < Svt.MiniLength)
         {
-            return Either<Exception, SvtRequestInfo>.Left(new ArgumentException($"Data length is less than the minimum required length: {Svt.MiniLength}"));
+            return Either<Exception, SvtRequestInfo>.Left(new ArgumentException($"Data length less than minimum required length: {Svt.MiniLength}"));
         }
         ReadOnlySpan<byte> span = data.AsSpan();
         // 先找包尾，有可能有多个包尾，取第一个
@@ -215,7 +215,7 @@ public class ComPort
                     // 数据长度校验，从包尾往前推，该校验可以去掉
                     if (packetPos + myRequestInfo.DataLength + 2 > cleanPackage.Length)
                     {
-                        return Either<Exception, SvtRequestInfo>.Left(new ArgumentException($"Data length Check Failed"));
+                        return Either<Exception, SvtRequestInfo>.Left(new ArgumentException("Data length Check Failed"));
                     }
 
                     myRequestInfo.Data = cleanPackage.Slice(packetPos, myRequestInfo.DataLength).ToArray();
@@ -232,24 +232,24 @@ public class ComPort
                     }
                     else
                     {
-                        return Either<Exception, SvtRequestInfo>.Left(new ArgumentException($"CRC Check Failed"));
+                        return Either<Exception, SvtRequestInfo>.Left(new ArgumentException("CRC Check Failed"));
                     }
                 }
                 else
                 {
                     // 包有效长度不够，移动Position到该包尾的位置
-                    return Either<Exception, SvtRequestInfo>.Left(new ArgumentException($"Valid Length Not Enough")); ;
+                    return Either<Exception, SvtRequestInfo>.Left(new ArgumentException("Valid Length Not Enough")); ;
                 }
             }
             else
             {
                 // 找不到则移动Position到该包尾的位置
-                return Either<Exception, SvtRequestInfo>.Left(new ArgumentException($"No Head Found"));
+                return Either<Exception, SvtRequestInfo>.Left(new ArgumentException("No Head Found"));
             }
         }
         else
         {
-            return Either<Exception, SvtRequestInfo>.Left(new ArgumentException($"No Tail Found"));
+            return Either<Exception, SvtRequestInfo>.Left(new ArgumentException("No Tail Found"));
         }
     }
 
@@ -259,12 +259,12 @@ public class ComPort
         return _frameSequenceGenerator.GenerateFrameSequence();
     }
 
-    public void SendPacket(SvtRequestInfo packet)
+    public async Task SendPacket(SvtRequestInfo packet)
     {
-        //await Task.Delay(200);
+        await Task.Delay(100);
         var data = packet.BuildPackets(GetFrameNumber());
         SendDataMethod(data);
-        Debug.WriteLine($"SendPacketAsync: {string.Join(" ", data.Select(b => b.ToString("X2")))}");
+        Debug.WriteLine($"SendPacket: {string.Join(" ", data.Select(b => b.ToString("X2")))}");
     }
 
     private static ReadOnlySpan<byte> RemoveInsertedBytes(ReadOnlySpan<byte> data)
