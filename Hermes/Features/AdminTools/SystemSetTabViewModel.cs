@@ -98,7 +98,7 @@ public partial class SystemSetTabViewModel: ViewModelBase
             WithOperationType(0x01).
             WithMasterAddress<SystemStatusWrite>(0xF2).
             WithSlaveAddress<SystemStatusWrite>(0x13);
-            this._sender.EnqueueMessage(packet);
+            _ = Task.Run(() => this._sender.EnqueueMessage(packet));
         }
     }
 

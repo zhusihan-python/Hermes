@@ -129,7 +129,7 @@ public partial class ConciseMainViewModel : ViewModelBase
                             WithBoxTags(boxTags);
             //this.ComPort.EnqueuePacket(packet);
             //await this.ComPort.SendPacketAsync(packet);
-            this._sender.EnqueueMessage(packet);
+            _ = Task.Run(() => this._sender.EnqueueMessage(packet));
         }
         catch (Exception e)
         {
