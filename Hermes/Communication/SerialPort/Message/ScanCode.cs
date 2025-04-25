@@ -4,8 +4,9 @@ namespace Hermes.Communication.SerialPort;
 
 public class ScanTriggerWriteResponse : SvtRequestInfo
 {
-    public ScanTriggerWriteResponse()
+    public ScanTriggerWriteResponse(byte[] frameNumber)
     {
+        this.FrameNo = frameNumber;
         this.CMDID = Svt.ScanTrigger;
         this.FrameType = Svt.WriteResponse;
         this.DataLength = 1;
