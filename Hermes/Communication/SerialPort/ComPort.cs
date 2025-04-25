@@ -261,7 +261,7 @@ public class ComPort
 
     public async Task SendPacket(SvtRequestInfo packet)
     {
-        await Task.Delay(100);
+        await Task.Delay(50);
         var data = packet.BuildPackets(GetFrameNumber());
         SendDataMethod(data);
         Debug.WriteLine($"SendPacket: {string.Join(" ", data.Select(b => b.ToString("X2")))}");
