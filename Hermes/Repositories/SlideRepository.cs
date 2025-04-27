@@ -20,7 +20,9 @@ public class SlideRepository(IDbContextFactory<HermesLocalContext> context)
     public async Task<Slide> FindById(string searchSlideId)
     {
         await using var ctx = await _context.CreateDbContextAsync();
-        return await ctx.Slides.FirstOrDefaultAsync(x => x.SlideId.ToString() == searchSlideId) ?? Slide.Null;
+        return await ctx.Slides
+            .Include(slide => slide.Doctor)
+            .FirstOrDefaultAsync(x => x.SlideId.ToString() == searchSlideId) ?? Slide.Null;
     }
 
     public async Task<List<Slide>> FindBySlideIds(List<string> ids)
