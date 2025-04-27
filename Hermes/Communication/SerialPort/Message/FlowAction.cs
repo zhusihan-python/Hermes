@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Buffers.Binary;
 using System.Collections.Generic;
-using System.Diagnostics;
+//using System.Diagnostics;
 using System.Linq;
 using Hermes.Communication.Protocol;
 using TouchSocket.Core;
@@ -167,16 +167,16 @@ public class FlowActionWrite : SvtRequestInfo
 
 public class SortWriteBatch
 {
-    private readonly List<(UInt16, UInt16)> _locations;
+    private readonly Tuple<int, int>[] _locations;
 
-    public SortWriteBatch(List<(UInt16, UInt16)> locations)
+    public SortWriteBatch(Tuple<int, int>[] locations)
     {
         _locations = locations ?? throw new ArgumentNullException(nameof(locations));
     }
 
     public FlowActionWrite[] GenerateMessages()
     {
-        if (_locations.Count <= 100)
+        if (_locations.Length <= 500)
         {
             return GenerateSortBatchMessages();
         }
@@ -186,34 +186,38 @@ public class SortWriteBatch
         }
     }
 
-    private FlowActionWrite[] GenerateSortBatchMessages()
+    public FlowActionWrite[] GenerateSortBatchMessages()
     {
-        int messageCount = Math.Min(_locations.Count, 100);
-        var messages = new FlowActionWrite[messageCount];
+        //int messageCount = Math.Min(_locations.Length, 500);
+        var messages = new FlowActionWrite[_locations.Length];
 
-        for (int i = 0; i < messageCount; i++)
+        for (int i = 0; i < _locations.Length; i++)
         {
             var srcDstLocations = new byte[20];
             var span = new Span<byte>(srcDstLocations);
 
-            BinaryPrimitives.WriteUInt16BigEndian(srcDstLocations.AsSpan(0, 2), _locations[i].Item1);
-            BinaryPrimitives.WriteUInt16BigEndian(srcDstLocations.AsSpan(2, 4), _locations[i].Item2);
+            BinaryPrimitives.WriteInt16BigEndian(srcDstLocations.AsSpan(0, 2), (Int16)_locations[i].Item1);
+            BinaryPrimitives.WriteInt16BigEndian(srcDstLocations.AsSpan(2, 4), (Int16)_locations[i].Item2);
 
-            var packet = new FlowActionWrite().
-                WithMasterAddress<FlowActionWrite>(0xF2).
-                WithSlaveAddress<FlowActionWrite>(0x13).
-                WithActionSequence(BitConverter.GetBytes(i).Reverse().ToArray()).
-                WithActionType(0x02).
-                WithPickCount(1).
-                WithSrcDstLocations(srcDstLocations);
+            var actionSequence = new byte[2];
+            BinaryPrimitives.WriteInt16BigEndian(actionSequence, (Int16)(i+1));
+            var packet = new FlowActionWrite()
+                            .WithOperationType(0x01)
+                            .WithMasterAddress<FlowActionWrite>(0xF2)
+                            .WithSlaveAddress<FlowActionWrite>(0x13)
+                            .WithActionSequence(actionSequence)
+                            .WithActionType(0x02)
+                            .WithPickCount(1)
+                            .WithSrcDstLocations(srcDstLocations)
+                            .GenData();
             messages[i] = packet;
         }
         return messages;
     }
 
-    private FlowActionWrite[] GenerateLargeBatchMessages()
+    public FlowActionWrite[] GenerateLargeBatchMessages()
     {
-        int messageCount = (_locations.Count + 4) / 5;
+        int messageCount = (_locations.Length + 4) / 5;
         var messages = new FlowActionWrite[messageCount];
 
         for (int i = 0; i < messageCount; i++)
@@ -225,7 +229,7 @@ public class SortWriteBatch
             };
 
             int startIndex = i * 5;
-            int endIndex = Math.Min(startIndex + 5, _locations.Count);
+            int endIndex = Math.Min(startIndex + 5, _locations.Length);
 
             for (int j = 0; j < endIndex - startIndex; j++)
             {
@@ -233,24 +237,24 @@ public class SortWriteBatch
                 switch (j)
                 {
                     case 0:
-                        BinaryPrimitives.WriteUInt16BigEndian(message.SourceOne, location.Item1);
-                        BinaryPrimitives.WriteUInt16BigEndian(message.DestinationOne, location.Item2);
+                        BinaryPrimitives.WriteInt16BigEndian(message.SourceOne, (Int16)location.Item1);
+                        BinaryPrimitives.WriteInt16BigEndian(message.DestinationOne, (Int16)location.Item2);
                         break;
                     case 1:
-                        BinaryPrimitives.WriteUInt16BigEndian(message.SourceTwo, location.Item1);
-                        BinaryPrimitives.WriteUInt16BigEndian(message.DestinationTwo, location.Item2);
+                        BinaryPrimitives.WriteInt16BigEndian(message.SourceTwo, (Int16)location.Item1);
+                        BinaryPrimitives.WriteInt16BigEndian(message.DestinationTwo, (Int16)location.Item2);
                         break;
                     case 2:
-                        BinaryPrimitives.WriteUInt16BigEndian(message.SourceThree, location.Item1);
-                        BinaryPrimitives.WriteUInt16BigEndian(message.DestinationThree, location.Item2);
+                        BinaryPrimitives.WriteInt16BigEndian(message.SourceThree, (Int16)location.Item1);
+                        BinaryPrimitives.WriteInt16BigEndian(message.DestinationThree, (Int16)location.Item2);
                         break;
                     case 3:
-                        BinaryPrimitives.WriteUInt16BigEndian(message.SourceFour, location.Item1);
-                        BinaryPrimitives.WriteUInt16BigEndian(message.DestinationFour, location.Item2);
+                        BinaryPrimitives.WriteInt16BigEndian(message.SourceFour, (Int16)location.Item1);
+                        BinaryPrimitives.WriteInt16BigEndian(message.DestinationFour, (Int16)location.Item2);
                         break;
                     case 4:
-                        BinaryPrimitives.WriteUInt16BigEndian(message.SourceFive, location.Item1);
-                        BinaryPrimitives.WriteUInt16BigEndian(message.DestinationFive, location.Item2);
+                        BinaryPrimitives.WriteInt16BigEndian(message.SourceFive, (Int16)location.Item1);
+                        BinaryPrimitives.WriteInt16BigEndian(message.DestinationFive, (Int16)location.Item2);
                         break;
                 }
             }
