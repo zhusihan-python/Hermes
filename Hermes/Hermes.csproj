@@ -180,6 +180,7 @@
     <ItemGroup>
         <ProjectReference Include="..\Hermes.Cipher\Hermes.Cipher.csproj" />
         <ProjectReference Include="..\Hermes.Language\Hermes.Language.csproj" />
+        <ProjectReference Include="..\SlideSort\SlideSort.fsproj" />
     </ItemGroup>
 
     <ItemGroup>

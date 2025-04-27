@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hermes.Cipher", "Hermes.Cip
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hermes.Cipher.UnitTests", "Hermes.Cipher.UnitTests\Hermes.Cipher.UnitTests.csproj", "{16BD27C2-446B-4E78-A6D5-86064A6C2C7E}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "SlideSort", "SlideSort\SlideSort.fsproj", "{40998876-08F5-D98F-B6A2-C2493C76091F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,8 +73,19 @@ Global
 		{16BD27C2-446B-4E78-A6D5-86064A6C2C7E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{16BD27C2-446B-4E78-A6D5-86064A6C2C7E}.Release|x64.ActiveCfg = Release|x64
 		{16BD27C2-446B-4E78-A6D5-86064A6C2C7E}.Release|x64.Build.0 = Release|x64
+		{40998876-08F5-D98F-B6A2-C2493C76091F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40998876-08F5-D98F-B6A2-C2493C76091F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40998876-08F5-D98F-B6A2-C2493C76091F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{40998876-08F5-D98F-B6A2-C2493C76091F}.Debug|x64.Build.0 = Debug|Any CPU
+		{40998876-08F5-D98F-B6A2-C2493C76091F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40998876-08F5-D98F-B6A2-C2493C76091F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40998876-08F5-D98F-B6A2-C2493C76091F}.Release|x64.ActiveCfg = Release|Any CPU
+		{40998876-08F5-D98F-B6A2-C2493C76091F}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {531B0DE0-2E83-45E4-9C5C-28505736FD30}
 	EndGlobalSection
 EndGlobal
