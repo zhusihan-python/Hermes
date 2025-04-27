@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Diagnostics;
 //using System.Linq;
 //using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
-using TouchSocket.Core;
 
 namespace Hermes.Communication.SerialPort;
 
 public class MessageSender : IDisposable
 {
-    private ConcurrentQueue<SvtRequestInfo> _messageQueue = new();
+    //private ConcurrentQueue<SvtRequestInfo> _messageQueue = new();
     private readonly Timer _timer;
     private ComPort _comPort;
     public ScanEngine scanEngine;
@@ -43,19 +41,16 @@ public class MessageSender : IDisposable
     public async Task EnqueueMessage(SvtRequestInfo message)
     {
         await _comPort.SendPacket(message);
-        //_messageQueue.Enqueue(message);
-        //// 如果队列中有消息，并且定时器未启动，则启动定时器
-        //TryStartTimer();
     }
 
-    public void EnqueueMessageArray(SvtRequestInfo[] messages)
-    {
-        if (messages == null || messages.Length == 0)
-        {
-            return;
-        }
-        messages.ForEach(message => _messageQueue.Enqueue(message));
-    }
+    //public void EnqueueMessageArray(SvtRequestInfo[] messages)
+    //{
+    //    if (messages == null || messages.Length == 0)
+    //    {
+    //        return;
+    //    }
+    //    messages.ForEach(message => _messageQueue.Enqueue(message));
+    //}
 
     //private void TryStartTimer()
     //{
