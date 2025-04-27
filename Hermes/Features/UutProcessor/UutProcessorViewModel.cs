@@ -7,7 +7,7 @@ using Hermes.Language;
 using Hermes.Models;
 using Hermes.Services.UutSenderService;
 using Material.Icons;
-using System.Linq;
+//using System.Linq;
 using System;
 using System.Diagnostics;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,7 +23,7 @@ public partial class UutProcessorViewModel : PageBase
     [ObservableProperty] private string _stateText = Resources.enum_stopped;
     [ObservableProperty] private bool _isWaitingForDummy;
     [ObservableProperty] private bool _isOptionVisible;
-    [ObservableProperty] private string _selectedSortOption;
+    [ObservableProperty] private int _selectedIndex;
 
     public ScannerViewModel ScannerViewModel { get; }
     public DummyViewModel DummyViewModel { get; }
@@ -57,7 +57,7 @@ public partial class UutProcessorViewModel : PageBase
         SortOptions.Add("按医生");
         SortOptions.Add("按病理号");
         SortOptions.Add("按玻片号");
-        SelectedSortOption = SortOptions.First();
+        SelectedIndex = 0;
     }
 
     protected override void SetupReactiveExtensions()
@@ -111,7 +111,7 @@ public partial class UutProcessorViewModel : PageBase
     [RelayCommand]
     private void SortSlide()
     {
-        Messenger.Send(new SortSlideMessage());
+        Messenger.Send(new SortSlideMessage(SelectedIndex));
     }
 
     [RelayCommand]

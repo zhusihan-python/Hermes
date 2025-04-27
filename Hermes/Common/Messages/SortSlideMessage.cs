@@ -2,4 +2,4 @@
 
 namespace Hermes.Common.Messages;
 
-public class SortSlideMessage() : ValueChangedMessage<bool>(true);
+public class SortSlideMessage(int option) : ValueChangedMessage<int>(option);

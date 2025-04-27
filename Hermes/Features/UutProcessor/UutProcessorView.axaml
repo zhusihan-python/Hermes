@@ -32,7 +32,7 @@
 								Orientation="Horizontal"
 								HorizontalAlignment="Center"
 								VerticalAlignment="Center">
-						<ComboBox VerticalAlignment="Top" ItemsSource="{Binding SortOptions}" SelectedItem="{Binding SelectedSortOption}" />
+						<ComboBox VerticalAlignment="Top" ItemsSource="{Binding SortOptions}" SelectedIndex="{Binding SelectedIndex}" />
 						<Button Classes="Outlined" MaxWidth="88" Height="62" Command="{Binding SortSlideCommand}">
 							<StackPanel Orientation="Horizontal" Spacing="10">
 								<avalonia:MaterialIcon Kind="Sort" Margin="-5,0,0,0"/>

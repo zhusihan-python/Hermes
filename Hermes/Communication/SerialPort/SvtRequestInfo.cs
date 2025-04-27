@@ -1,9 +1,9 @@
 ﻿using Hermes.Communication.Protocol;
 using System;
 using System.Buffers.Binary;
-using System.Diagnostics;
+//using System.Diagnostics;
 using System.IO;
-using System.Linq;
+//using System.Linq;
 using TouchSocket.Core;
 
 namespace Hermes.Communication.SerialPort;
