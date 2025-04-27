@@ -261,10 +261,10 @@ public class ComPort
 
     public async Task SendPacket(SvtRequestInfo packet)
     {
-        await Task.Delay(50);
+        await Task.Delay(100);
         var data = packet.BuildPackets(GetFrameNumber());
         SendDataMethod(data);
-        Debug.WriteLine($"SendPacket: {string.Join(" ", data.Select(b => b.ToString("X2")))}");
+        Debug.WriteLine($"{DateTime.UtcNow.ToString("yyyy MM dd HH:mm:ss:fff")} SendPacket: {string.Join(" ", data.Select(b => b.ToString("X2")))}");
     }
 
     private static ReadOnlySpan<byte> RemoveInsertedBytes(ReadOnlySpan<byte> data)
@@ -305,7 +305,7 @@ public class ComPort
         while (this._serialPort.IsOpen)
         {
             var heartbeat = new HeartBeatRead();
-            SendPacket(heartbeat);
+            await SendPacket(heartbeat);
             try
             {
                 await Task.Delay(HeartbeatIntervalMs);

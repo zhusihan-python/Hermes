@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using R3;
+using Microsoft.FSharp.Core;
 using Hermes.Models;
 using Hermes.Repositories;
 using CommunityToolkit.Mvvm.Messaging;
@@ -10,6 +12,10 @@ using System.Diagnostics;
 using Hermes.Types;
 using Hermes.Communication.SerialPort;
 using System.Collections.Generic;
+using Hermes.Common.SlideSortCSharp;
+using SlideSort;
+using System.Net.Sockets;
+using System.Buffers.Binary;
 
 namespace Hermes.Features.UutProcessor;
 
@@ -23,6 +29,9 @@ public partial class SlideBoardViewModel : ViewModelBase
     }
     private Queue<List<int>> TaskQueue;
     private Queue<List<int>> StartedTaskQueue;
+    //private Queue<List<int>> InplaceTaskQueue;
+    private Queue<List<int>> StartedInplaceTaskQueue;
+    private bool canCheckInPlace;
     private int _rowCount = 5;
     public int RowCount
     {
@@ -46,6 +55,9 @@ public partial class SlideBoardViewModel : ViewModelBase
     {
         this.TaskQueue = new Queue<List<int>>();
         this.StartedTaskQueue = new Queue<List<int>>();
+        //this.InplaceTaskQueue = new Queue<List<int>>();
+        this.StartedInplaceTaskQueue = new Queue<List<int>>();
+        this.canCheckInPlace = false;
         SlideBoxes = new ObservableCollection<SlideBoxViewModel>();
 
         for (int i = 0; i < _rowCount; i++)
@@ -91,6 +103,26 @@ public partial class SlideBoardViewModel : ViewModelBase
         return StartedTaskQueue.Count > 0 ? StartedTaskQueue.Dequeue() : new List<int>();
     }
 
+    //public void EnqueueInplaceTask(List<int> task)
+    //{
+    //    InplaceTaskQueue.Enqueue(task);
+    //}
+
+    //public List<int> DequeueInplaceTask()
+    //{
+    //    return InplaceTaskQueue.Count > 0 ? InplaceTaskQueue.Dequeue() : new List<int>();
+    //}
+
+    public void EnqueueStartedInplaceTask(List <int> task)
+    {
+        StartedInplaceTaskQueue.Enqueue(task);
+    }
+
+    public List<int> DequeueStartedInplaceTask()
+    {
+        return StartedInplaceTaskQueue.Count > 0 ? StartedInplaceTaskQueue.Dequeue() : new List<int>();
+    }
+
     public List<int> PeekNextTask()
     {
         return TaskQueue.Count > 0 ? TaskQueue.Peek() : new List<int>();
@@ -99,6 +131,17 @@ public partial class SlideBoardViewModel : ViewModelBase
     public List<int> PeekStartedTask()
     {
         return StartedTaskQueue.Count > 0 ? StartedTaskQueue.Peek() : new List<int>();
+    }
+
+    //public List<int> PeekInplaceTask()
+    //{
+    //    return InplaceTaskQueue.Count > 0 ? InplaceTaskQueue.Peek() : new List<int>();
+
+    //}
+
+    public List<int> PeekStartedInplaceTask()
+    {
+        return StartedInplaceTaskQueue.Count > 0 ? StartedInplaceTaskQueue.Peek() : new List<int>();
     }
 
     public void Receive(object? recipient, HeartBeatMessage message)
@@ -137,21 +180,107 @@ public partial class SlideBoardViewModel : ViewModelBase
         var scanFinished = CheckScanTaskFinish(this._device.SlideBoxActions);
         if (scanFinished)
         {
-            var dices = DequeueStartedTask();
             Debug.WriteLine("ScanTaskFinish is true");
-            foreach(int dice in dices)
+            Observable.Timer(TimeSpan.FromSeconds(5))
+                .Subscribe(_ =>
+                {
+                    // 在 Timer 到期后执行此代码
+                    this.canCheckInPlace = true;
+                });
+            //var dices = DequeueStartedTask();
+            //foreach (int dice in dices)
+            //{
+            //    Debug.WriteLine($"cur Index {dice}");
+            //    var slideBoxViewModel = SlideBoxes[dice];
+            //    var slideList = slideBoxViewModel.ItemList;
+            //    foreach(SlideModel model in slideList)
+            //    {
+            //        var slide = model.Slide;
+            //        if (slide != null)
+            //        {
+            //            Debug.WriteLine($"Slide ID: {slide.SlideId}, PatientName: {slide.PatientName}");
+            //        }
+            //    }
+            //}
+        }
+        //CheckInplaceStarted(this._device.SlideBoxActions);
+        var inplaceCheckFinished = CheckInplaceFinish(this._device.SlideBoxActions);
+        if (scanFinished && inplaceCheckFinished)
+        {
+            Debug.WriteLine("InplaceFinish is true");
+            // 获取待理片的玻片信息
+            var dices = DequeueStartedTask();
+            var slides = new List<Tuple<SlideSorter.Slide, int>>();
+            foreach (int dice in dices)
             {
                 Debug.WriteLine($"cur Index {dice}");
                 var slideBoxViewModel = SlideBoxes[dice];
                 var slideList = slideBoxViewModel.ItemList;
-                foreach(SlideModel model in slideList)
+                var boxIndex = slideBoxViewModel.RowIndex * this.ColumnCount + slideBoxViewModel.ColumnIndex;
+                for (int k=0; k < slideList.Count;k++)
                 {
+                    var model = slideList[k];
                     var slide = model.Slide;
-                    if (slide != null)
+                    if (slide != null && !object.ReferenceEquals(slide, Slide.Null))
                     {
-                        Debug.WriteLine($"Slide ID: {slide.SlideId}, Title: {slide.PatientName}");
+                        slides.Add(Tuple.Create(SlideManager.ToFSharpSlide(slide), boxIndex * 20 + k));
+                        Debug.WriteLine($"Add Slide ID: {slide.SlideId}, PatientName: {slide.PatientName}");
                     }
                 }
+            }
+            // 排序，获取位置信息
+            var availablePositions = SlideManager.GenerateStatusArray(this._device.SlideBoxInPlace, this._device.SlideInPlace);
+            var result = SlideManager.SortSlides(slides.ToArray(), SortKey.PathologyId, availablePositions);
+
+            if (result.IsSuccess)
+            {
+                Debug.WriteLine("排序成功，移动序列：");
+
+                if (FSharpOption<Tuple<int, int>[]>.get_IsSome(result.Moves))
+                {
+                    foreach (var (from, to) in result.Moves.Value)
+                    {
+                        Debug.WriteLine($"从位置 {from} 移动到位置 {to}");
+                    }
+                    var sortBatch = new SortWriteBatch(result.Moves.Value);
+                    var batchMessages = sortBatch.GenerateSortBatchMessages();
+                    Debug.WriteLine($"batchMessages length {batchMessages.Length}");
+                    _ = Task.Run(async() =>
+                    {
+                        var totalSteps = new byte[2];
+                        BinaryPrimitives.WriteInt16BigEndian(totalSteps, (Int16)batchMessages.Length);
+                        var totalStepsPacket = new FlowActionWrite()
+                                                    .WithOperationType(0x02)
+                                                    .WithMasterAddress<FlowActionWrite>(0xF2)
+                                                    .WithSlaveAddress<FlowActionWrite>(0x13)
+                                                    .WithActionSequence(totalSteps)
+                                                    .WithActionType(0x00)
+                                                    .WithPickCount(0x00)
+                                                    .WithSrcDstLocations(Enumerable.Repeat((byte)0x00, 20).ToArray())
+                                                    .GenData();
+                        await this._sender.EnqueueMessage(totalStepsPacket);
+                        foreach (var packet in batchMessages)
+                        {
+                            await Task.Delay(100);
+                            await this._sender.EnqueueMessage(packet);
+                        }
+                        await Task.Delay(100);
+                        var executePacket = new SystemStatusWrite().
+                                                    WithOperationType(0x05).
+                                                    WithMasterAddress<SystemStatusWrite>(0xF2).
+                                                    WithSlaveAddress<SystemStatusWrite>(0x13).
+                                                    WithBoxTags(new byte[75]);
+                        await this._sender.EnqueueMessage(executePacket);
+                    });
+                }
+                else
+                {
+                    Debug.WriteLine("没有可用的移动数据。");
+                }
+            }
+            else
+            {
+                Debug.WriteLine($"排序失败：{result.ErrorMessage.Value}");
             }
         }
         Debug.WriteLine("HeartBeatMessage更新完成");
@@ -193,7 +322,14 @@ public partial class SlideBoardViewModel : ViewModelBase
 
     public void StartSortSlide(object? recipient, SortSlideMessage message)
     {
+        this.canCheckInPlace = false;
+        var orderKey = 0;
+        if (message != null)
+        {
+            orderKey = message.Value != -1 ? message.Value : 0;
+        }
         var boxTags = new byte[SlideBoxes.Count];
+        var unSelectedInplaceBoxes = new byte[SlideBoxes.Count];
         var sortBoxCounts = 0;
         for (int i = 0; i < SlideBoxes.Count; i++)
         {
@@ -203,6 +339,10 @@ public partial class SlideBoardViewModel : ViewModelBase
                 boxTags[i] = 0x01;
                 sortBoxCounts ++;
                 Debug.WriteLine($"StartSortSlide row {viewModel.RowIndex} col {viewModel.ColumnIndex} selected {viewModel.IsSelected}");
+            }
+            else if (viewModel.BoxInPlace)
+            {
+                unSelectedInplaceBoxes[i] = 0x01;
             }
         }
         if (sortBoxCounts > 0)
@@ -225,6 +365,23 @@ public partial class SlideBoardViewModel : ViewModelBase
                 }
             }
             EnqueueTask(selectedBoxes);
+            if (unSelectedInplaceBoxes.Any())
+            {
+                var inplacePacket = new SystemStatusWrite().
+                                        WithOperationType(0x02).
+                                        WithMasterAddress<SystemStatusWrite>(0xF2).
+                                        WithSlaveAddress<SystemStatusWrite>(0x13).
+                                        WithBoxTags(unSelectedInplaceBoxes);
+                _ = Task.Run(async() =>
+                {
+                    await Task.Delay(100);
+                    await this._sender.EnqueueMessage(inplacePacket);
+                });
+                var indicesOfUnSelectedBoxes = Enumerable.Range(0, unSelectedInplaceBoxes.Length)
+                                                         .Where(i => unSelectedInplaceBoxes[i] == 0x01)
+                                                         .ToList();
+                EnqueueStartedInplaceTask(indicesOfUnSelectedBoxes);
+            }
         }
     }
 
@@ -253,6 +410,35 @@ public partial class SlideBoardViewModel : ViewModelBase
         return false;
     }
 
+    //private void CheckInplaceStarted(SlideBoxActionType[] actionTypes)
+    //{
+    //    var indices = PeekInplaceTask();
+    //    if (indices.Count > 0)
+    //    {
+    //        if (indices.Any(i => i >= 0 && i < actionTypes.Length &&
+    //                               actionTypes[i] == SlideBoxActionType.ScanningSlide))
+    //        {
+    //            EnqueueStartedInplaceTask(DequeueTask());
+    //        }
+    //    }
+    //}
+
+    private bool CheckInplaceFinish(SlideBoxActionType[] actionTypes)
+    {
+        if (canCheckInPlace)
+        {
+            var indices = PeekStartedInplaceTask();
+            if (indices.Any())
+            {
+                return indices.All(i => i >= 0 && i < actionTypes.Length &&
+                                       (actionTypes[i] == SlideBoxActionType.ScanSlideSuccess ||
+                                        actionTypes[i] == SlideBoxActionType.ScanSlideFailed));
+            }
+        }
+
+        return false;
+    }
+
     private async void UpdateSlideInfo(object? recipient, SlideInfoMessage message)
     {
         if (message != null)
@@ -261,6 +447,7 @@ public partial class SlideBoardViewModel : ViewModelBase
             if (originBarcode.Length > 0)
             {
                 var barcode = string.Concat(originBarcode.Select(b => (char)b));
+                Debug.WriteLine($"barcode {barcode}");
                 var slide = await this._slideRepository.FindById(barcode);
                 var boxIndex = (slideSeq - 1) / 20;
                 var slideIndex = (slideSeq - 1) % 20;
