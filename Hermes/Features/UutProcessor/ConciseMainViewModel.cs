@@ -12,7 +12,6 @@ using System.Linq;
 using Hermes.Common.Messages;
 using Hermes.Models;
 using Hermes.Types;
-using System.Security.Claims;
 
 namespace Hermes.Features.UutProcessor;
 
