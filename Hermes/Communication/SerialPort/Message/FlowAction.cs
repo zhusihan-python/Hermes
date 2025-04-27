@@ -196,8 +196,8 @@ public class SortWriteBatch
             var srcDstLocations = new byte[20];
             var span = new Span<byte>(srcDstLocations);
 
-            BinaryPrimitives.WriteInt16BigEndian(srcDstLocations.AsSpan(0, 2), (Int16)_locations[i].Item1);
-            BinaryPrimitives.WriteInt16BigEndian(srcDstLocations.AsSpan(2, 4), (Int16)_locations[i].Item2);
+            BinaryPrimitives.WriteInt16BigEndian(srcDstLocations.AsSpan(0, 2), (Int16)(_locations[i].Item1+1));
+            BinaryPrimitives.WriteInt16BigEndian(srcDstLocations.AsSpan(2, 4), (Int16)(_locations[i].Item2+1));
 
             var actionSequence = new byte[2];
             BinaryPrimitives.WriteInt16BigEndian(actionSequence, (Int16)(i+1));
