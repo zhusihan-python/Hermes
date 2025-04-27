@@ -14,7 +14,6 @@ using Hermes.Communication.SerialPort;
 using System.Collections.Generic;
 using Hermes.Common.SlideSortCSharp;
 using SlideSort;
-using System.Net.Sockets;
 using System.Buffers.Binary;
 
 namespace Hermes.Features.UutProcessor;
@@ -32,6 +31,7 @@ public partial class SlideBoardViewModel : ViewModelBase
     //private Queue<List<int>> InplaceTaskQueue;
     private Queue<List<int>> StartedInplaceTaskQueue;
     private bool canCheckInPlace;
+    private SortKey slideSortKey;
     private int _rowCount = 5;
     public int RowCount
     {
@@ -55,9 +55,9 @@ public partial class SlideBoardViewModel : ViewModelBase
     {
         this.TaskQueue = new Queue<List<int>>();
         this.StartedTaskQueue = new Queue<List<int>>();
-        //this.InplaceTaskQueue = new Queue<List<int>>();
         this.StartedInplaceTaskQueue = new Queue<List<int>>();
         this.canCheckInPlace = false;
+        this.slideSortKey = SortKey.ProgramId;
         SlideBoxes = new ObservableCollection<SlideBoxViewModel>();
 
         for (int i = 0; i < _rowCount; i++)
@@ -67,7 +67,6 @@ public partial class SlideBoardViewModel : ViewModelBase
                 SlideBoxes.Add(new SlideBoxViewModel(slideRepository) { RowIndex = i, ColumnIndex = j });
             }
         }
-        //Console.WriteLine("SlideBoxes", SlideBoxes);
         this._device = device;
         this._sender = sender;
         this._slideRepository = slideRepository;
@@ -103,16 +102,6 @@ public partial class SlideBoardViewModel : ViewModelBase
         return StartedTaskQueue.Count > 0 ? StartedTaskQueue.Dequeue() : new List<int>();
     }
 
-    //public void EnqueueInplaceTask(List<int> task)
-    //{
-    //    InplaceTaskQueue.Enqueue(task);
-    //}
-
-    //public List<int> DequeueInplaceTask()
-    //{
-    //    return InplaceTaskQueue.Count > 0 ? InplaceTaskQueue.Dequeue() : new List<int>();
-    //}
-
     public void EnqueueStartedInplaceTask(List <int> task)
     {
         StartedInplaceTaskQueue.Enqueue(task);
@@ -132,12 +121,6 @@ public partial class SlideBoardViewModel : ViewModelBase
     {
         return StartedTaskQueue.Count > 0 ? StartedTaskQueue.Peek() : new List<int>();
     }
-
-    //public List<int> PeekInplaceTask()
-    //{
-    //    return InplaceTaskQueue.Count > 0 ? InplaceTaskQueue.Peek() : new List<int>();
-
-    //}
 
     public List<int> PeekStartedInplaceTask()
     {
@@ -230,7 +213,7 @@ public partial class SlideBoardViewModel : ViewModelBase
             }
             // 排序，获取位置信息
             var availablePositions = SlideManager.GenerateStatusArray(this._device.SlideBoxInPlace, this._device.SlideInPlace);
-            var result = SlideManager.SortSlides(slides.ToArray(), SortKey.PathologyId, availablePositions);
+            var result = SlideManager.SortSlides(slides.ToArray(), slideSortKey, availablePositions);
 
             if (result.IsSuccess)
             {
@@ -247,6 +230,18 @@ public partial class SlideBoardViewModel : ViewModelBase
                     Debug.WriteLine($"batchMessages length {batchMessages.Length}");
                     _ = Task.Run(async() =>
                     {
+                        Debug.WriteLine("clear steps");
+                        var clearStepsPacket = new FlowActionWrite()
+                                                    .WithOperationType(0x00)
+                                                    .WithMasterAddress<FlowActionWrite>(0xF2)
+                                                    .WithSlaveAddress<FlowActionWrite>(0x13)
+                                                    .WithActionType(0x00)
+                                                    .WithPickCount(0x00)
+                                                    .WithSrcDstLocations(Enumerable.Repeat((byte)0x00, 20).ToArray())
+                                                    .GenData();
+                        await this._sender.EnqueueMessage(clearStepsPacket);
+                        await Task.Delay(100);
+                        Debug.WriteLine("write total steps");
                         var totalSteps = new byte[2];
                         BinaryPrimitives.WriteInt16BigEndian(totalSteps, (Int16)batchMessages.Length);
                         var totalStepsPacket = new FlowActionWrite()
@@ -323,10 +318,17 @@ public partial class SlideBoardViewModel : ViewModelBase
     public void StartSortSlide(object? recipient, SortSlideMessage message)
     {
         this.canCheckInPlace = false;
-        var orderKey = 0;
-        if (message != null)
+        if (message != null && message.Value != -1)
         {
-            orderKey = message.Value != -1 ? message.Value : 0;
+            var selectedOption = message.Value;
+            slideSortKey = selectedOption switch
+            {
+                0 => SortKey.ProgramId,
+                1 => SortKey.DoctorId,
+                2 => SortKey.PathologyId,
+                3 => SortKey.SlideId,
+                _ => SortKey.ProgramId
+            };
         }
         var boxTags = new byte[SlideBoxes.Count];
         var unSelectedInplaceBoxes = new byte[SlideBoxes.Count];
