@@ -19,7 +19,7 @@ public class ComPort
     private FrameSequenceGenerator _frameSequenceGenerator = new FrameSequenceGenerator();
     private SerialPortStream _serialPort;
     private readonly FrameParser _parser;
-    private const int HeartbeatIntervalMs = 2000;
+    //private const int HeartbeatIntervalMs = 2000;
     public bool IsOpen => _serialPort.IsOpen;
     public event ReceiveDataEventHandler ReceiveDataEvent;
 
@@ -61,10 +61,10 @@ public class ComPort
         {
             _serialPort.Open();
             Debug.WriteLine($"串口 {_serialPort.PortName} 连接成功");
-            if (_serialPort.IsOpen)
-            {
-                _ = Task.Run(HeartbeatLoop);
-            }
+            //if (_serialPort.IsOpen)
+            //{
+            //    _ = Task.Run(HeartbeatLoop);
+            //}
         }
         catch (Exception)
         {
@@ -261,7 +261,7 @@ public class ComPort
 
     public async Task SendPacket(SvtRequestInfo packet)
     {
-        await Task.Delay(100);
+        await Task.Delay(10);
         var data = packet.BuildPackets(GetFrameNumber());
         SendDataMethod(data);
         Debug.WriteLine($"{DateTime.UtcNow.ToString("yyyy MM dd HH:mm:ss:fff")} SendPacket: {string.Join(" ", data.Select(b => b.ToString("X2")))}");
@@ -300,29 +300,29 @@ public class ComPort
     /// 心跳循环
     /// </summary>
     /// <returns></returns>
-    private async Task HeartbeatLoop()
-    {
-        while (this._serialPort.IsOpen)
-        {
-            var heartbeat = new HeartBeatRead();
-            await SendPacket(heartbeat);
-            try
-            {
-                await Task.Delay(HeartbeatIntervalMs);
-            }
-            catch (TaskCanceledException)
-            {
-                // Task.Delay 可能会在程序关闭时抛出这个异常
-                Debug.WriteLine("心跳循环中的延迟被取消。");
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"心跳循环发生异常: {ex.Message}");
-                await Task.Delay(TimeSpan.FromSeconds(5)); // 发生错误后等待一段时间再重试
-            }
-        }
-        Debug.WriteLine("心跳循环已停止（连接断开）。");
-    }
+    //private async Task HeartbeatLoop()
+    //{
+    //    while (this._serialPort.IsOpen)
+    //    {
+    //        var heartbeat = new HeartBeatRead();
+    //        await SendPacket(heartbeat);
+    //        try
+    //        {
+    //            await Task.Delay(HeartbeatIntervalMs);
+    //        }
+    //        catch (TaskCanceledException)
+    //        {
+    //            // Task.Delay 可能会在程序关闭时抛出这个异常
+    //            Debug.WriteLine("心跳循环中的延迟被取消。");
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            Debug.WriteLine($"心跳循环发生异常: {ex.Message}");
+    //            await Task.Delay(TimeSpan.FromSeconds(5)); // 发生错误后等待一段时间再重试
+    //        }
+    //    }
+    //    Debug.WriteLine("心跳循环已停止（连接断开）。");
+    //}
 }
 
 public class FrameSequenceGenerator

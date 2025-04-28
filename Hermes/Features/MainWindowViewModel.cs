@@ -52,13 +52,13 @@ namespace Hermes.Features
             this._pagePrototype = pagePrototype;
             this._settings = settings;
             this._session = session;
-            this._theme = SukiTheme.GetInstance();
-            this._theme.ChangeBaseTheme(ThemeVariant.Light);
+            //this._theme = SukiTheme.GetInstance();
+            //this._theme.ChangeBaseTheme(ThemeVariant.Light);
             this.Pages = pages.ToList();
             this.TitleBarVisible = false;
             this.ToastManager = toastManager;
             this.DialogManager = dialogManager;
-            this.UpdateBaseTheme();
+            //this.UpdateBaseTheme();
             this.UpdateTitle(this._session.LoggedUser.Value);
             this.IsActive = true;
         }
@@ -131,15 +131,15 @@ namespace Hermes.Features
         [RelayCommand]
         private void ToggleBaseTheme()
         {
-            this._theme.SwitchBaseTheme();
-            this.UpdateBaseTheme();
+            //this._theme.SwitchBaseTheme();
+            //this.UpdateBaseTheme();
         }
 
-        private void UpdateBaseTheme()
-        {
-            this.BaseTheme = _theme.ActiveBaseTheme == ThemeVariant.Dark ? ThemeVariant.Light : ThemeVariant.Dark;
-            this.BaseThemeText = BaseTheme == ThemeVariant.Dark ? Resources.txt_dark_theme : Resources.txt_light_theme;
-        }
+        //private void UpdateBaseTheme()
+        //{
+        //    this.BaseTheme = _theme.ActiveBaseTheme == ThemeVariant.Dark ? ThemeVariant.Light : ThemeVariant.Dark;
+        //    this.BaseThemeText = BaseTheme == ThemeVariant.Dark ? Resources.txt_dark_theme : Resources.txt_light_theme;
+        //}
 
         [RelayCommand]
         private void Exit(SukiWindow window)
