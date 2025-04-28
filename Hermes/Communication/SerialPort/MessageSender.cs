@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-//using System.Linq;
-//using System.Net.Sockets;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -30,12 +29,39 @@ public class MessageSender : IDisposable
 
     public void InitializeComPort()
     {
-        //await _comPort.InitializeAsync("COM3", 115200);
-        _comPort.SetSerialPort("COM3", 115200);
-        _comPort.Open();
-        scanEngine.SetSerialPort("COM4", 9600);
-        scanEngine.Open();
-        //await scanEngine.InitializeAsync("COM4", 9600);
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            _comPort.SetSerialPort("COM3", 115200);
+            scanEngine.SetSerialPort("COM4", 9600);
+        }
+        else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+        {
+            _comPort.SetSerialPort("/dev/ttyUSB_dtech", 115200);
+            scanEngine.SetSerialPort("/dev/ttyUSB_prolific", 9600);
+        }
+        try
+        {
+            if (!_comPort.IsOpen)
+            {
+                _comPort.Open();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"打开 ComPort 失败: {ex.Message}");
+        }
+
+        try
+        {
+            if (!scanEngine.IsOpen)
+            {
+                scanEngine.Open();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"打开 ScanEngine 失败: {ex.Message}");
+        }
     }
 
     public async Task EnqueueMessage(SvtRequestInfo message)
@@ -132,12 +158,12 @@ public class MessageSender : IDisposable
 
     public bool GetClientState()
     {
-        return _comPort.ClientOnline;
+        return _comPort.IsOpen;
     }
 
     public bool GetScannerState()
     {
-        return scanEngine.ClientOnline;
+        return scanEngine.IsOpen;
     }
 
     public void Dispose()
