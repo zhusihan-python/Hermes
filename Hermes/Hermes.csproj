@@ -82,6 +82,7 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.8" />
+        <PackageReference Include="Neumorphism.Avalonia" Version="0.11.2" />
         <PackageReference Include="NLog" Version="5.4.0" />
         <PackageReference Include="ObservableCollections.R3" Version="3.3.3" />
         <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="23.6.1" />

@@ -8,6 +8,7 @@
 			 xmlns:labs="using:Hermes.Features.Controls"
              xmlns:local="clr-namespace:Hermes.Features.UutProcessor"
              xmlns:controls="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+			 xmlns:theme="clr-namespace:Avalonia.Themes.Neumorphism;assembly=Avalonia.Themes.Neumorphism"
              xmlns:converters="clr-namespace:Hermes.Common.Converters"
              xmlns:lang="clr-namespace:Hermes.Language;assembly=Hermes.Language"
              mc:Ignorable="d"
@@ -17,7 +18,9 @@
              x:Class="Hermes.Features.UutProcessor.UutProcessorView"
              x:DataType="local:UutProcessorViewModel"
 			 x:CompileBindings="True">
-
+	<UserControl.Styles>
+		<theme:NeumorphismTheme BaseTheme="Light" PrimaryColor="Purple" SecondaryColor="Lime" />
+	</UserControl.Styles>
 	<labs:Swipe Name="SwipePage" SwipeThreshold="60">
 		<labs:Swipe.Right>
 			<DataTemplate DataType="local:UutProcessorViewModel">
@@ -25,21 +28,19 @@
 					RowDefinitions="100,5,*"
 					ColumnDefinitions="0.618*,*">
 				<!-- Sort Radio Group -->
-				<Border Grid.Row="0" Grid.Column="0" Background="#d5ddee"
-					CornerRadius="22"
-					Padding="5" Margin="5">
-					<StackPanel Grid.Column="0" Spacing="12"
+				<Border Grid.Row="0" Grid.Column="0" CornerRadius="22" Padding="5" Margin="5">
+					<StackPanel Grid.Column="0" Spacing="18"
 								Orientation="Horizontal"
 								HorizontalAlignment="Center"
 								VerticalAlignment="Center">
 						<ComboBox VerticalAlignment="Top" Height="62" ItemsSource="{Binding SortOptions}" SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}" />
-						<Button Classes="Outlined" MaxWidth="88" Height="62" Command="{Binding SortSlideCommand}">
+						<Button Classes="Outlined" MaxWidth="88" Command="{Binding SortSlideCommand}">
 							<StackPanel Orientation="Horizontal" Spacing="10">
 								<avalonia:MaterialIcon Kind="Sort" Margin="-5,0,0,0"/>
 								<TextBlock Text="理片"/>
 							</StackPanel>
 						</Button>
-						<Button Classes="Outlined" MaxWidth="88" Height="62" Command="{Binding SealSlideCommand}">
+						<Button Classes="Outlined" MaxWidth="88" Command="{Binding SealSlideCommand}">
 							<StackPanel Orientation="Horizontal" Spacing="10">
 								<avalonia:MaterialIcon Kind="Layers" Margin="-5,0,0,0"/>
 								<TextBlock Text="封片"/>
@@ -49,11 +50,10 @@
 				</Border>
 
 				<!-- Control Buttons -->
-				<Border  Grid.Row="0" Grid.Column="1" Background="#d5ddee"
-					CornerRadius="22" Padding="10" Margin="5">
+				<Border  Grid.Row="0" Grid.Column="1" CornerRadius="22" Padding="10" Margin="5">
 					<Grid RowDefinitions="*"
 							ColumnDefinitions="*">
-						<StackPanel Grid.Column="0" Spacing="12" Orientation="Horizontal" HorizontalAlignment="Center">
+						<StackPanel Grid.Column="0" Spacing="18" Orientation="Horizontal" HorizontalAlignment="Center">
 							<Button Classes="Outlined" MaxWidth="88">
 								<StackPanel Orientation="Horizontal" Spacing="10">
 									<avalonia:MaterialIcon Kind="Pause" Margin="-5,0,0,0"/>
@@ -74,12 +74,6 @@
 								<StackPanel Orientation="Horizontal" Spacing="10">
 									<avalonia:MaterialIcon Kind="Square" Margin="-5,0,0,0"/>
 									<TextBlock Text="停止"/>
-								</StackPanel>
-							</Button>
-							<Button Classes="Outlined" MaxWidth="88">
-								<StackPanel Orientation="Horizontal" Spacing="10" >
-									<avalonia:MaterialIcon Kind="FilterPlus" Margin="-5,0,0,0"/>
-									<TextBlock Text="选片"/>
 								</StackPanel>
 							</Button>
 							<Button Classes="Outlined" MaxWidth="88">

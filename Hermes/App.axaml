@@ -14,7 +14,7 @@
 
     <Application.Styles>
 		<sukiUi:SukiTheme ThemeColor="Blue" />
-        <materialIcons:MaterialIconStyles />
+		<materialIcons:MaterialIconStyles />
 		<labs:ControlThemes/>
         <Style Selector="Label">
             <Setter Property="Foreground" Value="{DynamicResource SukiText}" />
