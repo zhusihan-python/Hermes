@@ -20,7 +20,7 @@ public class ComPort
     private SerialPortStream _serialPort;
     private readonly FrameParser _parser;
     private const int HeartbeatIntervalMs = 2000;
-    public bool ClientOnline => _serialPort.IsOpen;
+    public bool IsOpen => _serialPort.IsOpen;
     public event ReceiveDataEventHandler ReceiveDataEvent;
 
     public ComPort(FrameParser parser)

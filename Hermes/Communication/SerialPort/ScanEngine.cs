@@ -17,7 +17,7 @@ namespace Hermes.Communication.SerialPort;
 public class ScanEngine : ObservableRecipient
 {
     private SerialPortStream _serialPort;
-    public bool ClientOnline => _serialPort.IsOpen;
+    public bool IsOpen => _serialPort.IsOpen;
     public event ReceiveDataEventHandler ReceiveDataEvent;
     private readonly ConcurrentQueue<PacketResult> _resultQueue;
     public event EventHandler<byte[]> ScanMessageReceived;

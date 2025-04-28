@@ -17,8 +17,8 @@ public class ScanEngineTests : IClassFixture<ScanEngineFixture>
     public void ScanEngine_InitializeAsync_ConnectsToSerialPort()
     {
         // Assert
-        Assert.True(_fixture.ScanEngine.ClientOnline); // 验证串口是否连接成功
-        Debug.WriteLine($"串口连接状态：{_fixture.ScanEngine.ClientOnline}");
+        Assert.True(_fixture.ScanEngine.IsOpen); // 验证串口是否连接成功
+        Debug.WriteLine($"串口连接状态：{_fixture.ScanEngine.IsOpen}");
     }
 
     [Fact]
