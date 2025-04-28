@@ -21,18 +21,18 @@
 	<labs:Swipe Name="SwipePage" SwipeThreshold="60">
 		<labs:Swipe.Right>
 			<DataTemplate DataType="local:UutProcessorViewModel">
-			<Grid Margin="0,0,5,0"
-					RowDefinitions="100,*,30"
-					ColumnDefinitions="Auto,*,180">
+			<Grid Margin="8,0,5,0"
+					RowDefinitions="100,5,*"
+					ColumnDefinitions="0.618*,*">
 				<!-- Sort Radio Group -->
 				<Border Grid.Row="0" Grid.Column="0" Background="#d5ddee"
 					CornerRadius="22"
-					Padding="5" Margin="10">
+					Padding="5" Margin="5">
 					<StackPanel Grid.Column="0" Spacing="12"
 								Orientation="Horizontal"
 								HorizontalAlignment="Center"
 								VerticalAlignment="Center">
-						<ComboBox VerticalAlignment="Top" ItemsSource="{Binding SortOptions}" SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}" />
+						<ComboBox VerticalAlignment="Top" Height="62" ItemsSource="{Binding SortOptions}" SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}" />
 						<Button Classes="Outlined" MaxWidth="88" Height="62" Command="{Binding SortSlideCommand}">
 							<StackPanel Orientation="Horizontal" Spacing="10">
 								<avalonia:MaterialIcon Kind="Sort" Margin="-5,0,0,0"/>
@@ -50,7 +50,7 @@
 
 				<!-- Control Buttons -->
 				<Border  Grid.Row="0" Grid.Column="1" Background="#d5ddee"
-					CornerRadius="22" Padding="10" Margin="10">
+					CornerRadius="22" Padding="10" Margin="5">
 					<Grid RowDefinitions="*"
 							ColumnDefinitions="*">
 						<StackPanel Grid.Column="0" Spacing="12" Orientation="Horizontal" HorizontalAlignment="Center">
@@ -78,8 +78,14 @@
 							</Button>
 							<Button Classes="Outlined" MaxWidth="88">
 								<StackPanel Orientation="Horizontal" Spacing="10" >
-									<avalonia:MaterialIcon Kind="FilterPlusOutline" Margin="-5,0,0,0"/>
+									<avalonia:MaterialIcon Kind="FilterPlus" Margin="-5,0,0,0"/>
 									<TextBlock Text="选片"/>
+								</StackPanel>
+							</Button>
+							<Button Classes="Outlined" MaxWidth="88">
+								<StackPanel Orientation="Horizontal" Spacing="10" >
+									<avalonia:MaterialIcon Kind="AccountDetails" Margin="-5,0,0,0"/>
+									<TextBlock Text="查看"/>
 								</StackPanel>
 							</Button>
 						</StackPanel>
@@ -87,19 +93,8 @@
 				</Border>
 
 				<!-- Time Group -->
-				<Border Grid.Row="0" Grid.Column="3" Background="#d5ddee"
-					CornerRadius="22"
-					Padding="10" Margin="10">
-					<StackPanel Spacing="12"
-								Orientation="Horizontal"
-								HorizontalAlignment="Center"
-								VerticalAlignment="Center">
-						<TextBlock FontSize="20" Text="时间"></TextBlock>
-						<TextBlock FontSize="20" Text="****-**-**"></TextBlock>
-					</StackPanel>
-				</Border>
 
-				<StackPanel Grid.Row="1" Grid.ColumnSpan="5">
+				<StackPanel Grid.Row="2" Grid.ColumnSpan="2">
 					<Grid RowDefinitions="*" ColumnDefinitions="20,*,*,*,*,*,*,*,*,*,*,*,*,*,*,*,20"
 							Height="20">
 						<!-- Row headers -->
@@ -244,55 +239,6 @@
 						<Border Grid.Row="0" Grid.Column="16" Background="LightBlue"></Border>
 					</Grid>
 				</StackPanel>
-
-				<Grid Grid.Row="2" Grid.ColumnSpan="5" ColumnDefinitions="130,130,*,*,*,*,*,Auto">
-					<StackPanel Grid.Column="0" MaxHeight="30" Orientation="Horizontal" Spacing="5">
-						<Border Width="20" Height="30"
-							Background="LightGray"
-							BorderBrush="LightGray"
-							BorderThickness="1"/>
-						<TextBlock Text="装载玻片架" FontSize="18" VerticalAlignment="Center"></TextBlock>
-					</StackPanel>
-					<StackPanel Grid.Column="1" MaxHeight="30" Orientation="Horizontal" Spacing="5">
-						<Border Width="20" Height="30"
-							Background="Gray"
-							BorderBrush="LightGray"
-							BorderThickness="1"/>
-						<TextBlock Text="空载玻片架" FontSize="18" VerticalAlignment="Center"></TextBlock>
-					</StackPanel>
-					<StackPanel Grid.Column="2" MaxHeight="30" Spacing="10" Orientation="Horizontal">
-						<Border Width="50" Height="10"
-							Background="Cyan"
-							BorderBrush="LightGray"
-							BorderThickness="1"/>
-						<TextBlock Text="待整理" FontSize="18" HorizontalAlignment="Center"></TextBlock>
-					</StackPanel>
-					<StackPanel Grid.Column="3" MaxHeight="30" Spacing="10" Orientation="Horizontal">
-						<Border Width="50" Height="10"
-							Background="#3ec607"
-							BorderBrush="LightGray"
-							BorderThickness="1"/>
-						<TextBlock Text="已整理" FontSize="18" HorizontalAlignment="Center"></TextBlock>
-					</StackPanel>
-					<StackPanel Grid.Column="4" MaxHeight="30" Spacing="10" Orientation="Horizontal">
-						<Border Width="50" Height="10"
-							Background="Red"
-							BorderBrush="LightGray"
-							BorderThickness="1"/>
-						<TextBlock Text="异常" FontSize="18" HorizontalAlignment="Center"></TextBlock>
-					</StackPanel>
-					<StackPanel Grid.Column="5" MaxHeight="30" Spacing="5" Margin="20,0,0,0" Orientation="Horizontal">
-						<TextBlock Text="可用盖玻片" FontSize="15" HorizontalAlignment="Center"></TextBlock>
-						<TextBlock Text="12片" FontSize="15" HorizontalAlignment="Center"></TextBlock>
-					</StackPanel>
-					<StackPanel Grid.Column="7" Orientation="Horizontal" Spacing="12" Margin="30,10,0,0" HorizontalAlignment="Center">
-						<StackPanel Orientation="Horizontal" Spacing="5">
-							<TextBlock Text="{Binding DeviceModel.BakeRealTemp.Value, Mode=OneWay}" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
-							<avalonia:MaterialIcon Kind="TemperatureCelsius"/>
-						</StackPanel>
-					</StackPanel>
-
-				</Grid>
 			</Grid>
 			</DataTemplate>
 	    </labs:Swipe.Right>

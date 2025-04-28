@@ -22,7 +22,7 @@
 		</Border.Styles>
 		<Grid>
 			<ItemsControl Name="ParentControl" ItemsSource="{Binding ItemList}" PointerPressed="SlideBox_OnPointerPressed"
-						  MinWidth="50" MinHeight="105" IsVisible="{Binding $parent.((vm:SlideBoxViewModel)DataContext).BoxInPlace}">
+						  MinWidth="50" MinHeight="110" IsVisible="{Binding $parent.((vm:SlideBoxViewModel)DataContext).BoxInPlace}">
 				<ItemsControl.ItemsPanel>
 					<ItemsPanelTemplate>
 						<UniformGrid Columns="1"/>
@@ -41,7 +41,7 @@
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>
-			<Rectangle Fill="Gray" MinHeight="105" IsVisible="{Binding !$parent.((vm:SlideBoxViewModel)DataContext).BoxInPlace}"/>
+			<Rectangle Fill="Gray" MinHeight="110" IsVisible="{Binding !$parent.((vm:SlideBoxViewModel)DataContext).BoxInPlace}"/>
 			<Rectangle Fill="LightBlue" Opacity="0.5" PointerPressed="SlideBox_OnPointerPressed" IsVisible="{Binding IsSelected}"/>
 			<TextBlock Text="✓" Classes="Accent" FontSize="26" FontWeight="Bold" PointerPressed="SlideBox_OnPointerPressed"
 				Foreground="Green" HorizontalAlignment="Center" VerticalAlignment="Center" IsVisible="{Binding IsSelected}"/>
