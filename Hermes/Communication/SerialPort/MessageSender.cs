@@ -39,8 +39,8 @@ public class MessageSender : IDisposable
         }
         else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
         {
-            _comPort.SetSerialPort("/dev/ttyUSB_dtech", 115200);
-            scanEngine.SetSerialPort("/dev/ttyUSB_prolific", 9600);
+            _comPort.SetSerialPort("/dev/ttyUSB1", 115200);
+            scanEngine.SetSerialPort("/dev/ttyUSB0", 9600);
         }
         try
         {
