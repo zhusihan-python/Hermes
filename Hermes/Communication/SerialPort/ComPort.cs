@@ -21,6 +21,9 @@ public class ComPort
     private readonly FrameParser _parser;
     //private const int HeartbeatIntervalMs = 2000;
     public bool IsOpen => _serialPort.IsOpen;
+    private List<byte> _receiveBuffer = new List<byte>();
+    private const int ReadBufferSize = 1024; // 每次读取的缓冲区大小
+    private const int MaxBufferSize = 4096; // 最大接收缓冲区大小
     public event ReceiveDataEventHandler ReceiveDataEvent;
 
     public ComPort(FrameParser parser)
@@ -66,11 +69,12 @@ public class ComPort
             //    _ = Task.Run(HeartbeatLoop);
             //}
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            //MessageBox.Show("串口被占用");
+            Debug.WriteLine($"打开串口 {_serialPort.PortName} 失败:");
+            Debug.WriteLine($"  错误信息: {ex.Message}");
+            Debug.WriteLine($"  堆栈跟踪: {ex.StackTrace}");
         }
-
     }
 
     /// <summary>
@@ -125,36 +129,138 @@ public class ComPort
     /// <param name="e"></param>
     private async void ReceiveDataMethod(object sender, SerialDataReceivedEventArgs e)
     {
-        ReceiveDataEventArg arg = new ReceiveDataEventArg();
-
-        //读取串口缓冲区的字节数据
-        arg.Data = new byte[_serialPort.BytesToRead];
-        _serialPort.Read(arg.Data, 0, _serialPort.BytesToRead);
-
-        Debug.WriteLine($"消息={string.Join(" ", arg.Data.Select(b => b.ToString("X2")))}");
-
-        var result = BuildRequestInfo(arg.Data);
-        await result.Match(
-            Right: async requestInfo =>
-            {
-                Console.WriteLine($"Request Info: {requestInfo.Data.Select(b => b.ToString("X2"))}");
-                await this._parser.Route(requestInfo);
-            },
-            Left: async error =>
-            {
-                Console.WriteLine($"Error building request info: {error.Message}");
-            });
-
-        //触发自定义消息接收事件，把串口数据发送出去
-        if (ReceiveDataEvent != null && arg.Data.Length != 0)
+        byte[] readBuffer = new byte[ReadBufferSize];
+        try
         {
-            ReceiveDataEvent.Invoke(null, arg);
+            while (_serialPort.IsOpen && _serialPort.BytesToRead > 0)
+            {
+                var bytesRead = await _serialPort.ReadAsync(readBuffer, 0, ReadBufferSize);
+                if (bytesRead > 0)
+                {
+                    _receiveBuffer.AddRange(readBuffer.Take(bytesRead));
+                    await ProcessReceivedBuffer();
+                }
+                else
+                {
+                    await Task.Delay(10); // 避免忙等待
+                }
+
+                // 防止缓冲区无限增长
+                if (_receiveBuffer.Count > MaxBufferSize)
+                {
+                    Debug.WriteLine("接收缓冲区已满，清空。");
+                    _receiveBuffer.Clear();
+                    break;
+                }
+            }
         }
+        catch (OperationCanceledException)
+        {
+            Debug.WriteLine("串口读取操作被取消。");
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"串口读取错误: {ex.Message}");
+            _receiveBuffer.Clear(); // 发生错误时清理缓冲区
+        }
+        // ReceiveDataEventArg arg = new ReceiveDataEventArg();
+        //
+        // //读取串口缓冲区的字节数据
+        // arg.Data = new byte[_serialPort.BytesToRead];
+        // _serialPort.Read(arg.Data, 0, _serialPort.BytesToRead);
+        //
+        // Debug.WriteLine($"消息={string.Join(" ", arg.Data.Select(b => b.ToString("X2")))}");
+        //
+        // var result = BuildRequestInfo(arg.Data);
+        // await result.Match(
+        //     Right: async requestInfo =>
+        //     {
+        //         Console.WriteLine($"Request Info: {requestInfo.Data.Select(b => b.ToString("X2"))}");
+        //         await this._parser.Route(requestInfo);
+        //     },
+        //     Left: async error =>
+        //     {
+        //         Console.WriteLine($"Error building request info: {error.Message}");
+        //     });
+        //
+        // //触发自定义消息接收事件，把串口数据发送出去
+        // if (ReceiveDataEvent != null && arg.Data.Length != 0)
+        // {
+        //     ReceiveDataEvent.Invoke(null, arg);
+        // }
+    }
+
+    private async Task ProcessReceivedBuffer()
+    {
+        while (true)
+        {
+            int endIndex = IndexOf(_receiveBuffer, Svt.FullTail);
+            if (endIndex != -1)
+            {
+                byte[] messageData = _receiveBuffer.Take(endIndex + Svt.FullTail.Length).ToArray();
+                _receiveBuffer.RemoveRange(0, endIndex + Svt.FullTail.Length);
+
+                if (messageData.Length > 0)
+                {
+                    ReceiveDataEventArg arg = new ReceiveDataEventArg { Data = messageData };
+                    Debug.WriteLine($"接收到完整消息={string.Join(" ", arg.Data.Select(b => b.ToString("X2")))}");
+
+                    var result = BuildRequestInfo(arg.Data);
+                    await result.Match(
+                        Right: async requestInfo =>
+                        {
+                            Console.WriteLine($"Request Info: {requestInfo.Data.Select(b => b.ToString("X2"))}");
+                            await _parser.Route(requestInfo);
+                        },
+                        Left: async error =>
+                        {
+                            Console.WriteLine($"Error building request info: {error.Message}");
+                        });
+
+                    // if (ReceiveDataEvent != null)
+                    // {
+                    //     ReceiveDataEvent.Invoke(null, arg);
+                    // }
+                }
+            }
+            else
+            {
+                break; // 没有找到结束符，等待更多数据
+            }
+
+            if (_receiveBuffer.Count > MaxBufferSize)
+            {
+                Debug.WriteLine("接收缓冲区过大，停止处理。");
+                _receiveBuffer.Clear();
+                break;
+            }
+        }
+    }
+
+    private int IndexOf(List<byte> buffer, byte[] pattern)
+    {
+        for (int i = 0; i <= buffer.Count - pattern.Length; i++)
+        {
+            bool found = true;
+            for (int j = 0; j < pattern.Length; j++)
+            {
+                if (buffer[i + j] != pattern[j])
+                {
+                    found = false;
+                    break;
+                }
+            }
+            if (found)
+            {
+                return i;
+            }
+        }
+        return -1;
     }
 
     private static Either<Exception, SvtRequestInfo> BuildRequestInfo(byte[] data)
     {
-        if (data == null || data.Length < Svt.MiniLength)
+        if (data.Length < Svt.MiniLength)
         {
             return Either<Exception, SvtRequestInfo>.Left(new ArgumentException($"Data length less than minimum required length: {Svt.MiniLength}"));
         }
@@ -223,7 +329,7 @@ public class ComPort
 
                     // Read CRC (1 byte)
                     myRequestInfo.CRC16 = cleanPackage.Slice(packetPos, 2).ToArray();
-                    packetPos += 2;
+                    // packetPos += 2;
 
                     if (Crc16.ComputeCrc(cleanPackage, cleanPackage.Length - 2) ==
                             BitConverter.ToUInt16(myRequestInfo.CRC16.Reverse().ToArray(), 0))
