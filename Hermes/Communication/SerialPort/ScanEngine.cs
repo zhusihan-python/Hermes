@@ -107,54 +107,56 @@ public class ScanEngine : ObservableRecipient
     private async void ReceiveDataMethod(object sender, SerialDataReceivedEventArgs e)
     {
         ReceiveDataEventArg arg = new ReceiveDataEventArg();
-
         //读取串口缓冲区的字节数据
-        arg.Data = new byte[_serialPort.BytesToRead];
-        _serialPort.Read(arg.Data, 0, _serialPort.BytesToRead);
+        arg.Data = new byte[32];
+        await Task.Delay(10);
+        var bytesRead = _serialPort.ReadAsync(arg.Data, 0, _serialPort.BytesToRead);
 
-        Debug.WriteLine($"扫描串口消息={string.Join(" ", arg.Data.Select(b => b.ToString("X2")))}");
-
-        _resultQueue.TryDequeue(out var item);
-        // 判断是否超时 超时直接丢弃
-        Debug.WriteLine($"TryDequeue item {item}");
-        var request = BuildRequestInfo(arg.Data);
-
-        if (item is not null && IsWithinTwoSeconds(item.Timestamp))
+        if (bytesRead.Result > 0)
         {
-            request.Match(
-                Right: requestInfo =>
-                {
-                    if (requestInfo.dataFrame != null)
+            Debug.WriteLine($"扫描串口消息={string.Join(" ", arg.Data.Select(b => b.ToString("X2")))}");
+            _resultQueue.TryDequeue(out var item);
+            // 判断是否超时 超时直接丢弃
+            Debug.WriteLine($"TryDequeue item {item}");
+            var request = BuildRequestInfo(arg.Data);
+
+            if (item is not null && IsWithinTwoSeconds(item.Timestamp))
+            {
+                request.Match(
+                    Right: requestInfo =>
                     {
-                        Console.WriteLine($"Scan Request Info: {requestInfo.dataFrame.Select(b => b.ToString("X2"))}");
-                        Messenger.Send(new SlideInfoMessage((item.SlideSeq, requestInfo.dataFrame)));
-                        ScanMessageReceived?.Invoke(this, item.FrameNo!);
-                    }
-                },
-                Left: error =>
-                {
-                    Console.WriteLine($"Error building scan request info: {error.Message}");
-                });
-        }
-        else
-        {
-            request.Match(
-                Right: requestInfo =>
-                {
-                    Console.WriteLine($"超时：来自{requestInfo.dataFrame}的消息已处理。");
-                    ScanFailed?.Invoke(this, requestInfo.dataFrame);
-                },
-                Left: error =>
-                {
-                    Console.WriteLine($"Error building scan request info: {error.Message}");
-                });
+                        if (requestInfo.dataFrame != null)
+                        {
+                            Console.WriteLine($"Scan Request Info: {requestInfo.dataFrame.Select(b => b.ToString("X2"))}");
+                            Messenger.Send(new SlideInfoMessage((item.SlideSeq, requestInfo.dataFrame)));
+                            ScanMessageReceived?.Invoke(this, item.FrameNo!);
+                        }
+                    },
+                    Left: error =>
+                    {
+                        Console.WriteLine($"Error building scan request info: {error.Message}");
+                    });
+            }
+            else
+            {
+                request.Match(
+                    Right: requestInfo =>
+                    {
+                        Console.WriteLine($"超时：来自{requestInfo.dataFrame}的消息已处理。");
+                        ScanFailed?.Invoke(this, requestInfo.dataFrame);
+                    },
+                    Left: error =>
+                    {
+                        Console.WriteLine($"Error building scan request info: {error.Message}");
+                    });
+            }
+            //触发自定义消息接收事件，把串口数据发送出去
+            if (ReceiveDataEvent != null && arg.Data.Length != 0)
+            {
+                ReceiveDataEvent.Invoke(null, arg);
+            }
         }
 
-        //触发自定义消息接收事件，把串口数据发送出去
-        if (ReceiveDataEvent != null && arg.Data.Length != 0)
-        {
-            ReceiveDataEvent.Invoke(null, arg);
-        }
     }
 
     private static Either<Exception, ScanRequestInfo> BuildRequestInfo(byte[] data)
@@ -186,24 +188,25 @@ public class ScanEngine : ObservableRecipient
                 }
                 else
                 {
-                    return Either<Exception, ScanRequestInfo>.Left(new ArgumentException("Data length Check Failed"));
+                    return Either<Exception, ScanRequestInfo>.Left(new ArgumentException("Scan Data length Check Failed"));
                 }
             }
             else
             {
-                return Either<Exception, ScanRequestInfo>.Left(new ArgumentException("No Head Found"));
+                return Either<Exception, ScanRequestInfo>.Left(new ArgumentException("Scan No Head Found"));
             }
         }
         else
         {
-            return Either<Exception, ScanRequestInfo>.Left(new ArgumentException("No Tail Found"));
+            return Either<Exception, ScanRequestInfo>.Left(new ArgumentException("Scan No Tail Found"));
         }
     }
 
     public async Task SendPacket(ScanRequestInfo packet)
     {
         await Task.Delay(100);
-        Debug.WriteLine($"Send ScanRequestInfo: {string.Join(" ", packet.dataFrame.Select(b => b.ToString("X2")))}");
+        Debug.WriteLine($"{DateTime.UtcNow.ToString("yyyy MM dd HH:mm:ss:fff")} " +
+                        $"Send ScanRequestInfo: {string.Join(" ", packet.dataFrame.Select(b => b.ToString("X2")))}");
         var packetResult = new PacketResult { SlideSeq = packet.SlideSeq, FrameNo = packet.FrameNo };
         _resultQueue.Enqueue(packetResult);
         // 启动超时检查
@@ -214,24 +217,20 @@ public class ScanEngine : ObservableRecipient
 
     private async Task StartTimeoutCheckAsync(byte[] frameNo)
     {
-        await Task.Delay(2000); // 2秒超时
+        await Task.Delay(5000); // 5秒超时
         // 超时后尝试移除未处理的请求
         RemoveFromQueue(frameNo);
     }
 
     private void RemoveFromQueue(byte[] frameNo)
     {
-        Debug.WriteLine("into RemoveFromQueue");
+        Debug.WriteLine($"into RemoveFromQueue Queue Count {_resultQueue.Count}");
         _resultQueue.TryDequeue(out var item);
         if (item != null && Enumerable.SequenceEqual(item.FrameNo!, frameNo))
         {
-            Debug.WriteLine($"移除请求 (frameNo: {frameNo})");
-            Debug.WriteLine($"移除请求 (item: {item})");
-            Debug.WriteLine($"移除请求 (FrameNo: {item.FrameNo})");
-        }
-        else
-        {
-
+            Debug.WriteLine($"移除请求 (frameNo: {frameNo.Select(b => b.ToString("X2"))})");
+            Debug.WriteLine($"移除请求 (item SlideSeq: {item.SlideSeq})");
+            Debug.WriteLine($"移除请求 (item FrameNo: {item.FrameNo.Select(b => b.ToString("X2"))})");
         }
     }
 
@@ -239,7 +238,7 @@ public class ScanEngine : ObservableRecipient
     {
         DateTime now = DateTime.Now;
         TimeSpan difference = now - timeStamp;
-        return Math.Abs(difference.TotalSeconds) <= 2;
+        return Math.Abs(difference.TotalSeconds) <= 5;
     }
 }
 
