@@ -18,13 +18,16 @@ namespace Hermes.Communication.SerialPort;
 public class FrameParser : ObservableRecipient
 {
     //private readonly IServiceProvider _serviceProvider;
+    private readonly ILogger _logger;
     private Device _device;
 
     public FrameParser(
-        Device device
+        Device device,
+        ILogger logger
     )
     {
         this._device = device;
+        this._logger = logger;
     }
     public async Task Route(SvtRequestInfo request)
     {
@@ -34,6 +37,7 @@ public class FrameParser : ObservableRecipient
         }
         else if (Enumerable.SequenceEqual(request.CMDID, Svt.ScanTrigger) && request.FrameType == Svt.Write)
         {
+            _logger.Info("Route ScanTriggerParse");
             await ScanTriggerParse(request);
         }
     }
@@ -104,16 +108,16 @@ public class FrameParser : ObservableRecipient
                 var sender = serviceProvider.GetService<MessageSender>();
                 var slideSeq = TouchSocketBitConverter.BigEndian.ToUInt16(request.Data.Skip(1).Take(2).ToArray(), 0);
                 var scanRequest = new ScanStartRequest(slideSeq, request.FrameNo);
-
+                _logger.Info($"ScanTriggerParse slideSeq {slideSeq}");
                 if (slideSeq >= 1 && slideSeq <= 1500)
                 {
                     // 触发扫码解码
-                    await sender!.SendScannerMessageAsync(scanRequest);
                     var successResponse = new ScanTriggerWriteResponse(request.FrameNo).
-                                    WithMasterAddress<ScanTriggerWriteResponse>(0xF2).
-                                    WithSlaveAddress<ScanTriggerWriteResponse>(0x13).
-                                    TriggerSuccess();
-                    await sender.EnqueueMessage(successResponse);
+                        WithMasterAddress<ScanTriggerWriteResponse>(0xF2).
+                        WithSlaveAddress<ScanTriggerWriteResponse>(0x13).
+                        TriggerSuccess();
+                    await sender!.EnqueueMessageWithFrameNo(successResponse);
+                    await sender!.SendScannerMessageAsync(scanRequest);
                 }
                 else
                 {
@@ -121,7 +125,7 @@ public class FrameParser : ObservableRecipient
                                     WithMasterAddress<ScanTriggerWriteResponse>(0xF2).
                                     WithSlaveAddress<ScanTriggerWriteResponse>(0x13).
                                     TriggerFail();
-                    await sender!.EnqueueMessage(failResponse);
+                    await sender!.EnqueueMessageWithFrameNo(failResponse);
                 }
             }
         }

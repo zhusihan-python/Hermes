@@ -25,10 +25,10 @@ public class HermesLocalContext : DbContext
 #if DEBUG
         //Database.EnsureDeleted();
 #endif
-        if (Database.GetPendingMigrations().Any())
-        {
-            Database.Migrate();
-        }
+        // if (Database.GetPendingMigrations().Any())
+        // {
+        //     Database.Migrate();
+        // }
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

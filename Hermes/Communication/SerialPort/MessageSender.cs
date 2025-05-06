@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Diagnostics;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
+using Hermes.Common;
 
 namespace Hermes.Communication.SerialPort;
 
@@ -14,13 +15,17 @@ public class MessageSender : IDisposable
     private ComPort _comPort;
     public ScanEngine scanEngine;
     private const int HeartbeatIntervalMs = 2000;
-    //private readonly ManualResetEventSlim _filterSignal = new(true); // 初始化为允许SendMessageAsync运行
-    //private bool _timerRunning; // 添加一个标志来跟踪定时器状态
+    private readonly ILogger _logger;
+    private readonly FrameSequenceGenerator _frameSequenceGenerator = new FrameSequenceGenerator();
     private bool _disposed;
 
-    public MessageSender(ComPort comPort, ScanEngine scanEngine)
+    public MessageSender(
+        ILogger logger,
+        ComPort comPort, 
+        ScanEngine scanEngine
+        )
     {
-        //_messageQueue = new ConcurrentQueue<SvtRequestInfo>();
+        this._logger = logger;
         this._comPort = comPort;
         this.scanEngine = scanEngine;
         this._timer = new Timer(async state => await SendMessageAsync(), null, Timeout.Infinite, 100);
@@ -56,7 +61,7 @@ public class MessageSender : IDisposable
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"打开 ComPort 失败: {ex.Message}");
+            _logger.Info($"打开 ComPort 失败: {ex.Message}");
         }
 
         try
@@ -68,47 +73,29 @@ public class MessageSender : IDisposable
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"打开 ScanEngine 失败: {ex.Message}");
+            _logger.Info($"打开 ScanEngine 失败: {ex.Message}");
         }
     }
 
     public async Task EnqueueMessage(SvtRequestInfo message)
     {
-        await _comPort.SendPacket(message);
+        // await _comPort.SendPacket(message);
+        message.FrameNo = GetFrameNumber();
+        _messageQueue.Enqueue(message);
+        await Task.CompletedTask;
     }
 
-    //public void EnqueueMessageArray(SvtRequestInfo[] messages)
-    //{
-    //    if (messages == null || messages.Length == 0)
-    //    {
-    //        return;
-    //    }
-    //    messages.ForEach(message => _messageQueue.Enqueue(message));
-    //}
+    public async Task EnqueueMessageWithFrameNo(SvtRequestInfo message)
+    {
+        _logger.Info($"EnqueueMessageWithFrameNo: {string.Join(" ", message.DataFrame().Select(b => b.ToString("X2")))}");
+        _messageQueue.Enqueue(message);
+        await Task.CompletedTask;
+    }
 
-    //private void TryStartTimer()
-    //{
-    //    if (!_timerRunning && _comPort.ClientOnline && !_messageQueue.IsEmpty)
-    //    {
-    //        _timer.Change(200, Timeout.Infinite); // 单次触发，避免并发
-    //        _timerRunning = true;
-    //    }
-    //}
-
-    //public void StopTimer()
-    //{
-    //    _timer.Change(Timeout.Infinite, Timeout.Infinite); // 停止定时器
-    //    _timerRunning = false;
-    //}
-
-    //public void ApplyFilter(Func<SvtRequestInfo, bool> filter)
-    //{
-    //    if (filter == null) throw new ArgumentNullException(nameof(filter));
-
-    //    _filterSignal.Reset(); // 阻止 SendMessageAsync 运行
-    //    _messageQueue = new ConcurrentQueue<SvtRequestInfo>(_messageQueue.Where(filter));
-    //    _filterSignal.Set(); // 允许 SendMessageAsync 运行
-    //}
+    public byte[] GetFrameNumber()
+    {
+        return _frameSequenceGenerator.GenerateFrameSequence();
+    }
 
     private async Task SendMessageAsync()
     {
@@ -128,7 +115,7 @@ public class MessageSender : IDisposable
             catch (Exception ex)
             {
                 // 处理发送消息时的异常，例如记录日志
-                Console.WriteLine($"发送消息失败：{ex.Message}");
+                _logger.Info($"发送mcu消息失败：{ex.Message}");
             }
         }
 
@@ -150,14 +137,14 @@ public class MessageSender : IDisposable
 
     private async void OnScanMessageReceived(object? sender, byte[] frameNumber)
     {
-        Debug.WriteLine("扫描成功");
+        _logger.Info("扫描成功");
         var request = new ScanResultWrite(frameNumber).ScanSuccess();
         await EnqueueMessage(request);
     }
 
     private async void OnScanFailed(object? sender, byte[] frameNumber)
     {
-        Debug.WriteLine("扫描失败");
+        _logger.Info("扫描失败");
         var request = new ScanResultWrite(frameNumber).ScanFail();
         await EnqueueMessage(request);
     }
@@ -185,15 +172,15 @@ public class MessageSender : IDisposable
             catch (TaskCanceledException)
             {
                 // Task.Delay 可能会在程序关闭时抛出这个异常
-                Debug.WriteLine("心跳循环中的延迟被取消。");
+                _logger.Debug("心跳循环中的延迟被取消。");
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"心跳循环发生异常: {ex.Message}");
+                _logger.Debug($"心跳循环发生异常: {ex.Message}");
                 await Task.Delay(TimeSpan.FromSeconds(5)); // 发生错误后等待一段时间再重试
             }
         }
-        Debug.WriteLine("心跳循环已停止（连接断开）。");
+        _logger.Debug("心跳循环已停止（连接断开）。");
     }
 
     public void Dispose()
@@ -205,5 +192,27 @@ public class MessageSender : IDisposable
         _timer.Change(Timeout.Infinite, Timeout.Infinite);
         _timer.Dispose();
         _disposed = true;
+    }
+}
+
+public class FrameSequenceGenerator
+{
+    private int _counter = 0; // 计数器，用于生成序号
+    private const int MaxSequence = 65535; // 最大序号值
+
+    // 生成下一个序号
+    public byte[] GenerateFrameSequence()
+    {
+        // 计算下一个序号
+        _counter = (_counter % MaxSequence) + 1;
+
+        // 将序号转换为大端序的字节数组
+        byte[] sequenceBytes = BitConverter.GetBytes((ushort)_counter);
+        if (BitConverter.IsLittleEndian)
+        {
+            System.Array.Reverse(sequenceBytes); // 如果是小端序，反转字节数组
+        }
+
+        return sequenceBytes;
     }
 }

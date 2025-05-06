@@ -1,12 +1,10 @@
 ﻿using System.Threading.Tasks;
 using System;
-using System.Diagnostics;
 using System.Linq;
 using LanguageExt;
-//using static LanguageExt.Prelude;
-using R3;
 using RJCP.IO.Ports;
 using Hermes.Communication.Protocol;
+using Hermes.Common;
 using System.Collections.Generic;
 using TouchSocket.Core;
 
@@ -16,7 +14,6 @@ public delegate void ReceiveDataEventHandler(object sender, ReceiveDataEventArg 
 
 public class ComPort
 {
-    private FrameSequenceGenerator _frameSequenceGenerator = new FrameSequenceGenerator();
     private SerialPortStream _serialPort;
     private readonly FrameParser _parser;
     //private const int HeartbeatIntervalMs = 2000;
@@ -24,11 +21,15 @@ public class ComPort
     private List<byte> _receiveBuffer = new List<byte>();
     private const int ReadBufferSize = 1024; // 每次读取的缓冲区大小
     private const int MaxBufferSize = 4096; // 最大接收缓冲区大小
+    private readonly ILogger _logger;
     public event ReceiveDataEventHandler ReceiveDataEvent;
 
-    public ComPort(FrameParser parser)
+    public ComPort(
+        ILogger logger,
+        FrameParser parser)
     {
         _serialPort = new SerialPortStream();
+        _logger = logger;
         _parser = parser;
     }
 
@@ -63,17 +64,13 @@ public class ComPort
         try
         {
             _serialPort.Open();
-            Debug.WriteLine($"串口 {_serialPort.PortName} 连接成功");
-            //if (_serialPort.IsOpen)
-            //{
-            //    _ = Task.Run(HeartbeatLoop);
-            //}
+            _logger.Info($"串口 {_serialPort.PortName} 连接成功");
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"打开串口 {_serialPort.PortName} 失败:");
-            Debug.WriteLine($"  错误信息: {ex.Message}");
-            Debug.WriteLine($"  堆栈跟踪: {ex.StackTrace}");
+            _logger.Info($"打开串口 {_serialPort.PortName} 失败:");
+            _logger.Info($"  错误信息: {ex.Message}");
+            _logger.Info($"  堆栈跟踪: {ex.StackTrace}");
         }
     }
 
@@ -148,7 +145,7 @@ public class ComPort
                 // 防止缓冲区无限增长
                 if (_receiveBuffer.Count > MaxBufferSize)
                 {
-                    Debug.WriteLine("接收缓冲区已满，清空。");
+                    _logger.Info("接收缓冲区已满，清空。");
                     _receiveBuffer.Clear();
                     break;
                 }
@@ -156,11 +153,11 @@ public class ComPort
         }
         catch (OperationCanceledException)
         {
-            Debug.WriteLine("串口读取操作被取消。");
+            _logger.Info("串口读取操作被取消。");
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"串口读取错误: {ex.Message}");
+            _logger.Info($"串口读取错误: {ex.Message}");
             _receiveBuffer.Clear(); // 发生错误时清理缓冲区
         }
         // ReceiveDataEventArg arg = new ReceiveDataEventArg();
@@ -203,18 +200,18 @@ public class ComPort
                 if (messageData.Length > 0)
                 {
                     ReceiveDataEventArg arg = new ReceiveDataEventArg { Data = messageData };
-                    Debug.WriteLine($"接收到完整消息={string.Join(" ", arg.Data.Select(b => b.ToString("X2")))}");
+                    _logger.Info($"mcu消息={string.Join(" ", arg.Data.Select(b => b.ToString("X2")))}");
 
                     var result = BuildRequestInfo(arg.Data);
                     await result.Match(
                         Right: async requestInfo =>
                         {
-                            Console.WriteLine($"Request Info: {requestInfo.Data.Select(b => b.ToString("X2"))}");
+                            _logger.Info($"Request Info: {requestInfo.DataFrame().Select(b => b.ToString("X2"))}");
                             await _parser.Route(requestInfo);
                         },
                         Left: async error =>
                         {
-                            Console.WriteLine($"Error building request info: {error.Message}");
+                            _logger.Info($"Error building request info: {error.Message}");
                         });
 
                     // if (ReceiveDataEvent != null)
@@ -230,7 +227,7 @@ public class ComPort
 
             if (_receiveBuffer.Count > MaxBufferSize)
             {
-                Debug.WriteLine("接收缓冲区过大，停止处理。");
+                _logger.Info("接收缓冲区过大，停止处理。");
                 _receiveBuffer.Clear();
                 break;
             }
@@ -359,18 +356,12 @@ public class ComPort
         }
     }
 
-
-    public byte[] GetFrameNumber()
-    {
-        return _frameSequenceGenerator.GenerateFrameSequence();
-    }
-
     public async Task SendPacket(SvtRequestInfo packet)
     {
         await Task.Delay(10);
-        var data = packet.BuildPackets(GetFrameNumber());
+        var data = packet.BuildPackets();
         SendDataMethod(data);
-        Debug.WriteLine($"{DateTime.UtcNow.ToString("yyyy MM dd HH:mm:ss:fff")} SendPacket: {string.Join(" ", data.Select(b => b.ToString("X2")))}");
+        _logger.Info($"SendPacket: {string.Join(" ", data.Select(b => b.ToString("X2")))}");
     }
 
     private static ReadOnlySpan<byte> RemoveInsertedBytes(ReadOnlySpan<byte> data)
@@ -400,56 +391,6 @@ public class ComPort
 
         // 将列表转换为字节数组
         return cleanedData.ToArray().AsSpan();
-    }
-
-    /// <summary>
-    /// 心跳循环
-    /// </summary>
-    /// <returns></returns>
-    //private async Task HeartbeatLoop()
-    //{
-    //    while (this._serialPort.IsOpen)
-    //    {
-    //        var heartbeat = new HeartBeatRead();
-    //        await SendPacket(heartbeat);
-    //        try
-    //        {
-    //            await Task.Delay(HeartbeatIntervalMs);
-    //        }
-    //        catch (TaskCanceledException)
-    //        {
-    //            // Task.Delay 可能会在程序关闭时抛出这个异常
-    //            Debug.WriteLine("心跳循环中的延迟被取消。");
-    //        }
-    //        catch (Exception ex)
-    //        {
-    //            Debug.WriteLine($"心跳循环发生异常: {ex.Message}");
-    //            await Task.Delay(TimeSpan.FromSeconds(5)); // 发生错误后等待一段时间再重试
-    //        }
-    //    }
-    //    Debug.WriteLine("心跳循环已停止（连接断开）。");
-    //}
-}
-
-public class FrameSequenceGenerator
-{
-    private int _counter = 0; // 计数器，用于生成序号
-    private const int MaxSequence = 65535; // 最大序号值
-
-    // 生成下一个序号
-    public byte[] GenerateFrameSequence()
-    {
-        // 计算下一个序号
-        _counter = (_counter % MaxSequence) + 1;
-
-        // 将序号转换为大端序的字节数组
-        byte[] sequenceBytes = BitConverter.GetBytes((ushort)_counter);
-        if (BitConverter.IsLittleEndian)
-        {
-            System.Array.Reverse(sequenceBytes); // 如果是小端序，反转字节数组
-        }
-
-        return sequenceBytes;
     }
 }
 

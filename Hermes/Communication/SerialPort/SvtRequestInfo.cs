@@ -173,9 +173,9 @@ public class SvtRequestInfo : IRequestInfo, IRequestInfoBuilder
         byteBlock.Write(Svt.FullTail);
     }
 
-    public byte[] BuildPackets(byte[] frameNo)
+    public byte[] BuildPackets()
     {
-        this.FrameNo = frameNo;
+        // this.FrameNo = frameNo;
         var msgFrame = this.DataFrame();
         var crcAscii = Crc16.ComputeCrcArray(msgFrame, msgFrame.Length);
         var frame = AddSymbol(msgFrame);

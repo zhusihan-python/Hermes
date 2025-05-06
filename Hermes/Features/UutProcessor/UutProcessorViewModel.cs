@@ -41,7 +41,7 @@ public partial class UutProcessorViewModel : PageBase
         DummyViewModel dummyViewModel,
         ConciseMainViewModel conciseMainViewModel)
         : base(
-            "Ö÷½çÃæ",
+            "ä¸»ç•Œé¢",
             MaterialIconKind.FolderEye,
             1)
     {
@@ -53,10 +53,10 @@ public partial class UutProcessorViewModel : PageBase
         this._serviceProvider = serviceProvider;
         var device = this._serviceProvider.GetRequiredService<Device>();
         this.DeviceModel = device;
-        SortOptions.Add("°´ÏîÄ¿");
-        SortOptions.Add("°´Ò½Éú");
-        SortOptions.Add("°´²¡ÀíºÅ");
-        SortOptions.Add("°´²£Æ¬ºÅ");
+        SortOptions.Add("æŒ‰é¡¹ç›®");
+        SortOptions.Add("æŒ‰åŒ»ç”Ÿ");
+        SortOptions.Add("æŒ‰ç—…ç†å·");
+        SortOptions.Add("æŒ‰ç»ç‰‡å·");
         SelectedIndex = 0;
     }
 
