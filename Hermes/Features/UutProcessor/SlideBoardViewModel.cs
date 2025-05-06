@@ -12,6 +12,7 @@ using System.Diagnostics;
 using Hermes.Types;
 using Hermes.Communication.SerialPort;
 using System.Collections.Generic;
+using Hermes.Common;
 using Hermes.Common.SlideSortCSharp;
 using SlideSort;
 using System.Buffers.Binary;
@@ -32,6 +33,7 @@ public partial class SlideBoardViewModel : ViewModelBase
     private Queue<List<int>> StartedInplaceTaskQueue;
     private bool canCheckInPlace;
     private SortKey slideSortKey;
+    private readonly ILogger _logger;
     private int _rowCount = 5;
     public int RowCount
     {
@@ -48,6 +50,7 @@ public partial class SlideBoardViewModel : ViewModelBase
     private static readonly char[] RowLabels = { 'A', 'B', 'C', 'D', 'E' };
 
     public SlideBoardViewModel(
+        ILogger logger,
         SlideRepository slideRepository,
         Device device,
         MessageSender sender
@@ -58,6 +61,7 @@ public partial class SlideBoardViewModel : ViewModelBase
         this.StartedInplaceTaskQueue = new Queue<List<int>>();
         this.canCheckInPlace = false;
         this.slideSortKey = SortKey.ProgramId;
+        this._logger = logger;
         SlideBoxes = new ObservableCollection<SlideBoxViewModel>();
 
         for (int i = 0; i < _rowCount; i++)
@@ -190,13 +194,13 @@ public partial class SlideBoardViewModel : ViewModelBase
         var inplaceCheckFinished = CheckInplaceFinish(this._device.SlideBoxActions);
         if (scanFinished && inplaceCheckFinished)
         {
-            Debug.WriteLine("InplaceFinish is true");
+            _logger.Info("InplaceFinish is true");
             // 获取待理片的玻片信息
             var dices = DequeueStartedTask();
             var slides = new List<Tuple<SlideSorter.Slide, int>>();
             foreach (int dice in dices)
             {
-                Debug.WriteLine($"cur Index {dice}");
+                _logger.Info($"cur Index {dice}");
                 var slideBoxViewModel = SlideBoxes[dice];
                 var slideList = slideBoxViewModel.ItemList;
                 var boxIndex = slideBoxViewModel.RowIndex * this.ColumnCount + slideBoxViewModel.ColumnIndex;
@@ -204,10 +208,10 @@ public partial class SlideBoardViewModel : ViewModelBase
                 {
                     var model = slideList[k];
                     var slide = model.Slide;
-                    if (slide != null && !object.ReferenceEquals(slide, Slide.Null))
+                    if (!object.ReferenceEquals(slide, Slide.Null))
                     {
                         slides.Add(Tuple.Create(SlideManager.ToFSharpSlide(slide), boxIndex * 20 + k));
-                        Debug.WriteLine($"Add Slide ID: {slide.SlideId}, PatientName: {slide.PatientName}");
+                        _logger.Info($"Add Slide ID: {slide.SlideId}, PatientName: {slide.PatientName}");
                     }
                 }
             }
@@ -217,20 +221,20 @@ public partial class SlideBoardViewModel : ViewModelBase
 
             if (result.IsSuccess)
             {
-                Debug.WriteLine("排序成功，移动序列：");
+                _logger.Info("排序成功，移动序列：");
 
                 if (FSharpOption<Tuple<int, int>[]>.get_IsSome(result.Moves))
                 {
                     foreach (var (from, to) in result.Moves.Value)
                     {
-                        Debug.WriteLine($"从位置 {from} 移动到位置 {to}");
+                        _logger.Info($"从位置 {from} 移动到位置 {to}");
                     }
                     var sortBatch = new SortWriteBatch(result.Moves.Value);
                     var batchMessages = sortBatch.GenerateSortBatchMessages();
-                    Debug.WriteLine($"batchMessages length {batchMessages.Length}");
+                    _logger.Info($"batchMessages length {batchMessages.Length}");
                     _ = Task.Run(async() =>
                     {
-                        Debug.WriteLine("clear steps");
+                        _logger.Info("clear steps");
                         var clearStepsPacket = new FlowActionWrite()
                                                     .WithOperationType(0x00)
                                                     .WithMasterAddress<FlowActionWrite>(0xF2)
@@ -241,7 +245,7 @@ public partial class SlideBoardViewModel : ViewModelBase
                                                     .GenData();
                         await this._sender.EnqueueMessage(clearStepsPacket);
                         await Task.Delay(100);
-                        Debug.WriteLine("write total steps");
+                        _logger.Info("write total steps");
                         var totalSteps = new byte[2];
                         BinaryPrimitives.WriteInt16BigEndian(totalSteps, (Int16)batchMessages.Length);
                         var totalStepsPacket = new FlowActionWrite()
@@ -270,15 +274,16 @@ public partial class SlideBoardViewModel : ViewModelBase
                 }
                 else
                 {
-                    Debug.WriteLine("没有可用的移动数据。");
+                    _logger.Info("没有可用的移动数据。");
+                    ShowSuccessToast($"玻片盒已经按指定字段排序", "提示");
                 }
             }
             else
             {
-                Debug.WriteLine($"排序失败：{result.ErrorMessage.Value}");
+                _logger.Info($"排序失败：{result.ErrorMessage.Value}");
             }
         }
-        Debug.WriteLine("HeartBeatMessage更新完成");
+        _logger.Debug("HeartBeatMessage更新完成");
     }
 
     public void StartSealSlide(object? recipient, SealSlideMessage message)
@@ -338,6 +343,7 @@ public partial class SlideBoardViewModel : ViewModelBase
             var viewModel = SlideBoxes[i];
             if (viewModel.IsSelected)
             {
+                viewModel.Refresh();
                 boxTags[i] = 0x01;
                 sortBoxCounts ++;
                 Debug.WriteLine($"StartSortSlide row {viewModel.RowIndex} col {viewModel.ColumnIndex} selected {viewModel.IsSelected}");

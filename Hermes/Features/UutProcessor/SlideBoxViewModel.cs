@@ -50,10 +50,12 @@ public partial class SlideBoxViewModel : ViewModelBase
 
     }
 
-    [RelayCommand]
-    private async Task Refresh()
+    public void Refresh()
     {
-
+        foreach (var model in ItemList)
+        {
+            model.Slide = Slide.Null;
+        }
     }
 
     [RelayCommand]

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Diagnostics;
+// using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
+using Hermes.Common;
 using Hermes.Common.Messages;
 using Hermes.Communication.Protocol;
 using LanguageExt;
@@ -18,15 +19,19 @@ public class ScanEngine : ObservableRecipient
 {
     private SerialPortStream _serialPort;
     public bool IsOpen => _serialPort.IsOpen;
+    private readonly ILogger _logger;
     public event ReceiveDataEventHandler ReceiveDataEvent;
     private readonly ConcurrentQueue<PacketResult> _resultQueue;
     public event EventHandler<byte[]> ScanMessageReceived;
     public event EventHandler<byte[]> ScanFailed;
 
-    public ScanEngine()
+    public ScanEngine(
+        ILogger logger
+        )
     {
         _serialPort = new SerialPortStream();
         _resultQueue = new ConcurrentQueue<PacketResult>();
+        _logger = logger;
     }
 
     public static string[] GetPortArray()
@@ -62,13 +67,17 @@ public class ScanEngine : ObservableRecipient
         try
         {
             _serialPort.Open();
-            Debug.WriteLine($"扫描串口 {_serialPort.PortName} 连接成功");
+            _logger.Info($"扫描串口 {_serialPort.PortName} 连接成功");
         }
         catch (Exception)
         {
             //MessageBox.Show("串口被占用");
         }
 
+    }
+
+    public void InitialScanner()
+    {
     }
 
     /// <summary>
@@ -114,27 +123,27 @@ public class ScanEngine : ObservableRecipient
 
         if (bytesRead.Result > 0)
         {
-            Debug.WriteLine($"扫描串口消息={string.Join(" ", arg.Data.Select(b => b.ToString("X2")))}");
+            _logger.Info($"扫描串口消息={string.Join(" ", arg.Data.Select(b => b.ToString("X2")))}");
             _resultQueue.TryDequeue(out var item);
             // 判断是否超时 超时直接丢弃
-            Debug.WriteLine($"TryDequeue item {item}");
             var request = BuildRequestInfo(arg.Data);
 
             if (item is not null && IsWithinTwoSeconds(item.Timestamp))
             {
+                _logger.Info($"TryDequeue item {item.SlideSeq}");
                 request.Match(
                     Right: requestInfo =>
                     {
                         if (requestInfo.dataFrame != null)
                         {
-                            Console.WriteLine($"Scan Request Info: {requestInfo.dataFrame.Select(b => b.ToString("X2"))}");
+                            _logger.Info($"Scan Request Info: {requestInfo.dataFrame.Select(b => b.ToString("X2"))}");
                             Messenger.Send(new SlideInfoMessage((item.SlideSeq, requestInfo.dataFrame)));
                             ScanMessageReceived?.Invoke(this, item.FrameNo!);
                         }
                     },
                     Left: error =>
                     {
-                        Console.WriteLine($"Error building scan request info: {error.Message}");
+                        _logger.Info($"Error building scan request info: {error.Message}");
                     });
             }
             else
@@ -142,12 +151,12 @@ public class ScanEngine : ObservableRecipient
                 request.Match(
                     Right: requestInfo =>
                     {
-                        Console.WriteLine($"超时：来自{requestInfo.dataFrame}的消息已处理。");
+                        _logger.Info($"超时：来自{requestInfo.dataFrame}的消息已处理。");
                         ScanFailed?.Invoke(this, requestInfo.dataFrame);
                     },
                     Left: error =>
                     {
-                        Console.WriteLine($"Error building scan request info: {error.Message}");
+                        _logger.Info($"Error building scan request info: {error.Message}");
                     });
             }
             //触发自定义消息接收事件，把串口数据发送出去
@@ -157,6 +166,35 @@ public class ScanEngine : ObservableRecipient
             }
         }
 
+    }
+    
+    public async Task SendDataMethodAsync(byte[] data)
+    {
+        bool isOpen = _serialPort.IsOpen;
+
+        if (!isOpen)
+        {
+            Open();
+            if (!_serialPort.IsOpen)
+            {
+                _logger.Info($"串口 {_serialPort.PortName} 未打开，无法发送数据。");
+                return;
+            }
+        }
+
+        try
+        {
+            await _serialPort.WriteAsync(data, 0, data.Length);
+            _logger.Info($"发送数据: {BitConverter.ToString(data).Replace('-', ' ')}");
+        }
+        catch (OperationCanceledException)
+        {
+            _logger.Info("发送数据操作被取消。");
+        }
+        catch (Exception ex)
+        {
+            _logger.Info($"发送数据失败: {ex.Message}");
+        }
     }
 
     private static Either<Exception, ScanRequestInfo> BuildRequestInfo(byte[] data)
@@ -205,8 +243,7 @@ public class ScanEngine : ObservableRecipient
     public async Task SendPacket(ScanRequestInfo packet)
     {
         await Task.Delay(100);
-        Debug.WriteLine($"{DateTime.UtcNow.ToString("yyyy MM dd HH:mm:ss:fff")} " +
-                        $"Send ScanRequestInfo: {string.Join(" ", packet.dataFrame.Select(b => b.ToString("X2")))}");
+        _logger.Info($"Send ScanRequestInfo: {string.Join(" ", packet.dataFrame.Select(b => b.ToString("X2")))}");
         var packetResult = new PacketResult { SlideSeq = packet.SlideSeq, FrameNo = packet.FrameNo };
         _resultQueue.Enqueue(packetResult);
         // 启动超时检查
@@ -224,13 +261,13 @@ public class ScanEngine : ObservableRecipient
 
     private void RemoveFromQueue(byte[] frameNo)
     {
-        Debug.WriteLine($"into RemoveFromQueue Queue Count {_resultQueue.Count}");
+        _logger.Info($"into RemoveFromQueue Queue Count {_resultQueue.Count}");
         _resultQueue.TryDequeue(out var item);
         if (item != null && Enumerable.SequenceEqual(item.FrameNo!, frameNo))
         {
-            Debug.WriteLine($"移除请求 (frameNo: {frameNo.Select(b => b.ToString("X2"))})");
-            Debug.WriteLine($"移除请求 (item SlideSeq: {item.SlideSeq})");
-            Debug.WriteLine($"移除请求 (item FrameNo: {item.FrameNo.Select(b => b.ToString("X2"))})");
+            _logger.Info($"移除请求 (frameNo: {frameNo.Select(b => b.ToString("X2"))})");
+            _logger.Info($"移除请求 (item SlideSeq: {item.SlideSeq})");
+            _logger.Info($"移除请求 (item FrameNo: {item.FrameNo.Select(b => b.ToString("X2"))})");
         }
     }
 
