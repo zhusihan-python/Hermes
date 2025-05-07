@@ -18,7 +18,7 @@
 			<adminTools:SystemAlarmTabView></adminTools:SystemAlarmTabView>
 		</TabItem>
 		<TabItem Header="软件详情">
-			<adminTools:AboutTabView></adminTools:AboutTabView>
+			<adminTools:AboutTabView DataContext="{Binding AboutTabViewModel}"></adminTools:AboutTabView>
 		</TabItem>
 	</TabControl>
 </UserControl>
