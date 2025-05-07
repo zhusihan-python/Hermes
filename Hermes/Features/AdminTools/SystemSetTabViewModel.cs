@@ -8,6 +8,7 @@ using Hermes.Communication.SerialPort;
 using Hermes.Models;
 using Hermes.Types;
 using System;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
 namespace Hermes.Features.AdminTools;
@@ -42,6 +43,12 @@ public partial class SystemSetTabViewModel: ViewModelBase
     private LEDState _resetState;
     private Device _device;
     private readonly MessageSender _sender;
+    private ObservableCollection<string> _portNames;
+    public ObservableCollection<string> PortNames
+    {
+        get => _portNames;
+        set => SetProperty(ref _portNames, value);
+    }
 
     public SystemSetTabViewModel(
         Device device,
@@ -100,6 +107,12 @@ public partial class SystemSetTabViewModel: ViewModelBase
             WithSlaveAddress<SystemStatusWrite>(0x13);
             _ = Task.Run(() => this._sender.EnqueueMessage(packet));
         }
+    }
+
+    [RelayCommand]
+    public void RefreshPort()
+    {
+        PortNames = new ObservableCollection<string>(_sender.GetPortNames());
     }
 
     [RelayCommand]

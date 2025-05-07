@@ -34,11 +34,6 @@ public class ScanEngine : ObservableRecipient
         _logger = logger;
     }
 
-    public static string[] GetPortArray()
-    {
-        return SerialPortStream.GetPortNames();
-    }
-
     public void SetSerialPort(string portName, int baudrate)
     {
         //端口名

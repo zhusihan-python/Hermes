@@ -33,10 +33,10 @@ public class ComPort
         _parser = parser;
     }
 
-    public static string[] GetPortArray()
-    {
-        return SerialPortStream.GetPortNames();
-    }
+    //public static string[] GetPortArray()
+    //{
+    //    return SerialPortStream.GetPortNames();
+    //}
 
     public void SetSerialPort(string portName, int baudrate)
     {

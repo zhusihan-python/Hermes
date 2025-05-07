@@ -42,10 +42,10 @@
 					</Grid>
 					<StackPanel Grid.Row="1">
 						<StackPanel Orientation="Horizontal">
-							<TextBlock Text="摄像头列表"></TextBlock>
-							<controls:ButtonIcon Kind="Refresh" Margin="2"/>
+							<TextBlock Text="串口列表"></TextBlock>
+							<controls:ButtonIcon Kind="Refresh" Command="{Binding RefreshPortCommand}" ToolTip.Tip="刷新串口"/>
 						</StackPanel>
-						<ListBox x:Name="cameras" Grid.Row="1" Grid.Column="0"/>
+						<ListBox ItemsSource="{Binding PortNames}" Height="60"/>
 					</StackPanel>
 					<Grid Grid.Row="2" Grid.Column="0" RowDefinitions="40,10" ColumnDefinitions="*,*,*,*,*,*">
 						<TextBlock Text="复位状态" Grid.Row="0" Grid.Column="0"></TextBlock>

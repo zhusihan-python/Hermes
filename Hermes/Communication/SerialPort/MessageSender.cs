@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Hermes.Common;
+using RJCP.IO.Ports;
 
 namespace Hermes.Communication.SerialPort;
 
@@ -44,8 +45,14 @@ public class MessageSender : IDisposable
         }
         else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
         {
-            _comPort.SetSerialPort("/dev/ttyUSB1", 115200);
-            scanEngine.SetSerialPort("/dev/ttyUSB0", 9600);
+            var comPortName = "/dev/ttyS1";
+            var scanPortName = "/dev/ttyS0";
+#if DEBUG
+            comPortName = "/dev/ttyUSB1";
+            scanPortName = "/dev/ttyUSB0";
+#endif
+            _comPort.SetSerialPort(comPortName, 115200);
+            scanEngine.SetSerialPort(scanPortName, 9600);
         }
         try
         {
@@ -95,6 +102,11 @@ public class MessageSender : IDisposable
     public byte[] GetFrameNumber()
     {
         return _frameSequenceGenerator.GenerateFrameSequence();
+    }
+
+    public string[] GetPortNames()
+    {
+        return SerialPortStream.GetPortNames();
     }
 
     private async Task SendMessageAsync()
