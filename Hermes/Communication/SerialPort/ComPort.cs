@@ -22,7 +22,7 @@ public class ComPort
     private const int ReadBufferSize = 1024; // 每次读取的缓冲区大小
     private const int MaxBufferSize = 4096; // 最大接收缓冲区大小
     private readonly ILogger _logger;
-    public event ReceiveDataEventHandler ReceiveDataEvent;
+    //public event ReceiveDataEventHandler ReceiveDataEvent;
 
     public ComPort(
         ILogger logger,

@@ -7,7 +7,6 @@
 			 xmlns:controls="using:Hermes.Features.Controls"
 			 xmlns:uutProcessor="clr-namespace:Hermes.Features.UutProcessor"
 			 xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
-			 xmlns:actipro="http://schemas.actiprosoftware.com/avaloniaui"
              x:Class="Hermes.Features.UutProcessor.ConciseMainView"
 			 x:DataType="uutProcessor:ConciseMainViewModel">
 	<UserControl.Background>
