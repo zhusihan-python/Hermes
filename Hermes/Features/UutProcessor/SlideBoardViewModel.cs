@@ -346,7 +346,7 @@ public partial class SlideBoardViewModel : ViewModelBase
                 viewModel.Refresh();
                 boxTags[i] = 0x01;
                 sortBoxCounts ++;
-                Debug.WriteLine($"StartSortSlide row {viewModel.RowIndex} col {viewModel.ColumnIndex} selected {viewModel.IsSelected}");
+                _logger.Info($"StartSortSlide row {viewModel.RowIndex} col {viewModel.ColumnIndex} selected {viewModel.IsSelected}");
             }
             else if (viewModel.BoxInPlace)
             {

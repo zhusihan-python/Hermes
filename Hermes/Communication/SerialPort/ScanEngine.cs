@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 // using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,6 +20,9 @@ public class ScanEngine : ObservableRecipient
 {
     private SerialPortStream _serialPort;
     public bool IsOpen => _serialPort.IsOpen;
+    private List<byte> _receiveBuffer = new List<byte>();
+    private const int ReadBufferSize = 1024; // 每次读取的缓冲区大小
+    private const int MaxBufferSize = 4096; // 最大接收缓冲区大小
     private readonly ILogger _logger;
     public event ReceiveDataEventHandler ReceiveDataEvent;
     private readonly ConcurrentQueue<PacketResult> _resultQueue;
@@ -51,7 +55,7 @@ public class ScanEngine : ObservableRecipient
         //停止位
         _serialPort.StopBits = StopBits.One;
 
-        _serialPort.ReceivedBytesThreshold = 7;
+        _serialPort.ReceivedBytesThreshold = 9;
         //串口接收数据事件
         _serialPort.DataReceived += ReceiveDataMethod;
     }
@@ -110,57 +114,118 @@ public class ScanEngine : ObservableRecipient
     /// <param name="e"></param>
     private async void ReceiveDataMethod(object sender, SerialDataReceivedEventArgs e)
     {
-        ReceiveDataEventArg arg = new ReceiveDataEventArg();
-        //读取串口缓冲区的字节数据
-        arg.Data = new byte[32];
-        await Task.Delay(10);
-        var bytesRead = _serialPort.ReadAsync(arg.Data, 0, _serialPort.BytesToRead);
-
-        if (bytesRead.Result > 0)
+        byte[] readBuffer = new byte[ReadBufferSize];
+        try
         {
-            _logger.Info($"扫描串口消息={string.Join(" ", arg.Data.Select(b => b.ToString("X2")))}");
-            _resultQueue.TryDequeue(out var item);
-            // 判断是否超时 超时直接丢弃
-            var request = BuildRequestInfo(arg.Data);
-
-            if (item is not null && IsWithinTwoSeconds(item.Timestamp))
+            while (_serialPort.IsOpen && _serialPort.BytesToRead > 0)
             {
-                _logger.Info($"TryDequeue item {item.SlideSeq}");
-                request.Match(
-                    Right: requestInfo =>
-                    {
-                        if (requestInfo.dataFrame != null)
+                var bytesRead = await _serialPort.ReadAsync(readBuffer, 0, ReadBufferSize);
+                if (bytesRead > 0)
+                {
+                    _receiveBuffer.AddRange(readBuffer.Take(bytesRead));
+                    await ProcessReceivedBuffer();
+                }
+                else
+                {
+                    await Task.Delay(20); // 避免忙等待
+                }
+
+                // 防止缓冲区无限增长
+                if (_receiveBuffer.Count > MaxBufferSize)
+                {
+                    _logger.Info("接收缓冲区已满，清空。");
+                    _receiveBuffer.Clear();
+                    break;
+                }
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            _logger.Info("串口读取操作被取消。");
+        }
+        catch (Exception ex)
+        {
+            _logger.Info($"串口读取错误: {ex.Message}");
+            _receiveBuffer.Clear(); // 发生错误时清理缓冲区
+        }
+    }
+    
+    private async Task ProcessReceivedBuffer()
+    {
+        _logger.Info($"_receiveBuffer {string.Join(" ", _receiveBuffer.Select(b => b.ToString("X2")))}");
+        int headIndex = IndexOf(_receiveBuffer, Scan.FullHead);
+        _logger.Info($"ProcessReceivedBuffer headIndex {headIndex}");
+        if (headIndex != -1)
+        {
+            int endIndex = IndexOf(_receiveBuffer, Scan.FullTail);
+            _logger.Info($"ProcessReceivedBuffer endIndex {endIndex}");
+            if (endIndex != -1)
+            {
+                byte[] messageData = _receiveBuffer.Take(endIndex + Scan.FullTail.Length).ToArray();
+                _logger.Info($"扫描串口消息={string.Join(" ", messageData.Select(b => b.ToString("X2")))}");
+                _resultQueue.TryDequeue(out var item);
+                // 判断是否超时 超时直接丢弃
+                var request = BuildRequestInfo(messageData);
+
+                if (item is not null && IsWithinTwoSeconds(item.Timestamp))
+                {
+                    _logger.Info($"TryDequeue item {item.SlideSeq}");
+                    request.Match(
+                        Right: requestInfo =>
                         {
-                            _logger.Info($"Scan Request Info: {requestInfo.dataFrame.Select(b => b.ToString("X2"))}");
+                            _logger.Info($"Scan Request Info: {string.Join(" ", requestInfo.dataFrame.Select(b => b.ToString("X2")))}");
                             Messenger.Send(new SlideInfoMessage((item.SlideSeq, requestInfo.dataFrame)));
                             ScanMessageReceived?.Invoke(this, item.FrameNo!);
-                        }
-                    },
-                    Left: error =>
-                    {
-                        _logger.Info($"Error building scan request info: {error.Message}");
-                    });
-            }
-            else
-            {
-                request.Match(
-                    Right: requestInfo =>
-                    {
-                        _logger.Info($"超时：来自{requestInfo.dataFrame}的消息已处理。");
-                        ScanFailed?.Invoke(this, requestInfo.dataFrame);
-                    },
-                    Left: error =>
-                    {
-                        _logger.Info($"Error building scan request info: {error.Message}");
-                    });
-            }
-            //触发自定义消息接收事件，把串口数据发送出去
-            if (ReceiveDataEvent != null && arg.Data.Length != 0)
-            {
-                ReceiveDataEvent.Invoke(null, arg);
+                        },
+                        Left: error =>
+                        {
+                            _logger.Info($"Error building scan request info: {error.Message}");
+                        });
+                }
+                else
+                {
+                    request.Match(
+                        Right: requestInfo =>
+                        {
+                            _logger.Info($"超时：来自{requestInfo.dataFrame}的消息已处理。");
+                            ScanFailed?.Invoke(this, requestInfo.dataFrame);
+                        },
+                        Left: error =>
+                        {
+                            _logger.Info($"Error building scan request info: {error.Message}");
+                        });
+                }
             }
         }
 
+        if (_receiveBuffer.Count > MaxBufferSize)
+        {
+            _logger.Info("接收缓冲区过大，停止处理。");
+            _receiveBuffer.Clear();
+        }
+
+        await Task.CompletedTask;
+    }
+    
+    private int IndexOf(List<byte> buffer, byte[] pattern)
+    {
+        for (int i = 0; i <= buffer.Count - pattern.Length; i++)
+        {
+            bool found = true;
+            for (int j = 0; j < pattern.Length; j++)
+            {
+                if (buffer[i + j] != pattern[j])
+                {
+                    found = false;
+                    break;
+                }
+            }
+            if (found)
+            {
+                return i;
+            }
+        }
+        return -1;
     }
     
     public async Task SendDataMethodAsync(byte[] data)
@@ -249,7 +314,7 @@ public class ScanEngine : ObservableRecipient
 
     private async Task StartTimeoutCheckAsync(byte[] frameNo)
     {
-        await Task.Delay(5000); // 5秒超时
+        await Task.Delay(5000); // 3秒超时
         // 超时后尝试移除未处理的请求
         RemoveFromQueue(frameNo);
     }
@@ -260,9 +325,9 @@ public class ScanEngine : ObservableRecipient
         _resultQueue.TryDequeue(out var item);
         if (item != null && Enumerable.SequenceEqual(item.FrameNo!, frameNo))
         {
-            _logger.Info($"移除请求 (frameNo: {frameNo.Select(b => b.ToString("X2"))})");
+            _logger.Info($"移除请求 (frameNo: {string.Join(" ", frameNo.Select(b => b.ToString("X2")))})");
             _logger.Info($"移除请求 (item SlideSeq: {item.SlideSeq})");
-            _logger.Info($"移除请求 (item FrameNo: {item.FrameNo.Select(b => b.ToString("X2"))})");
+            _logger.Info($"移除请求 (item FrameNo: {string.Join(" ", item.FrameNo.Select(b => b.ToString("X2")))})");
         }
     }
 

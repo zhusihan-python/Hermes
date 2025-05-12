@@ -160,31 +160,6 @@ public class ComPort
             _logger.Info($"串口读取错误: {ex.Message}");
             _receiveBuffer.Clear(); // 发生错误时清理缓冲区
         }
-        // ReceiveDataEventArg arg = new ReceiveDataEventArg();
-        //
-        // //读取串口缓冲区的字节数据
-        // arg.Data = new byte[_serialPort.BytesToRead];
-        // _serialPort.Read(arg.Data, 0, _serialPort.BytesToRead);
-        //
-        // Debug.WriteLine($"消息={string.Join(" ", arg.Data.Select(b => b.ToString("X2")))}");
-        //
-        // var result = BuildRequestInfo(arg.Data);
-        // await result.Match(
-        //     Right: async requestInfo =>
-        //     {
-        //         Console.WriteLine($"Request Info: {requestInfo.Data.Select(b => b.ToString("X2"))}");
-        //         await this._parser.Route(requestInfo);
-        //     },
-        //     Left: async error =>
-        //     {
-        //         Console.WriteLine($"Error building request info: {error.Message}");
-        //     });
-        //
-        // //触发自定义消息接收事件，把串口数据发送出去
-        // if (ReceiveDataEvent != null && arg.Data.Length != 0)
-        // {
-        //     ReceiveDataEvent.Invoke(null, arg);
-        // }
     }
 
     private async Task ProcessReceivedBuffer()

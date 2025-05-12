@@ -48,8 +48,8 @@ public class MessageSender : IDisposable
             var comPortName = "/dev/ttyS1";
             var scanPortName = "/dev/ttyS0";
 #if DEBUG
-            comPortName = "/dev/ttyUSB1";
-            scanPortName = "/dev/ttyUSB0";
+            comPortName = "/dev/ttyUSB0";
+            scanPortName = "/dev/ttyUSB1";
 #endif
             _comPort.SetSerialPort(comPortName, 115200);
             scanEngine.SetSerialPort(scanPortName, 9600);
