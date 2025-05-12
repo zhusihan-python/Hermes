@@ -1,5 +1,7 @@
 ﻿using Hermes.Communication.SerialPort;
+using Hermes.Common;
 using Moq;
+using Hermes.Models;
 
 namespace HermesTests.Communication.SerialPort;
 
@@ -24,7 +26,7 @@ public class ComPortTests : IClassFixture<ComPortFixture>
                 WithSrcDstLocations(new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
                                      0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }).
                 GenData();
-        await _fixture.comPort.SendPacketAsync(clearAll);
+        await _fixture.comPort.SendPacket(clearAll);
         await Task.Delay(1000);
 
         var actionCount = 20;
@@ -40,7 +42,7 @@ public class ComPortTests : IClassFixture<ComPortFixture>
                         WithPickCount(0x00).  // 抓取次数：0次
                         WithSrcDstLocations(locations).
                         GenData();
-        await _fixture.comPort.SendPacketAsync(packet);
+        await _fixture.comPort.SendPacket(packet);
         await Task.Delay(200);
 
         byte[][] locationPairs = new byte[][]
@@ -79,18 +81,18 @@ public class ComPortTests : IClassFixture<ComPortFixture>
                 .WithSrcDstLocations(locationPairs[i])
                 .GenData();
 
-            await _fixture.comPort.SendPacketAsync(actionPacket);
+            await _fixture.comPort.SendPacket(actionPacket);
             await Task.Delay(200);
         });
 
         var actionsQuery = new FlowActionRead().
                                 WithQuery(0x00);
-        await _fixture.comPort.SendPacketAsync(actionsQuery);
+        await _fixture.comPort.SendPacket(actionsQuery);
         await Task.Delay(200);
 
         var queryStepOne = new FlowActionRead().
                         WithQuery(0x01);
-        await _fixture.comPort.SendPacketAsync(queryStepOne);
+        await _fixture.comPort.SendPacket(queryStepOne);
         await Task.Delay(200);
 
         var boxTags = new byte[75];
@@ -100,7 +102,7 @@ public class ComPortTests : IClassFixture<ComPortFixture>
                             WithMasterAddress<SystemStatusWrite>(0xF2).
                             WithSlaveAddress<SystemStatusWrite>(0x13).
                             WithBoxTags(boxTags);
-        await _fixture.comPort.SendPacketAsync(executeAction);
+        await _fixture.comPort.SendPacket(executeAction);
         await Task.Delay(1000);
     }
 
@@ -151,14 +153,16 @@ public class ComPortFixture : IAsyncLifetime
 
     public async Task InitializeAsync()
     {
-        var mockServiceProvider = new Mock<IServiceProvider>();
-        var frameParser = new FrameParser(mockServiceProvider.Object);
-        comPort = new ComPort(frameParser);
-        await comPort.InitializeAsync("COM4", 115200);
+        var mockDevice = new Mock<Device>();
+        var mockLogger = new Mock<ILogger>();
+        var frameParser = new FrameParser(mockDevice.Object, mockLogger.Object);
+        comPort = new ComPort(mockLogger.Object, frameParser);
+        //await comPort.InitializeAsync("COM4", 115200);
     }
 
     public async Task DisposeAsync()
     {
-        await comPort.ClientSafeCloseAsync();
+        comPort.Close();
+        await Task.CompletedTask;
     }
 }

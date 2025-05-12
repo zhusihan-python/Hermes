@@ -1,7 +1,7 @@
 ﻿using Hermes.Communication.SerialPort;
-using System.Collections;
+using Hermes.Common;
+using Moq;
 using System.Diagnostics;
-using TouchSocket.Sockets;
 
 namespace HermesTests.Communication.SerialPort;
 
@@ -57,7 +57,8 @@ public class ScanEngineFixture
 
     public void InitializeAsync()
     {
-        ScanEngine = new ScanEngine();
+        var mockLogger = new Mock<ILogger>();
+        ScanEngine = new ScanEngine(mockLogger.Object);
         ScanEngine.SetSerialPort("COM5", 9600); // 替换为你的串口名称和波特率
     }
 
