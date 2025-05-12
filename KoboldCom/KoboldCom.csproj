@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <OutputType>Library</OutputType>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Platforms>AnyCPU;x64</Platforms>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>..\debug\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutputPath>..\debug\</OutputPath>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>..\bin\</OutputPath>
+    <DocumentationFile>..\bin\KoboldCom.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutputPath>..\bin\</OutputPath>
+    <DocumentationFile>..\bin\KoboldCom.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>KoboldCom.ico</ApplicationIcon>
+    <AssemblyTitle>KoboldCom</AssemblyTitle>
+    <Description>Serial Port Communication Tool</Description>
+    <Product>KoboldCom</Product>
+    <Copyright>Copyright © Shizhy  2014</Copyright>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="KoboldCom.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.IO.Ports" Version="10.0.0-preview.3.25171.5" />
+  </ItemGroup>
+</Project>
