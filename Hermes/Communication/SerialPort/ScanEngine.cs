@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
+
 // using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -112,101 +114,125 @@ public class ScanEngine : ObservableRecipient
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private async void ReceiveDataMethod(object sender, SerialDataReceivedEventArgs e)
+    private void ReceiveDataMethod(object sender, SerialDataReceivedEventArgs e)
     {
-        byte[] readBuffer = new byte[ReadBufferSize];
-        try
-        {
-            while (_serialPort.IsOpen && _serialPort.BytesToRead > 0)
-            {
-                var bytesRead = await _serialPort.ReadAsync(readBuffer, 0, ReadBufferSize);
-                if (bytesRead > 0)
-                {
-                    _receiveBuffer.AddRange(readBuffer.Take(bytesRead));
-                    await ProcessReceivedBuffer();
-                }
-                else
-                {
-                    await Task.Delay(20); // 避免忙等待
-                }
+        //byte[] readBuffer = new byte[ReadBufferSize];
+        //try
+        //{
+        //    while (_serialPort.IsOpen && _serialPort.BytesToRead > 0)
+        //    {
+        //        var bytesRead = await _serialPort.ReadAsync(readBuffer, 0, ReadBufferSize);
+        //        if (bytesRead > 0)
+        //        {
+        //            _receiveBuffer.AddRange(readBuffer.Take(bytesRead));
+        //            await ProcessReceivedBuffer();
+        //        }
+        //        else
+        //        {
+        //            await Task.Delay(20); // 避免忙等待
+        //        }
 
-                // 防止缓冲区无限增长
-                if (_receiveBuffer.Count > MaxBufferSize)
+        //        // 防止缓冲区无限增长
+        //        if (_receiveBuffer.Count > MaxBufferSize)
+        //        {
+        //            _logger.Info("接收缓冲区已满，清空。");
+        //            _receiveBuffer.Clear();
+        //            break;
+        //        }
+        //    }
+        //}
+        //catch (OperationCanceledException)
+        //{
+        //    _logger.Info("串口读取操作被取消。");
+        //}
+        //catch (Exception ex)
+        //{
+        //    _logger.Info($"串口读取错误: {ex.Message}");
+        //    _receiveBuffer.Clear(); // 发生错误时清理缓冲区
+        //}
+        int bytesToRead = _serialPort.BytesToRead;
+        if (bytesToRead > 0)
+        {
+            byte[] buffer = new byte[bytesToRead];
+            try
+            {
+                var count = _serialPort.Read(buffer, 0, bytesToRead);
+                if (count > 0)
                 {
-                    _logger.Info("接收缓冲区已满，清空。");
-                    _receiveBuffer.Clear();
-                    break;
+                    _receiveBuffer.AddRange(buffer);
+                    ProcessReceivedData();
                 }
             }
-        }
-        catch (OperationCanceledException)
-        {
-            _logger.Info("串口读取操作被取消。");
-        }
-        catch (Exception ex)
-        {
-            _logger.Info($"串口读取错误: {ex.Message}");
-            _receiveBuffer.Clear(); // 发生错误时清理缓冲区
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"读取串口数据出错: {ex.Message}");
+                _receiveBuffer.Clear(); // 发生错误时清理缓冲区
+            }
         }
     }
-    
-    private async Task ProcessReceivedBuffer()
+
+    private void ProcessReceivedData()
     {
         _logger.Info($"_receiveBuffer {string.Join(" ", _receiveBuffer.Select(b => b.ToString("X2")))}");
-        int headIndex = IndexOf(_receiveBuffer, Scan.FullHead);
-        _logger.Info($"ProcessReceivedBuffer headIndex {headIndex}");
-        if (headIndex != -1)
+        while (true)
         {
             int endIndex = IndexOf(_receiveBuffer, Scan.FullTail);
             _logger.Info($"ProcessReceivedBuffer endIndex {endIndex}");
             if (endIndex != -1)
             {
                 byte[] messageData = _receiveBuffer.Take(endIndex + Scan.FullTail.Length).ToArray();
-                _logger.Info($"扫描串口消息={string.Join(" ", messageData.Select(b => b.ToString("X2")))}");
-                _resultQueue.TryDequeue(out var item);
-                // 判断是否超时 超时直接丢弃
-                var request = BuildRequestInfo(messageData);
-
-                if (item is not null && IsWithinTwoSeconds(item.Timestamp))
+                _receiveBuffer.RemoveRange(0, endIndex + Scan.FullTail.Length);
+                if (messageData.Length > 0)
                 {
-                    _logger.Info($"TryDequeue item {item.SlideSeq}");
-                    request.Match(
-                        Right: requestInfo =>
-                        {
-                            _logger.Info($"Scan Request Info: {string.Join(" ", requestInfo.dataFrame.Select(b => b.ToString("X2")))}");
-                            Messenger.Send(new SlideInfoMessage((item.SlideSeq, requestInfo.dataFrame)));
-                            ScanMessageReceived?.Invoke(this, item.FrameNo!);
-                        },
-                        Left: error =>
-                        {
-                            _logger.Info($"Error building scan request info: {error.Message}");
-                        });
+                    _logger.Info($"扫描串口消息={string.Join(" ", messageData.Select(b => b.ToString("X2")))}");
+
+                    _resultQueue.TryDequeue(out var item);
+                    // 判断是否超时 超时直接丢弃
+                    var request = BuildRequestInfo(messageData);
+
+                    if (item is not null && IsWithinTwoSeconds(item.Timestamp))
+                    {
+                        _logger.Info($"TryDequeue item {item.SlideSeq}");
+                        request.Match(
+                            Right: requestInfo =>
+                            {
+                                _logger.Info($"Scan Request Info: {string.Join(" ", requestInfo.dataFrame.Select(b => b.ToString("X2")))}");
+                                Messenger.Send(new SlideInfoMessage((item.SlideSeq, requestInfo.dataFrame)));
+                                ScanMessageReceived?.Invoke(this, item.FrameNo!);
+                            },
+                            Left: error =>
+                            {
+                                _logger.Info($"Error building scan request info: {error.Message}");
+                            });
+                    }
+                    else
+                    {
+                        request.Match(
+                            Right: requestInfo =>
+                            {
+                                _logger.Info($"超时：来自{requestInfo.dataFrame}的消息已处理。");
+                                ScanFailed?.Invoke(this, requestInfo.dataFrame);
+                            },
+                            Left: error =>
+                            {
+                                _logger.Info($"Error building scan request info: {error.Message}");
+                            });
+                    }
                 }
                 else
                 {
-                    request.Match(
-                        Right: requestInfo =>
-                        {
-                            _logger.Info($"超时：来自{requestInfo.dataFrame}的消息已处理。");
-                            ScanFailed?.Invoke(this, requestInfo.dataFrame);
-                        },
-                        Left: error =>
-                        {
-                            _logger.Info($"Error building scan request info: {error.Message}");
-                        });
+                    break; // 没有找到结束符，等待更多数据
+                }
+
+                if (_receiveBuffer.Count > MaxBufferSize)
+                {
+                    _logger.Info("接收缓冲区过大，停止处理。");
+                    _receiveBuffer.Clear();
                 }
             }
         }
-
-        if (_receiveBuffer.Count > MaxBufferSize)
-        {
-            _logger.Info("接收缓冲区过大，停止处理。");
-            _receiveBuffer.Clear();
-        }
-
-        await Task.CompletedTask;
     }
-    
+
     private int IndexOf(List<byte> buffer, byte[] pattern)
     {
         for (int i = 0; i <= buffer.Count - pattern.Length; i++)
