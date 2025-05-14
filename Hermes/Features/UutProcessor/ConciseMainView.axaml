@@ -43,7 +43,7 @@
 							<DropShadowEffect OffsetX="0" OffsetY="1" BlurRadius="5" Opacity="0.2" />
 						</Viewbox.Effect>
 						<StackPanel Spacing="20" Margin="15" Orientation="Horizontal">
-							<Button Classes="Outlined" Height="110" Opacity="0.8"
+							<Button Classes="Outlined" Height="138" Opacity="0.8"
 									Command="{Binding SealSlideCommand}">
 								<StackPanel Orientation="Horizontal" Spacing="10">
 									<avalonia:MaterialIcon Kind="Sort" Margin="-5,0,0,0"/>
@@ -54,7 +54,7 @@
 									</TextBlock>
 								</StackPanel>
 							</Button>
-							<Button Classes="Outlined" Height="110" Opacity="0.8"
+							<Button Classes="Outlined" Height="138" Opacity="0.8"
 									Command="{Binding SortSlideCommand}">
 								<StackPanel Orientation="Horizontal" Spacing="10">
 									<avalonia:MaterialIcon Kind="Layers" Margin="-5,0,0,0"/>
@@ -80,7 +80,7 @@
 							</Viewbox.Effect>
 							<StackPanel Margin="30,20" Spacing="10">
 								<TextBlock FontSize="25" Text="待执行任务"/>
-								<ListBox ItemsSource="{Binding SentTasks}" Height="360">
+								<ListBox ItemsSource="{Binding SentTasks}" Height="580">
 									<ListBox.ItemTemplate>
 										<DataTemplate>
 											<Grid ColumnDefinitions="Auto, *, Auto" RowDefinitions="Auto">
@@ -143,17 +143,6 @@
 						</Viewbox>
 					</Grid>
 				</Border>
-			</StackPanel>
-
-			<StackPanel Grid.Row="4" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center" Spacing="30">
-				<controls:ButtonImage Width="150" Height="150">
-					<controls:ButtonImage.NormalBackground>avares://Hermes/AppData/Assets/start_dark.png</controls:ButtonImage.NormalBackground>
-					<controls:ButtonImage.PressedBackground>avares://Hermes/AppData/Assets/start_light.png</controls:ButtonImage.PressedBackground>
-				</controls:ButtonImage>
-				<controls:ButtonImage Width="150" Height="150">
-					<controls:ButtonImage.NormalBackground>avares://Hermes/AppData/Assets/stop_dark.png</controls:ButtonImage.NormalBackground>
-					<controls:ButtonImage.PressedBackground>avares://Hermes/AppData/Assets/stop_light.png</controls:ButtonImage.PressedBackground>
-				</controls:ButtonImage>
 			</StackPanel>
 
 			<StackPanel Grid.Row="4" Grid.Column="2">
