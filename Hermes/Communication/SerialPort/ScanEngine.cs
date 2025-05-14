@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
-
 // using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -56,8 +54,7 @@ public class ScanEngine : ObservableRecipient
 
         //停止位
         _serialPort.StopBits = StopBits.One;
-
-        _serialPort.ReceivedBytesThreshold = 9;
+        _serialPort.NewLine = "\r";
         //串口接收数据事件
         _serialPort.DataReceived += ReceiveDataMethod;
     }
@@ -116,48 +113,14 @@ public class ScanEngine : ObservableRecipient
     /// <param name="e"></param>
     private void ReceiveDataMethod(object sender, SerialDataReceivedEventArgs e)
     {
-        //byte[] readBuffer = new byte[ReadBufferSize];
-        //try
-        //{
-        //    while (_serialPort.IsOpen && _serialPort.BytesToRead > 0)
-        //    {
-        //        var bytesRead = await _serialPort.ReadAsync(readBuffer, 0, ReadBufferSize);
-        //        if (bytesRead > 0)
-        //        {
-        //            _receiveBuffer.AddRange(readBuffer.Take(bytesRead));
-        //            await ProcessReceivedBuffer();
-        //        }
-        //        else
-        //        {
-        //            await Task.Delay(20); // 避免忙等待
-        //        }
-
-        //        // 防止缓冲区无限增长
-        //        if (_receiveBuffer.Count > MaxBufferSize)
-        //        {
-        //            _logger.Info("接收缓冲区已满，清空。");
-        //            _receiveBuffer.Clear();
-        //            break;
-        //        }
-        //    }
-        //}
-        //catch (OperationCanceledException)
-        //{
-        //    _logger.Info("串口读取操作被取消。");
-        //}
-        //catch (Exception ex)
-        //{
-        //    _logger.Info($"串口读取错误: {ex.Message}");
-        //    _receiveBuffer.Clear(); // 发生错误时清理缓冲区
-        //}
         int bytesToRead = _serialPort.BytesToRead;
         if (bytesToRead > 0)
         {
             byte[] buffer = new byte[bytesToRead];
             try
             {
-                var count = _serialPort.Read(buffer, 0, bytesToRead);
-                if (count > 0)
+                var bytesRead = _serialPort.Read(buffer, 0, bytesToRead);
+                if (bytesRead > 0)
                 {
                     _receiveBuffer.AddRange(buffer);
                     ProcessReceivedData();
@@ -165,7 +128,7 @@ public class ScanEngine : ObservableRecipient
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"读取串口数据出错: {ex.Message}");
+                _logger.Info($"读取串口数据出错: {ex.Message}");
                 _receiveBuffer.Clear(); // 发生错误时清理缓冲区
             }
         }
@@ -219,16 +182,16 @@ public class ScanEngine : ObservableRecipient
                             });
                     }
                 }
-                else
-                {
-                    break; // 没有找到结束符，等待更多数据
-                }
+            }
+            else
+            {
+                break; // 没有找到结束符，等待更多数据
+            }
 
-                if (_receiveBuffer.Count > MaxBufferSize)
-                {
-                    _logger.Info("接收缓冲区过大，停止处理。");
-                    _receiveBuffer.Clear();
-                }
+            if (_receiveBuffer.Count > MaxBufferSize)
+            {
+                _logger.Info("接收缓冲区过大，停止处理。");
+                _receiveBuffer.Clear();
             }
         }
     }
@@ -254,34 +217,34 @@ public class ScanEngine : ObservableRecipient
         return -1;
     }
     
-    public async Task SendDataMethodAsync(byte[] data)
-    {
-        bool isOpen = _serialPort.IsOpen;
-
-        if (!isOpen)
-        {
-            Open();
-            if (!_serialPort.IsOpen)
-            {
-                _logger.Info($"串口 {_serialPort.PortName} 未打开，无法发送数据。");
-                return;
-            }
-        }
-
-        try
-        {
-            await _serialPort.WriteAsync(data, 0, data.Length);
-            _logger.Info($"发送数据: {BitConverter.ToString(data).Replace('-', ' ')}");
-        }
-        catch (OperationCanceledException)
-        {
-            _logger.Info("发送数据操作被取消。");
-        }
-        catch (Exception ex)
-        {
-            _logger.Info($"发送数据失败: {ex.Message}");
-        }
-    }
+    // public async Task SendDataMethodAsync(byte[] data)
+    // {
+    //     bool isOpen = _serialPort.IsOpen;
+    //
+    //     if (!isOpen)
+    //     {
+    //         Open();
+    //         if (!_serialPort.IsOpen)
+    //         {
+    //             _logger.Info($"串口 {_serialPort.PortName} 未打开，无法发送数据。");
+    //             return;
+    //         }
+    //     }
+    //
+    //     try
+    //     {
+    //         await _serialPort.WriteAsync(data, 0, data.Length);
+    //         _logger.Info($"发送数据: {BitConverter.ToString(data).Replace('-', ' ')}");
+    //     }
+    //     catch (OperationCanceledException)
+    //     {
+    //         _logger.Info("发送数据操作被取消。");
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         _logger.Info($"发送数据失败: {ex.Message}");
+    //     }
+    // }
 
     private static Either<Exception, ScanRequestInfo> BuildRequestInfo(byte[] data)
     {
@@ -301,10 +264,11 @@ public class ScanEngine : ObservableRecipient
                 // 取距离包尾最近的包头
                 var lastHeadIndex = headIndexes[^1];
                 var startIndex = lastHeadIndex + 1;
-                var length = tailIndex + 1 - 2 - startIndex;
+                // var length = tailIndex + 1 - tailLength - startIndex;
+                var length = tailIndex - startIndex;
                 var package = span.Slice(startIndex, length).ToArray();
-                // 清理之后包长度，不含包头包尾最少是14
-                if (package.Length > 0)
+                // contain barcode length bigger than 2
+                if (package.Length > 2)
                 {
                     var requestInfo = new ScanRequestInfo();
                     requestInfo.dataFrame = package;
@@ -333,14 +297,13 @@ public class ScanEngine : ObservableRecipient
         var packetResult = new PacketResult { SlideSeq = packet.SlideSeq, FrameNo = packet.FrameNo };
         _resultQueue.Enqueue(packetResult);
         // 启动超时检查
-        await StartTimeoutCheckAsync(packet.FrameNo);
-
         SendDataMethod(packet.dataFrame);
+        await StartTimeoutCheckAsync(packet.FrameNo);
     }
 
     private async Task StartTimeoutCheckAsync(byte[] frameNo)
     {
-        await Task.Delay(5000); // 3秒超时
+        await Task.Delay(3000); // 3秒超时
         // 超时后尝试移除未处理的请求
         RemoveFromQueue(frameNo);
     }
@@ -361,7 +324,7 @@ public class ScanEngine : ObservableRecipient
     {
         DateTime now = DateTime.Now;
         TimeSpan difference = now - timeStamp;
-        return Math.Abs(difference.TotalSeconds) <= 5;
+        return Math.Abs(difference.TotalSeconds) <= 3;
     }
 }
 

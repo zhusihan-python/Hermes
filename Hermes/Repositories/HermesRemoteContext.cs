@@ -33,17 +33,17 @@ public class HermesRemoteContext : DbContext
 
     public void Migrate()
     {
-        try
-        {
-            if (Database.GetPendingMigrations().Any())
-            {
-                Database.Migrate();
-            }
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-        }
+        // try
+        // {
+        //     if (Database.GetPendingMigrations().Any())
+        //     {
+        //         Database.Migrate();
+        //     }
+        // }
+        // catch (Exception e)
+        // {
+        //     Console.WriteLine(e);
+        // }
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
