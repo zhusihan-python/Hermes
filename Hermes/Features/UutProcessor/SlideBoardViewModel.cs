@@ -1,21 +1,22 @@
-﻿using System;
-using System.Linq;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
-using R3;
-using Microsoft.FSharp.Core;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using Hermes.Common;
+using Hermes.Common.Messages;
+using Hermes.Common.SlideSortCSharp;
+using Hermes.Communication.SerialPort;
 using Hermes.Models;
 using Hermes.Repositories;
-using CommunityToolkit.Mvvm.Messaging;
-using Hermes.Common.Messages;
-using System.Diagnostics;
 using Hermes.Types;
-using Hermes.Communication.SerialPort;
-using System.Collections.Generic;
-using Hermes.Common;
-using Hermes.Common.SlideSortCSharp;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.FSharp.Core;
+using R3;
 using SlideSort;
+using System;
 using System.Buffers.Binary;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Hermes.Features.UutProcessor;
 
@@ -373,6 +374,16 @@ public partial class SlideBoardViewModel : ViewModelBase
                 }
             }
             EnqueueTask(selectedBoxes);
+
+            for (int index=0; index < boxTags.Length; index++)
+            {
+                if (boxTags[index] == 0x01)
+                {
+                    string boxLocation = $"{RowLabels[index / 15]}-{index % 15 + 1}";
+                    Messenger.Send(new DistributedTask(boxLocation, 0, "扫码"));
+                }
+            }
+
             if (unSelectedInplaceBoxes.Any())
             {
                 var inplacePacket = new SystemStatusWrite().
@@ -380,7 +391,7 @@ public partial class SlideBoardViewModel : ViewModelBase
                                         WithMasterAddress<SystemStatusWrite>(0xF2).
                                         WithSlaveAddress<SystemStatusWrite>(0x13).
                                         WithBoxTags(unSelectedInplaceBoxes);
-                _ = Task.Run(async() =>
+                _ = Task.Run(async () =>
                 {
                     await Task.Delay(100);
                     await this._sender.EnqueueMessage(inplacePacket);
@@ -389,6 +400,21 @@ public partial class SlideBoardViewModel : ViewModelBase
                                                          .Where(i => unSelectedInplaceBoxes[i] == 0x01)
                                                          .ToList();
                 EnqueueStartedInplaceTask(indicesOfUnSelectedBoxes);
+
+                foreach (var indice in indicesOfUnSelectedBoxes)
+                {
+                    string boxLocation = $"{RowLabels[indice / 15]}-{indice % 15 + 1}";
+                    Messenger.Send(new DistributedTask(boxLocation, 0, "扫片"));
+                }
+            }
+
+            for (int index = 0; index < boxTags.Length; index++)
+            {
+                if (boxTags[index] == 0x01)
+                {
+                    string boxLocation = $"{RowLabels[index / 15]}-{index % 15 + 1}";
+                    Messenger.Send(new DistributedTask(boxLocation, 0, "理片"));
+                }
             }
         }
     }

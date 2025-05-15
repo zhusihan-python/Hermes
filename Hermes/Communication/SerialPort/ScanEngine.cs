@@ -21,8 +21,8 @@ public class ScanEngine : ObservableRecipient
     private SerialPortStream _serialPort;
     public bool IsOpen => _serialPort.IsOpen;
     private List<byte> _receiveBuffer = new List<byte>();
-    private const int ReadBufferSize = 1024; // 每次读取的缓冲区大小
-    private const int MaxBufferSize = 4096; // 最大接收缓冲区大小
+    //private const int ReadBufferSize = 1024; // 每次读取的缓冲区大小
+    private const int MaxBufferSize = 256; // 最大接收缓冲区大小
     private readonly ILogger _logger;
     public event ReceiveDataEventHandler ReceiveDataEvent;
     private readonly ConcurrentQueue<PacketResult> _resultQueue;

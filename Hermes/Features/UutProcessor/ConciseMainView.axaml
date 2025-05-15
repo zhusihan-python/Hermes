@@ -71,32 +71,22 @@
 			</StackPanel>
 
 			<StackPanel Grid.Row="3" Grid.Column="0" Grid.RowSpan="2" Spacing="20">
-				<Border Width="380" Classes="CardPanel">
+				<Border Width="380" Height="410" Classes="CardPanel">
 					<Grid>
 						<controls:BackdropBlurControl />
-						<Viewbox Stretch="Uniform">
-							<Viewbox.Effect>
-								<DropShadowEffect OffsetX="0" OffsetY="1" BlurRadius="5" Opacity="0.2" />
-							</Viewbox.Effect>
-							<StackPanel Margin="30,20" Spacing="10">
-								<TextBlock FontSize="25" Text="待执行任务"/>
-								<ListBox ItemsSource="{Binding SentTasks}" Height="580">
-									<ListBox.ItemTemplate>
-										<DataTemplate>
-											<Grid ColumnDefinitions="Auto, *, Auto" RowDefinitions="Auto">
-												<TextBlock Grid.Column="0" Text="{Binding Position}" FontSize="24" VerticalAlignment="Center" Margin="5,0,10,0" />
+						<ListBox ItemsSource="{Binding SentTasks}">
+							<ListBox.ItemTemplate>
+								<DataTemplate>
+									<Grid ColumnDefinitions="30,30,*,80">
+										<TextBlock Grid.Column="1" Text="{Binding Position}" FontSize="24" VerticalAlignment="Center" Margin="5,0,10,0" />
 
-												<ProgressBar IsIndeterminate="false" Grid.Column="1" Value="{Binding ProgressValue}" Minimum="0" Maximum="100" VerticalAlignment="Center" Height="15" />
-
-												<TextBlock Grid.Column="2" VerticalAlignment="Center" Margin="10,0,5,0" >
-													<Run Text="{Binding ActionType}" FontSize="24"/>
-												</TextBlock>
-											</Grid>
-										</DataTemplate>
-									</ListBox.ItemTemplate>
-								</ListBox>
-							</StackPanel>
-						</Viewbox>
+										<TextBlock Grid.Column="3" VerticalAlignment="Center" Margin="10,0,5,0" >
+											<Run Text="{Binding ActionType}" FontSize="24"/>
+										</TextBlock>
+									</Grid>
+								</DataTemplate>
+							</ListBox.ItemTemplate>
+						</ListBox>
 					</Grid>
 				</Border>
 			</StackPanel>

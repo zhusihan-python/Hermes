@@ -25,6 +25,7 @@ public partial class ConciseMainViewModel : ViewModelBase
     [ObservableProperty] private string _currentHour;
     [ObservableProperty] private string _currentTimeStamp;
     [ObservableProperty] private ushort _leftCovers;
+    //[ObservableProperty] private string _taskHeader;
 
     private ObservableCollection<string> _alarmMessages;
     public ObservableCollection<string> AlarmMessages
@@ -32,8 +33,8 @@ public partial class ConciseMainViewModel : ViewModelBase
         get => _alarmMessages;
         set => SetProperty(ref _alarmMessages, value);
     }
-    private ObservableCollection<DistributedTasks> _sentTasks;
-    public ObservableCollection<DistributedTasks> SentTasks
+    private ObservableCollection<DistributedTask> _sentTasks;
+    public ObservableCollection<DistributedTask> SentTasks
     {
         get => _sentTasks;
         set => SetProperty(ref _sentTasks, value);
@@ -55,13 +56,8 @@ public partial class ConciseMainViewModel : ViewModelBase
         this._device = device;
         this._sender = sender;
         this.AlarmMessages = new ObservableCollection<string>();
-        this.SentTasks = new ObservableCollection<DistributedTasks>();
-        this.SentTasks.Add(new DistributedTasks("A1", 80, "封片"));
-        this.SentTasks.Add(new DistributedTasks("A2", 70, "封片"));
-        this.SentTasks.Add(new DistributedTasks("A3", 60, "封片"));
-        this.SentTasks.Add(new DistributedTasks("A4", 70, "封片"));
-        this.SentTasks.Add(new DistributedTasks("A5", 80, "封片"));
-        this.SentTasks.Add(new DistributedTasks("A6", 70, "封片"));
+        this._sentTasks = new ObservableCollection<DistributedTask>();
+        this.SentTasks.Add(new DistributedTask("", 0, "空闲"));
         this.State = new ReactiveProperty<bool>(_sender.GetClientState());
         SealSlideCommand = new AsyncRelayCommand(SealSlide);
         SortSlideCommand = new AsyncRelayCommand(SortSlide);
@@ -79,12 +75,19 @@ public partial class ConciseMainViewModel : ViewModelBase
                       CurrentDay = curDateTime.ToString("MM-dd yyyy");
                       CurrentHour = curDateTime.ToString("HH:mm");
                   });
+        //UpdateTaskHeader();
+        //_sentTasks.CollectionChanged += (sender, e) => UpdateTaskHeader();
     }
 
     protected override void SetupReactiveExtensions()
     {
 
     }
+
+    //private void UpdateTaskHeader()
+    //{
+    //    TaskHeader = _sentTasks.Count > 0 ? "待执行任务" : "空闲中";
+    //}
 
     public void Refresh(object? recipient, HeartBeatMessage message)
     {
@@ -152,20 +155,6 @@ public partial class ConciseMainViewModel : ViewModelBase
         {
             _logger.Error(e.Message);
             this.ShowErrorToast(e.Message);
-        }
-    }
-
-    public class DistributedTasks
-    {
-        public string Position { get; set; }
-        public double ProgressValue { get; set; }
-        public string ActionType { get; set; }
-
-        public DistributedTasks(string position, double progressValue, string actionType)
-        {
-            Position = position;
-            ProgressValue = progressValue;
-            ActionType = actionType;
         }
     }
 }
