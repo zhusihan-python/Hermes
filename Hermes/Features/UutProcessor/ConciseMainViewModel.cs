@@ -2,16 +2,17 @@
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Hermes.Common;
-using System.Threading.Tasks;
-using System;
-using R3;
-using Hermes.Communication.SerialPort;
-using System.Windows.Input;
-using System.Collections.ObjectModel;
-using System.Linq;
 using Hermes.Common.Messages;
+using Hermes.Communication.SerialPort;
 using Hermes.Models;
 using Hermes.Types;
+using R3;
+using System;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using Tmds.DBus.Protocol;
 
 namespace Hermes.Features.UutProcessor;
 
@@ -75,8 +76,7 @@ public partial class ConciseMainViewModel : ViewModelBase
                       CurrentDay = curDateTime.ToString("MM-dd yyyy");
                       CurrentHour = curDateTime.ToString("HH:mm");
                   });
-        //UpdateTaskHeader();
-        //_sentTasks.CollectionChanged += (sender, e) => UpdateTaskHeader();
+        Messenger.Register<AddTaskMessage>(this, this.AddTask);
     }
 
     protected override void SetupReactiveExtensions()
@@ -144,9 +144,6 @@ public partial class ConciseMainViewModel : ViewModelBase
     {
         try
         {
-            //var packet = new HeartBeatRead();
-            //this._sender.EnqueueMessage(packet);
-
             var frameNumber = new byte[] { 0x00, 0x01 };
             var scanRequest = new ScanStartRequest(0x0001, frameNumber);
             await this._sender.SendScannerMessageAsync(scanRequest);
@@ -155,6 +152,15 @@ public partial class ConciseMainViewModel : ViewModelBase
         {
             _logger.Error(e.Message);
             this.ShowErrorToast(e.Message);
+        }
+    }
+
+    private void AddTask(object? recipient, AddTaskMessage message)
+    {
+        if (message != null)
+        {
+            var task = message.Value;
+            SentTasks.Add(task);
         }
     }
 }
