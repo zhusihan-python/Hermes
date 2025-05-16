@@ -8,7 +8,7 @@
 			 xmlns:system="clr-namespace:System;assembly=System.Runtime"
              mc:Ignorable="d" d:DesignWidth="650" d:DesignHeight="650"
 			 xmlns:vm="using:Hermes.Features.UutProcessor"
-			 x:DataType="vm:SlideBoxViewModel"
+			 x:DataType="vm:SlideDetailsViewModel"
              x:Class="Hermes.Features.UutProcessor.SlideDetailsView">
 
 	<UserControl.Styles>
@@ -43,43 +43,47 @@
 				<TextBlock Text="玻片盒详情" FontSize="18" FontWeight="SemiBold">
 				</TextBlock>
 			</suki:GroupBox.Header>
-			<ScrollViewer HorizontalScrollBarVisibility="Auto"
-						  VerticalScrollBarVisibility="Auto">
+			<StackPanel>
+				<ScrollViewer HorizontalScrollBarVisibility="Auto"
+							  VerticalScrollBarVisibility="Auto"
+							  MinHeight="400">
 
-				<DataGrid AutoGenerateColumns="False"
-						  Name="DataGridSlides"
-						  ItemsSource="{Binding ItemList}"
-						  IsReadOnly="True"
-						  GridLinesVisibility="All"
-						  HeadersVisibility="Column"
-						  CanUserResizeColumns="True">
+					<DataGrid AutoGenerateColumns="False"
+							  Name="DataGridSlides"
+							  ItemsSource="{Binding SlideModels}"
+							  IsReadOnly="True"
+							  GridLinesVisibility="All"
+							  HeadersVisibility="Column"
+							  CanUserResizeColumns="True">
 
-					<DataGrid.Columns>
-						<DataGridTextColumn Header="序号"
-											Binding="" />
+						<DataGrid.Columns>
+							<DataGridTextColumn Header="位置"
+												Binding="" />
 
-						<DataGridTextColumn Header="项目名"
-											Binding="{Binding Slide.ProgramId}" />
+							<DataGridTextColumn Header="项目名"
+												Binding="{Binding Slide.ProgramId}" />
 
-						<DataGridTextColumn Header="病理号"
-											Binding="{Binding Slide.PathologyId}" />
+							<DataGridTextColumn Header="病理号"
+												Binding="{Binding Slide.PathologyId}" />
 
-						<DataGridTextColumn Header="玻片号"
-											Binding="{Binding Slide.SlideId}" />
+							<DataGridTextColumn Header="玻片号"
+												Binding="{Binding Slide.SlideId}" />
 
-						<DataGridTextColumn Header="姓名"
-											Binding="{Binding Slide.PatientName}" />
+							<DataGridTextColumn Header="姓名"
+												Binding="{Binding Slide.PatientName}" />
 
-						<DataGridTextColumn Header="医生"
-											Binding="{Binding Slide.Doctor.Name}" />
+							<DataGridTextColumn Header="医生"
+												Binding="{Binding Slide.Doctor.Name}" />
 
-						<DataGridTextColumn Header="日期"
-											Binding="{Binding Slide.EntryDate}"
-											Width="100"/>
+						</DataGrid.Columns>
+					</DataGrid>
+				</ScrollViewer>
+				<Button HorizontalContentAlignment="Center"
+						Classes="Outlined Accent"
+						Command="{Binding CloseDialogCommand}"
+						Content="关闭" />
+			</StackPanel>
 
-					</DataGrid.Columns>
-				</DataGrid>
-			</ScrollViewer>
 		</suki:GroupBox>
 	</Border>
 

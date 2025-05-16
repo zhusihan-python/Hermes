@@ -1,17 +1,18 @@
+using Avalonia.Collections;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
-using Hermes.Common.Messages;
 using Hermes.Common;
+using Hermes.Common.Messages;
 using Hermes.Language;
 using Hermes.Models;
 using Hermes.Services.UutSenderService;
 using Material.Icons;
+using Microsoft.Extensions.DependencyInjection;
+using SukiUI.Dialogs;
 //using System.Linq;
 using System;
 using System.Diagnostics;
-using Microsoft.Extensions.DependencyInjection;
-using Avalonia.Collections;
 
 namespace Hermes.Features.UutProcessor;
 
@@ -25,32 +26,29 @@ public partial class UutProcessorViewModel : PageBase
     [ObservableProperty] private bool _isOptionVisible;
     [ObservableProperty] private int _selectedIndex;
 
-    public ScannerViewModel ScannerViewModel { get; }
-    public DummyViewModel DummyViewModel { get; }
     public ConciseMainViewModel ConciseMainViewModel { get; }
+    private SlideDetailsViewModel? _slideDetailViewModel;
     [ObservableProperty]
     public Device _deviceModel;
     private readonly IServiceProvider _serviceProvider;
+    private readonly ISukiDialogManager _dialogManager;
 
     public UutProcessorViewModel(
         ILogger logger,
         IServiceProvider serviceProvider,
+        ISukiDialogManager dialogManager,
         Settings settings,
-        UutSenderServiceFactory uutSenderServiceFactory,
-        ScannerViewModel scannerViewModel,
-        DummyViewModel dummyViewModel,
         ConciseMainViewModel conciseMainViewModel)
         : base(
             "主界面",
             MaterialIconKind.FolderEye,
             1)
     {
-        this.DummyViewModel = dummyViewModel;
-        this.ScannerViewModel = scannerViewModel;
         this.ConciseMainViewModel = conciseMainViewModel;
         this.SetupReactiveExtensionsOnActivation = true;
         this.IsActive = true;
         this._serviceProvider = serviceProvider;
+        this._dialogManager = dialogManager;
         var device = this._serviceProvider.GetRequiredService<Device>();
         this.DeviceModel = device;
         SortOptions.Add("按项目");
@@ -118,6 +116,20 @@ public partial class UutProcessorViewModel : PageBase
     private void SealSlide()
     {
         Messenger.Send(new SealSlideMessage());
+    }
+
+    [RelayCommand]
+    private void ShowDetail()
+    {
+        this._dialogManager.CreateDialog()
+             .WithViewModel(dialog =>
+             {
+                 this._slideDetailViewModel =
+                     new SlideDetailsViewModel(dialog);
+                 //this._manageFeatureDialogViewModel.Accepted += (featurePermission) =>
+                 //    Task.Run(() => Dispatcher.UIThread.InvokeAsync(() => this.Persist(featurePermission)));
+                 return this._slideDetailViewModel;
+             }).TryShow();
     }
 
     private void OnExitReceive(object recipient, ExitMessage message)

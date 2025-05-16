@@ -76,7 +76,7 @@
 									<TextBlock Text="停止"/>
 								</StackPanel>
 							</Button>
-							<Button Classes="Outlined" MaxWidth="88">
+							<Button Classes="Outlined" MaxWidth="88" Command="{Binding ShowDetailCommand}">
 								<StackPanel Orientation="Horizontal" Spacing="10" >
 									<avalonia:MaterialIcon Kind="AccountDetails" Margin="-5,0,0,0"/>
 									<TextBlock Text="查看"/>
