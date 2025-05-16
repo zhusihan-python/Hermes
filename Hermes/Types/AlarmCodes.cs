@@ -99,5 +99,10 @@ public static class AlarmCodes
         { 421, new AlarmCodeInfoStruct(421, "扫码失败", AlarmLevel.Error) },
         { 422, new AlarmCodeInfoStruct(422, "封片失败", AlarmLevel.Error) },
         { 423, new AlarmCodeInfoStruct(423, "动作包执行失败", AlarmLevel.Error) },
+        { 424, new AlarmCodeInfoStruct(424, "封片异常(吸盘盖片掉落)", AlarmLevel.Error) },
+        { 425, new AlarmCodeInfoStruct(425, "封片异常(取片位无片)", AlarmLevel.Error) },
+        { 426, new AlarmCodeInfoStruct(426, "封片异常(放片位有片)", AlarmLevel.Error) },
+        { 427, new AlarmCodeInfoStruct(427, "理片异常(取片位无片)", AlarmLevel.Error) },
+        { 428, new AlarmCodeInfoStruct(428, "理片异常(放片位有片)", AlarmLevel.Error) },
     };
 }
