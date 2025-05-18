@@ -34,12 +34,13 @@ public partial class SlideBoxViewModel : ViewModelBase
     //private readonly SlideRepository _slideRepository;
     public SlideBoxViewModel(SlideRepository slideRepository)
     {
-        //this._slideRepository = slideRepository;
+        var startChar = 65;
         for (int i = 0; i < 20; i++)
         {
             ItemList.Add(new SlideModel
             {
                 State = SlideState.Empty,
+                SlideLocation = $"{(char)(RowIndex + startChar)}-{i+1}"
             });
         }
         Console.WriteLine("Operation completed");

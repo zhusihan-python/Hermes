@@ -6,7 +6,6 @@ using Hermes.Common;
 using Hermes.Common.Messages;
 using Hermes.Language;
 using Hermes.Models;
-using Hermes.Services.UutSenderService;
 using Material.Icons;
 using Microsoft.Extensions.DependencyInjection;
 using SukiUI.Dialogs;
@@ -27,11 +26,9 @@ public partial class UutProcessorViewModel : PageBase
     [ObservableProperty] private int _selectedIndex;
 
     public ConciseMainViewModel ConciseMainViewModel { get; }
-    private SlideDetailsViewModel? _slideDetailViewModel;
     [ObservableProperty]
     public Device _deviceModel;
     private readonly IServiceProvider _serviceProvider;
-    private readonly ISukiDialogManager _dialogManager;
 
     public UutProcessorViewModel(
         ILogger logger,
@@ -48,7 +45,6 @@ public partial class UutProcessorViewModel : PageBase
         this.SetupReactiveExtensionsOnActivation = true;
         this.IsActive = true;
         this._serviceProvider = serviceProvider;
-        this._dialogManager = dialogManager;
         var device = this._serviceProvider.GetRequiredService<Device>();
         this.DeviceModel = device;
         SortOptions.Add("按项目");
@@ -121,15 +117,7 @@ public partial class UutProcessorViewModel : PageBase
     [RelayCommand]
     private void ShowDetail()
     {
-        this._dialogManager.CreateDialog()
-             .WithViewModel(dialog =>
-             {
-                 this._slideDetailViewModel =
-                     new SlideDetailsViewModel(dialog);
-                 //this._manageFeatureDialogViewModel.Accepted += (featurePermission) =>
-                 //    Task.Run(() => Dispatcher.UIThread.InvokeAsync(() => this.Persist(featurePermission)));
-                 return this._slideDetailViewModel;
-             }).TryShow();
+        Messenger.Send(new ShowDetailMessage());
     }
 
     private void OnExitReceive(object recipient, ExitMessage message)

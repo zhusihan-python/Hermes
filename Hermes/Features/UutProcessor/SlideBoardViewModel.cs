@@ -6,10 +6,10 @@ using Hermes.Communication.SerialPort;
 using Hermes.Models;
 using Hermes.Repositories;
 using Hermes.Types;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.FSharp.Core;
 using R3;
 using SlideSort;
+using SukiUI.Dialogs;
 using System;
 using System.Buffers.Binary;
 using System.Collections.Generic;
@@ -48,11 +48,14 @@ public partial class SlideBoardViewModel : ViewModelBase
     public Device _device;
     private readonly MessageSender _sender;
     private readonly SlideRepository _slideRepository;
+    private readonly ISukiDialogManager _dialogManager;
+    private SlideDetailsViewModel? _slideDetailViewModel;
     private static readonly char[] RowLabels = { 'A', 'B', 'C', 'D', 'E' };
 
     public SlideBoardViewModel(
         ILogger logger,
         SlideRepository slideRepository,
+        ISukiDialogManager dialogManager,
         Device device,
         MessageSender sender
         )
@@ -63,6 +66,7 @@ public partial class SlideBoardViewModel : ViewModelBase
         this.canCheckInPlace = false;
         this.slideSortKey = SortKey.ProgramId;
         this._logger = logger;
+        this._dialogManager = dialogManager;
         SlideBoxes = new ObservableCollection<SlideBoxViewModel>();
 
         for (int i = 0; i < _rowCount; i++)
@@ -85,6 +89,7 @@ public partial class SlideBoardViewModel : ViewModelBase
         Messenger.Register<SealSlideMessage>(this, this.StartSealSlide);
         Messenger.Register<SortSlideMessage>(this, this.StartSortSlide);
         Messenger.Register<SlideInfoMessage>(this, this.UpdateSlideInfo);
+        Messenger.Register<ShowDetailMessage>(this, this.ShowDetail);
     }
 
     public void EnqueueTask(List<int> task)
@@ -417,6 +422,31 @@ public partial class SlideBoardViewModel : ViewModelBase
                 }
             }
         }
+    }
+
+    private void ShowDetail(object? recipient, ShowDetailMessage message)
+    {
+        var slides = new List<SlideModel>();
+        for (int i = 0; i < SlideBoxes.Count; i++)
+        {
+            var viewModel = SlideBoxes[i];
+            if (viewModel.IsSelected)
+            {
+                //var slideModels = viewModel.ItemList.Select(slideModel => slideModel.Slide).ToList();
+                slides = slides.Concat(viewModel.ItemList).ToList();
+                //_logger.Info($"StartSortSlide row {viewModel.RowIndex} col {viewModel.ColumnIndex} selected {viewModel.IsSelected}");
+            }
+        }
+        _logger.Info($"SlideModel Counts {slides.Count}");
+        this._dialogManager.CreateDialog()
+                         .WithViewModel(dialog =>
+                         {
+                             this._slideDetailViewModel =
+                                 new SlideDetailsViewModel(dialog, new ObservableCollection<SlideModel>(slides));
+                             //this._manageFeatureDialogViewModel.Accepted += (featurePermission) =>
+                             //    Task.Run(() => Dispatcher.UIThread.InvokeAsync(() => this.Persist(featurePermission)));
+                             return this._slideDetailViewModel;
+                         }).TryShow();
     }
 
     private void CheckScanStarted(SlideBoxActionType[] actionTypes)

@@ -7,6 +7,8 @@ namespace Hermes.Features.UutProcessor;
 public partial class SlideModel: ObservableObject
 {
     [ObservableProperty] public Color backColor = Colors.White;
+    [ObservableProperty]
+    public string _slideLocation;
     public Slide Slide { get; set; }
     private SlideState _state;
     public SlideState State
@@ -23,7 +25,7 @@ public partial class SlideModel: ObservableObject
     }
     public SlideModel()
     {
-
+        this._slideLocation = "0-0";
     }
 
     // 根据 SlideState 更新状态文本和背景颜色
