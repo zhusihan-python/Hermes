@@ -62,7 +62,7 @@ public class FrameParser : ObservableRecipient
                 device.MotorBoardOneState.Value = span[12] != 0;
                 device.MotorBoardTwoState.Value = span[13] != 0;
                 device.EnvironBoardState.Value = span[14] != 0;
-                device.GasTankPressure.Value = TouchSocketBitConverter.BigEndian.ToSingle(span.Slice(15, 4).ToArray(), 0);
+                device.GasTankPressure = TouchSocketBitConverter.BigEndian.ToSingle(span.Slice(15, 4).ToArray(), 0);
                 device.SuckerOnePressure.Value = TouchSocketBitConverter.BigEndian.ToSingle(span.Slice(19, 4).ToArray(), 0);
                 device.SuckerTwoPressure.Value = TouchSocketBitConverter.BigEndian.ToSingle(span.Slice(23, 4).ToArray(), 0);
                 device.BakeState.Value = span[27] != 0;

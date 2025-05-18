@@ -35,7 +35,7 @@ public class Device : ObservableObject
     // 环境板状态
     public ReactiveProperty<bool> EnvironBoardState { get; set; } = new(false);
     // 气罐气压当前值
-    public ReactiveProperty<float> GasTankPressure { get; set; } = new(0.0f);
+    public float GasTankPressure { get; set; } = 0.0f;
     // 吸盘1气压当前值
     public ReactiveProperty<float> SuckerOnePressure { get; set; } = new(0.0f);
     // 吸盘2气压当前值
