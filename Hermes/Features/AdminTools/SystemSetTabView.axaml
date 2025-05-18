@@ -33,17 +33,17 @@
 					<Grid Grid.Row="0" Grid.Column="0" RowDefinitions="*,*" ColumnDefinitions="*,*,*,*,*,*">
 						<TextBlock Text="温度传感器" Grid.Row="0" Grid.Column="0"></TextBlock>
 						<TextBlock Grid.Row="0" Grid.Column="1">
-							<Run Text="{Binding SensorTemperature}" />
+							<Run Text="{Binding SensorTemperature, StringFormat={}{0:F2}}" />
 							<Run Text="℃ " />
 						</TextBlock>
 						<TextBlock Text="湿度传感器" Grid.Row="0" Grid.Column="2"></TextBlock>
 						<TextBlock Grid.Row="0" Grid.Column="3">
-							<Run Text="{Binding SensorHumidity}" />
+							<Run Text="{Binding SensorHumidity, StringFormat={}{0:F2}}" />
 							<Run Text="RH" />
 						</TextBlock>
 						<TextBlock Text="气罐压力" Grid.Row="0" Grid.Column="4"></TextBlock>
 						<TextBlock Grid.Row="0" Grid.Column="5">
-							<Run Text="{Binding GasPressure}" />
+							<Run Text="{Binding GasPressure, StringFormat={}{0:F2}}" />
 							<Run Text="bar" />
 						</TextBlock>
 						<TextBlock Text="吸盘压力" Grid.Row="1" Grid.Column="0"></TextBlock>
