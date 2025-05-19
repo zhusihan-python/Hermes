@@ -201,6 +201,7 @@ public partial class SlideBoardViewModel : ViewModelBase
         if (scanFinished && inplaceCheckFinished)
         {
             _logger.Info("InplaceFinish is true");
+            StartedInplaceTaskQueue.Clear();
             // 获取待理片的玻片信息
             var dices = DequeueStartedTask();
             var slides = new List<Tuple<SlideSorter.Slide, int>>();
