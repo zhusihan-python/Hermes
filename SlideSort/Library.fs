@@ -106,19 +106,27 @@ module SlideSorter =
             |> Array.mapi (fun i state -> (i, state)) 
             |> Array.filter (fun (_, state) -> state = 2) 
             |> Array.map fst 
-            |> Set.ofArray 
-    
+            |> Set.ofArray
+
+        let emptyPositionsList = emptyPositions |> Set.toList |> List.sort
+        let occupiedUsablePositionsList = 
+            Set.difference usablePositions emptyPositions
+            |> Set.toList 
+            |> List.sort
+
         // 检查是否有足够的可用位置 
         if usablePositions.Count < slidesToSort.Length then 
             Error (InsufficientPositions (sprintf "可用位置数量(%d)不足以容纳所有玻片(%d)" usablePositions.Count slidesToSort.Length)) 
         else 
-            // 计算每个玻片的目标位置（仅使用可用的位置） 
-            let availableForTarget = 
-                usablePositions 
-                |> Set.toList 
-                |> List.sort 
-                |> List.take slidesToSort.Length 
-        
+            // 优先使用空位置，不足时再使用已占用的可用位置
+            let availableForTarget =
+                if emptyPositionsList.Length >= slidesToSort.Length then
+                    emptyPositionsList |> List.take slidesToSort.Length
+                else
+                    let fromEmpty = emptyPositionsList
+                    let fromOccupied = occupiedUsablePositionsList |> List.take (slidesToSort.Length - emptyPositionsList.Length)
+                    fromEmpty @ fromOccupied
+
             let targetPositions = 
                 slidesToSort 
                 |> List.mapi (fun i slide -> (slide, availableForTarget.[i])) 
