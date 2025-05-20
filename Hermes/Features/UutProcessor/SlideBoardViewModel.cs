@@ -499,6 +499,10 @@ public partial class SlideBoardViewModel : ViewModelBase
                                        (actionTypes[i] == SlideBoxActionType.ScanSlideSuccess ||
                                         actionTypes[i] == SlideBoxActionType.ScanSlideFailed));
             }
+            if (indices.Count == 0)
+            {
+                return true;
+            }
         }
 
         return false;
