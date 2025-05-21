@@ -69,11 +69,13 @@ public partial class SlideBoardViewModel : ViewModelBase
         this._dialogManager = dialogManager;
         SlideBoxes = new ObservableCollection<SlideBoxViewModel>();
 
-        for (int i = 0; i < _rowCount; i++)
+        for (int i = 0; i < RowCount; i++)
         {
-            for (int j = 0; j < _columnCount; j++)
+            for (int j = 0; j < ColumnCount; j++)
             {
-                SlideBoxes.Add(new SlideBoxViewModel(slideRepository) { RowIndex = i, ColumnIndex = j });
+                var curBoxViewModel = new SlideBoxViewModel(slideRepository) { RowIndex = i, ColumnIndex = j };
+                curBoxViewModel.UpdateSlideLocation();
+                SlideBoxes.Add(curBoxViewModel);
             }
         }
         this._device = device;
@@ -433,7 +435,7 @@ public partial class SlideBoardViewModel : ViewModelBase
             var viewModel = SlideBoxes[i];
             if (viewModel.IsSelected)
             {
-                //var slideModels = viewModel.ItemList.Select(slideModel => slideModel.Slide).ToList();
+                // var slideModels = viewModel.ItemList.Select(slideModel => slideModel.Slide).ToList();
                 slides = slides.Concat(viewModel.ItemList).ToList();
                 //_logger.Info($"StartSortSlide row {viewModel.RowIndex} col {viewModel.ColumnIndex} selected {viewModel.IsSelected}");
             }

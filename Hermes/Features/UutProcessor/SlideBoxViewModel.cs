@@ -34,16 +34,13 @@ public partial class SlideBoxViewModel : ViewModelBase
     //private readonly SlideRepository _slideRepository;
     public SlideBoxViewModel(SlideRepository slideRepository)
     {
-        var startChar = 65;
         for (int i = 0; i < 20; i++)
         {
             ItemList.Add(new SlideModel
             {
-                State = SlideState.Empty,
-                SlideLocation = $"{(char)(RowIndex + startChar)}-{i+1}"
+                State = SlideState.Empty
             });
         }
-        Console.WriteLine("Operation completed");
     }
 
     protected override void SetupReactiveExtensions()
@@ -72,5 +69,15 @@ public partial class SlideBoxViewModel : ViewModelBase
             return;
         }
         ItemList[slideIndex].Slide = slide;
+    }
+
+    public void UpdateSlideLocation()
+    {
+        var startChar = 65;
+        var boxLocation = $"{(char)(RowIndex + startChar)}{ColumnIndex+1}";
+        for (int i = 0; i < ItemList.Count; i++)
+        {
+            ItemList[i].SlideLocation = boxLocation + $"-{i+1}";
+        }
     }
 }
