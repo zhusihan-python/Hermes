@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using SlideSort;
-using static SlideSort.SlideSorter;
+﻿using SlideSort;
+using System;
 //using System.ComponentModel.DataAnnotations;
 //using Microsoft.FSharp.Core;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using static SlideSort.SlideSorter;
 
 namespace Hermes.Common.SlideSortCSharp;
 
@@ -86,8 +87,32 @@ public static class SlideManager
         int[] availablePositions)
     {
         // 调用F#排序函数
+        int emptyBoxCount = Enumerable.Range(0, availablePositions.Length / 20)
+                    .Count(i => availablePositions.Skip(i * 20).Take(20).All(val => val == 2));
+        Console.WriteLine($"boxCount {emptyBoxCount}");
+        bool newVersion = true;
+        if (emptyBoxCount * 20 > slides.Length)
+        {
+            newVersion = false;
+            // 屏蔽空盒之外的位置
+            List<int> emptyBoxIndices = Enumerable.Range(0, availablePositions.Length / 20)
+                                        .Where(i => availablePositions.Skip(i * 20).Take(20).All(val => val == 2))
+                                        .ToList();
+            for (int i = 0; i < 75; i++)
+            {
+                if (!emptyBoxIndices.Contains(i))
+                {
+                    var start = i * 20;
+                    for (int j = start; j < start + 20; j++)
+                    {
+                        availablePositions[j] = 0;
+                    }
+                }
+            }
+        }
         var fsharpSortKey = ToFSharpSortKeyType(sortKey);
-        var result = SlideSorter.sortSlidesByKeyForCSharp(slides, fsharpSortKey, availablePositions);
+        var result = newVersion ? SlideSorter.sortSlidesByKeyForCSharpNew(slides, fsharpSortKey, availablePositions) : 
+                        SlideSorter.sortSlidesByKeyForCSharp(slides, fsharpSortKey, availablePositions);
 
         if (result.IsSuccess)
         {
