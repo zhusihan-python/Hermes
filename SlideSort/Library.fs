@@ -296,10 +296,10 @@ module SlideSorter =
                             : Result<MoveResult, SortError> =
 
                             match slidesRemainingToPlace with
-                            | [] ->
+                            | [] -> 
                                 Ok { FinalMap = currentMap; Moves = List.rev accumulatedMoves }
 
-                            | slideToPlace :: restOfSlides ->
+                            | slideToPlace :: restOfSlides -> // restOfSlides 是除了当前 slideToPlace 之外还需处理的玻片
                                 match Map.tryFind slideToPlace targetPositionsMap with
                                 | None ->
                                     Error (SlideNotExpectedInTargetPositions (sprintf "内部错误: 玻片 %A 未在目标位置映射中找到." slideToPlace))
@@ -308,72 +308,88 @@ module SlideSorter =
                                     | None -> Error (SlideNotInMap (sprintf "玻片 %A (ID: %s) 在当前玻片位置映射中未找到." slideToPlace slideToPlace.SlideId))
                                     | Some currentPosOfSlideToPlace ->
                                         if currentPosOfSlideToPlace = targetPosOfSlideToPlace then
+                                            // 玻片已在其目标位置，处理下一个
                                             performMovesRecursive currentMap currentAvailability targetPositionsMap accumulatedMoves restOfSlides
                                         else
+                                            // 玻片不在其目标位置，需要移动
                                             match Map.tryFind targetPosOfSlideToPlace currentAvailability with
                                             | None -> Error (TargetPositionUnavailable (sprintf "目标位置 %d 不在可用性状态映射中." targetPosOfSlideToPlace))
                                             | Some targetPosState ->
-                                                if targetPosState = 2 then // 目标位置是空闲的
+                                                if targetPosState = 2 then // 目标位置是空闲的 (state 2)
                                                     let newMap = moveSlide currentPosOfSlideToPlace targetPosOfSlideToPlace currentMap
                                                     let newAvailability =
                                                         currentAvailability
-                                                        |> Map.add currentPosOfSlideToPlace 2
-                                                        |> Map.add targetPosOfSlideToPlace 1
+                                                        |> Map.add currentPosOfSlideToPlace 2 // 原位置变为空闲
+                                                        |> Map.add targetPosOfSlideToPlace 1  // 目标位置变为占用
                                                     let newMoves = (currentPosOfSlideToPlace, targetPosOfSlideToPlace) :: accumulatedMoves
                                                     performMovesRecursive newMap newAvailability targetPositionsMap newMoves restOfSlides
                                                 elif targetPosState = 1 then // 目标位置被其他玻片占用 (state 1)
-                                                    match Map.tryFind targetPosOfSlideToPlace currentMap.SlideAtPosition with
-                                                    | Some blockingSlide -> // 目标位置被我们当前管理的另一个玻片 blockingSlide 占用
-                                                        let findTempEmptyPos () = 
+                                                    // 定义一个辅助函数来寻找最优的临时空闲位置
+                                                    let findOptimalTempEmptyPos () : Option<int> =
+                                                        let allEmptyPositions =
                                                             currentAvailability
                                                             |> Map.toSeq
-                                                            |> Seq.tryFind (fun (_, state) -> state = 2)
-                                                            |> Option.map fst
+                                                            |> Seq.filter (fun (_, state) -> state = 2) // 所有状态为2的位置
+                                                            |> Seq.map fst
+                                                            |> Seq.toList
 
-                                                        match findTempEmptyPos () with
-                                                        | None -> Error (NoEmptyPositionsAvailableForTempMove "没有可用的临时空闲位置(状态2)来移动被阻挡的玻片.")
-                                                        | Some tempEmptyPos ->
+                                                        if List.isEmpty allEmptyPositions then
+                                                            None // 没有可用的空闲位置
+                                                        else
+                                                            // 获取后续待处理玻片的目标位置集合
+                                                            let futureTargetPositionsSet =
+                                                                restOfSlides // 使用 restOfSlides，即排除当前 slideToPlace
+                                                                |> List.choose (fun s -> Map.tryFind s targetPositionsMap)
+                                                                |> Set.ofList
+
+                                                            let nonConflictingEmptyPositions =
+                                                                allEmptyPositions
+                                                                |> List.filter (fun pos -> not (Set.contains pos futureTargetPositionsSet))
+
+                                                            if not (List.isEmpty nonConflictingEmptyPositions) then
+                                                                // 如果有不冲突的空闲位置，从中选择索引最大的
+                                                                Some (nonConflictingEmptyPositions |> List.max)
+                                                            else
+                                                                // 如果所有空闲位置都与后续目标冲突，则从所有空闲位置中选择索引最大的
+                                                                Some (allEmptyPositions |> List.max)
+
+                                                    match findOptimalTempEmptyPos () with
+                                                    | None -> Error (NoEmptyPositionsAvailableForTempMove "没有可用的临时空闲位置(状态2)来移动被阻挡的玻片或外部实体.")
+                                                    | Some tempEmptyPos ->
+                                                        match Map.tryFind targetPosOfSlideToPlace currentMap.SlideAtPosition with
+                                                        | Some blockingSlide -> // 目标位置被我们当前管理的另一个玻片 blockingSlide 占用
                                                             // 步骤 1: 移动 blockingSlide 到 tempEmptyPos
                                                             let mapAfterBlockingMove = moveSlide targetPosOfSlideToPlace tempEmptyPos currentMap
                                                             let availabilityAfterBlockingMove =
                                                                 currentAvailability
-                                                                |> Map.add targetPosOfSlideToPlace 2
-                                                                |> Map.add tempEmptyPos 1
+                                                                |> Map.add targetPosOfSlideToPlace 2 // blockingSlide的原位置(即slideToPlace的目标)变为空闲
+                                                                |> Map.add tempEmptyPos 1          // tempEmptyPos变为占用
                                                             let movesAfterBlockingMove = (targetPosOfSlideToPlace, tempEmptyPos) :: accumulatedMoves
 
-                                                            // 步骤 2: 移动 slideToPlace 到 targetPosOfSlideToPlace
+                                                            // 步骤 2: 现在 targetPosOfSlideToPlace 是空闲的，移动 slideToPlace 到 targetPosOfSlideToPlace
                                                             let mapAfterMainMove = moveSlide currentPosOfSlideToPlace targetPosOfSlideToPlace mapAfterBlockingMove
                                                             let availabilityAfterMainMove =
                                                                 availabilityAfterBlockingMove
-                                                                |> Map.add currentPosOfSlideToPlace 2
-                                                                |> Map.add targetPosOfSlideToPlace 1 
+                                                                |> Map.add currentPosOfSlideToPlace 2 // slideToPlace的原位置变为空闲
+                                                                |> Map.add targetPosOfSlideToPlace 1  // slideToPlace的目标位置变为占用
                                                             let movesAfterMainMove = (currentPosOfSlideToPlace, targetPosOfSlideToPlace) :: movesAfterBlockingMove
                                                             performMovesRecursive mapAfterMainMove availabilityAfterMainMove targetPositionsMap movesAfterMainMove restOfSlides
-                                                    | None -> // 目标位置状态为1，但并非被我们当前管理的玻片占用（可能被“外部”实体占用）
-                                                        let findTempEmptyPosExternal () =
-                                                            currentAvailability
-                                                            |> Map.toSeq
-                                                            |> Seq.tryFind (fun (_, state) -> state = 2) // Find any empty spot
-                                                            |> Option.map fst
-
-                                                        match findTempEmptyPosExternal () with
-                                                        | None -> Error (NoEmptyPositionsAvailableForTempMove (sprintf "目标位置 %d 被外部实体占用，且没有临时空位可用于中转该外部实体." targetPosOfSlideToPlace))
-                                                        | Some tempEmptyPosForExternal ->
-                                                            // 步骤 1: “概念上”移动外部实体从 targetPosOfSlideToPlace 到 tempEmptyPosForExternal
-                                                            // 这个移动不更新 currentMap，因为它涉及外部实体，但更新 currentAvailability 和 moves
+                                                        | None -> // 目标位置状态为1，但并非被我们当前管理的玻片占用（可能被“外部”实体占用）
+                                                            // 步骤 1: “概念上”移动外部实体从 targetPosOfSlideToPlace 到 tempEmptyPos
                                                             let availabilityAfterExternalMove =
                                                                 currentAvailability
                                                                 |> Map.add targetPosOfSlideToPlace 2      // 目标位置变为空闲
-                                                                |> Map.add tempEmptyPosForExternal 1  // 临时空位被外部实体占用
-                                                            // 我们记录这个物理移动，即使它涉及一个“未知”玻片
-                                                            let movesAfterExternalMove = (targetPosOfSlideToPlace, tempEmptyPosForExternal) :: accumulatedMoves
+                                                                |> Map.add tempEmptyPos 1             // 临时空位被外部实体占用
+                                                            let movesAfterExternalMove = (targetPosOfSlideToPlace, tempEmptyPos) :: accumulatedMoves
+
                                                             // 步骤 2: 现在 targetPosOfSlideToPlace (逻辑上)是空闲的，移动 slideToPlace 到那里
-                                                            let mapAfterMainMove = moveSlide currentPosOfSlideToPlace targetPosOfSlideToPlace currentMap
+                                                            let mapAfterMainMove = moveSlide currentPosOfSlideToPlace targetPosOfSlideToPlace currentMap // currentMap 未变，因为外部实体不在其中
                                                             let availabilityAfterMainMove =
-                                                                availabilityAfterExternalMove // 从上一步的状态开始
+                                                                availabilityAfterExternalMove 
                                                                 |> Map.add currentPosOfSlideToPlace 2  // slideToPlace 的原位置变为空闲
                                                                 |> Map.add targetPosOfSlideToPlace 1   // slideToPlace 的目标位置现在被它占用
                                                             let movesAfterMainMove = (currentPosOfSlideToPlace, targetPosOfSlideToPlace) :: movesAfterExternalMove
+
                                                             performMovesRecursive mapAfterMainMove availabilityAfterMainMove targetPositionsMap movesAfterMainMove restOfSlides
                                                 else // targetPosState = 0 (不可用) or other unexpected state
                                                     Error (TargetPositionUnavailable (sprintf "目标位置 %d 不可用 (状态 %d)." targetPosOfSlideToPlace targetPosState))
