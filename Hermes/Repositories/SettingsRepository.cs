@@ -41,10 +41,10 @@ public class SettingsRepository : ISettingsRepository
     {
         Directory.CreateDirectory(System.IO.Path.GetDirectoryName(Path) ?? string.Empty);
         var jsonData = JsonSerializer.Serialize(settings);
-        var encryptedData = _aesEncryptor.Encrypt(jsonData);
+        //var encryptedData = _aesEncryptor.Encrypt(jsonData);
         using var fileStream = File.Create(Path);
         using var writer = new StreamWriter(fileStream);
-        writer.Write(encryptedData);
+        writer.Write(jsonData);
         this.Settings = settings;
     }
 
@@ -62,8 +62,8 @@ public class SettingsRepository : ISettingsRepository
         {
             using var fileStream = File.OpenRead(Path);
             using var reader = new StreamReader(fileStream);
-            var encryptedData = reader.ReadToEnd();
-            var jsonData = _aesEncryptor.Decrypt(encryptedData);
+            var jsonData = reader.ReadToEnd();
+            //var jsonData = _aesEncryptor.Decrypt(encryptedData);
             settings = JsonSerializer.Deserialize<Settings>(jsonData);
         }
 

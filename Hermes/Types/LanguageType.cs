@@ -5,5 +5,6 @@ namespace Hermes.Types;
 public enum LanguageType
 {
     [Description("en-US")] En,
-    [Description("es-ES")] Es
+    [Description("es-ES")] Es,
+    [Description("zh-CN")] Cn,
 }
