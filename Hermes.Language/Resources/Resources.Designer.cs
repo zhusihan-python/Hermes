@@ -1685,6 +1685,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Not Sealed 的本地化字符串。
+        /// </summary>
+        public static string enum_not_sealed {
+            get {
+                return ResourceManager.GetString("enum_not_sealed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Not sorted 的本地化字符串。
         /// </summary>
         public static string enum_not_sorted {
@@ -2167,6 +2176,15 @@ namespace Hermes.Language {
         public static string enum_scanned1 {
             get {
                 return ResourceManager.GetString("enum_scanned1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Sealed 的本地化字符串。
+        /// </summary>
+        public static string enum_sealed {
+            get {
+                return ResourceManager.GetString("enum_sealed", resourceCulture);
             }
         }
         

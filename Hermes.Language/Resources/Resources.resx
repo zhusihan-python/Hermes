@@ -1801,4 +1801,10 @@
   <data name="txt_time_span1" xml:space="preserve">
     <value>Time span</value>
   </data>
+  <data name="enum_sealed" xml:space="preserve">
+    <value>Sealed</value>
+  </data>
+  <data name="enum_not_sealed" xml:space="preserve">
+    <value>Not Sealed</value>
+  </data>
 </root>
