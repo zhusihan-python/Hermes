@@ -1,19 +1,19 @@
-using Avalonia.Controls;
 using Avalonia;
+using Avalonia.Controls;
 using System.Collections;
 
 namespace Hermes.Features.Controls;
 
-public partial class ComboBoxEnum : UserControl
+public partial class ComboBoxTitle : UserControl
 {
-    public static readonly StyledProperty<string> TitleProperty = AvaloniaProperty.Register<ComboBoxEnum, string>(
-        nameof(Title));
+    public static readonly StyledProperty<string> TitleProperty = AvaloniaProperty.Register<ComboBoxTitle, string>(
+    nameof(Title));
 
     public static readonly StyledProperty<IEnumerable?> ItemsSourceProperty =
         AvaloniaProperty.Register<ItemsControl, IEnumerable?>(nameof(ItemsSource));
 
     public static readonly StyledProperty<object?> SelectedItemProperty =
-        AvaloniaProperty.Register<ComboBoxEnum, object?>(
+        AvaloniaProperty.Register<ComboBoxTitle, object?>(
             nameof(SelectedItem));
 
     public string Title
@@ -33,8 +33,7 @@ public partial class ComboBoxEnum : UserControl
         get => GetValue(SelectedItemProperty);
         set => SetValue(SelectedItemProperty, value);
     }
-
-    public ComboBoxEnum()
+    public ComboBoxTitle()
     {
         InitializeComponent();
     }
