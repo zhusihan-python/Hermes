@@ -63,13 +63,13 @@
     <ItemGroup>
         <PackageReference Include="ActiproSoftware.Controls.Avalonia" Version="25.1.0" />
         <PackageReference Include="AutoMapper" Version="13.0.1" />
-        <PackageReference Include="Avalonia" Version="11.2.6" />
-        <PackageReference Include="Avalonia.Desktop" Version="11.2.6" />
-        <PackageReference Include="Avalonia.Labs.Controls" Version="11.2.0" />
-        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.6" />
-        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.6" />
+        <PackageReference Include="Avalonia" Version="11.3.0" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.3.0" />
+        <PackageReference Include="Avalonia.Labs.Controls" Version="11.3.0" />
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.0" />
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.0" />
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.2.6" />
+        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.3.0" />
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
         <PackageReference Include="ConfigFactory" Version="0.4.2" />
         <PackageReference Include="ConfigFactory.Avalonia" Version="0.4.2" />
@@ -93,9 +93,9 @@
         <PackageReference Include="R3Extensions.Avalonia" Version="1.2.9" />
         <PackageReference Include="ReactiveProperty" Version="9.7.0" />
         <PackageReference Include="SerialPortStream" Version="2.4.2" />
-        <PackageReference Include="SkiaSharp" Version="3.118.0-preview.2.3" />
-        <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="3.118.0-preview.2.3" />
-        <PackageReference Include="SukiUI" Version="6.0.1" />
+        <PackageReference Include="SkiaSharp" Version="3.119.0" />
+        <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="3.119.0" />
+        <PackageReference Include="SukiUI" Version="6.0.2" />
         <PackageReference Include="System.IO.Ports" Version="10.0.0-preview.3.25171.5" />
         <PackageReference Include="System.Runtime.Caching" Version="10.0.0-preview.3.25171.5" />
         <PackageReference Include="TouchSocket" Version="3.0.26" />

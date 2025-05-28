@@ -14,7 +14,7 @@ public partial class AboutViewModel(
     Settings settings,
     ISukiToastManager toastManager)
     : PageBase(
-        "¹ØÓÚ",
+        "å…³äºŽ",
         MaterialIconKind.InfoOutline,
         100)
 {
@@ -37,7 +37,7 @@ public partial class AboutViewModel(
             .OfType(NotificationType.Warning)
             .WithTitle(Resources.txt_update_available)
             .WithContent(Resources.msg_update_available + " " + newVersion.TargetFullRelease.Version.ToString())
-            .WithActionButtonNormal(Resources.txt_later, _ => { }, true)
+            .WithActionButton(Resources.txt_later, _ => { }, true)
             .WithActionButton(Resources.txt_update, _ => Task.Run(async () =>
             {
                 await mgr.DownloadUpdatesAsync(newVersion);

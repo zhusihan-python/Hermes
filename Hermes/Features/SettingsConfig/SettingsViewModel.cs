@@ -42,7 +42,7 @@ public class SettingsViewModel : ViewModelBase
             .OfType(NotificationType.Warning)
             .WithTitle(Resources.txt_settings_changed)
             .WithContent(Resources.msg_settings_changed_needs_restart)
-            .WithActionButtonNormal(Resources.txt_later, _ => { }, true)
+            .WithActionButton(Resources.txt_later, _ => { }, true)
             .WithActionButton(Resources.txt_restart, _ => { App.Restart(); }, true)
             .Queue();
     }
