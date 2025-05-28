@@ -146,8 +146,8 @@
             <DependentUpon>MainWindowView.axaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
-        <Compile Update="Features\UutProcessor\SlideBoxDetailView.axaml.cs">
-          <DependentUpon>SlideBoxDetailView.axaml</DependentUpon>
+        <Compile Update="Features\UutProcessor\SlideDetailsView.axaml.cs">
+          <DependentUpon>SlideDetailsView.axaml</DependentUpon>
         </Compile>
         <Compile Update="Features\UutProcessor\StopView.axaml.cs">
             <DependentUpon>StopView.axaml</DependentUpon>
