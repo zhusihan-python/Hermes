@@ -1233,6 +1233,42 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Slide Not Seal 的本地化字符串。
+        /// </summary>
+        public static string enum_slidenotseal {
+            get {
+                return ResourceManager.GetString("enum_slidenotseal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Slide Not Sort 的本地化字符串。
+        /// </summary>
+        public static string enum_slidenotsort {
+            get {
+                return ResourceManager.GetString("enum_slidenotsort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Slide Sealed 的本地化字符串。
+        /// </summary>
+        public static string enum_slidesealed {
+            get {
+                return ResourceManager.GetString("enum_slidesealed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Slide Sorted 的本地化字符串。
+        /// </summary>
+        public static string enum_slidesorted {
+            get {
+                return ResourceManager.GetString("enum_slidesorted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Sorted 的本地化字符串。
         /// </summary>
         public static string enum_sorted {

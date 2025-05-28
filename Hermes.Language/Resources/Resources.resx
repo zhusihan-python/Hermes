@@ -992,4 +992,16 @@
   <data name="enum_not_seal" xml:space="preserve">
     <value>Not Sealed</value>
   </data>
+  <data name="enum_slidesorted" xml:space="preserve">
+    <value>Slide Sorted</value>
+  </data>
+  <data name="enum_slidenotsort" xml:space="preserve">
+    <value>Slide Not Sort</value>
+  </data>
+  <data name="enum_slidesealed" xml:space="preserve">
+    <value>Slide Sealed</value>
+  </data>
+  <data name="enum_slidenotseal" xml:space="preserve">
+    <value>Slide Not Seal</value>
+  </data>
 </root>

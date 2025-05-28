@@ -963,16 +963,16 @@
     <value>Sorted</value>
   </data>
   <data name="enum_eighthours" xml:space="preserve">
-    <value>Eight hours</value>
+    <value>八小时</value>
   </data>
   <data name="enum_oneday" xml:space="preserve">
-    <value>One day</value>
+    <value>一天</value>
   </data>
   <data name="enum_onehour" xml:space="preserve">
-    <value>One hour</value>
+    <value>一小时</value>
   </data>
   <data name="enum_sevendays" xml:space="preserve">
-    <value>Seven days</value>
+    <value>七天</value>
   </data>
   <data name="msg_limited_to_500_logs" xml:space="preserve">
     <value>To improve performance, only the last 500 records will be displayed</value>
@@ -990,6 +990,18 @@
     <value>已封片</value>
   </data>
   <data name="enum_not_seal" xml:space="preserve">
+    <value>未封片</value>
+  </data>
+  <data name="enum_slidesorted" xml:space="preserve">
+    <value>已理片</value>
+  </data>
+  <data name="enum_slidenotsort" xml:space="preserve">
+    <value>未理片</value>
+  </data>
+  <data name="enum_slidesealed" xml:space="preserve">
+    <value>已封片</value>
+  </data>
+  <data name="enum_slidenotseal" xml:space="preserve">
     <value>未封片</value>
   </data>
 </root>
