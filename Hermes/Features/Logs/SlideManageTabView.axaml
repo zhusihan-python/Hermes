@@ -29,28 +29,28 @@
                                            VerticalAlignment="Bottom"
                                            KeyBindings=""
                                            Title="玻片号"
-                                           Text="{Binding SerialNumberFilter, Mode=TwoWay}">
+                                           Text="{Binding SlideIdFilter, Mode=TwoWay}">
 					<controls:TextBoxWithTitle.KeyBindings>
 						<KeyBinding Gesture="Enter" Command="{Binding SearchCommand}" />
 					</controls:TextBoxWithTitle.KeyBindings>
 				</controls:TextBoxWithTitle>
 
-				<controls:ComboBoxEnum Width="200"
+				<controls:ComboBoxTitle Width="200"
                                        Title="医生"
-                                       ItemsSource="{Binding StatusOptions}"
-                                       SelectedItem="{Binding SelectedTestStatus, Mode=TwoWay}" />
+								       ItemsSource="{Binding AvailableDoctors}"
+									   SelectedItem="{Binding SelectedDoctor, Mode=TwoWay}" />
 
 				<controls:ComboBoxEnum Width="200"
                                        Title="封片状态"
-                                       ItemsSource="{Binding SfcResponseOptions}"
-                                       SelectedItem="{Binding SelectedSfcResponse, Mode=TwoWay}" />
+                                       ItemsSource="{Binding SealOptions}"
+                                       SelectedItem="{Binding SelectedSealState, Mode=TwoWay}" />
 
 				<controls:TextBoxWithTitle Name="SfcResponseContentFilterTextBox"
                                            Width="200"
                                            VerticalAlignment="Bottom"
                                            KeyBindings=""
                                            Title="病理号"
-                                           Text="{Binding SfcResponseContentFilter, Mode=TwoWay}">
+                                           Text="{Binding PathologyIdFilter, Mode=TwoWay}">
 					<controls:TextBoxWithTitle.KeyBindings>
 						<KeyBinding Gesture="Enter" Command="{Binding SearchCommand}" />
 					</controls:TextBoxWithTitle.KeyBindings>
@@ -62,8 +62,8 @@
                                        SelectedItem="{Binding SelectedTimeSpan, Mode=TwoWay}" />
 				<controls:ComboBoxEnum Width="200"
 									   Title="理片状态"
-									   ItemsSource="{Binding TimeSpanOptions}"
-									   SelectedItem="{Binding SelectedTimeSpan, Mode=TwoWay}" />
+									   ItemsSource="{Binding SortOptions}"
+									   SelectedItem="{Binding SelectedSortState, Mode=TwoWay}" />
 
 				<controls:ButtonIcon VerticalAlignment="Bottom"
                                      Margin="0 0 0 5"
@@ -81,10 +81,6 @@
                         HorizontalAlignment="Right"
                         Spacing="5">
 
-				<controls:ButtonIcon Kind="FileEdit"
-                                     Command="{Binding EditCommand}"
-                                     ToolTip.Tip="编辑" />
-
 				<controls:ButtonIcon Kind="Refresh"
                                      Command="{Binding RefreshCommand}"
                                      ToolTip.Tip="刷新" />
@@ -99,47 +95,33 @@
 
 				<DataGrid AutoGenerateColumns="False"
                           Name="DataGridLogs"
-                          ItemsSource="{Binding UnitsUnderTest}"
+                          ItemsSource="{Binding SlideData}"
                           IsReadOnly="True"
                           HeadersVisibility="Column"
                           CanUserResizeColumns="True">
 
 					<DataGrid.Columns>
 						<DataGridTextColumn Header="玻片号"
-                                            Binding="{Binding SerialNumber}" />
+                                            Binding="{Binding SlideId}" />
 
 						<DataGridTextColumn Header="姓名"
-                                            Binding="{Binding IsPass,  Converter={x:Static converters:BoolToTextConverters.PassFail}}" />
+                                            Binding="{Binding PatientName}" />
 
 						<DataGridTextColumn Header="病理号"
-                                            Binding="{Binding SfcResponse.Type,  Converter={x:Static converters:EnumToTranslatedTextConverters.Generic}}" />
+                                            Binding="{Binding PathologyId}" />
 
 						<DataGridTextColumn Header="医生"
-                                            Binding="{Binding SfcResponse.Content}" />
+                                            Binding="{Binding Doctor.Name}" />
 
 						<DataGridTextColumn Header="创建日期"
-                                            Binding="{Binding CreatedAt}" />
+                                            Binding="{Binding EntryDate}" />
 
 						<DataGridTextColumn Header="已封片"
-                                            Binding="{Binding FileName}" />
-
-						<DataGridTextColumn Header="封片日期"
-					                        Binding="{Binding FileName}" />
+                                            Binding="{Binding SealStateDisplay}" />
 
 						<DataGridTextColumn Header="已理片"
-					                        Binding="{Binding FileName}" />
-
-						<DataGridTextColumn Header="理片日期"
-					                        Binding="{Binding FileName}" />
+					                        Binding="{Binding SortStateDisplay}" />
 					</DataGrid.Columns>
-
-					<i:Interaction.Behaviors>
-						<ia:EventTriggerBehavior EventName="SelectionChanged" SourceObject="DataGridLogs">
-							<ia:InvokeCommandAction
-                                Command="{Binding UnitUnderTestSelectedCommand}"
-                                CommandParameter="{Binding #DataGridLogs.SelectedItem}" />
-						</ia:EventTriggerBehavior>
-					</i:Interaction.Behaviors>
 				</DataGrid>
 			</ScrollViewer>
 		</Grid>

@@ -8,7 +8,7 @@ public class Settings
 {
     #region General
 
-    public LanguageType Language { get; set; } = LanguageType.En;
+    public LanguageType Language { get; set; } = LanguageType.Cn;
     public int WaitDelayMilliseconds { get; set; } = 100;
     public string DatabaseServer { get; set; } = "10.12.204.48";
     public StationType Station { get; set; } = StationType.SpiBottom;

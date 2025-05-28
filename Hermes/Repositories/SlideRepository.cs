@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Hermes.Models;
+using Hermes.Types;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Hermes.Models;
 
 namespace Hermes.Repositories;
 
@@ -14,7 +16,7 @@ public class SlideRepository(IDbContextFactory<HermesLocalContext> context)
     public async Task<IEnumerable<Slide>> FindAll()
     {
         await using var ctx = await _context.CreateDbContextAsync();
-        return await FindAllSlideQuery(ctx).ToListAsync();
+        return await GetSlidesQuery(ctx).ToListAsync();
     }
 
     public async Task<Slide> FindById(string searchSlideId)
@@ -47,7 +49,7 @@ public class SlideRepository(IDbContextFactory<HermesLocalContext> context)
                     SlideId = default,
                     PatientName = string.Empty,
                     DoctorId = default,
-                    EntryDate = string.Empty
+                    EntryDate = DateTime.Now
                 }).ToList();
 
         return result;
@@ -56,5 +58,62 @@ public class SlideRepository(IDbContextFactory<HermesLocalContext> context)
     private IQueryable<Slide> FindAllSlideQuery(HermesLocalContext ctx)
     {
         return ctx.Slides;
+    }
+
+    public async Task<List<Slide>> GetSlides(
+        string? pathologyId = null,
+        string? slideId = null,
+        Doctor? doctor = null,
+        SealStateType? sealStateType = null,
+        SortStateType? sortStateType = null,
+        TimeSpanType? timeSpanType = null)
+    {
+        var ctx = await _context.CreateDbContextAsync();
+        var query = GetSlidesQuery(ctx);
+        if (pathologyId != null && pathologyId.Length > 0)
+        {
+            query = query.Where(x => x.PathologyId.ToString().Contains(pathologyId));
+        }
+
+        if (slideId != null && slideId.Length > 0)
+        {
+            query = query.Where(x => x.SlideId.ToString().Contains(slideId));
+        }
+
+        if (doctor != null)
+        {
+            query = query.Where(x => x.DoctorId == doctor.Id);
+        }
+
+        if (sealStateType != null)
+        {
+            query = query.Where(x => x.SealState == (byte)sealStateType);
+        }
+
+        if (sortStateType != null)
+        {
+            query = query.Where(x => x.SortState == (byte)sortStateType);
+        }
+
+        if (timeSpanType != null)
+        {
+            query = query.Where(x => x.EntryDate >= DateTime.Now.AddHours(-(int)timeSpanType));
+        }
+
+        return await query.ToListAsync();
+    }
+
+    //public async Task<List<Slide>> GetAllLast24HrsUnits()
+    //{
+    //    await using var ctx = await _context.CreateDbContextAsync();
+    //    return await GetAllLast24HrsUnitsQuery(ctx)
+    //        .ToListAsync();
+    //}
+
+    private IQueryable<Slide> GetSlidesQuery(HermesLocalContext ctx)
+    {
+        return ctx.Set<Slide>()
+            .Include(x => x.Doctor)
+            .OrderByDescending(x => x.EntryDate);
     }
 }

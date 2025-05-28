@@ -190,8 +190,7 @@ namespace Hermes.Migrations
                     b.Property<int>("DoctorId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("EntryDate")
-                        .IsRequired()
+                    b.Property<DateTime>("EntryDate")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("PathologyId")
@@ -207,8 +206,14 @@ namespace Hermes.Migrations
                         .HasMaxLength(64)
                         .HasColumnType("TEXT");
 
+                    b.Property<byte>("SealState")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("SlideId")
                         .HasMaxLength(16)
+                        .HasColumnType("INTEGER");
+
+                    b.Property<byte>("SortState")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");

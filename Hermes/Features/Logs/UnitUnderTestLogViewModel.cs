@@ -34,12 +34,12 @@ public partial class UnitUnderTestLogViewModel : ViewModelBase
     public static IEnumerable<StatusType?> StatusOptions => NullableExtensions.GetValues<StatusType>();
     public static IEnumerable<TimeSpanType?> TimeSpanOptions => NullableExtensions.GetValues<TimeSpanType>();
 
-    private readonly FileService _fileService;
+    private readonly SlideRepository _slideRepository;
 
     public UnitUnderTestLogViewModel(
-        FileService fileService)
+        SlideRepository slideRepository)
     {
-        _fileService = fileService;
+        _slideRepository = slideRepository;
     }
 
     private async Task LoadLogsAsync()

@@ -27,7 +27,7 @@ public partial class SettingsConfigModel(
         Description = "c_settings_description_language",
         Category = "c_settings_category_general",
         Group = "c_settings_group_common")]
-    private LanguageType _language = LanguageType.En;
+    private LanguageType _language = LanguageType.Cn;
 
     public static LanguageType[] Languages => EnumExtensions.GetValues<LanguageType>();
 

@@ -25,6 +25,6 @@ public class DoctorRepository(IDbContextFactory<HermesLocalContext> context)
 
     private IQueryable<Doctor> FindAllDoctorQuery(HermesLocalContext ctx)
     {
-        return ctx.Doctors;
+        return ctx.Doctors.OrderBy(x => x.Id);
     }
 }

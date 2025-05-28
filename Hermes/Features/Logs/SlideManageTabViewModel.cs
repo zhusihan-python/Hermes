@@ -1,95 +1,124 @@
-﻿using Avalonia.Controls.Notifications;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
+using Hermes.Common;
 using Hermes.Common.Extensions;
-using Hermes.Common.Messages;
 using Hermes.Models;
 using Hermes.Repositories;
-using Hermes.Services;
 using Hermes.Types;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Threading.Tasks;
 using System;
-using Hermes.Common;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Hermes.Features.Logs;
 
 public partial class SlideManageTabViewModel : ViewModelBase
 {
-    [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(EditCommand))]
-    private UnitUnderTest _selectedUnitUnderTest = UnitUnderTest.Null;
-
-    [ObservableProperty] private SfcResponseType? _selectedSfcResponse;
-    [ObservableProperty] private StatusType? _selectedTestStatus;
-    [ObservableProperty] private TimeSpanType? _selectedTimeSpan = TimeSpanType.OneDay;
-    [ObservableProperty] private string _serialNumberFilter = "";
-    [ObservableProperty] private string _sfcResponseContentFilter = "";
-    public RangeObservableCollection<UnitUnderTest> UnitsUnderTest { get; set; } = [];
-    public static IEnumerable<SfcResponseType?> SfcResponseOptions => NullableExtensions.GetValues<SfcResponseType>();
+    [ObservableProperty] private SealStateType? _selectedSealState;
+    [ObservableProperty] private SortStateType? _selectedSortState;
+    [ObservableProperty] private TimeSpanType? _selectedTimeSpan = TimeSpanType.SevenDays;
+    [ObservableProperty] private string _slideIdFilter = "";
+    [ObservableProperty] private string _pathologyIdFilter = "";
+    [ObservableProperty] private Doctor? _selectedDoctor;
+    private List<Slide> OriginSlides = new List<Slide>();
+    public RangeObservableCollection<Slide> SlideData { get; set; } = [];
+    private List<Doctor> _availableDoctors = [];
+    public List<Doctor> AvailableDoctors
+    {
+        get => _availableDoctors;
+        set => SetProperty(ref _availableDoctors, value); // SetProperty is from ObservableObject
+    }
+    public static IEnumerable<SealStateType?> SealOptions => NullableExtensions.GetValues<SealStateType>();
+    public static IEnumerable<SortStateType?> SortOptions => NullableExtensions.GetValues<SortStateType>();
     public static IEnumerable<StatusType?> StatusOptions => NullableExtensions.GetValues<StatusType>();
     public static IEnumerable<TimeSpanType?> TimeSpanOptions => NullableExtensions.GetValues<TimeSpanType>();
 
-    private readonly FileService _fileService;
+    private readonly SlideRepository _slideRepository;
+    private readonly DoctorRepository _doctorRepository;
 
     public SlideManageTabViewModel(
-        FileService fileService)
+        SlideRepository slideRepository,
+        DoctorRepository doctorRepository
+        )
     {
-        _fileService = fileService;
+        _slideRepository = slideRepository;
+        _doctorRepository = doctorRepository;
+        _ = LoadDoctorAsync();
+        _ = LoadSlidesAsync();
     }
 
-    private async Task LoadLogsAsync()
+    private async Task LoadSlidesAsync()
     {
-        UnitsUnderTest.Clear();
+        OriginSlides.Clear();
+        SlideData.Clear();
+        OriginSlides.AddRange(await _slideRepository.FindAll());
+        SlideData.AddRange(await _slideRepository.FindAll());
     }
 
-    [RelayCommand]
-    private void UnitUnderTestSelected(UnitUnderTest? unitUnderTest)
+    private async Task LoadDoctorAsync()
     {
-        this.SelectedUnitUnderTest = unitUnderTest ?? UnitUnderTest.Null;
+        AvailableDoctors.Clear();
+        AvailableDoctors.AddRange(await _doctorRepository.FindAll());
     }
-
-    [RelayCommand(CanExecute = nameof(CanEdit))]
-    private void Edit()
-    {
-        try
-        {
-            Process.Start("notepad.exe", SelectedUnitUnderTest.FullPath);
-        }
-        catch (Exception e)
-        {
-            this.ShowErrorToast(e.Message);
-        }
-    }
-
-    private bool CanEdit() => !string.IsNullOrEmpty(SelectedUnitUnderTest.FullPath);
 
     [RelayCommand]
     private async Task Refresh()
     {
-        SerialNumberFilter = "";
-        SelectedTestStatus = null;
-        SelectedSfcResponse = null;
-        SfcResponseContentFilter = "";
-        SelectedTimeSpan = TimeSpanType.OneDay;
-        await LoadLogsAsync();
+        PathologyIdFilter = "";
+        SlideIdFilter = "";
+        SelectedDoctor = null;
+        SelectedSealState = null;
+        SelectedSealState = null;
+        SelectedTimeSpan = null;
+        await LoadSlidesAsync();
     }
 
     [RelayCommand]
     private async Task Search()
     {
-        //var units = await _unitUnderTestRepository.GetLastUnits(
-        //    SerialNumberFilter,
-        //    SelectedTestStatus,
-        //    SelectedSfcResponse,
-        //    SfcResponseContentFilter,
-        //    SelectedTimeSpan == null ? null : TimeSpan.FromHours((int)SelectedTimeSpan));
+        var slides = await _slideRepository.GetSlides(
+            PathologyIdFilter,
+            SlideIdFilter,
+            SelectedDoctor,
+            SelectedSealState,
+            SelectedSortState,
+            SelectedTimeSpan);
 
-        //UnitsUnderTest.Clear();
-        //UnitsUnderTest.AddRange(units);
+        OriginSlides.Clear();
+        OriginSlides.AddRange(slides);
+        SlideData.Clear();
+        SlideData.AddRange(slides);
         await Task.Delay(100);
+    }
+
+    partial void OnSlideIdFilterChanged(string value)
+    {
+        ApplyFilterAndSort(); // Trigger filter/sort when filter text changes
+    }
+
+    partial void OnPathologyIdFilterChanged(string value)
+    {
+        ApplyFilterAndSort();
+    }
+
+    private void ApplyFilterAndSort()
+    {
+        IEnumerable<Slide> query = OriginSlides;
+
+        // 1. Apply Filtering
+        if (!string.IsNullOrWhiteSpace(PathologyIdFilter))
+        {
+            query = query.Where(slide =>
+                slide.PathologyId.ToString().Contains(PathologyIdFilter, StringComparison.OrdinalIgnoreCase));
+        }
+
+        if (!string.IsNullOrWhiteSpace(SlideIdFilter))
+        {
+            query = query.Where(slide =>
+                slide.SlideId.ToString().Contains(SlideIdFilter, StringComparison.OrdinalIgnoreCase));
+        }
+
+        SlideData.Clear();
+        SlideData.AddRange(query);
     }
 }
