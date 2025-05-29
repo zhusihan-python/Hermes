@@ -44,8 +44,7 @@ public partial class App
 
     private static void ConfigureValidators(ServiceCollection services)
     {
-        services.AddSingleton<AnyDefectsWithin1HourValidator>();
-        services.AddSingleton<MachineStopValidator>();
+
     }
 
     private static void ConfigureRepos(ServiceCollection services)
