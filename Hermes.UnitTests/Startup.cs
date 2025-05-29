@@ -1,5 +1,3 @@
-using Hermes.Builders;
-using Hermes.Common.Parsers;
 using Hermes.Common;
 using Hermes.Models;
 using Hermes.Repositories;
@@ -17,7 +15,6 @@ public class Startup
         services.AddTransient<AesEncryptor>();
         services.AddTransient<FileService>();
         services.AddTransient<ISettingsRepository, SettingsRepository>();
-        services.AddTransient<LabelingMachineUnitUnderTestParser>();
         services.AddTransient<Settings>();
     }
 }

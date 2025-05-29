@@ -1,6 +1,5 @@
 ﻿using AesEncryptor = Hermes.Common.AesEncryptor;
 using Hermes.Cipher;
-using Hermes.Common.Parsers;
 using Hermes.Common.Reactive;
 using Hermes.Common;
 using Hermes.Communication.SerialPort;
@@ -61,7 +60,6 @@ public partial class App
     {
         services.AddSingleton<AesEncryptor>();
         services.AddSingleton<ILogger, HermesLogger>();
-        services.AddSingleton<LabelingMachineUnitUnderTestParser>();
         services.AddSingleton<QrGenerator>();
         services.AddSingleton<TokenGenerator>();
         services.AddSingleton<ComPort>();
