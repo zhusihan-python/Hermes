@@ -101,7 +101,6 @@ public partial class App
         services.AddTransient<FolderWatcherService>();
         services.AddTransient<ISfcService, SharedFolderSfcService>();
         //services.AddTransient<ServiceProvider>();
-        services.AddTransient<StopService>();
         services.AddTransient<WindowService>();
     }
 
