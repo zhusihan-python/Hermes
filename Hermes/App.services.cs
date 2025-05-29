@@ -103,7 +103,6 @@ public partial class App
         services.AddTransient<ISfcService, SharedFolderSfcService>();
         //services.AddTransient<ServiceProvider>();
         services.AddTransient<StopService>();
-        services.AddTransient<TriUutSenderService>();
         services.AddTransient<WindowService>();
     }
 
