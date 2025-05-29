@@ -21,6 +21,5 @@ public class Startup
         services.AddTransient<ParserPrototype>();
         services.AddTransient<Settings>();
         services.AddTransient<GkgUnitUnderTestParser>();
-        services.AddTransient<FolderWatcherService>();
     }
 }

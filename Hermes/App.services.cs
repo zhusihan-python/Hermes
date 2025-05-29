@@ -83,8 +83,6 @@ public partial class App
         services.AddSingleton<ViewLocator>();
         services.AddTransient<FileService>();
         services.AddTransient<FileSystemWatcherRx>();
-        services.AddTransient<FolderWatcherService>();
-        services.AddTransient<ISfcService, SharedFolderSfcService>();
         //services.AddTransient<ServiceProvider>();
         services.AddTransient<WindowService>();
     }
