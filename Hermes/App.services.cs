@@ -3,7 +3,6 @@ using Hermes.Builders;
 using Hermes.Cipher;
 using Hermes.Common.Parsers;
 using Hermes.Common.Reactive;
-using Hermes.Common.Validators;
 using Hermes.Common;
 using Hermes.Communication.SerialPort;
 using Hermes.Features.UutProcessor;
@@ -25,7 +24,6 @@ public partial class App
     {
         var services = new ServiceCollection();
         ConfigureModels(services);
-        ConfigureValidators(services);
         ConfigureRepos(services);
         ConfigureCommon(services);
         ConfigureServices(services);
@@ -40,11 +38,6 @@ public partial class App
         services.AddSingleton<Device>();
         services.AddSingleton<FrameParser>();
         services.AddSingleton<Settings>(sp => sp.GetRequiredService<ISettingsRepository>().Read());
-    }
-
-    private static void ConfigureValidators(ServiceCollection services)
-    {
-
     }
 
     private static void ConfigureRepos(ServiceCollection services)
