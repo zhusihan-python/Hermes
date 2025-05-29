@@ -48,8 +48,6 @@ public partial class App
         services.AddSingleton<ConsecutiveDefectsValidator>();
         services.AddSingleton<CriticalLocationStopValidator>();
         services.AddSingleton<MachineStopValidator>();
-        services.AddSingleton<RuleThreeFiveTenValidator>();
-        services.AddSingleton<SameDefectsWithin1HourValidator>();
     }
 
     private static void ConfigureRepos(ServiceCollection services)
