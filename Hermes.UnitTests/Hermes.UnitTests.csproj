@@ -37,4 +37,8 @@
       <ProjectReference Include="..\Hermes\Hermes.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Builders\" />
+    </ItemGroup>
+
 </Project>
