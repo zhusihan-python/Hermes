@@ -522,29 +522,11 @@ namespace Hermes.Language {
         }
         
         /// <summary>
-        ///   查找类似 Create fail logfile with custom defect 的本地化字符串。
-        /// </summary>
-        public static string c_sfc_sim_create_log_fail_with_custom_defect {
-            get {
-                return ResourceManager.GetString("c_sfc_sim_create_log_fail_with_custom_defect", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Create pass logfile 的本地化字符串。
         /// </summary>
         public static string c_sfc_sim_create_log_pass {
             get {
                 return ResourceManager.GetString("c_sfc_sim_create_log_pass", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Create pass logfile with custom defect 的本地化字符串。
-        /// </summary>
-        public static string c_sfc_sim_create_log_pass_with_defect {
-            get {
-                return ResourceManager.GetString("c_sfc_sim_create_log_pass_with_defect", resourceCulture);
             }
         }
         
@@ -1787,15 +1769,6 @@ namespace Hermes.Language {
         public static string txt_date {
             get {
                 return ResourceManager.GetString("txt_date", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Defect 的本地化字符串。
-        /// </summary>
-        public static string txt_defect {
-            get {
-                return ResourceManager.GetString("txt_defect", resourceCulture);
             }
         }
         

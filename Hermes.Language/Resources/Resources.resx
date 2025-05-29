@@ -240,20 +240,11 @@
   <data name="c_sfc_sim_create_log_pass" xml:space="preserve">
     <value>Create pass logfile</value>
   </data>
-  <data name="c_sfc_sim_create_log_pass_with_defect" xml:space="preserve">
-    <value>Create pass logfile with custom defect</value>
-  </data>
   <data name="c_sfc_sim_create_log_fail" xml:space="preserve">
     <value>Create fail logfile</value>
   </data>
   <data name="c_sfc_sim_create_log_critical_fail" xml:space="preserve">
     <value>Create critical fail logfile</value>
-  </data>
-  <data name="c_sfc_sim_create_log_fail_with_custom_defect" xml:space="preserve">
-    <value>Create fail logfile with custom defect</value>
-  </data>
-  <data name="txt_defect" xml:space="preserve">
-    <value>Defect</value>
   </data>
   <data name="txt_error_flag" xml:space="preserve">
     <value>Error flag</value>

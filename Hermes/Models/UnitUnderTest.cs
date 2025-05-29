@@ -1,10 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
-using System.Linq;
-using Hermes.Types;
 
 namespace Hermes.Models;
 
@@ -17,7 +14,7 @@ public class UnitUnderTest
     public virtual bool IsFail { get; init; }
     public bool IsPass => !IsFail;
     public DateTime CreatedAt { get; set; } = DateTime.Now;
-    public List<Defect> Defects { get; set; } = [];
+    //public List<Defect> Defects { get; set; } = [];
     public SfcResponse? SfcResponse { get; set; }
     [NotMapped] public string Content { get; init; }
     [MaxLength(512)] public string FullPath { get; set; }
@@ -48,13 +45,13 @@ public class UnitUnderTest
     {
     }
 
-    public virtual Defect GetDefectByLocation(string criticalLocations)
-    {
-        return Defects
-            .Where(x => x.ErrorFlag == ErrorFlag.Bad)
-            .Where(x => criticalLocations.Contains(x.Location, StringComparison.OrdinalIgnoreCase))
-            .FirstOrDefault(Defect.Null);
-    }
+    //public virtual Defect GetDefectByLocation(string criticalLocations)
+    //{
+    //    return Defects
+    //        .Where(x => x.ErrorFlag == ErrorFlag.Bad)
+    //        .Where(x => criticalLocations.Contains(x.Location, StringComparison.OrdinalIgnoreCase))
+    //        .FirstOrDefault(Defect.Null);
+    //}
 
     public bool SfcResponseContains(string additionalOkSfcResponse)
     {

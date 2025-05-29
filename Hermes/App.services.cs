@@ -57,12 +57,10 @@ public partial class App
     {
         services.AddSingleton<AesEncryptor>();
         services.AddSingleton<ILogger, HermesLogger>();
-        services.AddSingleton<QrGenerator>();
         services.AddSingleton<TokenGenerator>();
         services.AddSingleton<ComPort>();
         services.AddSingleton<ScanEngine>();
         services.AddSingleton<MessageSender>();
-        services.AddTransient<SerialPortRx>();
     }
 
     private static void ConfigureServices(ServiceCollection services)
