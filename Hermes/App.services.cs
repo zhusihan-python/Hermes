@@ -6,7 +6,6 @@ using Hermes.Common.Reactive;
 using Hermes.Common.Validators;
 using Hermes.Common;
 using Hermes.Communication.SerialPort;
-using Hermes.Features.SettingsConfig;
 using Hermes.Features.UutProcessor;
 using Hermes.Features;
 using Hermes.Models;
@@ -83,7 +82,6 @@ public partial class App
         services.AddSingleton<PageNavigationService>();
         services.AddSingleton<ParserPrototype>();
         services.AddSingleton<QrGenerator>();
-        services.AddSingleton<SettingsConfigModel>();
         services.AddSingleton<SfcResponseBuilder>();
         services.AddSingleton<TokenGenerator>();
         services.AddSingleton<UnitUnderTestBuilder>();

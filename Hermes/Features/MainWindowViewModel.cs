@@ -149,12 +149,6 @@ namespace Hermes.Features
             window.Close();
         }
 
-        [RelayCommand]
-        private void ShowSettings()
-        {
-            Messenger.Send(new ShowSettingsMessage());
-        }
-
         public void Receive(NavigateMessage message)
         {
             var pageType = message.Value.GetType();

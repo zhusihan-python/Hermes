@@ -7,7 +7,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using Hermes.Common.Messages;
 using Hermes.Common;
-using Hermes.Features.SettingsConfig;
 using Hermes.Features.UutProcessor;
 using Hermes.Language;
 using Hermes.Models;
@@ -24,31 +23,15 @@ public class WindowService : ObservableRecipient
     private const int SuccessViewWidth = 450;
     private const int SuccessViewHeight = 130;
 
-    private SettingsView SettingsView
-    {
-        get
-        {
-            if (_settingsView == null)
-            {
-                _settingsView = (_viewLocator.BuildWindow(_settingsViewModel) as SettingsView)!;
-                _settingsView.Append(_settingsViewModel.Model);
-            }
-
-            return _settingsView;
-        }
-    }
-
     private SuccessView SuccessView => _successView ??= (_viewLocator.BuildWindow(_successViewModel) as SuccessView)!;
     private StopView StopView => _stopView ??= (_viewLocator.BuildWindow(_stopViewModel) as StopView)!;
 
     private readonly ViewLocator _viewLocator;
     private readonly Settings _settings;
-    private readonly SettingsViewModel _settingsViewModel;
     private readonly StopViewModel _stopViewModel;
     private readonly SuccessViewModel _successViewModel;
     private StopView? _stopView;
     private SuccessView? _successView;
-    private SettingsView? _settingsView;
     private CancellationTokenSource _successViewCancellationTokenSource = new();
     private readonly ISukiToastManager _toastManager;
     private readonly MemoryCache _lastShownMessagesCache = MemoryCache.Default;
@@ -58,7 +41,6 @@ public class WindowService : ObservableRecipient
     public WindowService(
         ViewLocator viewLocator,
         Settings settings,
-        SettingsViewModel settingsViewModel,
         StopViewModel stopViewModel,
         SuccessViewModel successViewModel,
         ISukiToastManager toastManager)
@@ -68,15 +50,12 @@ public class WindowService : ObservableRecipient
         this._successViewModel = successViewModel;
         this._stopViewModel = stopViewModel;
         this._stopViewModel.Restored += this.OnStopViewModelRestored;
-        this._settingsViewModel = settingsViewModel;
         this._toastManager = toastManager;
     }
 
     public void Start()
     {
         Messenger.Register<ExitMessage>(this, this.Stop);
-        Messenger.Register<ShowSettingsMessage>(this, this.ShowSettings);
-        Messenger.Register<HideSettingsMessage>(this, this.HideSettings);
         Messenger.Register<ShowStopMessage>(this, this.ShowStop);
         Messenger.Register<ShowSuccessMessage>(this, this.ShowUutSuccess);
         Messenger.Register<ShowToastMessage>(this, this.ShowToast);
@@ -92,7 +71,6 @@ public class WindowService : ObservableRecipient
         Messenger.UnregisterAll(this);
         this.SuccessView.ForceClose();
         this.StopView.ForceClose();
-        this.SettingsView.ForceClose();
     }
 
     private void ShowUutSuccess(object recipient, ShowSuccessMessage message)
@@ -198,19 +176,5 @@ public class WindowService : ObservableRecipient
                 .Dismiss().ByClicking()
                 .Queue();
         });
-    }
-
-    private void ShowSettings(object recipient, ShowSettingsMessage message)
-    {
-        Dispatcher.UIThread.Invoke(() =>
-        {
-            this._settingsViewModel.Refresh();
-            this.SettingsView.Show();
-        });
-    }
-
-    private void HideSettings(object recipient, HideSettingsMessage message)
-    {
-        Dispatcher.UIThread.Invoke(() => { this.SettingsView.Hide(); });
     }
 }
