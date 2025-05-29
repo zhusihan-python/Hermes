@@ -2,7 +2,6 @@ using Hermes.Cipher.Extensions;
 using Hermes.Features.About;
 using Hermes.Features.Login;
 using Hermes.Features.Logs;
-using Hermes.Features.PackageId;
 using Hermes.Features.UserAdmin;
 using Hermes.Features.UutProcessor;
 using Hermes.Models;
@@ -26,9 +25,6 @@ public class PagePrototype(Settings settings)
 
         new(typeof(LogsViewModel),
             PermissionType.FreeAccess),
-
-        new(typeof(PackageIdViewModel),
-            hideFromStation: AllExcept([StationType.Labeling, StationType.LabelingMachine])),
 
         new(typeof(UserAdminViewModel),
             PermissionType.OpenUserAdmin,
