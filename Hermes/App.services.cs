@@ -47,9 +47,6 @@ public partial class App
         services.AddSingleton<UserRemoteRepository>();
         services.AddSingleton<UserRepositoryProxy>();
         services.AddTransient<HermesRemoteContext>();
-        //services.AddTransient<IDefectRepository, DefectRepository>();
-        services.AddTransient<ISfcRepository, SfcOracleRepository>();
-        services.AddTransient<SfcResponseRepository>();
         //services.AddTransient<StopRepository>();
         services.AddTransient<DoctorRepository>();
         services.AddTransient<SlideRepository>();

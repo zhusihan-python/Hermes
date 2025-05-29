@@ -1359,15 +1359,6 @@ namespace Hermes.Language {
         }
         
         /// <summary>
-        ///   查找类似 Delete package from Hermes 的本地化字符串。
-        /// </summary>
-        public static string msg_delete_package_from_hermes {
-            get {
-                return ResourceManager.GetString("msg_delete_package_from_hermes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 An error occurred while getting the information from the database 的本地化字符串。
         /// </summary>
         public static string msg_error_while_getting_info_from_db {
@@ -1467,65 +1458,11 @@ namespace Hermes.Language {
         }
         
         /// <summary>
-        ///   查找类似 Package added to Hermes 的本地化字符串。
-        /// </summary>
-        public static string msg_package_added_to_hermes {
-            get {
-                return ResourceManager.GetString("msg_package_added_to_hermes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Package not found 的本地化字符串。
-        /// </summary>
-        public static string msg_package_not_found {
-            get {
-                return ResourceManager.GetString("msg_package_not_found", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Package removed 的本地化字符串。
-        /// </summary>
-        public static string msg_package_removed {
-            get {
-                return ResourceManager.GetString("msg_package_removed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Package removed from &quot;loaded&quot; 的本地化字符串。
-        /// </summary>
-        public static string msg_package_removed_from_loaded {
-            get {
-                return ResourceManager.GetString("msg_package_removed_from_loaded", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Remove package from loadder 的本地化字符串。
-        /// </summary>
-        public static string msg_remove_package_load {
-            get {
-                return ResourceManager.GetString("msg_remove_package_load", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Are you sure you want to remove this user? 的本地化字符串。
         /// </summary>
         public static string msg_remove_user {
             get {
                 return ResourceManager.GetString("msg_remove_user", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Scan the package&apos;s 2D code 的本地化字符串。
-        /// </summary>
-        public static string msg_scan_2d_package {
-            get {
-                return ResourceManager.GetString("msg_scan_2d_package", resourceCulture);
             }
         }
         
@@ -1751,15 +1688,6 @@ namespace Hermes.Language {
         public static string txt_add {
             get {
                 return ResourceManager.GetString("txt_add", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Add package 的本地化字符串。
-        /// </summary>
-        public static string txt_add_package {
-            get {
-                return ResourceManager.GetString("txt_add_package", resourceCulture);
             }
         }
         
@@ -2390,15 +2318,6 @@ namespace Hermes.Language {
         public static string txt_search {
             get {
                 return ResourceManager.GetString("txt_search", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Search PackageId 的本地化字符串。
-        /// </summary>
-        public static string txt_search_pkgid {
-            get {
-                return ResourceManager.GetString("txt_search_pkgid", resourceCulture);
             }
         }
         

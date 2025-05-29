@@ -39,6 +39,7 @@
 
     <ItemGroup>
       <Folder Include="Builders\" />
+      <Folder Include="Services\" />
     </ItemGroup>
 
 </Project>

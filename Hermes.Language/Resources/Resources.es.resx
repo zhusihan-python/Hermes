@@ -480,9 +480,6 @@
   <data name="msg_change_wo" xml:space="preserve">
     <value>Selecciona la work order</value>
   </data>
-  <data name="msg_scan_2d_package" xml:space="preserve">
-    <value>Escanea el código 2D del paquete</value>
-  </data>
   <data name="msg_scan_vendor" xml:space="preserve">
     <value>Escanea el "vendor"</value>
   </data>
@@ -491,9 +488,6 @@
   </data>
   <data name="txt_work_order" xml:space="preserve">
     <value>Work order </value>
-  </data>
-  <data name="txt_add_package" xml:space="preserve">
-    <value>Agregar paquete</value>
   </data>
   <data name="txt_date" xml:space="preserve">
     <value>Fecha</value>
@@ -543,12 +537,6 @@
   <data name="enum_loaded" xml:space="preserve">
     <value>Cargado</value>
   </data>
-  <data name="msg_remove_package_load" xml:space="preserve">
-    <value>Remover paquete de cargadora</value>
-  </data>
-  <data name="msg_delete_package_from_hermes" xml:space="preserve">
-    <value>Eliminar paquete de Hermes</value>
-  </data>
   <data name="txt_user" xml:space="preserve">
     <value>Usuario</value>
   </data>
@@ -566,9 +554,6 @@
   </data>
   <data name="txt_hermes" xml:space="preserve">
     <value>Hermes </value>
-  </data>
-  <data name="txt_search_pkgid" xml:space="preserve">
-    <value>Buscar Pkgid</value>
   </data>
   <data name="txt_about" xml:space="preserve">
     <value>Acerca de</value>
@@ -675,20 +660,8 @@
   <data name="txt_info" xml:space="preserve">
     <value>Información</value>
   </data>
-  <data name="msg_package_added_to_hermes" xml:space="preserve">
-    <value>Paquete agregado a Hermes</value>
-  </data>
-  <data name="msg_package_not_found" xml:space="preserve">
-    <value>Paquete no encontrado</value>
-  </data>
   <data name="txt_not_found" xml:space="preserve">
     <value>No encontrado</value>
-  </data>
-  <data name="msg_package_removed_from_loaded" xml:space="preserve">
-    <value>Paquete eliminado de "cargados"</value>
-  </data>
-  <data name="msg_package_removed" xml:space="preserve">
-    <value>Paquete eliminado</value>
   </data>
   <data name="msg_error_while_getting_info_from_db" xml:space="preserve">
     <value>Ocurrió un error mientras se obtenía la información desde la base de datos</value>

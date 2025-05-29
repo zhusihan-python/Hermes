@@ -11,10 +11,8 @@ public class Startup
 {
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddSingleton(new Mock<ISfcRepository>().Object);
         services.AddTransient<AesEncryptor>();
         services.AddTransient<FileService>();
-        services.AddTransient<ISettingsRepository, SettingsRepository>();
         services.AddTransient<Settings>();
     }
 }

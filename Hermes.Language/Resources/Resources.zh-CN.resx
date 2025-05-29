@@ -480,9 +480,6 @@
   <data name="msg_change_wo" xml:space="preserve">
     <value>Select the work order</value>
   </data>
-  <data name="msg_scan_2d_package" xml:space="preserve">
-    <value>Scan the package's 2D code</value>
-  </data>
   <data name="msg_scan_vendor" xml:space="preserve">
     <value>Scan the vendor</value>
   </data>
@@ -491,9 +488,6 @@
   </data>
   <data name="txt_work_order" xml:space="preserve">
     <value>Work order</value>
-  </data>
-  <data name="txt_add_package" xml:space="preserve">
-    <value>Add package</value>
   </data>
   <data name="txt_date" xml:space="preserve">
     <value>Date</value>
@@ -543,12 +537,6 @@
   <data name="enum_loaded" xml:space="preserve">
     <value>Loaded</value>
   </data>
-  <data name="msg_remove_package_load" xml:space="preserve">
-    <value>Remove package from loadder</value>
-  </data>
-  <data name="msg_delete_package_from_hermes" xml:space="preserve">
-    <value>Delete package from Hermes</value>
-  </data>
   <data name="txt_user" xml:space="preserve">
     <value>User</value>
   </data>
@@ -566,9 +554,6 @@
   </data>
   <data name="txt_hermes" xml:space="preserve">
     <value>Hermes</value>
-  </data>
-  <data name="txt_search_pkgid" xml:space="preserve">
-    <value>Search PackageId</value>
   </data>
   <data name="txt_about" xml:space="preserve">
     <value>About</value>
@@ -675,20 +660,8 @@
   <data name="txt_info" xml:space="preserve">
     <value>Info</value>
   </data>
-  <data name="msg_package_added_to_hermes" xml:space="preserve">
-    <value>Package added to Hermes</value>
-  </data>
-  <data name="msg_package_not_found" xml:space="preserve">
-    <value>Package not found</value>
-  </data>
   <data name="txt_not_found" xml:space="preserve">
     <value>Not found</value>
-  </data>
-  <data name="msg_package_removed_from_loaded" xml:space="preserve">
-    <value>Package removed from "loaded"</value>
-  </data>
-  <data name="msg_package_removed" xml:space="preserve">
-    <value>Package removed</value>
   </data>
   <data name="msg_error_while_getting_info_from_db" xml:space="preserve">
     <value>An error occurred while getting the information from the database</value>
