@@ -18,8 +18,6 @@ public class Startup
         services.AddTransient<FileService>();
         services.AddTransient<ISettingsRepository, SettingsRepository>();
         services.AddTransient<LabelingMachineUnitUnderTestParser>();
-        services.AddTransient<ParserPrototype>();
         services.AddTransient<Settings>();
-        services.AddTransient<GkgUnitUnderTestParser>();
     }
 }

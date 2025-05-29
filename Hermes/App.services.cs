@@ -60,12 +60,8 @@ public partial class App
     private static void ConfigureCommon(ServiceCollection services)
     {
         services.AddSingleton<AesEncryptor>();
-        services.AddSingleton<GkgUnitUnderTestParser>();
         services.AddSingleton<ILogger, HermesLogger>();
         services.AddSingleton<LabelingMachineUnitUnderTestParser>();
-        services.AddSingleton<PackageParser>();
-        services.AddSingleton<PageNavigationService>();
-        services.AddSingleton<ParserPrototype>();
         services.AddSingleton<QrGenerator>();
         services.AddSingleton<TokenGenerator>();
         services.AddSingleton<ComPort>();
@@ -78,7 +74,6 @@ public partial class App
     {
         services.AddSingleton<ISukiDialogManager, SukiDialogManager>();
         services.AddSingleton<ISukiToastManager, SukiToastManager>();
-        services.AddSingleton<PageNavigationService>();
         services.AddSingleton<PagePrototype>();
         services.AddSingleton<ViewLocator>();
         services.AddTransient<FileService>();
