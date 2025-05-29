@@ -11,7 +11,6 @@ using Hermes.Features.UutProcessor;
 using Hermes.Language;
 using Hermes.Models;
 using SukiUI.Toasts;
-using System.Threading.Tasks;
 using System.Threading;
 using System;
 using System.Runtime.Caching;
@@ -23,15 +22,11 @@ public class WindowService : ObservableRecipient
     private const int SuccessViewWidth = 450;
     private const int SuccessViewHeight = 130;
 
-    private SuccessView SuccessView => _successView ??= (_viewLocator.BuildWindow(_successViewModel) as SuccessView)!;
     private StopView StopView => _stopView ??= (_viewLocator.BuildWindow(_stopViewModel) as StopView)!;
 
     private readonly ViewLocator _viewLocator;
-    private readonly Settings _settings;
     private readonly StopViewModel _stopViewModel;
-    private readonly SuccessViewModel _successViewModel;
     private StopView? _stopView;
-    private SuccessView? _successView;
     private CancellationTokenSource _successViewCancellationTokenSource = new();
     private readonly ISukiToastManager _toastManager;
     private readonly MemoryCache _lastShownMessagesCache = MemoryCache.Default;
@@ -42,12 +37,9 @@ public class WindowService : ObservableRecipient
         ViewLocator viewLocator,
         Settings settings,
         StopViewModel stopViewModel,
-        SuccessViewModel successViewModel,
         ISukiToastManager toastManager)
     {
         this._viewLocator = viewLocator;
-        this._settings = settings;
-        this._successViewModel = successViewModel;
         this._stopViewModel = stopViewModel;
         this._stopViewModel.Restored += this.OnStopViewModelRestored;
         this._toastManager = toastManager;
@@ -57,7 +49,6 @@ public class WindowService : ObservableRecipient
     {
         Messenger.Register<ExitMessage>(this, this.Stop);
         Messenger.Register<ShowStopMessage>(this, this.ShowStop);
-        Messenger.Register<ShowSuccessMessage>(this, this.ShowUutSuccess);
         Messenger.Register<ShowToastMessage>(this, this.ShowToast);
     }
 
@@ -69,31 +60,7 @@ public class WindowService : ObservableRecipient
     public void Stop()
     {
         Messenger.UnregisterAll(this);
-        this.SuccessView.ForceClose();
         this.StopView.ForceClose();
-    }
-
-    private void ShowUutSuccess(object recipient, ShowSuccessMessage message)
-    {
-        _successViewCancellationTokenSource.Cancel();
-        _successViewCancellationTokenSource = new CancellationTokenSource();
-        Dispatcher.UIThread.InvokeAsync(async Task () =>
-        {
-            SuccessView.DataContext = this._successViewModel;
-            this._successViewModel.SerialNumber = message.Value.SerialNumber;
-            this._successViewModel.IsRepair = message.Value.IsRepair;
-            this._successViewModel.Message = message.Value.Message;
-
-            SetBottomCenterPosition(SuccessView);
-            SuccessView.UpdateLayout();
-            SuccessView.Show();
-            await Task.Delay(this._settings.UutSuccessWindowTimeoutSeconds * 1000,
-                _successViewCancellationTokenSource.Token);
-            if (!_successViewCancellationTokenSource.Token.IsCancellationRequested)
-            {
-                SuccessView.Hide();
-            }
-        });
     }
 
     private static void SetBottomCenterPosition(Window window)

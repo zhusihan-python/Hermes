@@ -153,10 +153,6 @@
             <DependentUpon>StopView.axaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
-        <Compile Update="Features\UutProcessor\SuccessView.axaml.cs">
-            <DependentUpon>SuccessView.axaml</DependentUpon>
-            <SubType>Code</SubType>
-        </Compile>
         <Compile Update="Features\UutProcessor\ConciseMainView.axaml.cs">
           <DependentUpon>ConciseMainView.axaml</DependentUpon>
         </Compile>
