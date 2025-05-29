@@ -10,7 +10,6 @@ using Hermes.Features.UutProcessor;
 using Hermes.Features;
 using Hermes.Models;
 using Hermes.Repositories;
-using Hermes.Services.UutSenderService;
 using Hermes.Services;
 using Microsoft.Extensions.DependencyInjection;
 using SukiUI.Dialogs;
