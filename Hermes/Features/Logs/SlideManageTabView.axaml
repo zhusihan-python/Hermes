@@ -35,16 +35,6 @@
 					</controls:TextBoxWithTitle.KeyBindings>
 				</controls:TextBoxWithTitle>
 
-				<controls:ComboBoxTitle Width="200"
-                                       Title="医生"
-								       ItemsSource="{Binding AvailableDoctors}"
-									   SelectedItem="{Binding SelectedDoctor, Mode=TwoWay}" />
-
-				<controls:ComboBoxEnum Width="200"
-                                       Title="封片状态"
-                                       ItemsSource="{Binding SealOptions}"
-                                       SelectedItem="{Binding SelectedSealState, Mode=TwoWay}" />
-
 				<controls:TextBoxWithTitle Name="SfcResponseContentFilterTextBox"
                                            Width="200"
                                            VerticalAlignment="Bottom"
@@ -55,6 +45,16 @@
 						<KeyBinding Gesture="Enter" Command="{Binding SearchCommand}" />
 					</controls:TextBoxWithTitle.KeyBindings>
 				</controls:TextBoxWithTitle>
+
+				<controls:ComboBoxTitle Width="200"
+                                       Title="医生"
+								       ItemsSource="{Binding AvailableDoctors}"
+									   SelectedItem="{Binding SelectedDoctor, Mode=TwoWay}" />
+
+				<controls:ComboBoxEnum Width="200"
+                                       Title="封片状态"
+                                       ItemsSource="{Binding SealOptions}"
+                                       SelectedItem="{Binding SelectedSealState, Mode=TwoWay}" />
 
 				<controls:ComboBoxEnum Width="200"
                                        Title="创建日期"
