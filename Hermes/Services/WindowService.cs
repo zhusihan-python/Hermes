@@ -7,7 +7,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using Hermes.Common.Messages;
 using Hermes.Common;
-using Hermes.Features.UutProcessor;
 using Hermes.Language;
 using Hermes.Models;
 using SukiUI.Toasts;
@@ -22,11 +21,7 @@ public class WindowService : ObservableRecipient
     private const int SuccessViewWidth = 450;
     private const int SuccessViewHeight = 130;
 
-    private StopView StopView => _stopView ??= (_viewLocator.BuildWindow(_stopViewModel) as StopView)!;
-
     private readonly ViewLocator _viewLocator;
-    private readonly StopViewModel _stopViewModel;
-    private StopView? _stopView;
     private CancellationTokenSource _successViewCancellationTokenSource = new();
     private readonly ISukiToastManager _toastManager;
     private readonly MemoryCache _lastShownMessagesCache = MemoryCache.Default;
@@ -36,19 +31,15 @@ public class WindowService : ObservableRecipient
     public WindowService(
         ViewLocator viewLocator,
         Settings settings,
-        StopViewModel stopViewModel,
         ISukiToastManager toastManager)
     {
         this._viewLocator = viewLocator;
-        this._stopViewModel = stopViewModel;
-        this._stopViewModel.Restored += this.OnStopViewModelRestored;
         this._toastManager = toastManager;
     }
 
     public void Start()
     {
         Messenger.Register<ExitMessage>(this, this.Stop);
-        Messenger.Register<ShowStopMessage>(this, this.ShowStop);
         Messenger.Register<ShowToastMessage>(this, this.ShowToast);
     }
 
@@ -60,7 +51,6 @@ public class WindowService : ObservableRecipient
     public void Stop()
     {
         Messenger.UnregisterAll(this);
-        this.StopView.ForceClose();
     }
 
     private static void SetBottomCenterPosition(Window window)
@@ -77,25 +67,6 @@ public class WindowService : ObservableRecipient
                 screenSize.Width / 2 - SuccessViewWidth / 2,
                 screenSize.Height - SuccessViewHeight - 5);
         }
-    }
-
-    private void ShowStop(object recipient, ShowStopMessage message)
-    {
-        Dispatcher.UIThread.Invoke(() =>
-        {
-            this.StopView.DataContext = this._stopViewModel;
-            this._stopViewModel.Reset();
-            this._stopViewModel.UpdateDate();
-            this._stopViewModel.Stop = message.Value;
-
-            this.StopView.Show();
-        });
-    }
-
-    private void OnStopViewModelRestored(object? sender, EventArgs e)
-    {
-        Dispatcher.UIThread.Invoke(() => { this.StopView.Hide(); });
-        Messenger.Send(new UnblockMessage());
     }
 
     public void ShowErrorToast(string message, string? title = null)
