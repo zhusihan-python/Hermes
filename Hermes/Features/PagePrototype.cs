@@ -4,7 +4,6 @@ using Hermes.Features.Bender;
 using Hermes.Features.Login;
 using Hermes.Features.Logs;
 using Hermes.Features.PackageId;
-using Hermes.Features.SfcSimulator;
 using Hermes.Features.UserAdmin;
 using Hermes.Features.UutProcessor;
 using Hermes.Models;
@@ -22,10 +21,10 @@ public class PagePrototype(Settings settings)
     private readonly List<PagePermissionResolver> _pagePermissionResolvers =
     [
         new(typeof(AboutViewModel),
-            PermissionType.OpenSfcSimulator),
+            PermissionType.OpenUutProcessor),
 
         new(typeof(BenderViewModel),
-            PermissionType.OpenSfcSimulator),
+            PermissionType.OpenUutProcessor),
 
         new(typeof(LoginViewModel)),
 
@@ -34,9 +33,6 @@ public class PagePrototype(Settings settings)
 
         new(typeof(PackageIdViewModel),
             hideFromStation: AllExcept([StationType.Labeling, StationType.LabelingMachine])),
-
-        new(typeof(SfcSimulatorViewModel),
-            PermissionType.OpenSfcSimulator),
 
         new(typeof(UserAdminViewModel),
             PermissionType.OpenUserAdmin,

@@ -7,7 +7,6 @@ using Hermes.Common.Validators;
 using Hermes.Common;
 using Hermes.Communication.SerialPort;
 using Hermes.Features.SettingsConfig;
-using Hermes.Features.SfcSimulator;
 using Hermes.Features.UutProcessor;
 using Hermes.Features;
 using Hermes.Models;
@@ -117,7 +116,7 @@ public partial class App
     private static void ConfigureFeatures(ServiceCollection services)
     {
         Type[] singletonTypes =
-            [typeof(MainWindowViewModel), typeof(UutProcessorViewModel), typeof(SfcSimulatorViewModel)];
+            [typeof(MainWindowViewModel), typeof(UutProcessorViewModel)];
         foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
         {
             var viewModelTypes = assembly.GetTypes()

@@ -6,7 +6,6 @@ public enum PermissionType
     Exit,
     OpenBender,
     OpenSettingsConfig,
-    OpenSfcSimulator,
     OpenUutProcessor,
     OpenUserAdmin,
     RestoreSpiStop,
