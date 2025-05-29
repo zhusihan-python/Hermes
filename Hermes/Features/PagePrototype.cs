@@ -1,6 +1,5 @@
 using Hermes.Cipher.Extensions;
 using Hermes.Features.About;
-using Hermes.Features.Bender;
 using Hermes.Features.Login;
 using Hermes.Features.Logs;
 using Hermes.Features.PackageId;
@@ -21,9 +20,6 @@ public class PagePrototype(Settings settings)
     private readonly List<PagePermissionResolver> _pagePermissionResolvers =
     [
         new(typeof(AboutViewModel),
-            PermissionType.OpenUutProcessor),
-
-        new(typeof(BenderViewModel),
             PermissionType.OpenUutProcessor),
 
         new(typeof(LoginViewModel)),
