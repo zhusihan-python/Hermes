@@ -20,7 +20,6 @@ public class Startup
         services.AddTransient<LabelingMachineUnitUnderTestParser>();
         services.AddTransient<ParserPrototype>();
         services.AddTransient<Settings>();
-        services.AddTransient<SfcResponseBuilder>();
         services.AddTransient<GkgUnitUnderTestParser>();
         services.AddTransient<FolderWatcherService>();
     }

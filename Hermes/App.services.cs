@@ -1,5 +1,4 @@
 ﻿using AesEncryptor = Hermes.Common.AesEncryptor;
-using Hermes.Builders;
 using Hermes.Cipher;
 using Hermes.Common.Parsers;
 using Hermes.Common.Reactive;
@@ -69,7 +68,6 @@ public partial class App
         services.AddSingleton<PageNavigationService>();
         services.AddSingleton<ParserPrototype>();
         services.AddSingleton<QrGenerator>();
-        services.AddSingleton<SfcResponseBuilder>();
         services.AddSingleton<TokenGenerator>();
         services.AddSingleton<ComPort>();
         services.AddSingleton<ScanEngine>();
