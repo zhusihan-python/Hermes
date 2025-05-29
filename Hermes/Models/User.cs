@@ -24,7 +24,6 @@ public partial class User : ObservableValidator
     [MaxLength(64)] [ObservableProperty] private string _password = "";
     public DepartmentType Department { get; set; }
     public UserLevel Level { get; set; }
-    public List<Stop> Stops { get; set; } = [];
     [NotMapped] public string LevelText => Level.ToTranslatedString();
     [NotMapped] public List<FeaturePermission> Permissions { get; set; } = [];
 

@@ -14,15 +14,9 @@ public partial class
     public ReactiveProperty<User> LoggedUser { get; } = new(User.Null);
 
     [ObservableProperty] private string _path = string.Empty;
-    public Stop Stop { get; set; } = Stop.Null;
 
     public DepartmentType UserDepartment => LoggedUser.Value.Department;
     public UserLevel UserLevel => LoggedUser.Value.Level;
-
-    public void ResetStop()
-    {
-        Stop = Stop.Null;
-    }
 
     public void UpdateUser(User user)
     {

@@ -18,7 +18,6 @@ public class UnitUnderTest
     public bool IsPass => !IsFail;
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public List<Defect> Defects { get; set; } = [];
-    public Stop? Stop { get; set; }
     public SfcResponse? SfcResponse { get; set; }
     [NotMapped] public string Content { get; init; }
     [MaxLength(512)] public string FullPath { get; set; }
