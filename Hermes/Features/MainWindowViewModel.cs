@@ -75,7 +75,7 @@ namespace Hermes.Features
 
         private void UpdateTitle(User user)
         {
-            var baseTitle = $"{Resources.txt_hermes} - {_settings.Station} - {_settings.Line}";
+            var baseTitle = $"{Resources.txt_hermes}";
             if (!user.IsNull)
             {
                 Title = $"{baseTitle}     (👤{user.Name})";

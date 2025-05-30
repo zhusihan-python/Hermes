@@ -11,10 +11,10 @@ public class Settings
     public LanguageType Language { get; set; } = LanguageType.Cn;
     public int WaitDelayMilliseconds { get; set; } = 100;
     public string DatabaseServer { get; set; } = "10.12.204.48";
-    public StationType Station { get; set; } = StationType.SpiBottom;
-    public MachineType Machine { get; set; } = MachineType.Spi;
-    public string StationId { get; set; } = "";
-    public LineType Line { get; set; } = LineType.Ag01;
+    //public StationType Station { get; set; } = StationType.SpiBottom;
+    //public MachineType Machine { get; set; } = MachineType.Spi;
+    //public string StationId { get; set; } = "";
+    //public LineType Line { get; set; } = LineType.Ag01;
     public LogfileType LogfileType { get; set; } = LogfileType.TriDefault;
     public FileExtension SfcResponseExtension { get; set; } = FileExtension.Ret;
     public FileExtension InputFileExtension { get; set; } = FileExtension._3dx;

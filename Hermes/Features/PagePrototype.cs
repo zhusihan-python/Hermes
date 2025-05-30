@@ -1,4 +1,3 @@
-using Hermes.Cipher.Extensions;
 using Hermes.Features.About;
 using Hermes.Features.Login;
 using Hermes.Features.Logs;
@@ -27,8 +26,7 @@ public class PagePrototype(Settings settings)
             PermissionType.FreeAccess),
 
         new(typeof(UserAdminViewModel),
-            PermissionType.OpenUserAdmin,
-            Only([StationType.Labeling])),
+            PermissionType.OpenUserAdmin),
 
         new(typeof(UutProcessorViewModel),
             PermissionType.FreeAccess),
@@ -38,13 +36,6 @@ public class PagePrototype(Settings settings)
     ];
 
     public IServiceProvider? Provider { get; set; }
-
-    private static List<StationType> Only(IEnumerable<StationType> stations) => stations.ToList();
-
-    private static List<StationType> AllExcept(IEnumerable<StationType> exceptStations) => EnumExtensions
-        .GetValues<StationType>()
-        .Where(x => !exceptStations.Contains(x) && x != StationType.None)
-        .ToList();
 
     public List<PageBase> GetPages(User user)
     {

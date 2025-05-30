@@ -108,11 +108,6 @@ public partial class TokenViewModel : ViewModelBase, ITokenViewModel
             return Resources.msg_invalid_department;
         }
 
-        if (!user.HasPermission(FeatureTypeExtensions.GetFeatureType(_settings.Station)))
-        {
-            return Resources.msg_user_without_permission;
-        }
-
         return null;
     }
 

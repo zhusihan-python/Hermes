@@ -1,15 +1,13 @@
 using Hermes.Cipher.Types;
 using Hermes.Features.UutProcessor;
 using Hermes.Types;
-using System.Collections.Generic;
 using System;
 
 namespace Hermes.Models;
 
 internal class PagePermissionResolver(
     Type pageType,
-    PermissionType permissionType = PermissionType.FreeAccess,
-    List<StationType>? hideFromStation = null)
+    PermissionType permissionType = PermissionType.FreeAccess)
 {
     public Type PageType { get; } = pageType;
 
@@ -27,7 +25,6 @@ internal class PagePermissionResolver(
 
         var userHasPermission = permissionType == PermissionType.FreeAccess ||
                                 user.HasPermission(permissionType);
-        var stationIsAllowed = !hideFromStation?.Contains(settings.Station) ?? true;
-        return userHasPermission && stationIsAllowed;
+        return userHasPermission;
     }
 }
