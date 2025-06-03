@@ -19,109 +19,47 @@ namespace Hermes.Features.Logs;
 
 public partial class UnitUnderTestLogViewModel : ViewModelBase
 {
-    [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(EditCommand))]
-    [NotifyCanExecuteChangedFor(nameof(ReSendCommand))]
-    private UnitUnderTest _selectedUnitUnderTest = UnitUnderTest.Null;
-
-    [ObservableProperty] private SfcResponseType? _selectedSfcResponse;
-    [ObservableProperty] private StatusType? _selectedTestStatus;
+    [ObservableProperty] private RecordType? _selectedRecordType;
+    [ObservableProperty] private RecordStatusType? _selectedRecordStatus;
     [ObservableProperty] private TimeSpanType? _selectedTimeSpan = TimeSpanType.OneDay;
-    [ObservableProperty] private string _serialNumberFilter = "";
-    [ObservableProperty] private string _sfcResponseContentFilter = "";
-    public RangeObservableCollection<UnitUnderTest> UnitsUnderTest { get; set; } = [];
-    public static IEnumerable<SfcResponseType?> SfcResponseOptions => NullableExtensions.GetValues<SfcResponseType>();
-    public static IEnumerable<StatusType?> StatusOptions => NullableExtensions.GetValues<StatusType>();
+    public RangeObservableCollection<Record> ReCordData { get; set; } = [];
+    public static IEnumerable<RecordType?> RecordTypeOptions => NullableExtensions.GetValues<RecordType>();
+    public static IEnumerable<RecordStatusType?> StatusOptions => NullableExtensions.GetValues<RecordStatusType>();
     public static IEnumerable<TimeSpanType?> TimeSpanOptions => NullableExtensions.GetValues<TimeSpanType>();
 
-    private readonly SlideRepository _slideRepository;
+    private readonly RecordRepository _recordRepository;
 
     public UnitUnderTestLogViewModel(
-        SlideRepository slideRepository)
+        RecordRepository recordRepository)
     {
-        _slideRepository = slideRepository;
+        _recordRepository = recordRepository;
+        _ = LoadRecordsAsync();
     }
 
-    private async Task LoadLogsAsync()
+    private async Task LoadRecordsAsync()
     {
-        UnitsUnderTest.Clear();
+        ReCordData.Clear();
+        ReCordData.AddRange(await _recordRepository.FindAll());
     }
-
-    [RelayCommand]
-    private void UnitUnderTestSelected(UnitUnderTest? unitUnderTest)
-    {
-        this.SelectedUnitUnderTest = unitUnderTest ?? UnitUnderTest.Null;
-    }
-
-    [RelayCommand]
-    private async Task Export()
-    {
-        string date = DateTime.Now.ToString("yyyy-MM-dd-HH-mm");
-        string name = $"{date} Report-List";
-        var path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-        var subFolderPath = Path.Combine(path, "Exports");
-        Directory.CreateDirectory(subFolderPath);
-        var filePath = Path.Combine(subFolderPath, $"{name}.csv");
-        using (var writer = new StreamWriter(filePath))
-        {
-            await writer.WriteLineAsync("Id,SerialNumber,Filename,TestStatus,SfcResponse,CreatedAt");
-
-            foreach (var uut in UnitsUnderTest)
-            {
-                await writer.WriteLineAsync(
-                    $"{uut.Id},{uut.SerialNumber},{uut.FileName},{uut.IsPass},{uut.SfcResponse},{uut.CreatedAt}");
-            }
-        }
-
-        Messenger.Send(new ShowToastMessage("Success", "Export Success: " + filePath, NotificationType.Success));
-    }
-
-    [RelayCommand(CanExecute = nameof(CanEdit))]
-    private void Edit()
-    {
-        try
-        {
-            Process.Start("notepad.exe", SelectedUnitUnderTest.FullPath);
-        }
-        catch (Exception e)
-        {
-            this.ShowErrorToast(e.Message);
-        }
-    }
-
-    private bool CanEdit() => !string.IsNullOrEmpty(SelectedUnitUnderTest.FullPath);
-
-
-    [RelayCommand(CanExecute = nameof(CanResend))]
-    private void ReSend()
-    {
-        //Messenger.Send(new ReSendUnitUnderTestMessage(SelectedUnitUnderTest));
-    }
-
-    private bool CanResend() => !string.IsNullOrEmpty(SelectedUnitUnderTest.SerialNumber);
 
     [RelayCommand]
     private async Task Refresh()
     {
-        SerialNumberFilter = "";
-        SelectedTestStatus = null;
-        SelectedSfcResponse = null;
-        SfcResponseContentFilter = "";
+        SelectedRecordType = null;
+        SelectedRecordStatus = null;
         SelectedTimeSpan = TimeSpanType.OneDay;
-        await LoadLogsAsync();
+        await LoadRecordsAsync();
     }
 
     [RelayCommand]
     private async Task Search()
     {
-        //var units = await _unitUnderTestRepository.GetLastUnits(
-        //    SerialNumberFilter,
-        //    SelectedTestStatus,
-        //    SelectedSfcResponse,
-        //    SfcResponseContentFilter,
-        //    SelectedTimeSpan == null ? null : TimeSpan.FromHours((int)SelectedTimeSpan));
+        var records = await _recordRepository.GetRecords(
+            SelectedRecordType,
+            SelectedRecordStatus,
+            SelectedTimeSpan);
 
-        //UnitsUnderTest.Clear();
-        //UnitsUnderTest.AddRange(units);
+        ReCordData.Clear();
+        ReCordData.AddRange(records);
     }
 }

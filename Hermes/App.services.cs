@@ -50,7 +50,7 @@ public partial class App
         //services.AddTransient<StopRepository>();
         services.AddTransient<DoctorRepository>();
         services.AddTransient<SlideRepository>();
-        //services.AddTransient<UnitUnderTestRepository>();
+        services.AddTransient<RecordRepository>();
     }
 
     private static void ConfigureCommon(ServiceCollection services)

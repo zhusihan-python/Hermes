@@ -968,4 +968,22 @@
   <data name="enum_slidenotseal" xml:space="preserve">
     <value>Slide Not Seal</value>
   </data>
+  <data name="enum_notfinish" xml:space="preserve">
+    <value>Not Finish</value>
+  </data>
+  <data name="enum_finished" xml:space="preserve">
+    <value>Finished</value>
+  </data>
+  <data name="enum_abnormal" xml:space="preserve">
+    <value>Abnormal</value>
+  </data>
+  <data name="enum_seal" xml:space="preserve">
+    <value>Seal</value>
+  </data>
+  <data name="enum_sort" xml:space="preserve">
+    <value>Sort</value>
+  </data>
+  <data name="enum_sealsort" xml:space="preserve">
+    <value>Seal&amp;Sort</value>
+  </data>
 </root>

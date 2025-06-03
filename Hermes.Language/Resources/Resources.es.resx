@@ -966,4 +966,22 @@
   <data name="enum_slidenotseal" xml:space="preserve">
     <value>No sellado</value>
   </data>
+  <data name="enum_notfinish" xml:space="preserve">
+    <value>No terminar</value>
+  </data>
+  <data name="enum_finished" xml:space="preserve">
+    <value>Terminado</value>
+  </data>
+  <data name="enum_abnormal" xml:space="preserve">
+    <value>Anormal</value>
+  </data>
+  <data name="enum_seal" xml:space="preserve">
+    <value>Sello</value>
+  </data>
+  <data name="enum_sort" xml:space="preserve">
+    <value>Ordenar</value>
+  </data>
+  <data name="enum_sealsort" xml:space="preserve">
+    <value>Sello y clasificación</value>
+  </data>
 </root>

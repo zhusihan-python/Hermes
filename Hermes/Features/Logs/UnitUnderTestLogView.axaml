@@ -32,37 +32,15 @@
                         Grid.Column="0"
                         Orientation="Horizontal">
 
-                <controls:TextBoxWithTitle Name="SerialNumberFilter"
-                                           Width="200"
-                                           VerticalAlignment="Bottom"
-                                           KeyBindings=""
-                                           Title="关键词"
-                                           Text="{Binding SerialNumberFilter, Mode=TwoWay}">
-                    <controls:TextBoxWithTitle.KeyBindings>
-                        <KeyBinding Gesture="Enter" Command="{Binding SearchCommand}" />
-                    </controls:TextBoxWithTitle.KeyBindings>
-                </controls:TextBoxWithTitle>
+                <controls:ComboBoxEnum Width="200"
+                                       Title="任务类型"
+                                       ItemsSource="{Binding RecordTypeOptions}"
+                                       SelectedItem="{Binding SelectedRecordType, Mode=TwoWay}" />
 
                 <controls:ComboBoxEnum Width="200"
-                                       Title="搜索类型"
+                                       Title="状态"
                                        ItemsSource="{Binding StatusOptions}"
-                                       SelectedItem="{Binding SelectedTestStatus, Mode=TwoWay}" />
-
-                <controls:ComboBoxEnum Width="200"
-                                       Title="操作类型"
-                                       ItemsSource="{Binding SfcResponseOptions}"
-                                       SelectedItem="{Binding SelectedSfcResponse, Mode=TwoWay}" />
-
-                <controls:TextBoxWithTitle Name="SfcResponseContentFilterTextBox"
-                                           Width="200"
-                                           VerticalAlignment="Bottom"
-                                           KeyBindings=""
-                                           Title="玻片二维码"
-                                           Text="{Binding SfcResponseContentFilter, Mode=TwoWay}">
-                    <controls:TextBoxWithTitle.KeyBindings>
-                        <KeyBinding Gesture="Enter" Command="{Binding SearchCommand}" />
-                    </controls:TextBoxWithTitle.KeyBindings>
-                </controls:TextBoxWithTitle>
+                                       SelectedItem="{Binding SelectedRecordStatus, Mode=TwoWay}" />
 
                 <controls:ComboBoxEnum Width="200"
                                        Title="日期"
@@ -84,10 +62,6 @@
                         HorizontalAlignment="Right"
                         Spacing="5">
 
-                <controls:ButtonIcon Kind="DatabaseArrowRight"
-                                     Command="{Binding ExportCommand}"
-                                     ToolTip.Tip="{x:Static lang:Resources.txt_export_table_to_csv}" />
-
                 <controls:ButtonIcon Kind="Refresh"
                                      Command="{Binding RefreshCommand}"
                                      ToolTip.Tip="{x:Static lang:Resources.txt_refresh}" />
@@ -101,39 +75,25 @@
                           VerticalScrollBarVisibility="Auto">
 
                 <DataGrid AutoGenerateColumns="False"
-                          Name="DataGridLogs"
-                          ItemsSource="{Binding UnitsUnderTest}"
+                          Name="DataGridRecords"
+                          ItemsSource="{Binding ReCordData}"
                           IsReadOnly="True"
                           HeadersVisibility="Column"
                           CanUserResizeColumns="True">
 
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="操作类型"
-                                            Binding="{Binding SerialNumber}" />
+						<DataGridTextColumn Header="任务ID"
+					                        Binding="{Binding RecordId}" />
+
+                        <DataGridTextColumn Header="任务类型"
+                                            Binding="{Binding RecordTypeDisplay}" />
 
                         <DataGridTextColumn Header="状态"
-                                            Binding="{Binding IsPass,  Converter={x:Static converters:BoolToTextConverters.PassFail}}" />
-
-                        <DataGridTextColumn Header="玻片盒数量"
-                                            Binding="{Binding SfcResponse.Type,  Converter={x:Static converters:EnumToTranslatedTextConverters.Generic}}" />
-
-                        <DataGridTextColumn Header="玻片数量"
-                                            Binding="{Binding SfcResponse.Content}" />
+                                            Binding="{Binding RecordStatusDisplay}" />
 
                         <DataGridTextColumn Header="创建日期"
-                                            Binding="{Binding CreatedAt}" />
-
-                        <DataGridTextColumn Header="详情"
-                                            Binding="{Binding FileName}" />
+                                            Binding="{Binding StartTime}" />
                     </DataGrid.Columns>
-
-                    <i:Interaction.Behaviors>
-                        <ia:EventTriggerBehavior EventName="SelectionChanged" SourceObject="DataGridLogs">
-                            <ia:InvokeCommandAction
-                                Command="{Binding UnitUnderTestSelectedCommand}"
-                                CommandParameter="{Binding #DataGridLogs.SelectedItem}" />
-                        </ia:EventTriggerBehavior>
-                    </i:Interaction.Behaviors>
                 </DataGrid>
             </ScrollViewer>
         </Grid>

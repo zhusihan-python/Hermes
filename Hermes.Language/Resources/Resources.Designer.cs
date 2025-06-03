@@ -603,6 +603,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Abnormal 的本地化字符串。
+        /// </summary>
+        public static string enum_abnormal {
+            get {
+                return ResourceManager.GetString("enum_abnormal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Admin 的本地化字符串。
         /// </summary>
         public static string enum_admin {
@@ -707,6 +716,15 @@ namespace Hermes.Language {
         public static string enum_failed {
             get {
                 return ResourceManager.GetString("enum_failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Finished 的本地化字符串。
+        /// </summary>
+        public static string enum_finished {
+            get {
+                return ResourceManager.GetString("enum_finished", resourceCulture);
             }
         }
         
@@ -954,6 +972,15 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Not Finish 的本地化字符串。
+        /// </summary>
+        public static string enum_notfinish {
+            get {
+                return ResourceManager.GetString("enum_notfinish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Not ran 的本地化字符串。
         /// </summary>
         public static string enum_notran {
@@ -1188,11 +1215,29 @@ namespace Hermes.Language {
         }
         
         /// <summary>
+        ///   查找类似 Seal 的本地化字符串。
+        /// </summary>
+        public static string enum_seal {
+            get {
+                return ResourceManager.GetString("enum_seal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Sealed 的本地化字符串。
         /// </summary>
         public static string enum_sealed {
             get {
                 return ResourceManager.GetString("enum_sealed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Seal&amp;Sort 的本地化字符串。
+        /// </summary>
+        public static string enum_sealsort {
+            get {
+                return ResourceManager.GetString("enum_sealsort", resourceCulture);
             }
         }
         
@@ -1247,6 +1292,15 @@ namespace Hermes.Language {
         public static string enum_slidesorted {
             get {
                 return ResourceManager.GetString("enum_slidesorted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Sort 的本地化字符串。
+        /// </summary>
+        public static string enum_sort {
+            get {
+                return ResourceManager.GetString("enum_sort", resourceCulture);
             }
         }
         

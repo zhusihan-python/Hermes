@@ -968,4 +968,22 @@
   <data name="enum_slidenotseal" xml:space="preserve">
     <value>未封片</value>
   </data>
+  <data name="enum_notfinish" xml:space="preserve">
+    <value>未完成</value>
+  </data>
+  <data name="enum_finished" xml:space="preserve">
+    <value>已完成</value>
+  </data>
+  <data name="enum_abnormal" xml:space="preserve">
+    <value>异常</value>
+  </data>
+  <data name="enum_seal" xml:space="preserve">
+    <value>封片</value>
+  </data>
+  <data name="enum_sort" xml:space="preserve">
+    <value>理片</value>
+  </data>
+  <data name="enum_sealsort" xml:space="preserve">
+    <value>封片加理片</value>
+  </data>
 </root>

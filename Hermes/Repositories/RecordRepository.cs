@@ -9,7 +9,7 @@ using Hermes.Types;
 
 namespace Hermes.Repositories;
 
-public class TaskRepository(IDbContextFactory<HermesLocalContext> context)
+public class RecordRepository(IDbContextFactory<HermesLocalContext> context)
     : BaseRepository<Record, HermesLocalContext>(context)
 {
     private readonly IDbContextFactory<HermesLocalContext> _context = context;
@@ -18,6 +18,32 @@ public class TaskRepository(IDbContextFactory<HermesLocalContext> context)
     {
         await using var ctx = await _context.CreateDbContextAsync();
         return await GetRecordQuery(ctx).ToListAsync();
+    }
+
+    public async Task<List<Record>> GetRecords(
+        RecordType? recordType = null,
+        RecordStatusType? recordStatus = null,
+        TimeSpanType? timeSpanType = null)
+    {
+        var ctx = await _context.CreateDbContextAsync();
+        var query = GetRecordQuery(ctx);
+
+        if (recordType != null)
+        {
+            query = query.Where(x => x.RecordType == recordType);
+        }
+
+        if (recordStatus != null)
+        {
+            query = query.Where(x => x.RecordStatus == recordStatus);
+        }
+
+        if (timeSpanType != null)
+        {
+            query = query.Where(x => x.StartTime >= DateTime.Now.AddHours(-(double)timeSpanType));
+        }
+
+        return await query.ToListAsync();
     }
 
     private IQueryable<Record> GetRecordQuery(HermesLocalContext ctx)
