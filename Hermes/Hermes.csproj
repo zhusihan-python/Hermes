@@ -178,6 +178,7 @@
 
     <ItemGroup>
       <Folder Include="AppData\Migrations\" />
+      <Folder Include="Migrations\" />
     </ItemGroup>
 
     <ItemGroup>

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hermes.Migrations
 {
     [DbContext(typeof(HermesLocalContext))]
-    [Migration("20250418025949_InitialCreate")]
+    [Migration("20250603035408_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -19,38 +19,6 @@ namespace Hermes.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.8");
-
-            modelBuilder.Entity("Hermes.Models.Defect", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("ErrorCode")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("ErrorFlag")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("TEXT");
-
-                    b.Property<int?>("StopId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("UnitUnderTestId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("StopId");
-
-                    b.ToTable("Defect");
-                });
 
             modelBuilder.Entity("Hermes.Models.Doctor", b =>
                 {
@@ -181,7 +149,33 @@ namespace Hermes.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Heartbeats");
+                    b.ToTable("Heartbeat", (string)null);
+                });
+
+            modelBuilder.Entity("Hermes.Models.Record", b =>
+                {
+                    b.Property<string>("RecordId")
+                        .HasMaxLength(32)
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("EndTime")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("RecordStatus")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("RecordType")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("RecordId");
+
+                    b.ToTable("Record", (string)null);
                 });
 
             modelBuilder.Entity("Hermes.Models.Slide", b =>
@@ -193,8 +187,7 @@ namespace Hermes.Migrations
                     b.Property<int>("DoctorId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("EntryDate")
-                        .IsRequired()
+                    b.Property<DateTime>("EntryDate")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("PathologyId")
@@ -210,8 +203,14 @@ namespace Hermes.Migrations
                         .HasMaxLength(64)
                         .HasColumnType("TEXT");
 
+                    b.Property<byte>("SealState")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("SlideId")
                         .HasMaxLength(16)
+                        .HasColumnType("INTEGER");
+
+                    b.Property<byte>("SortState")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
@@ -219,31 +218,6 @@ namespace Hermes.Migrations
                     b.HasIndex("DoctorId");
 
                     b.ToTable("Slides", (string)null);
-                });
-
-            modelBuilder.Entity("Hermes.Models.Stop", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Actions")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Details")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("IsRestored")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Stop");
                 });
 
             modelBuilder.Entity("Hermes.Models.User", b =>
@@ -278,28 +252,6 @@ namespace Hermes.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
-            modelBuilder.Entity("StopUser", b =>
-                {
-                    b.Property<int>("StopsId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("UsersId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("StopsId", "UsersId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("StopUser");
-                });
-
-            modelBuilder.Entity("Hermes.Models.Defect", b =>
-                {
-                    b.HasOne("Hermes.Models.Stop", null)
-                        .WithMany("Defects")
-                        .HasForeignKey("StopId");
-                });
-
             modelBuilder.Entity("Hermes.Models.Slide", b =>
                 {
                     b.HasOne("Hermes.Models.Doctor", "Doctor")
@@ -309,26 +261,6 @@ namespace Hermes.Migrations
                         .IsRequired();
 
                     b.Navigation("Doctor");
-                });
-
-            modelBuilder.Entity("StopUser", b =>
-                {
-                    b.HasOne("Hermes.Models.Stop", null)
-                        .WithMany()
-                        .HasForeignKey("StopsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Hermes.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Hermes.Models.Stop", b =>
-                {
-                    b.Navigation("Defects");
                 });
 #pragma warning restore 612, 618
         }

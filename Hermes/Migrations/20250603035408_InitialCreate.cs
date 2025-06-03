@@ -26,7 +26,7 @@ namespace Hermes.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Heartbeats",
+                name: "Heartbeat",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -66,23 +66,23 @@ namespace Hermes.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Heartbeats", x => x.Id);
+                    table.PrimaryKey("PK_Heartbeat", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Stop",
+                name: "Record",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Type = table.Column<int>(type: "INTEGER", nullable: false),
-                    IsRestored = table.Column<bool>(type: "INTEGER", nullable: false),
-                    Details = table.Column<string>(type: "TEXT", nullable: false),
-                    Actions = table.Column<string>(type: "TEXT", nullable: false)
+                    RecordId = table.Column<string>(type: "TEXT", maxLength: 32, nullable: false),
+                    RecordType = table.Column<int>(type: "INTEGER", nullable: false),
+                    RecordStatus = table.Column<int>(type: "INTEGER", nullable: false),
+                    UserId = table.Column<int>(type: "INTEGER", nullable: false),
+                    StartTime = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    EndTime = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Stop", x => x.Id);
+                    table.PrimaryKey("PK_Record", x => x.RecordId);
                 });
 
             migrationBuilder.CreateTable(
@@ -113,7 +113,9 @@ namespace Hermes.Migrations
                     SlideId = table.Column<int>(type: "INTEGER", maxLength: 16, nullable: false),
                     PatientName = table.Column<string>(type: "TEXT", maxLength: 64, nullable: false),
                     DoctorId = table.Column<int>(type: "INTEGER", nullable: false),
-                    EntryDate = table.Column<string>(type: "TEXT", nullable: false)
+                    EntryDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    SealState = table.Column<byte>(type: "INTEGER", nullable: false),
+                    SortState = table.Column<byte>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -126,91 +128,29 @@ namespace Hermes.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Defect",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    StopId = table.Column<int>(type: "INTEGER", nullable: true),
-                    UnitUnderTestId = table.Column<int>(type: "INTEGER", nullable: false),
-                    ErrorFlag = table.Column<int>(type: "INTEGER", nullable: false),
-                    Location = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
-                    ErrorCode = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Defect", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Defect_Stop_StopId",
-                        column: x => x.StopId,
-                        principalTable: "Stop",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "StopUser",
-                columns: table => new
-                {
-                    StopsId = table.Column<int>(type: "INTEGER", nullable: false),
-                    UsersId = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_StopUser", x => new { x.StopsId, x.UsersId });
-                    table.ForeignKey(
-                        name: "FK_StopUser_Stop_StopsId",
-                        column: x => x.StopsId,
-                        principalTable: "Stop",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_StopUser_Users_UsersId",
-                        column: x => x.UsersId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Defect_StopId",
-                table: "Defect",
-                column: "StopId");
-
             migrationBuilder.CreateIndex(
                 name: "IX_Slides_DoctorId",
                 table: "Slides",
                 column: "DoctorId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_StopUser_UsersId",
-                table: "StopUser",
-                column: "UsersId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Defect");
+                name: "Heartbeat");
 
             migrationBuilder.DropTable(
-                name: "Heartbeats");
+                name: "Record");
 
             migrationBuilder.DropTable(
                 name: "Slides");
 
             migrationBuilder.DropTable(
-                name: "StopUser");
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Doctors");
-
-            migrationBuilder.DropTable(
-                name: "Stop");
-
-            migrationBuilder.DropTable(
-                name: "Users");
         }
     }
 }
