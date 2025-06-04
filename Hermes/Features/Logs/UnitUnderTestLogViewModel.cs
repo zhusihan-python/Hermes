@@ -1,18 +1,11 @@
-﻿using Avalonia.Controls.Notifications;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
 using Hermes.Common.Extensions;
-using Hermes.Common.Messages;
 using Hermes.Models;
 using Hermes.Repositories;
-using Hermes.Services;
 using Hermes.Types;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Threading.Tasks;
-using System;
 using Hermes.Common;
 
 namespace Hermes.Features.Logs;
