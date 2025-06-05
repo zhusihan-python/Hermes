@@ -14,6 +14,8 @@ public class HermesLocalContext : DbContext
     public DbSet<Slide> Slides { get; set; }
     public DbSet<Heartbeat> Heartbeats { get; set; }
 
+    public DbSet<Record> Records { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.UseSqlite(connectionString: ConnectionString);
@@ -25,10 +27,10 @@ public class HermesLocalContext : DbContext
 #if DEBUG
         //Database.EnsureDeleted();
 #endif
-        // if (Database.GetPendingMigrations().Any())
-        // {
-        //     Database.Migrate();
-        // }
+        //if (Database.GetPendingMigrations().Any())
+        //{
+        //    Database.Migrate();
+        //}
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -36,5 +38,7 @@ public class HermesLocalContext : DbContext
         modelBuilder.Entity<User>().ToTable("Users");
         modelBuilder.Entity<Doctor>().ToTable("Doctors");
         modelBuilder.Entity<Slide>().ToTable("Slides");
+        modelBuilder.Entity<Heartbeat>().ToTable("Heartbeat");
+        modelBuilder.Entity<Record>().ToTable("Record");
     }
 }
