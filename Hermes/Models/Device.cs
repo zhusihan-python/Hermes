@@ -37,9 +37,9 @@ public class Device : ObservableObject
     // 气罐气压当前值
     public float GasTankPressure { get; set; } = 0.0f;
     // 吸盘1气压当前值
-    public ReactiveProperty<float> SuckerOnePressure { get; set; } = new(0.0f);
+    public float SuckerOnePressure { get; set; } = 0.0f;
     // 吸盘2气压当前值
-    public ReactiveProperty<float> SuckerTwoPressure { get; set; } = new(0.0f);
+    public float SuckerTwoPressure { get; set; } = 0.0f;
     // 烘干工作状态
     public ReactiveProperty<bool> BakeState { get; set; } = new(false);
     // 烘干设定温度(℃)

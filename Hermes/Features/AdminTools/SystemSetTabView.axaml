@@ -46,8 +46,16 @@
 							<Run Text="{Binding GasPressure, StringFormat={}{0:F2}}" />
 							<Run Text="bar" />
 						</TextBlock>
-						<TextBlock Text="吸盘压力" Grid.Row="1" Grid.Column="0"></TextBlock>
-						<TextBlock Text="11 bar" Grid.Row="1" Grid.Column="1"></TextBlock>
+						<TextBlock Text="吸盘1压力" Grid.Row="1" Grid.Column="0"></TextBlock>
+						<TextBlock Grid.Row="1" Grid.Column="1">
+							<Run Text="{Binding SuckerPressureOne, StringFormat={}{0:F2}}" />
+							<Run Text="bar" />
+						</TextBlock>
+						<TextBlock Text="吸盘2压力" Grid.Row="1" Grid.Column="2"></TextBlock>
+						<TextBlock Grid.Row="1" Grid.Column="3">
+							<Run Text="{Binding SuckerPressureTwo, StringFormat={}{0:F2}}" />
+							<Run Text="bar" />
+						</TextBlock>
 					</Grid>
 					<StackPanel Grid.Row="1">
 						<StackPanel Orientation="Horizontal">

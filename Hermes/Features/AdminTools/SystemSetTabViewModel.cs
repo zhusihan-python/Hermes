@@ -41,6 +41,10 @@ public partial class SystemSetTabViewModel: ViewModelBase
     [ObservableProperty]
     public float _gasPressure;
     [ObservableProperty]
+    public float _suckerPressureOne;
+    [ObservableProperty]
+    public float _suckerPressureTwo;
+    [ObservableProperty]
     private string defaultDir = System.IO.Path.Combine(AppContext.BaseDirectory, "Backups");
     [ObservableProperty]
     private string hisInterface = "http://192.168.0.1";
@@ -104,6 +108,8 @@ public partial class SystemSetTabViewModel: ViewModelBase
         this.SensorTemperature = this._device.BoardTemp;
         this.SensorHumidity = this._device.BoardHumidity;
         this.GasPressure = this._device.GasTankPressure;
+        this.SuckerPressureOne = this._device.SuckerOnePressure;
+        this.SuckerPressureTwo = this._device.SuckerTwoPressure;
     }
 
     [RelayCommand]
