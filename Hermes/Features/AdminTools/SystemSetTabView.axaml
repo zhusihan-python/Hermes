@@ -84,9 +84,10 @@
 						<!-- Button to open folder picker -->
 						<Button Content="选择" Command="{Binding OpenFolderCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
 					</StackPanel>
-					<StackPanel Orientation="Horizontal" Spacing="120" Margin="12,0,0,0">
+					<StackPanel Orientation="Horizontal" Spacing="60" Margin="12,0,0,0">
 						<TextBlock Text="自动备份" FontSize="18" VerticalAlignment="Center"></TextBlock>
 						<ToggleSwitch IsChecked="True" />
+						<Button Height="46" Content="退出系统" Command="{Binding ExitAppCommand}"/>
 					</StackPanel>
 				</StackPanel>
 			</suki:GroupBox>

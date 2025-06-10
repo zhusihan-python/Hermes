@@ -1,4 +1,5 @@
-﻿using Avalonia.Controls;
+﻿using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -141,6 +142,15 @@ public partial class SystemSetTabViewModel: ViewModelBase
             DefaultDir = folder.Result[0].Path.LocalPath;
         }
         await Task.Delay(100);
+    }
+
+    [RelayCommand]
+    public void ExitApp()
+    {
+        if (Application.Current is App app)
+        {
+            app.Shutdown();
+        }
     }
 
     public void Dispose()

@@ -195,6 +195,12 @@ public class MessageSender : IDisposable
         _logger.Debug("心跳循环已停止（连接断开）。");
     }
 
+    public void ClosePort()
+    {
+        _comPort.Close();
+        scanEngine.Close();
+    }
+
     public void Dispose()
     {
         if (_disposed) return;

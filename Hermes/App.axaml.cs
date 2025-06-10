@@ -71,6 +71,30 @@ namespace Hermes
             Environment.Exit(0);
         }
 
+        public void Shutdown()
+        {
+            try
+            {
+                this._logger?.Info("Application shutdown");
+                this._windowService?.Stop();
+                this._sender?.ClosePort();
+
+                // 关闭数据库连接
+                _provider.GetService<HermesLocalContext>()?.Dispose();
+                _provider.GetService<HermesRemoteContext>()?.Dispose();
+
+                if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+                {
+                    desktop.Shutdown();
+                }
+            }
+            catch (Exception ex)
+            {
+                this._logger?.Error($"Error during shutdown: {ex.Message}");
+                Environment.Exit(1);
+            }
+        }
+
         private void OnUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             const string title = "Unhandled Exception";
