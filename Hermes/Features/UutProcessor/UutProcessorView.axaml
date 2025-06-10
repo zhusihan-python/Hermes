@@ -54,7 +54,7 @@
 					<Grid RowDefinitions="*"
 							ColumnDefinitions="*">
 						<StackPanel Grid.Column="0" Spacing="18" Orientation="Horizontal" HorizontalAlignment="Center">
-							<Button Classes="Outlined" MaxWidth="88">
+							<Button Classes="Outlined" MaxWidth="88" Command="{Binding PauseCommand}">
 								<StackPanel Orientation="Horizontal" Spacing="10">
 									<avalonia:MaterialIcon Kind="Pause" Margin="-5,0,0,0"/>
 									<TextBlock Text="暂停"/>
@@ -70,7 +70,7 @@
 									<TextBlock Text="运行"/>
 								</StackPanel>
 							</Button>
-							<Button Classes="Outlined" MaxWidth="88">
+							<Button Classes="Outlined" MaxWidth="88" Command="{Binding StopCommand}">
 								<StackPanel Orientation="Horizontal" Spacing="10">
 									<avalonia:MaterialIcon Kind="Square" Margin="-5,0,0,0"/>
 									<TextBlock Text="停止"/>

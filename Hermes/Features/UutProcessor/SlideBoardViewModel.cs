@@ -92,6 +92,8 @@ public partial class SlideBoardViewModel : ViewModelBase
         Messenger.Register<SortSlideMessage>(this, this.StartSortSlide);
         Messenger.Register<SlideInfoMessage>(this, this.UpdateSlideInfo);
         Messenger.Register<ShowDetailMessage>(this, this.ShowDetail);
+        Messenger.Register<PauseActionMessage>(this, this.PauseAction);
+        Messenger.Register<StopActionMessage>(this, this.StopAction);
     }
 
     public void EnqueueTask(List<int> task)
@@ -182,23 +184,8 @@ public partial class SlideBoardViewModel : ViewModelBase
                     // 在 Timer 到期后执行此代码
                     this.canCheckInPlace = true;
                 });
-            //var dices = DequeueStartedTask();
-            //foreach (int dice in dices)
-            //{
-            //    Debug.WriteLine($"cur Index {dice}");
-            //    var slideBoxViewModel = SlideBoxes[dice];
-            //    var slideList = slideBoxViewModel.ItemList;
-            //    foreach(SlideModel model in slideList)
-            //    {
-            //        var slide = model.Slide;
-            //        if (slide != null)
-            //        {
-            //            Debug.WriteLine($"Slide ID: {slide.SlideId}, PatientName: {slide.PatientName}");
-            //        }
-            //    }
-            //}
         }
-        //CheckInplaceStarted(this._device.SlideBoxActions);
+
         var inplaceCheckFinished = CheckInplaceFinish(this._device.SlideBoxActions);
         if (scanFinished && inplaceCheckFinished)
         {
@@ -452,6 +439,26 @@ public partial class SlideBoardViewModel : ViewModelBase
                          }).TryShow();
     }
 
+    private void PauseAction(object? recipient, PauseActionMessage message)
+    {
+        var packet = new SystemStatusWrite().
+                        WithOperationType(0x0A).
+                        WithMasterAddress<SystemStatusWrite>(0xF2).
+                        WithSlaveAddress<SystemStatusWrite>(0x13).
+                        WithBoxTags(new byte[75]);
+        _ = Task.Run(() => this._sender.EnqueueMessage(packet));
+    }
+
+    private void StopAction(object? recipient, StopActionMessage message)
+    {
+        var packet = new SystemStatusWrite().
+                        WithOperationType(0x0B).
+                        WithMasterAddress<SystemStatusWrite>(0xF2).
+                        WithSlaveAddress<SystemStatusWrite>(0x13).
+                        WithBoxTags(new byte[75]);
+        _ = Task.Run(() => this._sender.EnqueueMessage(packet));
+    }
+
     private void CheckScanStarted(SlideBoxActionType[] actionTypes)
     {
         var indices = PeekNextTask();
@@ -476,19 +483,6 @@ public partial class SlideBoardViewModel : ViewModelBase
         }
         return false;
     }
-
-    //private void CheckInplaceStarted(SlideBoxActionType[] actionTypes)
-    //{
-    //    var indices = PeekInplaceTask();
-    //    if (indices.Count > 0)
-    //    {
-    //        if (indices.Any(i => i >= 0 && i < actionTypes.Length &&
-    //                               actionTypes[i] == SlideBoxActionType.ScanningSlide))
-    //        {
-    //            EnqueueStartedInplaceTask(DequeueTask());
-    //        }
-    //    }
-    //}
 
     private bool CheckInplaceFinish(SlideBoxActionType[] actionTypes)
     {

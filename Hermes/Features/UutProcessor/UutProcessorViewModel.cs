@@ -74,32 +74,11 @@ public partial class UutProcessorViewModel : PageBase
     [RelayCommand]
     private void Start()
     {
-        //this.BakeRealTemp = "2.2";
         var device = this._serviceProvider.GetRequiredService<Device>();
         Debug.WriteLine(ReferenceEquals(device, this.DeviceModel));
         var device2 = this._serviceProvider.GetRequiredService<Device>();
         Debug.WriteLine(ReferenceEquals(device, device2));
         Debug.WriteLine("Into Start Command");
-    }
-
-    [RelayCommand]
-    private void Stop()
-    {
-        //try
-        //{
-        //    if (!this.IsRunning) return;
-        //    this.IsRunning = false;
-        //    this.Path = this._uutSenderService.Path;
-        //    this._uutSenderService.Stop();
-        //    this._stopService.Stop();
-        //    this.Disposables.Clear();
-        //    this.ShowInfoToast(Resources.msg_uut_processor_stopped);
-        //}
-        //catch (Exception e)
-        //{
-        //    _logger.Error(e.Message);
-        //    this.ShowErrorToast(e.Message);
-        //}
     }
 
     [RelayCommand]
@@ -115,6 +94,18 @@ public partial class UutProcessorViewModel : PageBase
     }
 
     [RelayCommand]
+    private void Pause()
+    {
+        Messenger.Send(new PauseActionMessage());
+    }
+
+    [RelayCommand]
+    private void Stop()
+    {
+        Messenger.Send(new StopActionMessage());
+    }
+
+    [RelayCommand]
     private void ShowDetail()
     {
         Messenger.Send(new ShowDetailMessage());
@@ -122,6 +113,6 @@ public partial class UutProcessorViewModel : PageBase
 
     private void OnExitReceive(object recipient, ExitMessage message)
     {
-        this.Stop();
+        //this.Stop();
     }
 }
