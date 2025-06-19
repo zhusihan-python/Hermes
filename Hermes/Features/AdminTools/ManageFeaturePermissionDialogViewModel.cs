@@ -20,8 +20,8 @@ public partial class ManageFeaturePermissionDialogViewModel : ViewModelBase
     [ObservableProperty] private UserLevel _userLevelSelected;
     private readonly ISukiDialog _dialog;
     public DepartmentType[] Departments => Enum.GetValues<DepartmentType>();
-    public static IEnumerable<PermissionType> PermissionOptions => EnumExtensions.GetValues<PermissionType>();
-    public static IEnumerable<UserLevel> UserLevelOptions => EnumExtensions.GetValues<UserLevel>();
+    public static IEnumerable<PermissionType> PermissionOptions => Hermes.Common.Extensions.EnumExtensions.GetValues<PermissionType>();
+    public static IEnumerable<UserLevel> UserLevelOptions => Hermes.Common.Extensions.EnumExtensions.GetValues<UserLevel>();
 
     public ManageFeaturePermissionDialogViewModel(ISukiDialog dialog, FeaturePermission? featurePermission)
     {

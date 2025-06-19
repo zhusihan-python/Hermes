@@ -21,6 +21,22 @@ namespace Hermes.Features
 {
     public partial class MainWindowViewModel : ViewModelBase, IRecipient<NavigateMessage>
     {
+        //private PageFactory _pageFactory;
+
+        [ObservableProperty]
+        private bool _sideMenuExpanded = false;
+
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(HomePageIsActive))]
+        [NotifyPropertyChangedFor(nameof(HistoryPageIsActive))]
+        [NotifyPropertyChangedFor(nameof(SettingsPageIsActive))]
+        [NotifyPropertyChangedFor(nameof(LoginPageIsActive))]
+        private PageBase _currentPage;
+
+        public bool HomePageIsActive => CurrentPage!.DisplayName == PageNames.Home.GetPageDescription();
+        public bool HistoryPageIsActive => CurrentPage!.DisplayName == PageNames.History.GetPageDescription();
+        public bool SettingsPageIsActive => CurrentPage!.DisplayName == PageNames.Settings.GetPageDescription();
+        public bool LoginPageIsActive => CurrentPage!.DisplayName == PageNames.Login.GetPageDescription();
         public List<PageBase> Pages { get; }
         public ISukiToastManager ToastManager { get; }
         public ISukiDialogManager DialogManager { get; }
@@ -52,8 +68,7 @@ namespace Hermes.Features
             this._pagePrototype = pagePrototype;
             this._settings = settings;
             this._session = session;
-            //this._theme = SukiTheme.GetInstance();
-            //this._theme.ChangeBaseTheme(ThemeVariant.Light);
+            //this.ConfigurePages(User.Null);
             this.Pages = pages.ToList();
             this.TitleBarVisible = false;
             this.ToastManager = toastManager;
@@ -93,6 +108,7 @@ namespace Hermes.Features
             this.AreSettingsVisible = user.HasPermission(PermissionType.OpenSettingsConfig);
             this.CanExit = user.HasPermission(PermissionType.Exit);
             this.IsLoggedIn = !user.IsNull;
+            CurrentPage = GetPageByName("主界面");
         }
 
         private void UpdatePages(List<PageBase> visiblePages)
@@ -135,11 +151,10 @@ namespace Hermes.Features
             //this.UpdateBaseTheme();
         }
 
-        //private void UpdateBaseTheme()
-        //{
-        //    this.BaseTheme = _theme.ActiveBaseTheme == ThemeVariant.Dark ? ThemeVariant.Light : ThemeVariant.Dark;
-        //    this.BaseThemeText = BaseTheme == ThemeVariant.Dark ? Resources.txt_dark_theme : Resources.txt_light_theme;
-        //}
+        public PageBase GetPageByName(string displayName)
+        {
+            return ShownPages.FirstOrDefault(page => page.DisplayName == displayName);
+        }
 
         [RelayCommand]
         private void Exit(SukiWindow window)
@@ -148,6 +163,21 @@ namespace Hermes.Features
             CanClose = true;
             window.Close();
         }
+
+        [RelayCommand]
+        private void SideMenuResize()
+        {
+            SideMenuExpanded = !SideMenuExpanded;
+        }
+
+        [RelayCommand]
+        private void GoToHome() => CurrentPage = GetPageByName(PageNames.Home.GetPageDescription());
+        [RelayCommand]
+        private void GoToHistory() => CurrentPage = GetPageByName(PageNames.History.GetPageDescription());
+        [RelayCommand]
+        private void GoToSettings() => CurrentPage = GetPageByName(PageNames.Settings.GetPageDescription());
+        [RelayCommand]
+        private void GoToLogin() => CurrentPage = GetPageByName(PageNames.Login.GetPageDescription());
 
         public void Receive(NavigateMessage message)
         {

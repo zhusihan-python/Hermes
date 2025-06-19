@@ -30,7 +30,7 @@ public partial class
 
     public UserLevel[] GetLevelsBelowLoggedUser()
     {
-        return EnumExtensions.GetValues<UserLevel>()
+        return Hermes.Common.Extensions.EnumExtensions.GetValues<UserLevel>()
             .Where(x => x < UserLevel)
             .ToArray();
     }

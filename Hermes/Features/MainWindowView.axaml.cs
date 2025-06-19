@@ -16,6 +16,15 @@ public partial class MainWindowView : SukiWindow
         this.IsMenuVisible = false;
     }
 
+
+    private void InputElement_OnPointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        if (e.ClickCount != 2)
+            return;
+
+        (DataContext as MainWindowViewModel)?.SideMenuResizeCommand?.Execute(null);
+    }
+
     private void Window_OnClosing(object? sender, WindowClosingEventArgs e)
     {
         if (this.CanClose)

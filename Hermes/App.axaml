@@ -29,7 +29,10 @@
         <SolidColorBrush x:Key="LightGreenColor" Color="#537834" />
         <SolidColorBrush x:Key="LightYellowColor" Color="#BE975D" />
         <SolidColorBrush x:Key="DarkYellowColor" Color="#d48806" />
-
+		<LinearGradientBrush x:Key="PrimaryBackgroundGradient" StartPoint="0%, 0%" EndPoint="100%, 0%">
+			<GradientStop Offset="0" Color="#111214"></GradientStop>
+			<GradientStop Offset="1" Color="#151E3E"></GradientStop>
+		</LinearGradientBrush>
         <sys:Double x:Key="StopWindowMaxWidth">1024</sys:Double>
         <sys:Double x:Key="DefaultIconSize">20</sys:Double>
         <sys:Double x:Key="DefaultSpacing">10</sys:Double>
