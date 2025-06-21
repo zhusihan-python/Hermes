@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
-             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="760"
+             mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="760"
 			 xmlns:controls="using:Hermes.Features.Controls"
 			 xmlns:uutProcessor="clr-namespace:Hermes.Features.UutProcessor"
 			 xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
@@ -74,19 +74,7 @@
 				<Border Width="380" Height="410" Classes="CardPanel">
 					<Grid>
 						<controls:BackdropBlurControl />
-						<ListBox ItemsSource="{Binding SentTasks}">
-							<ListBox.ItemTemplate>
-								<DataTemplate>
-									<Grid ColumnDefinitions="30,30,*,80">
-										<TextBlock Grid.Column="1" Text="{Binding Position}" FontSize="24" VerticalAlignment="Center" Margin="5,0,10,0" />
-
-										<TextBlock Grid.Column="3" VerticalAlignment="Center" Margin="10,0,5,0" >
-											<Run Text="{Binding ActionType}" FontSize="24"/>
-										</TextBlock>
-									</Grid>
-								</DataTemplate>
-							</ListBox.ItemTemplate>
-						</ListBox>
+						<controls:TaskBoard TaskData="{Binding SentTasks}"/>
 					</Grid>
 				</Border>
 			</StackPanel>

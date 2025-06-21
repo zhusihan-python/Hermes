@@ -26,7 +26,7 @@
 
 		<ContentControl Grid.Column="1" Content="{Binding CurrentPage}" />
 
-		<Border Padding="6" Background="{DynamicResource PrimaryBackgroundGradient}">
+		<Border Padding="6,6,0,0" Width="66">
 			<Grid RowDefinitions="*, Auto">
 				<StackPanel Spacing="12">
 					<controls:ButtonIcon Classes="subtle" Width="60" Height="60" Kind="Home" HorizontalAlignment="Stretch" Classes.active="{Binding HomePageIsActive}" Command="{Binding GoToHomeCommand}" />

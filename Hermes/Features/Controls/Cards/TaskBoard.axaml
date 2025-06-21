@@ -1,0 +1,55 @@
+<UserControl
+    x:Class="Hermes.Features.Controls.TaskBoard"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Hermes.Features.Controls"
+	xmlns:comm="clr-namespace:Hermes.Common"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    x:Name="Root"
+    d:DesignHeight="175"
+    d:DesignWidth="300"
+    Loaded="UserControl_Loaded"
+    SizeChanged="UserControl_SizeChanged"
+    mc:Ignorable="d">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel
+            Grid.Row="0"
+            Margin="10,5,0,0"
+            Opacity="0.4"
+            Orientation="Horizontal"
+            Spacing="4">
+            <TextBlock
+                FontFamily="{StaticResource CustomIconFonts}"
+                FontSize="16"
+                Text="&#xE904;" />
+            <TextBlock Padding="0,-1,0,0" Text="待执行任务" />
+        </StackPanel>
+
+        <!--  #Name Or RelativeSource={RelativeSource AncestorType=UserControl}  -->
+        <StackPanel
+            Grid.Row="1"
+            Margin="10,0,0,0"
+            VerticalAlignment="Top"
+            Spacing="0">
+			<ListBox ItemsSource="{Binding #Root.TaskData}">
+				<ListBox.ItemTemplate>
+					<DataTemplate x:DataType="comm:DistributedTask">
+						<Grid ColumnDefinitions="5,50,50,*">
+							<TextBlock Grid.Column="1" Text="{Binding Position}" FontSize="20" VerticalAlignment="Center" Margin="5,0,5,0" />
+
+							<TextBlock Grid.Column="3" VerticalAlignment="Center" Margin="5,0,5,0" >
+								<Run Text="{Binding ActionType}" FontSize="20"/>
+							</TextBlock>
+						</Grid>
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
+        </StackPanel>
+    </Grid>
+</UserControl>

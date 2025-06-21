@@ -237,7 +237,7 @@
 			</DataTemplate>
 	    </labs:Swipe.Right>
 		<labs:Swipe.Content>
-			<local:ConciseMainView DataContext="{Binding ConciseMainViewModel}"></local:ConciseMainView>
+			<local:ConciseMainView Width="930" DataContext="{Binding ConciseMainViewModel}"></local:ConciseMainView>
 		</labs:Swipe.Content>
 
 	</labs:Swipe>

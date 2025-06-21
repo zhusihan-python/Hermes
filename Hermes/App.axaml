@@ -43,6 +43,7 @@
     </Application.Resources>
 	<Application.Resources>
 		<ResourceDictionary>
+			<FontFamily x:Key="CustomIconFonts">avares://Hermes/AppData/Assets/FontIcons/CustomIcons.ttf#CustomIcons</FontFamily>
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceInclude Source="avares://Hermes/Features/Controls/LoadingIndicators.axaml" />
 			</ResourceDictionary.MergedDictionaries>

@@ -57,7 +57,8 @@ public partial class ConciseMainViewModel : ViewModelBase
         this._sender = sender;
         this.AlarmMessages = new ObservableCollection<string>();
         this._sentTasks = new ObservableCollection<DistributedTask>();
-        this.SentTasks.Add(new DistributedTask("", 0, "空闲"));
+        this.SentTasks.Add(new DistributedTask("A-11", 0, "封片+理片"));
+        this.SentTasks.Add(new DistributedTask("A-12", 0.75, "理片"));
         this.State = new ReactiveProperty<bool>(_sender.GetClientState());
         SealSlideCommand = new AsyncRelayCommand(SealSlide);
         SortSlideCommand = new AsyncRelayCommand(SortSlide);

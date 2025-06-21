@@ -21,6 +21,7 @@
     <ItemGroup>
         <AvaloniaResource Include="Assets\**" />
         <None Remove="AppData\Assets\bottle.png" />
+        <None Remove="AppData\Assets\FontIcons\CustomIcons.ttf" />
         <None Remove="AppData\Assets\hermes-splash.png" />
         <None Remove="AppData\Assets\LED_Disconnect.png" />
         <None Remove="AppData\Assets\LED_Error.png" />
@@ -35,6 +36,7 @@
         <AvaloniaResource Include="AppData\Assets\bottle.png">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </AvaloniaResource>
+        <AvaloniaResource Include="AppData\Assets\FontIcons\CustomIcons.ttf" />
         <AvaloniaResource Include="AppData\Assets\LED_Disconnect.png">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </AvaloniaResource>
@@ -63,13 +65,13 @@
     <ItemGroup>
         <PackageReference Include="ActiproSoftware.Controls.Avalonia" Version="25.1.0" />
         <PackageReference Include="AutoMapper" Version="13.0.1" />
-        <PackageReference Include="Avalonia" Version="11.3.0" />
-        <PackageReference Include="Avalonia.Desktop" Version="11.3.0" />
+        <PackageReference Include="Avalonia" Version="11.3.1" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.3.1" />
         <PackageReference Include="Avalonia.Labs.Controls" Version="11.3.0" />
-        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.0" />
-        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.0" />
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.1" />
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.1" />
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.3.0" />
+        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.3.1" />
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
         <PackageReference Include="ConfigFactory" Version="0.4.2" />
         <PackageReference Include="ConfigFactory.Avalonia" Version="0.4.2" />
@@ -142,6 +144,9 @@
 	</ItemGroup>
 
     <ItemGroup>
+        <Compile Update="Features\Controls\Cards\TaskBoard.axaml.cs">
+          <DependentUpon>TaskBoard.axaml</DependentUpon>
+        </Compile>
         <Compile Update="Features\MainWindowView.axaml.cs">
             <DependentUpon>MainWindowView.axaml</DependentUpon>
             <SubType>Code</SubType>
